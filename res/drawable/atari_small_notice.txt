@@ -1,0 +1,11 @@
+COMMENT  Copyright (c) 1999, Thomas A. Fine
+COMMENT
+COMMENT  License to copy, modify, and distribute for both commercial and
+COMMENT  non-commercial use is herby granted, provided this notice
+COMMENT  is preserved.
+COMMENT
+COMMENT  Email to my last name at head.cfa.harvard.edu
+COMMENT  http://hea-www.harvard.edu/~fine/
+COMMENT
+COMMENT  Produced with bdfedit, a tcl/tk font editing program
+COMMENT  written by Thomas A. Fine

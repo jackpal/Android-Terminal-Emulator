@@ -1,0 +1,68 @@
+Obtain the Software Needed to Build Android Term
+------------------------------------------------
+
+Android is built using the Android SDK 1.6 or newer and the Android NDK r4 or newer.
+You can downlaod them from:
+
+http://developer.android.com/sdk
+
+You will also need Eclipse 3.4 or newer, Java version, available from:
+
+http://eclipse.org
+
+After you install the SDK and the NDK, please build some of the samples that
+come with the NDK in order to get a feel for using the SDK and the NDK.
+
+Building Android Term
+---------------------
+
+There are three parts to building Android Term:
+
+    1) Build the shared library
+    2) Create the Eclipse Project for the Application
+    3) Build the Java apk.
+
+Build the shared library:
+
+    cd <the-app-where-androidterm-is>
+    <path-to-the-android-ndk>/ndk-build
+    
+  (Be sure to use the actual pathnames from your system. For example,
+   on my system I actually type the following:
+
+    cd ~/code/androidterm
+    ../android-ndk-r4/ndk-build
+
+This should chug away for a while and ultimately produce the file
+
+libs/armeabi/libterm.so
+    
+Create the Eclipse project:
+
+    Start Eclipse
+    From the menu choose File : New Project
+    Choose Android:Android Project as a project type
+    Press Next
+    Set Project Name: AndroidTerm
+    Choose "Create project from existing source"
+    Browse to the location of the AndroidTerm source directory.
+    Make sure the "Android 1.6" Target Name is checked.
+    Make sure the Min SDK Version is 4
+    Press Finish
+    
+    NOTE: When you Press Finish you may get the following error
+    
+        Invalid project description.
+        <path-to-your-project> overlaps the location of another
+        project: '<project>'
+        
+    This seems to be due to a bug in the Android SDK, where it
+    can't import projects that are located in the Eclipse "workspace"
+    directory. The work-around is to move the androidterm project
+    directory to a different location on your file system, so
+    that it is _not_ in the Eclipse "workspace" directory.
+
+Build the Java apk:
+
+    This should happen automatically once you've created the Eclipse project.
+
