@@ -2809,6 +2809,16 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
                 return true;
             }
 
+            @Override
+            public boolean deleteSurroundingText(int leftLength, int rightLength) {
+                for (int i = 0; i < leftLength; i++) {
+                    sendKeyEvent(
+                            new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+                }
+                // TODO: handle forward deletes.
+                return true;
+            }
+
             private void sendChar(int c) {
                 try {
                     mapAndSend(c);
