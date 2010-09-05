@@ -2781,6 +2781,18 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
                         char c = KEYCODE_CHARS.charAt(keyCode);
                         if (c > 0) {
                             sendChar(c);
+                        } else {
+                            // Handle IME arrow key events
+                            switch (keyCode) {
+                              case KeyEvent.KEYCODE_DPAD_UP:      // Up Arrow
+                              case KeyEvent.KEYCODE_DPAD_DOWN:    // Down Arrow
+                              case KeyEvent.KEYCODE_DPAD_LEFT:    // Left Arrow
+                              case KeyEvent.KEYCODE_DPAD_RIGHT:   // Right Arrow
+                                super.sendKeyEvent(event);
+                                break;
+                              default:
+                                break;
+                            }  // switch (keyCode)
                         }
                     }
                 }
