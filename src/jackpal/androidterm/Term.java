@@ -2823,9 +2823,15 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
 
             @Override
             public boolean deleteSurroundingText(int leftLength, int rightLength) {
-                for (int i = 0; i < leftLength; i++) {
-                    sendKeyEvent(
+                if (leftLength > 0) {
+                    for (int i = 0; i < leftLength; i++) {
+                        sendKeyEvent(
                             new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+                    }
+                } else if ((leftLength == 0) && (rightLength == 0)) {
+                    // Delete key held down / repeating
+                    sendKeyEvent(
+                        new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
                 }
                 // TODO: handle forward deletes.
                 return true;
