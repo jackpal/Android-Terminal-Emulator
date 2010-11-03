@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">Terminal Emulator</string>
+   <string name="preferences">Préférences</string>
+   <string name="reset">RàZ terminal</string>
+   <string name="send_email">Envoyer par e-mail</string>
+   <string name="special_keys">Touches spéciales</string>
+   <string name="toggle_soft_keyboard">Afficher/Masquer Clavier</string>
+
+   <string name="edit_text">Modifier le texte</string>
+   <string name="copy_all">Tout copier</string>
+   <string name="paste">Coller</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">Écran</string>
+
+   <string name="title_statusbar_preference">Barre de statut</string>
+   <string name="summary_statusbar_preference">Afficher/Masquer la barre de statut</string>
+   <string name="dialog_title_statusbar_preference">Barre de statut</string>
+
+   <string name="title_cursorstyle_preference">Style du curseur</string>
+   <string name="summary_cursorstyle_preference">Choisir le style du curseur</string>
+   <string name="dialog_title_cursorstyle_preference">Style du curseur</string>
+
+   <string name="title_cursorblink_preference">Clignotement curseur</string>
+   <string name="summary_cursorblink_preference">Choisir si le curseur doit clignoter</string>
+   <string name="dialog_title_cursorblink_preference">Clignotement curseur</string>
+
+   <string name="text_preferences">Texte</string>
+
+   <string name="title_fontsize_preference">Taille police</string>
+   <string name="summary_fontsize_preference">Choisir la taille de la police de caractères en points</string>
+   <string name="dialog_title_fontsize_preference">Taille de la police</string>
+
+   <string name="title_color_preference">Couleurs</string>
+   <string name="summary_color_preference">Choisir la couleur du texte</string>
+   <string name="dialog_title_color_preference">Couleur du texte</string>
+
+   <string name="keyboard_preferences">Clavier</string>
+
+   <string name="title_controlkey_preference">Touche CTRL</string>
+   <string name="summary_controlkey_preference">Choisir quelle touche utiliser pour control (CTRL)</string>
+   <string name="dialog_title_controlkey_preference">Touche CTRL</string>
+
+   <string name="title_ime_preference">Méthode d\'entrée</string>
+   <string name="summary_ime_preference">Choisir la méthode d\'entrée du clavier virtuel</string>
+   <string name="dialog_title_ime_preference">Méthode d\'entrée</string>
+
+   <string name="shell_preferences">Shell</string>
+   <string name="title_shell_preference">Ligne de commande</string>
+   <string name="summary_shell_preference">Régler la ligne de commande du shell</string>
+   <string name="dialog_title_shell_preference">Shell</string>
+
+   <string name="title_initialcommand_preference">Commande initiale</string>
+   <string name="summary_initialcommand_preference">Envoyée au shell au démarrage</string>
+   <string name="dialog_title_initialcommand_preference">Commande initiale</string>
+</resources>
