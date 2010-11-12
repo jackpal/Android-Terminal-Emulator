@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm;
+package jackpal.androidterm2;
 
 import java.io.FileDescriptor;
 import java.io.FileInputStream;

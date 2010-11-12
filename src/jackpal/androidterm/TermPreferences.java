@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm;
+package jackpal.androidterm2;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;

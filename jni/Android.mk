@@ -23,7 +23,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE_TAGS := eng
 
 # This is the target being built.
-LOCAL_MODULE:= libandroidterm
+LOCAL_MODULE:= libandroidterm2
 
 
 # All of the source files that we will compile.
