@@ -67,6 +67,9 @@ public:
     }
 
     void set(const char16_t* o, size_t numChars) {
+        if (mString) {
+            free(mString);
+        }
         mString = (char*) malloc(numChars + 1);
         for (size_t i = 0; i < numChars; i++) {
             mString[i] = (char) o[i];
