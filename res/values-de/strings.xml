@@ -20,7 +20,7 @@
   <string name="reset">Zurücksetzen</string>
   <string name="send_email">Email an</string>
   <string name="special_keys">Spezialtasten</string>
-  <string name="toggle_soft_keyboard">Tastatur wechseln</string>
+  <string name="toggle_soft_keyboard">Tastatur an/aus</string>
 
   <string name="edit_text">Text bearbeiten</string>
   <string name="copy_all">Alles kopieren</string>
