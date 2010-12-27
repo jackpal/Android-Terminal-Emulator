@@ -171,8 +171,9 @@ public class Term extends Activity {
 
     private SharedPreferences mPrefs;
 
-    private final static int COPY_ALL_ID = 0;
-    private final static int PASTE_ID = 1;
+    private final static int SELECT_TEXT_ID = 0;
+    private final static int COPY_ALL_ID = 1;
+    private final static int PASTE_ID = 2;
 
     private boolean mAlreadyStarted = false;
 
@@ -462,6 +463,7 @@ public class Term extends Activity {
             ContextMenuInfo menuInfo) {
       super.onCreateContextMenu(menu, v, menuInfo);
       menu.setHeaderTitle(R.string.edit_text);
+      menu.add(0, SELECT_TEXT_ID, 0, !mEmulatorView.getSelectingText() ? R.string.select_text : R.string.select_text_done);
       menu.add(0, COPY_ALL_ID, 0, R.string.copy_all);
       menu.add(0, PASTE_ID, 0,  R.string.paste);
       if (!canPaste()) {
@@ -472,6 +474,11 @@ public class Term extends Activity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
           switch (item.getItemId()) {
+          case SELECT_TEXT_ID:
+            if(mEmulatorView.getSelectingText())
+              doCopySelectedText();
+            mEmulatorView.toggleSelectingText();
+            return true;
           case COPY_ALL_ID:
             doCopyAll();
             return true;
@@ -523,7 +530,16 @@ public class Term extends Activity {
         clip.setText(mEmulatorView.getTranscriptText().trim());
     }
 
+    private void doCopySelectedText() {
+        ClipboardManager clip = (ClipboardManager)
+             getSystemService(Context.CLIPBOARD_SERVICE);
+        clip.setText(mEmulatorView.getSelectedText().trim());
+    }
+
     private void doPaste() {
+        if(mEmulatorView.getSelectingText())
+            doCopySelectedText();
+
         ClipboardManager clip = (ClipboardManager)
          getSystemService(Context.CLIPBOARD_SERVICE);
         CharSequence paste = clip.getText();
@@ -635,6 +651,16 @@ interface Screen {
      * @return the contents of the transcript buffer.
      */
     String getTranscriptText();
+
+    /**
+     * Get the selected text inside transcript buffer as a text string.
+     * @param x1 Selection start
+     * @param y1 Selection start
+     * @param x2 Selection end
+     * @param y2 Selection end
+     * @return the contents of the transcript buffer.
+     */
+    String getSelectedText(int x1, int y1, int x2, int y2);
 
     /**
      * Resize the screen
@@ -958,9 +984,11 @@ class TranscriptScreen implements Screen {
      * @param y The y coordinate origin of the drawing
      * @param renderer The renderer to use to draw the text
      * @param cx the cursor X coordinate, -1 means don't draw it
+     * @param selx1 the text selection start X coordinate
+     * @param selx2 the text selection end X coordinate, if equals to selx1 don't draw selection
      */
     public final void drawText(int row, Canvas canvas, float x, float y,
-            TextRenderer renderer, int cx) {
+            TextRenderer renderer, int cx, int selx1, int selx2) {
 
         // Out-of-bounds rows are blank.
         if (row < -mActiveTranscriptRows || row >= mScreenRows) {
@@ -980,7 +1008,7 @@ class TranscriptScreen implements Screen {
         for (int i = 0; i < columns; i++) {
             char c = data[offset + i];
             int colors = (char) (c & 0xff00);
-            if (cx == i) {
+            if (cx == i || (i >= selx1 && i <= selx2)) {
                 // Set cursor background color:
                 colors |= CURSOR_MASK;
             }
@@ -1023,10 +1051,14 @@ class TranscriptScreen implements Screen {
     }
 
     public String getTranscriptText() {
-        return internalGetTranscriptText(true);
+        return internalGetTranscriptText(true, 0, -mActiveTranscriptRows, mColumns, mScreenRows);
     }
 
-    private String internalGetTranscriptText(boolean stripColors) {
+    public String getSelectedText(int selX1, int selY1, int selX2, int selY2) {
+        return internalGetTranscriptText(true, selX1, selY1, selX2, selY2);
+    }
+
+    private String internalGetTranscriptText(boolean stripColors, int selX1, int selY1, int selX2, int selY2) {
         StringBuilder builder = new StringBuilder();
         char[] rowBuffer = mRowBuffer;
         char[] data = mData;
@@ -1044,11 +1076,21 @@ class TranscriptScreen implements Screen {
                 }
                 rowBuffer[column] = c;
             }
-            if (mLineWrap[externalToInternalRow(row)]) {
-                builder.append(rowBuffer, 0, columns);
-            } else {
-                builder.append(rowBuffer, 0, lastPrintingChar + 1);
-                builder.append('\n');
+            if( row >= selY1 && row <= selY2 ) {
+                int x1 = 0;
+                int x2 = 0;
+                if( row == selY1 )
+                    x1 = selX1;
+                if( row == selY2 )
+                    x2 = selX2;
+                else
+                    x2 = columns;
+                if (mLineWrap[externalToInternalRow(row)]) {
+                    builder.append(rowBuffer, x1, x2 - x1);
+                } else {
+                    builder.append(rowBuffer, x1, Math.max(0, Math.min(x2 - x1 + 1, lastPrintingChar + 1 - x1)));
+                    builder.append('\n');
+                }
             }
         }
         return builder.toString();
@@ -1275,6 +1317,11 @@ class TerminalEmulator {
     private boolean mbKeypadApplicationMode;
 
     private boolean mAlternateCharSet;
+
+    /**
+     * Used for moving selection up along with the scrolling text
+     */
+    private int mScrollCounter = 0;
 
     /**
      * Construct a terminal emulator that uses the supplied screen
@@ -2036,6 +2083,8 @@ class TerminalEmulator {
     }
 
     private void scroll() {
+        //System.out.println("Scroll(): mTopMargin " + mTopMargin + " mBottomMargin " + mBottomMargin);
+        mScrollCounter ++;
         mScreen.scroll(mTopMargin, mBottomMargin,
                 getForeColor(), getBackColor());
     }
@@ -2205,6 +2254,14 @@ class TerminalEmulator {
         mAboutToAutoWrap = false;
     }
 
+    public int getScrollCounter() {
+        return mScrollCounter;
+    }
+
+    public void clearScrollCounter() {
+        mScrollCounter = 0;
+    }
+
     /**
      * Reset the terminal emulator to its initial state.
      */
@@ -2235,6 +2292,9 @@ class TerminalEmulator {
 
     public String getTranscriptText() {
         return mScreen.getTranscriptText();
+    }
+    public String getSelectedText(int x1, int y1, int x2, int y2) {
+        return mScreen.getSelectedText(x1, y1, x2, y2);
     }
 }
 
@@ -2649,6 +2709,17 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
 
     private boolean mCursorVisible = true;
 
+    private boolean mIsSelectingText = false;
+
+    private int mSelX1 = -1;
+    private int mSelY1 = -1;
+    private int mSelX2 = -1;
+    private int mSelY2 = -1;
+    private int mSelX1Old = -1;
+    private int mSelY1Old = -1;
+    private int mSelX2Old = -1;
+    private int mSelY2Old = -1;
+
     /**
      * Used to poll if the view has changed size. Wish there was a better way to do this.
      */
@@ -2936,6 +3007,14 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
      */
     public void append(byte[] buffer, int base, int length) {
         mEmulator.append(buffer, base, length);
+        if( mIsSelectingText ) {
+            int rowShift = mEmulator.getScrollCounter();
+            mSelY1 -= rowShift;
+            mSelY2 -= rowShift;
+            mSelY1Old -= rowShift;
+            mSelY2Old -= rowShift;
+        }
+        mEmulator.clearScrollCounter();
         ensureCursorVisible();
         invalidate();
     }
@@ -2997,6 +3076,15 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
     }
 
     public void onLongPress(MotionEvent e) {
+        if( mIsSelectingText ) {
+            if( mSelX1 == mSelX2 && mSelY1 == mSelY2 ) {
+                mSelX1 = mSelX1Old;
+                mSelY1 = mSelY1Old;
+                mSelX2 = mSelX2Old;
+                mSelY2 = mSelY2Old;
+                invalidate();
+            }
+        }
         showContextMenu();
     }
 
@@ -3043,6 +3131,30 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
 
     public boolean onDown(MotionEvent e) {
         mScrollRemainder = 0.0f;
+        if( mIsSelectingText ) {
+            if( mSelX1 == mSelX2 && mSelY1 == mSelY2 && mSelX1 != -1 ) {
+                mSelX2 = (int)(e.getX() / mCharacterWidth);
+                mSelY2 = (int)(e.getY() / mCharacterHeight) + mTopRow;
+                int minx = Math.min(mSelX1, mSelX2);
+                int maxx = Math.max(mSelX1, mSelX2);
+                int miny = Math.min(mSelY1, mSelY2);
+                int maxy = Math.max(mSelY1, mSelY2);
+                mSelX1 = minx;
+                mSelY1 = miny;
+                mSelX2 = maxx;
+                mSelY2 = maxy;
+            } else {
+                mSelX1Old = mSelX1;
+                mSelY1Old = mSelY1;
+                mSelX2Old = mSelX2;
+                mSelY2Old = mSelY2;
+                mSelX1 = (int)(e.getX() / mCharacterWidth);
+                mSelY1 = (int)(e.getY() / mCharacterHeight) + mTopRow;
+                mSelX2 = mSelX1;
+                mSelY2 = mSelY1;
+            }
+            invalidate();
+        }
         return true;
     }
 
@@ -3224,7 +3336,18 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
             if (i == cy && mCursorVisible) {
                 cursorX = cx;
             }
-            mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX);
+            int selx1 = -1;
+            int selx2 = -1;
+            if( i >= mSelY1 && i <= mSelY2 )
+            {
+                if( i == mSelY1 )
+                    selx1 = mSelX1;
+                if( i == mSelY2 )
+                    selx2 = mSelX2;
+                else
+                    selx2 = mColumns;
+            }
+            mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2);
             y += mCharacterHeight;
         }
     }
@@ -3240,6 +3363,29 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
                 mLeftColumn = (cx - mVisibleColumns) + 1;
             }
         }
+    }
+
+    public void toggleSelectingText() {
+        mIsSelectingText = ! mIsSelectingText;
+        setVerticalScrollBarEnabled( ! mIsSelectingText );
+        if( ! mIsSelectingText ) {
+            mSelX1 = -1;
+            mSelY1 = -1;
+            mSelX2 = -1;
+            mSelY2 = -1;
+            mSelX1Old = -1;
+            mSelY1Old = -1;
+            mSelX2Old = -1;
+            mSelY2Old = -1;
+        }
+    }
+
+    public boolean getSelectingText() {
+        return mIsSelectingText;
+    }
+
+    public String getSelectedText() {
+        return mEmulator.getSelectedText(mSelX1, mSelY1, mSelX2, mSelY2);
     }
 }
 

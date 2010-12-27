@@ -23,6 +23,8 @@
    <string name="toggle_soft_keyboard">Toggle soft keyboard</string>
 
    <string name="edit_text">Edit text</string>
+   <string name="select_text">Select text</string>
+   <string name="select_text_done">Copy to clipboard</string>
    <string name="copy_all">Copy all</string>
    <string name="paste">Paste</string>
 
