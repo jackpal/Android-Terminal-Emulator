@@ -1,7 +1,7 @@
 Obtain the Software Needed to Build Android Term
 ------------------------------------------------
 
-Android is built using the Android SDK 1.6 or newer and the Android NDK r4 or newer.
+Android is built using the Android SDK r08 or newer and the Android NDK r5 or newer.
 You can downlaod them from:
 
 http://developer.android.com/sdk
@@ -24,18 +24,18 @@ There are three parts to building Android Term:
 
 Build the shared library:
 
-    cd <the-app-where-androidterm-is>
+    cd <the-android-terminal-emulator-directory>
     <path-to-the-android-ndk>/ndk-build
     
   (Be sure to use the actual pathnames from your system. For example,
    on my system I actually type the following:
 
     cd ~/code/androidterm
-    ../android-ndk-r4/ndk-build
+    ../android-ndk-r5/ndk-build
 
 This should chug away for a while and ultimately produce the file
 
-libs/armeabi/libterm.so
+libs/armeabi/libandroidterm.so
     
 Create the Eclipse project:
 
