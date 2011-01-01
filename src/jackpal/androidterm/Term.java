@@ -475,8 +475,9 @@ public class Term extends Activity {
     public boolean onContextItemSelected(MenuItem item) {
           switch (item.getItemId()) {
           case SELECT_TEXT_ID:
-            if(mEmulatorView.getSelectingText())
-              doCopySelectedText();
+            if (mEmulatorView.getSelectingText()) {
+                doCopySelectedText();
+            }
             mEmulatorView.toggleSelectingText();
             return true;
           case COPY_ALL_ID:
@@ -537,8 +538,9 @@ public class Term extends Activity {
     }
 
     private void doPaste() {
-        if(mEmulatorView.getSelectingText())
+        if (mEmulatorView.getSelectingText()) {
             doCopySelectedText();
+        }
 
         ClipboardManager clip = (ClipboardManager)
          getSystemService(Context.CLIPBOARD_SERVICE);
@@ -1076,15 +1078,17 @@ class TranscriptScreen implements Screen {
                 }
                 rowBuffer[column] = c;
             }
-            if( row >= selY1 && row <= selY2 ) {
+            if ( row >= selY1 && row <= selY2 ) {
                 int x1 = 0;
                 int x2 = 0;
-                if( row == selY1 )
+                if ( row == selY1 ) {
                     x1 = selX1;
-                if( row == selY2 )
+                }
+                if ( row == selY2 ) {
                     x2 = selX2;
-                else
+                } else {
                     x2 = columns;
+                }
                 if (mLineWrap[externalToInternalRow(row)]) {
                     builder.append(rowBuffer, x1, x2 - x1);
                 } else {
@@ -3007,7 +3011,7 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
      */
     public void append(byte[] buffer, int base, int length) {
         mEmulator.append(buffer, base, length);
-        if( mIsSelectingText ) {
+        if ( mIsSelectingText ) {
             int rowShift = mEmulator.getScrollCounter();
             mSelY1 -= rowShift;
             mSelY2 -= rowShift;
@@ -3076,8 +3080,8 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
     }
 
     public void onLongPress(MotionEvent e) {
-        if( mIsSelectingText ) {
-            if( mSelX1 == mSelX2 && mSelY1 == mSelY2 ) {
+        if ( mIsSelectingText ) {
+            if ( mSelX1 == mSelX2 && mSelY1 == mSelY2 ) {
                 mSelX1 = mSelX1Old;
                 mSelY1 = mSelY1Old;
                 mSelX2 = mSelX2Old;
@@ -3131,8 +3135,8 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
 
     public boolean onDown(MotionEvent e) {
         mScrollRemainder = 0.0f;
-        if( mIsSelectingText ) {
-            if( mSelX1 == mSelX2 && mSelY1 == mSelY2 && mSelX1 != -1 ) {
+        if ( mIsSelectingText ) {
+            if ( mSelX1 == mSelX2 && mSelY1 == mSelY2 && mSelX1 != -1 ) {
                 mSelX2 = (int)(e.getX() / mCharacterWidth);
                 mSelY2 = (int)(e.getY() / mCharacterHeight) + mTopRow;
                 int minx = Math.min(mSelX1, mSelX2);
@@ -3338,14 +3342,15 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
             }
             int selx1 = -1;
             int selx2 = -1;
-            if( i >= mSelY1 && i <= mSelY2 )
-            {
-                if( i == mSelY1 )
+            if ( i >= mSelY1 && i <= mSelY2 ) {
+                if ( i == mSelY1 ) {
                     selx1 = mSelX1;
-                if( i == mSelY2 )
+                }
+                if ( i == mSelY2 ) {
                     selx2 = mSelX2;
-                else
+                } else {
                     selx2 = mColumns;
+                }
             }
             mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2);
             y += mCharacterHeight;
@@ -3368,7 +3373,7 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
     public void toggleSelectingText() {
         mIsSelectingText = ! mIsSelectingText;
         setVerticalScrollBarEnabled( ! mIsSelectingText );
-        if( ! mIsSelectingText ) {
+        if ( ! mIsSelectingText ) {
             mSelX1 = -1;
             mSelY1 = -1;
             mSelX2 = -1;
