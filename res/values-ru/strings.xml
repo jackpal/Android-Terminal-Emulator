@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">Эмулятор Терминала</string>
+   <string name="preferences">Настройки</string>
+   <string name="reset">Сбросить терм.</string>
+   <string name="send_email">Отправит Email</string>
+   <string name="special_keys">Специальные клавиши</string>
+   <string name="toggle_soft_keyboard">Экранная клавиатура</string>
+   <string name="edit_text">Изменить</string>
+   <string name="copy_all">Копировать всё</string>
+   <string name="paste">Вставить</string>
+   <string name="screen_preferences">Экран</string>
+   <string name="title_statusbar_preference">Статус бар</string>
+   <string name="summary_statusbar_preference">Показать/Скрыть статус бар.</string>
+   <string name="dialog_title_statusbar_preference">Статус бар</string>
+   <string name="text_preferences">Текст</string>
+   <string name="title_fontsize_preference">Размер шрифта</string>
+   <string name="summary_fontsize_preference">Выберите размер шрифта.</string>
+   <string name="dialog_title_fontsize_preference">Размер шрифта</string>
+   <string name="title_color_preference">Цвета</string>
+   <string name="summary_color_preference">Выберите цвет текста.</string>
+   <string name="dialog_title_color_preference">Цвет текста</string>
+   <string name="keyboard_preferences">Клавиатура</string>
+   <string name="title_controlkey_preference">Клавиша Control</string>
+   <string name="summary_controlkey_preference">Выберите что будет клавишей Control.</string>
+   <string name="dialog_title_controlkey_preference">Клавиша Control</string>
+   <string name="title_ime_preference">Способ ввода</string>
+   <string name="summary_ime_preference">Выберите способ ввода для экранной клавиатуры.</string>
+   <string name="dialog_title_ime_preference">Способ ввода</string>
+   <string name="shell_preferences">Командная оболочка</string>
+   <string name="title_shell_preference">Командная строка</string>
+   <string name="summary_shell_preference">Укажите строку обращения к командной оболочки.</string>
+   <string name="dialog_title_shell_preference">Оболочка</string>
+   <string name="title_initialcommand_preference">Команды запуска</string>
+   <string name="summary_initialcommand_preference">Передаются облочке при запуске терминала.</string>
+   <string name="dialog_title_initialcommand_preference">Команды запуска</string>
+</resources>

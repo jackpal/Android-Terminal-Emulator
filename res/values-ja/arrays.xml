@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ -->
+
+<resources>
+    <string-array name="entries_statusbar_preference">
+        <item>ステータスバーを表示する</item>
+        <item>ステータスバーを隠す</item>
+    </string-array>
+
+    <string-array name="entries_cursorblink_preference">
+        <item>点滅しないカーソル</item>
+        <item>点滅するカーソル</item>
+    </string-array>
+
+    <string-array name="entries_cursorstyle_preference">
+        <item>四角</item>
+        <item>下線</item>
+        <item>縦線</item>
+    </string-array>
+
+    <string-array name="entries_fontsize_preference">
+        <item>4 x 8ピクセル</item>
+        <item>6 pt</item>
+        <item>7 pt</item>
+        <item>8 pt</item>
+        <item>9 pt</item>
+        <item>10 pt</item>
+        <item>12 pt</item>
+        <item>14 pt</item>
+        <item>16 pt</item>
+        <item>20 pt</item>
+    </string-array>
+
+    <string-array name="entries_color_preference">
+        <item>白背景に黒字</item>
+        <item>黒背景に白字</item>
+        <item>青背景に白字</item>
+        <item>黒背景に緑字</item>
+        <item>黒背景にアンバー字</item>
+        <item>黒背景に赤字</item>
+    </string-array>
+
+    <string-array name="entries_controlkey_preference">
+        <item>トラックボール</item>
+        <item>\@キー</item>
+        <item>左Altキー</item>
+        <item>右Altキー</item>
+        <item>ボリュームアップ</item>
+        <item>ボリュームダウン</item>
+    </string-array>
+
+    <string-array name="entries_ime_preference">
+        <item>文字ベース</item>
+        <item>単語ベース</item>
+    </string-array>
+
+</resources>

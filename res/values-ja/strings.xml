@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">端末エミュレータ</string>
+   <string name="preferences">設定</string>
+   <string name="reset">端末をリセット</string>
+   <string name="send_email">メール送信</string>
+   <string name="special_keys">特殊キー</string>
+   <string name="toggle_soft_keyboard">ソフトキーボード</string>
+
+   <string name="edit_text">テキスト編集</string>
+   <string name="copy_all">すべてコピー</string>
+   <string name="paste">貼付け</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">スクリーン</string>
+
+   <string name="title_statusbar_preference">ステータスバー</string>
+   <string name="summary_statusbar_preference">ステータスバーの表示/非表示</string>
+   <string name="dialog_title_statusbar_preference">ステータスバー</string>
+
+   <string name="title_cursorstyle_preference">カーソルのスタイル</string>
+   <string name="summary_cursorstyle_preference">カーソルスタイルの選択</string>
+   <string name="dialog_title_cursorstyle_preference">カーソルスタイル</string>
+
+   <string name="title_cursorblink_preference">カーソルの点滅</string>
+   <string name="summary_cursorblink_preference">カーソルの点滅を選択</string>
+   <string name="dialog_title_cursorblink_preference">カーソルの点滅</string>
+
+   <string name="text_preferences">テキスト</string>
+
+   <string name="title_fontsize_preference">フォントサイズ</string>
+   <string name="summary_fontsize_preference">文字の高さと大きさを選択</string>
+   <string name="dialog_title_fontsize_preference">Font size</string>
+
+   <string name="title_color_preference">色</string>
+   <string name="summary_color_preference">文字の色を選択</string>
+   <string name="dialog_title_color_preference">文字の色</string>
+
+   <string name="keyboard_preferences">キーボード</string>
+
+   <string name="title_controlkey_preference">コントロールキー</string>
+   <string name="summary_controlkey_preference">コントロールキーを選択</string>
+   <string name="dialog_title_controlkey_preference">コントロールキー</string>
+
+   <string name="title_ime_preference">インプットメソッド</string>
+   <string name="summary_ime_preference">ソフトキーボードのインプットメソッドを選択</string>
+   <string name="dialog_title_ime_preference">インプットメソッド</string>
+
+   <string name="shell_preferences">シェル</string>
+   <string name="title_shell_preference">コマンドライン</string>
+   <string name="summary_shell_preference">コマンドラインシェルを指定</string>
+   <string name="dialog_title_shell_preference">シェル</string>
+
+   <string name="title_initialcommand_preference">初期コマンド</string>
+   <string name="summary_initialcommand_preference">開始時、シェルにコマンドを送信する</string>
+   <string name="dialog_title_initialcommand_preference">初期コマンド</string>
+
+</resources>

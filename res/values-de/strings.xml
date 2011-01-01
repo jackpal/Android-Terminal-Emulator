@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   * Copyright (C) 2008 The Android Open Source Project
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *
+   *      http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+  -->
+<resources>
+  <string name="application_terminal">Terminal Emulator</string>
+  <string name="preferences">Einstellungen</string>
+  <string name="reset">Zurücksetzen</string>
+  <string name="send_email">Email an</string>
+  <string name="special_keys">Spezialtasten</string>
+  <string name="toggle_soft_keyboard">Tastatur an/aus</string>
+
+  <string name="edit_text">Text bearbeiten</string>
+  <string name="copy_all">Alles kopieren</string>
+  <string name="paste">Einfügen</string>
+
+  <!-- Preference dialog -->
+  <string name="screen_preferences">Bildschirm</string>
+
+  <string name="title_statusbar_preference">Statuszeile</string>
+  <string name="summary_statusbar_preference">Die Statuszeile anzeigen/verbergen.</string>
+  <string name="dialog_title_statusbar_preference">Statuszeile</string>
+
+  <string name="title_cursorstyle_preference">Aussehen Cursor</string>
+  <string name="summary_cursorstyle_preference">Das Aussehen des Cursors auswählen.</string>
+  <string name="dialog_title_cursorstyle_preference">Aussehen Cursor</string>
+
+  <string name="title_cursorblink_preference">Cursor-Blinken</string>
+  <string name="summary_cursorblink_preference">Die Art auswählen, wie der Cursor blinken soll.</string>
+  <string name="dialog_title_cursorblink_preference">Cursor-Blinken</string>
+
+  <string name="text_preferences">Text</string>
+
+  <string name="title_fontsize_preference">Schriftgröße</string>
+  <string name="summary_fontsize_preference">Die Zeichengröße in Punkten auswählen.</string>
+  <string name="dialog_title_fontsize_preference">Schriftgröße</string>
+
+  <string name="title_color_preference">Farben</string>
+  <string name="summary_color_preference">Die Textfarben auswählen.</string>
+  <string name="dialog_title_color_preference">Textfarbe</string>
+
+  <string name="keyboard_preferences">Tastatur</string>
+
+  <string name="title_controlkey_preference">Steuerungstaste</string>
+  <string name="summary_controlkey_preference">Die Steuerungstaste auswählen.</string>
+  <string name="dialog_title_controlkey_preference">Steuerungstaste</string>
+
+  <string name="title_ime_preference">Eingabemethode</string>
+  <string name="summary_ime_preference">Die Eingabemethode für die Soft-Tastatur auswählen.</string>
+  <string name="dialog_title_ime_preference">Eingabemethode</string>
+
+  <string name="shell_preferences">Shell</string>
+  <string name="title_shell_preference">Shell</string>
+  <string name="summary_shell_preference">Die zu verwendene Shell auswählen.</string>
+  <string name="dialog_title_shell_preference">Shell</string>
+
+  <string name="title_initialcommand_preference">Startkommando</string>
+  <string name="summary_initialcommand_preference">Kommando eingeben, dass beim Start an die Shell gesendet wird.</string>
+  <string name="dialog_title_initialcommand_preference">Startkommando</string>
+</resources>

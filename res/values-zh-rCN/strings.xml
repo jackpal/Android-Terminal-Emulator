@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">终端模拟器</string>
+   <string name="preferences">首选项</string>
+   <string name="reset">重置终端</string>
+   <string name="send_email">发送电子邮件到...</string>
+   <string name="special_keys">特殊键</string>
+   <string name="toggle_soft_keyboard">打开/关闭软键盘</string>
+
+   <string name="edit_text">编辑文本</string>
+   <string name="copy_all">全部复制</string>
+   <string name="paste">粘贴</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">屏幕</string>
+
+   <string name="title_statusbar_preference">状态栏</string>
+   <string name="summary_statusbar_preference">显示/隐藏状态栏。</string>
+   <string name="dialog_title_statusbar_preference">状态栏</string>
+
+   <string name="title_cursorstyle_preference">光标样式</string>
+   <string name="summary_cursorstyle_preference">选择光标样式</string>
+   <string name="dialog_title_cursorstyle_preference">光标样式</string>
+
+   <string name="title_cursorblink_preference">光标闪烁</string>
+   <string name="summary_cursorblink_preference">选择光标闪烁模式</string>
+   <string name="dialog_title_cursorblink_preference">光标闪烁</string>
+
+   <string name="text_preferences">文本</string>
+
+   <string name="title_fontsize_preference">文本大小</string>
+   <string name="summary_fontsize_preference">选择文本大小</string>
+   <string name="dialog_title_fontsize_preference">文本大小</string>
+
+   <string name="title_color_preference">颜色</string>
+   <string name="summary_color_preference">选择文本颜色</string>
+   <string name="dialog_title_color_preference">文本颜色</string>
+
+   <string name="keyboard_preferences">键盘</string>
+
+   <string name="title_controlkey_preference">Ctrl 键</string>
+   <string name="summary_controlkey_preference">设置 Ctrl 键</string>
+   <string name="dialog_title_controlkey_preference">Ctrl 键</string>
+
+   <string name="title_ime_preference">输入方式</string>
+   <string name="summary_ime_preference">选择输入方式或软键盘</string>
+   <string name="dialog_title_ime_preference">输入方式</string>
+
+   <string name="shell_preferences">Shell</string>
+   <string name="title_shell_preference">命令行</string>
+   <string name="summary_shell_preference">指定命令行使用的 Shell</string>
+   <string name="dialog_title_shell_preference">Shell</string>
+
+   <string name="title_initialcommand_preference">初始命令</string>
+   <string name="summary_initialcommand_preference">启动 Shell 时自动执行的命令</string>
+   <string name="dialog_title_initialcommand_preference">初始命令</string>
+
+</resources>
