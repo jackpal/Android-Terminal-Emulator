@@ -188,6 +188,10 @@ public class Term extends Activity {
 
         mEmulatorView = (EmulatorView) findViewById(EMULATOR_VIEW);
 
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        mEmulatorView.setScaledDensity(metrics.scaledDensity);
+
         startListening();
 
         mKeyListener = new TermKeyListener();
@@ -463,7 +467,7 @@ public class Term extends Activity {
             ContextMenuInfo menuInfo) {
       super.onCreateContextMenu(menu, v, menuInfo);
       menu.setHeaderTitle(R.string.edit_text);
-      menu.add(0, SELECT_TEXT_ID, 0, !mEmulatorView.getSelectingText() ? R.string.select_text : R.string.select_text_done);
+      menu.add(0, SELECT_TEXT_ID, 0, R.string.select_text);
       menu.add(0, COPY_ALL_ID, 0, R.string.copy_all);
       menu.add(0, PASTE_ID, 0,  R.string.paste);
       if (!canPaste()) {
@@ -475,9 +479,6 @@ public class Term extends Activity {
     public boolean onContextItemSelected(MenuItem item) {
           switch (item.getItemId()) {
           case SELECT_TEXT_ID:
-            if (mEmulatorView.getSelectingText()) {
-                doCopySelectedText();
-            }
             mEmulatorView.toggleSelectingText();
             return true;
           case COPY_ALL_ID:
@@ -531,17 +532,7 @@ public class Term extends Activity {
         clip.setText(mEmulatorView.getTranscriptText().trim());
     }
 
-    private void doCopySelectedText() {
-        ClipboardManager clip = (ClipboardManager)
-             getSystemService(Context.CLIPBOARD_SERVICE);
-        clip.setText(mEmulatorView.getSelectedText().trim());
-    }
-
     private void doPaste() {
-        if (mEmulatorView.getSelectingText()) {
-            doCopySelectedText();
-        }
-
         ClipboardManager clip = (ClipboardManager)
          getSystemService(Context.CLIPBOARD_SERVICE);
         CharSequence paste = clip.getText();
@@ -2715,14 +2706,15 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
 
     private boolean mIsSelectingText = false;
 
+
+    private float mScaledDensity;
+    private static final int SELECT_TEXT_OFFSET_Y = -40;
+    private int mSelXAnchor = -1;
+    private int mSelYAnchor = -1;
     private int mSelX1 = -1;
     private int mSelY1 = -1;
     private int mSelX2 = -1;
     private int mSelY2 = -1;
-    private int mSelX1Old = -1;
-    private int mSelY1Old = -1;
-    private int mSelX2Old = -1;
-    private int mSelY2Old = -1;
 
     /**
      * Used to poll if the view has changed size. Wish there was a better way to do this.
@@ -2779,6 +2771,10 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
     public EmulatorView(Context context) {
         super(context);
         commonConstructor();
+    }
+
+    public void setScaledDensity(float scaledDensity) {
+        mScaledDensity = scaledDensity;
     }
 
     public void onResume() {
@@ -3015,8 +3011,7 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
             int rowShift = mEmulator.getScrollCounter();
             mSelY1 -= rowShift;
             mSelY2 -= rowShift;
-            mSelY1Old -= rowShift;
-            mSelY2Old -= rowShift;
+            mSelYAnchor -= rowShift;
         }
         mEmulator.clearScrollCounter();
         ensureCursorVisible();
@@ -3080,15 +3075,6 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
     }
 
     public void onLongPress(MotionEvent e) {
-        if ( mIsSelectingText ) {
-            if ( mSelX1 == mSelX2 && mSelY1 == mSelY2 ) {
-                mSelX1 = mSelX1Old;
-                mSelY1 = mSelY1Old;
-                mSelX2 = mSelX2Old;
-                mSelY2 = mSelY2Old;
-                invalidate();
-            }
-        }
         showContextMenu();
     }
 
@@ -3135,37 +3121,59 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
 
     public boolean onDown(MotionEvent e) {
         mScrollRemainder = 0.0f;
-        if ( mIsSelectingText ) {
-            if ( mSelX1 == mSelX2 && mSelY1 == mSelY2 && mSelX1 != -1 ) {
-                mSelX2 = (int)(e.getX() / mCharacterWidth);
-                mSelY2 = (int)(e.getY() / mCharacterHeight) + mTopRow;
-                int minx = Math.min(mSelX1, mSelX2);
-                int maxx = Math.max(mSelX1, mSelX2);
-                int miny = Math.min(mSelY1, mSelY2);
-                int maxy = Math.max(mSelY1, mSelY2);
-                mSelX1 = minx;
-                mSelY1 = miny;
-                mSelX2 = maxx;
-                mSelY2 = maxy;
-            } else {
-                mSelX1Old = mSelX1;
-                mSelY1Old = mSelY1;
-                mSelX2Old = mSelX2;
-                mSelY2Old = mSelY2;
-                mSelX1 = (int)(e.getX() / mCharacterWidth);
-                mSelY1 = (int)(e.getY() / mCharacterHeight) + mTopRow;
-                mSelX2 = mSelX1;
-                mSelY2 = mSelY1;
-            }
-            invalidate();
-        }
         return true;
     }
 
     // End GestureDetector.OnGestureListener methods
 
     @Override public boolean onTouchEvent(MotionEvent ev) {
-        return mGestureDetector.onTouchEvent(ev);
+        if (mIsSelectingText) {
+            return onTouchEventWhileSelectingText(ev);
+        } else {
+            return mGestureDetector.onTouchEvent(ev);
+        }
+    }
+
+    private boolean onTouchEventWhileSelectingText(MotionEvent ev) {
+        int action = ev.getAction();
+        int cx = (int)(ev.getX() / mCharacterWidth);
+        int cy = Math.max(0,
+                (int)((ev.getY() + SELECT_TEXT_OFFSET_Y * mScaledDensity)
+                        / mCharacterHeight) + mTopRow);
+        switch (action) {
+        case MotionEvent.ACTION_DOWN:
+            mSelXAnchor = cx;
+            mSelYAnchor = cy;
+            mSelX1 = cx;
+            mSelY1 = cy;
+            mSelX2 = mSelX1;
+            mSelY2 = mSelY1;
+            break;
+        case MotionEvent.ACTION_MOVE:
+        case MotionEvent.ACTION_UP:
+            int minx = Math.min(mSelXAnchor, cx);
+            int maxx = Math.max(mSelXAnchor, cx);
+            int miny = Math.min(mSelYAnchor, cy);
+            int maxy = Math.max(mSelYAnchor, cy);
+            mSelX1 = minx;
+            mSelY1 = miny;
+            mSelX2 = maxx;
+            mSelY2 = maxy;
+            if (action == MotionEvent.ACTION_UP) {
+                ClipboardManager clip = (ClipboardManager)
+                     getContext().getApplicationContext()
+                         .getSystemService(Context.CLIPBOARD_SERVICE);
+                clip.setText(getSelectedText().trim());
+                toggleSelectingText();
+            }
+            invalidate();
+            break;
+        default:
+            toggleSelectingText();
+            invalidate();
+            break;
+        }
+        return true;
     }
 
     @Override
@@ -3378,10 +3386,6 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
             mSelY1 = -1;
             mSelX2 = -1;
             mSelY2 = -1;
-            mSelX1Old = -1;
-            mSelY1Old = -1;
-            mSelX2Old = -1;
-            mSelY2Old = -1;
         }
     }
 
