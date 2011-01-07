@@ -20,7 +20,7 @@
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
-LOCAL_MODULE_TAGS := eng
+LOCAL_MODULE_TAGS := optional
 
 # This is the target being built.
 LOCAL_MODULE:= libandroidterm2
