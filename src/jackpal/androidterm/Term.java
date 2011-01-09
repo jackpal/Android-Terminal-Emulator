@@ -60,9 +60,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.BaseInputConnection;
+import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.ExtractedText;
+import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 /**
  * A terminal emulator activity.
@@ -73,6 +77,11 @@ public class Term extends Activity {
      * Set to true to add debugging code and logging.
      */
     public static final boolean DEBUG = false;
+
+    /**
+     * Set to true to log IME calls.
+     */
+    public static final boolean LOG_IME = DEBUG && false;
 
     /**
      * Set to true to log each character received from the remote process to the
@@ -979,9 +988,10 @@ class TranscriptScreen implements Screen {
      * @param cx the cursor X coordinate, -1 means don't draw it
      * @param selx1 the text selection start X coordinate
      * @param selx2 the text selection end X coordinate, if equals to selx1 don't draw selection
+     * @param imeText current IME text, to be rendered at cursor
      */
     public final void drawText(int row, Canvas canvas, float x, float y,
-            TextRenderer renderer, int cx, int selx1, int selx2) {
+            TextRenderer renderer, int cx, int selx1, int selx2, String imeText) {
 
         // Out-of-bounds rows are blank.
         if (row < -mActiveTranscriptRows || row >= mScreenRows) {
@@ -1022,6 +1032,14 @@ class TranscriptScreen implements Screen {
                     lastRunStart, columns - lastRunStart,
                     (lastColors & CURSOR_MASK) != 0,
                     0xf & (lastColors >> 12), 0xf & (lastColors >> 8));
+        }
+
+        if (cx >= 0 && imeText.length() > 0) {
+            int imeLength = Math.min(columns, imeText.length());
+            int imeOffset = imeText.length() - imeLength;
+            int imePosition = Math.min(cx, columns - imeLength);
+            renderer.drawTextRun(canvas, x, y, imePosition, imeText.toCharArray(),
+                    imeOffset, imeLength, true, 0x0f, 0x00);
         }
      }
 
@@ -2750,6 +2768,8 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
     private float mScrollRemainder;
     private TermKeyListener mKeyListener;
 
+    private String mImeBuffer = "";
+
     /**
      * Our message handler class. Implements a periodic callback.
      */
@@ -2822,79 +2842,174 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
         outAttrs.inputType = mUseCookedIme ?
                 EditorInfo.TYPE_CLASS_TEXT :
                 EditorInfo.TYPE_NULL;
-        return new BaseInputConnection(this, false) {
+        return new InputConnection() {
+            private boolean mInBatchEdit;
+            /**
+             * Used to handle composing text requests
+             */
+            private int mCursor;
+            private int mComposingTextStart;
+            private int mComposingTextEnd;
 
-            @Override
-            public boolean commitText(CharSequence text, int newCursorPosition) {
-                sendText(text);
+            private void sendChar(int c) {
+                try {
+                    mapAndSend(c);
+                } catch (IOException ex) {
+
+                }
+            }
+
+            private void sendText(CharSequence text) {
+                int n = text.length();
+                try {
+                    for(int i = 0; i < n; i++) {
+                        char c = text.charAt(i);
+                        mapAndSend(c);
+                    }
+                    mTermOut.flush();
+                } catch (IOException e) {
+                    Log.e(TAG, "error writing ", e);
+                }
+            }
+
+            private void mapAndSend(int c) throws IOException {
+                mTermOut.write(
+                        mKeyListener.mapControlChar(c));
+            }
+
+            public boolean beginBatchEdit() {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "beginBatchEdit");
+                }
+                setImeBuffer("");
+                mCursor = 0;
+                mComposingTextStart = 0;
+                mComposingTextEnd = 0;
+                mInBatchEdit = true;
                 return true;
             }
 
-            @Override
-            public boolean performEditorAction(int actionCode) {
-                if(actionCode == EditorInfo.IME_ACTION_UNSPECIFIED) {
-                    // The "return" key has been pressed on the IME.
-                    sendText("\n");
-                    return true;
+            public boolean clearMetaKeyStates(int arg0) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "clearMetaKeyStates " + arg0);
                 }
                 return false;
             }
 
-            @Override
-            public boolean sendKeyEvent(KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    // Some keys are sent here rather than to commitText.
-                    // In particular, del and the digit keys are sent here.
-                    // (And I have reports that the HTC Magic also sends Return here.)
-                    // As a bit of defensive programming, handle every
-                    // key with an ASCII meaning.
-                    int keyCode = event.getKeyCode();
-                    if (keyCode >= 0 && keyCode < KEYCODE_CHARS.length()) {
-                        char c = KEYCODE_CHARS.charAt(keyCode);
-                        if (c > 0) {
-                            sendChar(c);
-                        } else {
-                            // Handle IME arrow key events
-                            switch (keyCode) {
-                              case KeyEvent.KEYCODE_DPAD_UP:      // Up Arrow
-                              case KeyEvent.KEYCODE_DPAD_DOWN:    // Down Arrow
-                              case KeyEvent.KEYCODE_DPAD_LEFT:    // Left Arrow
-                              case KeyEvent.KEYCODE_DPAD_RIGHT:   // Right Arrow
-                                super.sendKeyEvent(event);
-                                break;
-                              default:
-                                break;
-                            }  // switch (keyCode)
-                        }
-                    }
+            public boolean commitCompletion(CompletionInfo arg0) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "commitCompletion " + arg0);
+                }
+                return false;
+            }
+
+            public boolean endBatchEdit() {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "endBatchEdit");
+                }
+                mInBatchEdit = false;
+                return true;
+            }
+
+            public boolean finishComposingText() {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "finishComposingText");
+                }
+                sendText(mImeBuffer);
+                setImeBuffer("");
+                mComposingTextStart = 0;
+                mComposingTextEnd = 0;
+                mCursor = 0;
+                return true;
+            }
+
+            public int getCursorCapsMode(int arg0) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "getCursorCapsMode(" + arg0 + ")");
+                }
+                return 0;
+            }
+
+            public ExtractedText getExtractedText(ExtractedTextRequest arg0,
+                    int arg1) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "getExtractedText" + arg0 + "," + arg1);
+                }
+                return null;
+            }
+
+            public CharSequence getTextAfterCursor(int n, int flags) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "getTextAfterCursor(" + n + "," + flags + ")");
+                }
+                int len = Math.min(n, mImeBuffer.length() - mCursor);
+                if (len <= 0 || mCursor < 0 || mCursor >= mImeBuffer.length()) {
+                    return "";
+                }
+                return mImeBuffer.substring(mCursor, mCursor + len);
+            }
+
+            public CharSequence getTextBeforeCursor(int n, int flags) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "getTextBeforeCursor(" + n + "," + flags + ")");
+                }
+                int len = Math.min(n, mCursor);
+                if (len <= 0 || mCursor < 0 || mCursor >= mImeBuffer.length()) {
+                    return "";
+                }
+                return mImeBuffer.substring(mCursor-len, mCursor);
+            }
+
+            public boolean performContextMenuAction(int arg0) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "performContextMenuAction" + arg0);
                 }
                 return true;
             }
 
-            private final String KEYCODE_CHARS =
-                "\000\000\000\000\000\000\000" + "0123456789*#"
-                + "\000\000\000\000\000\000\000\000\000\000"
-                + "abcdefghijklmnopqrstuvwxyz,."
-                + "\000\000\000\000"
-                + "\011 "   // tab, space
-                + "\000\000\000" // sym .. envelope
-                + "\015\177" // enter, del
-                + "`-=[]\\;'/@"
-                + "\000\000"
-                + "\000+";
-
-            @Override
-            public boolean setComposingText(CharSequence text, int newCursorPosition) {
+            public boolean performPrivateCommand(String arg0, Bundle arg1) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "performPrivateCommand" + arg0 + "," + arg1);
+                }
                 return true;
             }
 
-            @Override
-            public boolean setSelection(int start, int end) {
+            public boolean reportFullscreenMode(boolean arg0) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "reportFullscreenMode" + arg0);
+                }
                 return true;
             }
 
-            @Override
+            public boolean commitText(CharSequence text, int newCursorPosition) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "commitText(\"" + text + "\", " + newCursorPosition + ")");
+                }
+                clearComposingText();
+                sendText(text);
+                setImeBuffer("");
+                mCursor = 0;
+                return true;
+            }
+
+            private void clearComposingText() {
+                setImeBuffer(mImeBuffer.substring(0, mComposingTextStart) +
+                    mImeBuffer.substring(mComposingTextEnd));
+                if (mCursor < mComposingTextStart) {
+                    // do nothing
+                } else if (mCursor < mComposingTextEnd) {
+                    mCursor = mComposingTextStart;
+                } else {
+                    mCursor -= mComposingTextEnd - mComposingTextStart;
+                }
+                mComposingTextEnd = mComposingTextStart = 0;
+            }
+
             public boolean deleteSurroundingText(int leftLength, int rightLength) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "deleteSurroundingText(" + leftLength +
+                            "," + rightLength + ")");
+                }
                 if (leftLength > 0) {
                     for (int i = 0; i < leftLength; i++) {
                         sendKeyEvent(
@@ -2909,29 +3024,55 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
                 return true;
             }
 
-            private void sendChar(int c) {
-                try {
-                    mapAndSend(c);
-                } catch (IOException ex) {
-
+            public boolean performEditorAction(int actionCode) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "performEditorAction(" + actionCode + ")");
                 }
-            }
-            private void sendText(CharSequence text) {
-                int n = text.length();
-                try {
-                    for(int i = 0; i < n; i++) {
-                        char c = text.charAt(i);
-                        mapAndSend(c);
-                    }
-                } catch (IOException e) {
+                if (actionCode == EditorInfo.IME_ACTION_UNSPECIFIED) {
+                    // The "return" key has been pressed on the IME.
+                    sendText("\n");
                 }
+                return true;
             }
 
-            private void mapAndSend(int c) throws IOException {
-                mTermOut.write(
-                        mKeyListener.mapControlChar(c));
+            public boolean sendKeyEvent(KeyEvent event) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "sendKeyEvent(" + event + ")");
+                }
+                // Some keys are sent here rather than to commitText.
+                // In particular, del and the digit keys are sent here.
+                // (And I have reports that the HTC Magic also sends Return here.)
+                // As a bit of defensive programming, handle every key.
+                dispatchKeyEvent(event);
+                return true;
+            }
+
+            public boolean setComposingText(CharSequence text, int newCursorPosition) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "setComposingText(\"" + text + "\", " + newCursorPosition + ")");
+                }
+                setImeBuffer(mImeBuffer.substring(0, mComposingTextStart) +
+                    text + mImeBuffer.substring(mComposingTextEnd));
+                mComposingTextEnd = mComposingTextStart + text.length();
+                mCursor = newCursorPosition > 0 ? mComposingTextEnd + newCursorPosition - 1
+                        : mComposingTextStart - newCursorPosition;
+                return true;
+            }
+
+            public boolean setSelection(int arg0, int arg1) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "setSelection" + arg0 + "," + arg1);
+                }
+                return true;
             }
         };
+    }
+
+    private void setImeBuffer(String buffer) {
+        if (!buffer.equals(mImeBuffer)) {
+            invalidate();
+        }
+        mImeBuffer = buffer;
     }
 
     public boolean getKeypadApplicationMode() {
@@ -3064,8 +3205,8 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
         mCursorBlink = blink;
     }
 
-    public void setUseCookedIME(boolean useRawIME) {
-        mUseCookedIme = useRawIME;
+    public void setUseCookedIME(boolean useCookedIME) {
+        mUseCookedIme = useCookedIME;
     }
 
     // Begin GestureDetector.OnGestureListener methods
@@ -3360,7 +3501,7 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
                     selx2 = mColumns;
                 }
             }
-            mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2);
+            mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2, mImeBuffer);
             y += mCharacterHeight;
         }
     }
