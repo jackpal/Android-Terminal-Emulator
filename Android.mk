@@ -32,7 +32,7 @@ LOCAL_PACKAGE_NAME := AndroidTerm
 
 LOCAL_OVERRIDES_PACKAGES := Term
 
-LOCAL_JNI_SHARED_LIBRARIES := libandroidterm2
+LOCAL_REQUIRED_MODULES := libandroidterm2
 
 include $(BUILD_PACKAGE)
 
