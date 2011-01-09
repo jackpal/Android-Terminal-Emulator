@@ -134,7 +134,7 @@ public class Term extends Activity {
     private int mCursorBlink = 0;
     private int mFontSize = 9;
     private int mColorId = 2;
-    private int mControlKeyId = 0;
+    private int mControlKeyId = 5; // Default to Volume Down
     private int mUseCookedIME = 0;
 
     private static final String STATUSBAR_KEY = "statusbar";
@@ -163,10 +163,11 @@ public class Term extends Activity {
         KeyEvent.KEYCODE_ALT_LEFT,
         KeyEvent.KEYCODE_ALT_RIGHT,
         KeyEvent.KEYCODE_VOLUME_UP,
-        KeyEvent.KEYCODE_VOLUME_DOWN
+        KeyEvent.KEYCODE_VOLUME_DOWN,
+        KeyEvent.KEYCODE_CAMERA
     };
     private static final String[] CONTROL_KEY_NAME = {
-        "Ball", "@", "Left-Alt", "Right-Alt", "Vol-Up", "Vol-Dn"
+        "Ball", "@", "Left-Alt", "Right-Alt", "Vol-Up", "Vol-Dn", "Camera"
     };
 
     private int mControlKeyCode;
@@ -563,14 +564,19 @@ public class Term extends Activity {
         String controlKey = CONTROL_KEY_NAME[mControlKeyId];
         new AlertDialog.Builder(this).
             setTitle("Press " + controlKey + " and Key").
-            setMessage(controlKey + " Space ==> Control-@ (NUL)\n"
-                    + controlKey + " A..Z ==> Control-A..Z\n"
-                    + controlKey + " 1 ==> Control-[ (ESC)\n"
-                    + controlKey + " 5 ==> Control-_\n"
-                    + controlKey + " . ==> Control-\\\n"
-                    + controlKey + " 0 ==> Control-]\n"
-                    + controlKey + " 6 ==> Control-^").
-            show();
+            setMessage(controlKey + " Space : Control-@ (NUL)\n"
+                    + controlKey + " A..Z : Control-A..Z\n"
+                    + controlKey + " 1 : Control-[ (ESC)\n"
+                    + controlKey + " 2 : Control-_\n"
+                    + controlKey + " 3 : Control-^\n"
+                    + controlKey + " 4 : Control-]\n"
+                    + controlKey + " 5 : | (pipe)\n"
+                    + controlKey + " 6 : Left arrow\n"
+                    + controlKey + " 7 : Down arrow\n"
+                    + controlKey + " 8 : Up arrow\n"
+                    + controlKey + " 9 : Right arrow\n"
+                    + controlKey + " . : Control-\\"
+                    ).show();
      }
 
     private void doToggleSoftKeyboard() {
@@ -2873,8 +2879,10 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
             }
 
             private void mapAndSend(int c) throws IOException {
-                mTermOut.write(
-                        mKeyListener.mapControlChar(c));
+                int result = mKeyListener.mapControlChar(c);
+                if (result < TermKeyListener.KEYCODE_OFFSET) {
+                    mTermOut.write(result);
+                }
             }
 
             public boolean beginBatchEdit() {
@@ -4187,6 +4195,8 @@ class TermKeyListener {
 
     private boolean mCapsLock;
 
+    static public final int KEYCODE_OFFSET = 1000;
+
     /**
      * Construct a term key listener.
      *
@@ -4215,12 +4225,22 @@ class TermKeyListener {
                 result = 27;
             } else if ((result == '\\') || (result == '.')) {
                 result = 28;
-            } else if ((result == ']') || (result == '0')) {
+            } else if ((result == ']') || (result == '4')) {
                 result = 29;
-            } else if ((result == '^') || (result == '6')) {
+            } else if ((result == '^') || (result == '3')) {
                 result = 30; // control-^
-            } else if ((result == '_') || (result == '5')) {
+            } else if ((result == '_') || (result == '2')) {
                 result = 31;
+            } else if ((result == '5')) {
+                result = '|';
+            } else if ((result == '6')) {
+                result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_LEFT;
+            } else if ((result == '7')) {
+                result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_DOWN;
+            } else if ((result == '8')) {
+                result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_UP;
+            } else if ((result == '9')) {
+                result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_RIGHT;
             }
         }
 
@@ -4229,6 +4249,7 @@ class TermKeyListener {
             mCapKey.adjustAfterKeypress();
             mControlKey.adjustAfterKeypress();
         }
+
         return result;
     }
 
@@ -4239,21 +4260,8 @@ class TermKeyListener {
      *
      */
     public void keyDown(int keyCode, KeyEvent event, OutputStream out, boolean appMode) throws IOException {
-        if (keyCode >= 0 && keyCode < mKeyCodes.length) {
-            String code = null;
-            if (appMode) {
-                code = mAppKeyCodes[keyCode];
-            }
-            if (code == null) {
-                code = mKeyCodes[keyCode];
-            }
-            if (code != null) {
-                int length = code.length();
-                for (int i = 0; i < length; i++) {
-                    out.write(code.charAt(i));
-                }
-                return;
-            }
+        if (handleKeyCode(keyCode, out, appMode)) {
+            return;
         }
         int result = -1;
         switch (keyCode) {
@@ -4288,9 +4296,31 @@ class TermKeyListener {
 
         result = mapControlChar(result);
 
-        if (result >= 0) {
+        if (result >= KEYCODE_OFFSET) {
+            handleKeyCode(result - KEYCODE_OFFSET, out, appMode);
+        } else if (result >= 0) {
             out.write(result);
         }
+    }
+
+    private boolean handleKeyCode(int keyCode, OutputStream out, boolean appMode) throws IOException {
+        if (keyCode >= 0 && keyCode < mKeyCodes.length) {
+            String code = null;
+            if (appMode) {
+                code = mAppKeyCodes[keyCode];
+            }
+            if (code == null) {
+                code = mKeyCodes[keyCode];
+            }
+            if (code != null) {
+                int length = code.length();
+                for (int i = 0; i < length; i++) {
+                    out.write(code.charAt(i));
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

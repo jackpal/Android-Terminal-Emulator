@@ -104,6 +104,7 @@
         <item>Right Alt key</item>
         <item>Vol Up key</item>
         <item>Vol Down key</item>
+        <item>Camera key</item>
     </string-array>
 
     <!-- Do not localize entryvalues -->
@@ -114,6 +115,7 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>6</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
