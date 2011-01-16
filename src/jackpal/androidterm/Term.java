@@ -3073,6 +3073,14 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
                 }
                 return true;
             }
+
+            public boolean setComposingRegion(int start, int end) {
+                return true;
+            }
+	    
+            public CharSequence getSelectedText(int flags) {
+                return null;
+            }
         };
     }
 
