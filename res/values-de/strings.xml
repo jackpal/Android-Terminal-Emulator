@@ -23,6 +23,7 @@
   <string name="toggle_soft_keyboard">Tastatur an/aus</string>
 
   <string name="edit_text">Text bearbeiten</string>
+  <string name="select_text">Text selektieren</string>
   <string name="copy_all">Alles kopieren</string>
   <string name="paste">Einfügen</string>
 
