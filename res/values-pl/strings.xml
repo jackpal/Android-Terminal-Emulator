@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">Terminal Emulator</string>
+   <string name="preferences">Ustawienia</string>
+   <string name="reset">Reset</string>
+   <string name="send_email">Wyślij emailem</string>
+   <string name="special_keys">Przyciski specjalne</string>
+   <string name="toggle_soft_keyboard">Pokaż klawiaturę</string>
+
+   <string name="edit_text">Edytuj tekst</string>
+   <string name="select_text">Wybierz tekst</string>
+   <string name="copy_all">Kopiuj wszystko</string>
+   <string name="paste">Wklej</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">Ekran</string>
+
+   <string name="title_statusbar_preference">Pasek stanu</string>
+   <string name="summary_statusbar_preference">Pokaż/ukryj pasek stanu.</string>
+   <string name="dialog_title_statusbar_preference">Pasek stanu</string>
+
+   <string name="title_cursorstyle_preference">Styl kursora</string>
+   <string name="summary_cursorstyle_preference">Wybierz styl kursora.</string>
+   <string name="dialog_title_cursorstyle_preference">Styl kursora</string>
+
+   <string name="title_cursorblink_preference">Miganie kursora</string>
+   <string name="summary_cursorblink_preference">Wybierz miganie kursora.</string>
+   <string name="dialog_title_cursorblink_preference">Miganie kursora</string>
+
+   <string name="text_preferences">Tekst</string>
+
+   <string name="title_fontsize_preference">Rozmiar czcionki</string>
+   <string name="summary_fontsize_preference">Wybierz wielkość liter.</string>
+   <string name="dialog_title_fontsize_preference">Rozmiar czcionki</string>
+
+   <string name="title_color_preference">Kolory</string>
+   <string name="summary_color_preference">Wybierz kolor tekstu.</string>
+   <string name="dialog_title_color_preference">Kolor tekstu</string>
+
+   <string name="keyboard_preferences">Klawiatura</string>
+
+   <string name="title_controlkey_preference">Przycisk control</string>
+   <string name="summary_controlkey_preference">Wybierz przycisk control.</string>
+   <string name="dialog_title_controlkey_preference">Przycisk control</string>
+
+   <string name="title_ime_preference">Metoda wprowadzania</string>
+   <string name="summary_ime_preference">Wybierz metodę wprowadzania.</string>
+   <string name="dialog_title_ime_preference">Metoda wprowadzania</string>
+
+   <string name="shell_preferences">Powłoka</string>
+   <string name="title_shell_preference">Linia poleceń</string>
+   <string name="summary_shell_preference">Określ linię powłokę.</string>
+   <string name="dialog_title_shell_preference">Powłoka</string>
+
+   <string name="title_initialcommand_preference">Komenda początkowa</string>
+   <string name="summary_initialcommand_preference">Wysyłana do powłoki podczas startu.</string>
+   <string name="dialog_title_initialcommand_preference">Komenda początkowa</string>
+
+</resources>
