@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   * Copyright (C) 2007 The Android Open Source Project
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *
+   *      http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+  -->
+
+<resources>
+  <string-array name="entries_statusbar_preference">
+    <item>Vis statuslinje</item>
+    <item>Skjul statuslinje</item>
+  </string-array>
+
+  <string-array name="entries_cursorblink_preference">
+    <item>Ikke-blinkende peker</item>
+    <item>Blinkende peker</item>
+  </string-array>
+
+  <string-array name="entries_cursorstyle_preference">
+    <item>Rektangulær</item>
+    <item>Understreket</item>
+    <item>Vertikal linje</item>
+  </string-array>
+
+  <string-array name="entries_fontsize_preference">
+    <item>4x8 Piksler</item>
+    <item>6 Punkter</item>
+    <item>7 Punkter</item>
+    <item>8 Punkter</item>
+    <item>9 Punkter</item>
+    <item>10 Punkter</item>
+    <item>12 Punkter</item>
+    <item>14 Punkter</item>
+    <item>16 Punkter</item>
+    <item>20 Punkter</item>
+  </string-array>
+
+  <string-array name="entries_color_preference">
+    <item>Sort tekst på hvit</item>
+    <item>Hvit tekst på sort</item>
+    <item>Hvit tekst på blå</item>
+    <item>Grønn tekst på sort</item>
+    <item>Orange tekst på sort</item>
+    <item>Rød tekst på sort</item>
+  </string-array>
+
+  <string-array name="entries_controlkey_preference">
+    <item>Trackball</item>
+    <item>\@-tast</item>
+    <item>Venstre Alt-tast</item>
+    <item>Høyre Alt-tast</item>
+    <item>Vol opp</item>
+    <item>Vol ned</item>
+    <item>Kamera-tast</item>
+  </string-array>
+
+  <string-array name="entries_ime_preference">
+    <item>Tegnbasert</item>
+    <item>Ordbasert</item>
+  </string-array>
+</resources>
