@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">Terminal Emulator</string>
+   <string name="preferences">Preferências</string>
+   <string name="reset">Reset terminal</string>
+   <string name="send_email">Email para</string>
+   <string name="special_keys">Teclas especiais</string>
+   <string name="toggle_soft_keyboard">Abrir teclado</string>
+
+   <string name="edit_text">Editar texto</string>
+   <string name="select_text">Seleccionar texto</string>
+   <string name="copy_all">Copiar tudo</string>
+   <string name="paste">Colar</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">Ecrã</string>
+
+   <string name="title_statusbar_preference">Barra de notificações</string>
+   <string name="summary_statusbar_preference">Mostrar/esconder barra de notificações</string>
+   <string name="dialog_title_statusbar_preference">Barra de notificações</string>
+
+   <string name="title_cursorstyle_preference">Estilo do cursor</string>
+   <string name="summary_cursorstyle_preference">Escolha o estilo do cursor</string>
+   <string name="dialog_title_cursorstyle_preference">Estilo do cursor</string>
+
+   <string name="title_cursorblink_preference">Piscar do cursor</string>
+   <string name="summary_cursorblink_preference">Escolher piscar do cursor</string>
+   <string name="dialog_title_cursorblink_preference">Piscar do cursor</string>
+
+   <string name="text_preferences">Texto</string>
+
+   <string name="title_fontsize_preference">Tamanho do texto</string>
+   <string name="summary_fontsize_preference">Escolher a altura dos caracteres em pontos</string>
+   <string name="dialog_title_fontsize_preference">Tamanho do texto</string>
+
+   <string name="title_color_preference">Côres</string>
+   <string name="summary_color_preference">Escolher côr do texto</string>
+   <string name="dialog_title_color_preference">Côr do texto</string>
+
+   <string name="keyboard_preferences">Teclado</string>
+
+   <string name="title_controlkey_preference">Tecla control</string>
+   <string name="summary_controlkey_preference">Escolher tecla control</string>
+   <string name="dialog_title_controlkey_preference">Tecla control</string>
+
+   <string name="title_ime_preference">Método de entrada</string>
+   <string name="summary_ime_preference">Escolher método de entrada</string>
+   <string name="dialog_title_ime_preference">Método de entrada</string>
+
+   <string name="shell_preferences">Shell</string>
+   <string name="title_shell_preference">Linha de comandos</string>
+   <string name="summary_shell_preference">Especificar a linha de comando do shell</string>
+   <string name="dialog_title_shell_preference">Shell</string>
+
+   <string name="title_initialcommand_preference">Comando inicial</string>
+   <string name="summary_initialcommand_preference">Enviar para o shell no arranque</string>
+   <string name="dialog_title_initialcommand_preference">Comando inicial</string>
+
+</resources>
