@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">Terminal</string>
+   <string name="preferences">Preferencias</string>
+   <string name="reset">Resetear terminal</string>
+   <string name="send_email">Enviar Email</string>
+   <string name="special_keys">Teclas especiales</string>
+   <string name="toggle_soft_keyboard">Activar teclado</string>
+
+   <string name="edit_text">Editar texto</string>
+   <string name="select_text">Seleccionar texto</string>
+   <string name="copy_all">Copiar todo</string>
+   <string name="paste">Pegar</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">Pantalla</string>
+
+   <string name="title_statusbar_preference">Barra de estado</string>
+   <string name="summary_statusbar_preference">Ver/ocultar barra de estado.</string>
+   <string name="dialog_title_statusbar_preference">Barra de estado</string>
+
+   <string name="title_cursorstyle_preference">Estilo cursor</string>
+   <string name="summary_cursorstyle_preference">Escoja estilo de cursor.</string>
+   <string name="dialog_title_cursorstyle_preference">Estilo cursor</string>
+
+   <string name="title_cursorblink_preference">Parpadeo cursor</string>
+   <string name="summary_cursorblink_preference">Escoja parpadeo de cursor.</string>
+   <string name="dialog_title_cursorblink_preference">Parpadeo cursor</string>
+
+   <string name="text_preferences">Texto</string>
+
+   <string name="title_fontsize_preference">Tamaño Fuente</string>
+   <string name="summary_fontsize_preference">Elija altura de los carácteres en puntos.</string>
+   <string name="dialog_title_fontsize_preference">Tamaño Fuente</string>
+
+   <string name="title_color_preference">Colores</string>
+   <string name="summary_color_preference">Elija color de texto.</string>
+   <string name="dialog_title_color_preference">Color de texto</string>
+
+   <string name="keyboard_preferences">Teclado</string>
+
+   <string name="title_controlkey_preference">Tecla Control</string>
+   <string name="summary_controlkey_preference">Elija tecla de control.</string>
+   <string name="dialog_title_controlkey_preference">Tecla Control</string>
+
+   <string name="title_ime_preference">Método de entrada</string>
+   <string name="summary_ime_preference">Elija estodo de entrada para el teclado.</string>
+   <string name="dialog_title_ime_preference">Método de entrada</string>
+
+   <string name="shell_preferences">Shell</string>
+   <string name="title_shell_preference">Línea de comandos</string>
+   <string name="summary_shell_preference">Especifique la línea de comandos de shell.</string>
+   <string name="dialog_title_shell_preference">Shell</string>
+
+   <string name="title_initialcommand_preference">Comando inicial</string>
+   <string name="summary_initialcommand_preference">Enviar al shell cuando se inicia.</string>
+   <string name="dialog_title_initialcommand_preference">Comando inicial</string>
+
+</resources>
