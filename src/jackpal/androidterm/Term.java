@@ -400,7 +400,11 @@ public class Term extends Activity {
                 if (mAlreadyStarted) {
                     // Can't switch to/from fullscreen after
                     // starting the activity.
-                    restart();
+                    //
+                    // remove restart for the sake of tablet tweaks,
+                    // since this app else creates a soft reboot
+                    // due to endless restarting
+                    //restart();
                 } else {
                     win.setFlags(desiredFlag, FULLSCREEN);
                 }
