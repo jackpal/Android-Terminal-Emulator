@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jackpal.androidterm"
-      android:versionName="1.0.22" android:versionCode="23">
+      android:versionName="1.0.23" android:versionCode="24">
    <uses-permission android:name="android.permission.INTERNET" />
    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application android:icon="@drawable/app_terminal"
@@ -18,4 +18,5 @@
         <activity android:name="TermPreferences"/>
     </application>
     <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="11" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 </manifest>
