@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ -->
+
+<resources>
+    <string-array name="entries_statusbar_preference">
+        <item>Uyarı çubuğunu göster</item>
+        <item>Uyarı çubuğunu sakla</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <string-array name="entryvalues_statusbar_preference">
+        <item>1</item>
+        <item>0</item>
+    </string-array>
+
+    <string-array name="entries_cursorblink_preference">
+        <item>Non-blinking cursor</item>
+        <item>Blinking cursor</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <string-array name="entryvalues_cursorblink_preference">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string-array name="entries_cursorstyle_preference">
+        <item>Rectangle</item>
+        <item>Underline</item>
+        <item>Vertical bar</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <string-array name="entryvalues_cursorstyle_preference">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="entries_fontsize_preference">
+        <item>4 x 8 piksel</item>
+        <item>6 pt</item>
+        <item>7 pt</item>
+        <item>8 pt</item>
+        <item>9 pt</item>
+        <item>10 pt</item>
+        <item>12 pt</item>
+        <item>14 pt</item>
+        <item>16 pt</item>
+        <item>20 pt</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <string-array name="entryvalues_fontsize_preference">
+        <item>0</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>12</item>
+        <item>14</item>
+        <item>16</item>
+        <item>20</item>
+    </string-array>
+
+    <string-array name="entries_color_preference">
+        <item>Beyaz arkaplan üzerinde siyah metin</item>
+        <item>Siyah arkaplan üzerinde beyaz metin</item>
+        <item>Mavi arkaplan üzerinde beyaz metin</item>
+        <item>Siyah arkaplan üzerinde yeşil metin</item>
+        <item>Siyah arkaplan üzerinde turuncu metin</item>
+        <item>Siyah arkaplan üzerinde kırmızı metin</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <string-array name="entryvalues_color_preference">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="entries_controlkey_preference">
+        <item>Jog ball</item>
+        <item>\@ Tuşu</item>
+        <item>Sol Alt Tuşu</item>
+        <item>Sağ Alt Tuşu</item>
+        <item>Ses Arttırma Tuşu</item>
+        <item>Ses Kısma Tuşu</item>
+        <item>Kamera Tuşu</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <string-array name="entryvalues_controlkey_preference">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string-array name="entries_ime_preference">
+        <item>Harf tabanlı</item>
+        <item>Kelime tabanlı</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <string-array name="entryvalues_ime_preference">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+</resources>
