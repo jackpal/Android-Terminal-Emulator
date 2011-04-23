@@ -2960,6 +2960,8 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
             private int mCursor;
             private int mComposingTextStart;
             private int mComposingTextEnd;
+            private int mSelectedTextStart;
+            private int mSelectedTextEnd;
 
             private void sendChar(int c) {
                 try {
@@ -3173,12 +3175,41 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
                 return true;
             }
 
-            public boolean setSelection(int arg0, int arg1) {
+            public boolean setSelection(int start, int end) {
                 if (Term.LOG_IME) {
-                    Log.w(TAG, "setSelection" + arg0 + "," + arg1);
+                    Log.w(TAG, "setSelection" + start + "," + end);
+                }
+                int length = mImeBuffer.length();
+                if (start == end && start > 0 && start < length) {
+                    mSelectedTextStart = mSelectedTextEnd = 0;
+                    mCursor = start;
+                } else if (start < end && start > 0 && end < length) {
+                    mSelectedTextStart = start;
+                    mSelectedTextEnd = end;
+                    mCursor = start;
                 }
                 return true;
             }
+
+            public boolean setComposingRegion(int start, int end) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "setComposingRegion " + start + "," + end);
+                }
+                if (start < end && start > 0 && end < mImeBuffer.length()) {
+                    clearComposingText();
+                    mComposingTextStart = start;
+                    mComposingTextEnd = end;
+                }
+                return true;
+            }
+
+            public CharSequence getSelectedText(int flags) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "getSelectedText " + flags);
+                }
+                return mImeBuffer.substring(mSelectedTextStart, mSelectedTextEnd+1);
+            }
+            
         };
     }
 
