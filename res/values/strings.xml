@@ -58,6 +58,10 @@
    <string name="summary_controlkey_preference">Choose control key.</string>
    <string name="dialog_title_controlkey_preference">Control key</string>
 
+   <string name="title_fnkey_preference">Fn key</string>
+   <string name="summary_fnkey_preference">Choose Fn key.</string>
+   <string name="dialog_title_fnkey_preference">Fn key</string>
+
    <string name="title_ime_preference">Input method</string>
    <string name="summary_ime_preference">Choose input method for soft keyboard.</string>
    <string name="dialog_title_ime_preference">Input method</string>
@@ -77,7 +81,8 @@
    <string name="default_value_cursorblink_preference">0</string>
    <string name="default_value_fontsize_preference">10</string>
    <string name="default_value_color_preference">2</string>
-   <string name="default_value_controlkey_preference">0</string>
+   <string name="default_value_controlkey_preference">5</string>
+   <string name="default_value_fnkey_preference">4</string>
    <string name="default_value_ime_preference">0</string>
    <string name="default_value_shell_preference">/system/bin/sh -</string>
    <string name="default_value_initialcommand_preference">export PATH=/data/local/bin:$PATH</string>

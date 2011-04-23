@@ -88,6 +88,15 @@
                 android:dialogTitle="@string/dialog_title_controlkey_preference" />
 
         <ListPreference
+                android:key="fnkey"
+                android:defaultValue="@string/default_value_fnkey_preference"
+                android:title="@string/title_fnkey_preference"
+                android:summary="@string/summary_fnkey_preference"
+                android:entries="@array/entries_fnkey_preference"
+                android:entryValues="@array/entryvalues_fnkey_preference"
+                android:dialogTitle="@string/dialog_title_fnkey_preference" />
+
+        <ListPreference
                 android:key="ime"
                 android:defaultValue="@string/default_value_ime_preference"
                 android:title="@string/title_ime_preference"

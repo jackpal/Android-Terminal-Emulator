@@ -118,6 +118,27 @@
         <item>6</item>
     </string-array>
 
+    <string-array name="entries_fnkey_preference">
+        <item>Jog ball</item>
+        <item>\@ key</item>
+        <item>Left Alt key</item>
+        <item>Right Alt key</item>
+        <item>Vol Up key</item>
+        <item>Vol Down key</item>
+        <item>Camera key</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <string-array name="entryvalues_fnkey_preference">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
     <string-array name="entries_ime_preference">
         <item>Character-based</item>
         <item>Word-based</item>

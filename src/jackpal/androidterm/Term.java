@@ -140,6 +140,7 @@ public class Term extends Activity {
     private int mFontSize = 9;
     private int mColorId = 2;
     private int mControlKeyId = 5; // Default to Volume Down
+    private int mFnKeyId = 4; // Default to Volume Up
     private int mUseCookedIME = 0;
 
     private static final String STATUSBAR_KEY = "statusbar";
@@ -148,6 +149,7 @@ public class Term extends Activity {
     private static final String FONTSIZE_KEY = "fontsize";
     private static final String COLOR_KEY = "color";
     private static final String CONTROLKEY_KEY = "controlkey";
+    private static final String FNKEY_KEY = "fnkey";
     private static final String IME_KEY = "ime";
     private static final String SHELL_KEY = "shell";
     private static final String INITIALCOMMAND_KEY = "initialcommand";
@@ -174,8 +176,21 @@ public class Term extends Activity {
     private static final String[] CONTROL_KEY_NAME = {
         "Ball", "@", "Left-Alt", "Right-Alt", "Vol-Up", "Vol-Dn", "Camera"
     };
+    private static final int[] FN_KEY_SCHEMES = {
+        KeyEvent.KEYCODE_DPAD_CENTER,
+        KeyEvent.KEYCODE_AT,
+        KeyEvent.KEYCODE_ALT_LEFT,
+        KeyEvent.KEYCODE_ALT_RIGHT,
+        KeyEvent.KEYCODE_VOLUME_UP,
+        KeyEvent.KEYCODE_VOLUME_DOWN,
+        KeyEvent.KEYCODE_CAMERA
+    };
+    private static final String[] FN_KEY_NAME = {
+        "Ball", "@", "Left-Alt", "Right-Alt", "Vol-Up", "Vol-Dn", "Camera"
+    };
 
     private int mControlKeyCode;
+    private int mFnKeyCode;
 
     private final static String DEFAULT_SHELL = "/system/bin/sh -";
     private String mShell;
@@ -367,6 +382,8 @@ public class Term extends Activity {
         mColorId = readIntPref(COLOR_KEY, mColorId, COLOR_SCHEMES.length - 1);
         mControlKeyId = readIntPref(CONTROLKEY_KEY, mControlKeyId,
                 CONTROL_KEY_SCHEMES.length - 1);
+        mFnKeyId = readIntPref(FNKEY_KEY, mFnKeyId,
+                FN_KEY_SCHEMES.length - 1);
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
         {
             String newShell = readStringPref(SHELL_KEY, mShell);
@@ -400,6 +417,7 @@ public class Term extends Activity {
         mEmulatorView.setUseCookedIME(mUseCookedIME != 0);
         setColors();
         mControlKeyCode = CONTROL_KEY_SCHEMES[mControlKeyId];
+        mFnKeyCode = FN_KEY_SCHEMES[mFnKeyId];
         {
             Window win = getWindow();
             WindowManager.LayoutParams params = win.getAttributes();
@@ -435,6 +453,10 @@ public class Term extends Activity {
 
     public int getControlKeyCode() {
         return mControlKeyCode;
+    }
+
+    public int getFnKeyCode() {
+        return mFnKeyCode;
     }
 
     @Override
@@ -571,20 +593,26 @@ public class Term extends Activity {
 
     private void doDocumentKeys() {
         String controlKey = CONTROL_KEY_NAME[mControlKeyId];
+        String fnKey = FN_KEY_NAME[mFnKeyId];
         new AlertDialog.Builder(this).
             setTitle("Press " + controlKey + " and Key").
             setMessage(controlKey + " Space : Control-@ (NUL)\n"
                     + controlKey + " A..Z : Control-A..Z\n"
-                    + controlKey + " 1 : Control-[ (ESC)\n"
-                    + controlKey + " 2 : Control-_\n"
-                    + controlKey + " 3 : Control-^\n"
-                    + controlKey + " 4 : Control-]\n"
-                    + controlKey + " 5 : | (pipe)\n"
-                    + controlKey + " 6 : Left arrow\n"
-                    + controlKey + " 7 : Down arrow\n"
-                    + controlKey + " 8 : Up arrow\n"
-                    + controlKey + " 9 : Right arrow\n"
-                    + controlKey + " . : Control-\\"
+                    + controlKey + " 0..9 : Control-0..9\n"
+                    + fnKey + " W : Up\n"
+                    + fnKey + " A : Left\n"
+                    + fnKey + " S : Down\n"
+                    + fnKey + " D : Right\n"
+                    + fnKey + " P : PageUp\n"
+                    + fnKey + " N : PageDown\n"
+                    + fnKey + " T : Tab\n"
+                    + fnKey + " L : | (pipe)\n"
+                    + fnKey + " U : _ (underscore)\n"
+                    + fnKey + " E : Control-[ (ESC)\n"
+                    + fnKey + " . : Control-\\\n"
+                    + fnKey + " 2 : Control-_\n"
+                    + fnKey + " 3 : Control-^\n"
+                    + fnKey + " 4 : Control-]"
                     ).show();
      }
 
@@ -2891,6 +2919,8 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
                 int result = mKeyListener.mapControlChar(c);
                 if (result < TermKeyListener.KEYCODE_OFFSET) {
                     mTermOut.write(result);
+                } else {
+                    mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, mTermOut, getKeypadApplicationMode());
                 }
             }
 
@@ -3341,6 +3371,8 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
         }
         if (handleControlKey(keyCode, true)) {
             return true;
+        } else if (handleFnKey(keyCode, true)) {
+            return true;
         } else if (isSystemKey(keyCode, event)) {
             // Don't intercept the system keys
             return super.onKeyDown(keyCode, event);
@@ -3364,6 +3396,8 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
         }
         if (handleControlKey(keyCode, false)) {
             return true;
+        } else if (handleFnKey(keyCode, false)) {
+            return true;
         } else if (isSystemKey(keyCode, event)) {
             // Don't intercept the system keys
             return super.onKeyUp(keyCode, event);
@@ -3380,6 +3414,17 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
                 Log.w(TAG, "handleControlKey " + keyCode);
             }
             mKeyListener.handleControlKey(down);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handleFnKey(int keyCode, boolean down) {
+        if (keyCode == mTerm.getFnKeyCode()) {
+            if (LOG_KEY_EVENTS) {
+                Log.w(TAG, "handleFnKey " + keyCode);
+            }
+            mKeyListener.handleFnKey(down);
             return true;
         }
         return false;
@@ -4202,6 +4247,8 @@ class TermKeyListener {
 
     private ModifierKey mControlKey = new ModifierKey();
 
+    private ModifierKey mFnKey = new ModifierKey();
+
     private boolean mCapsLock;
 
     static public final int KEYCODE_OFFSET = 1000;
@@ -4222,34 +4269,64 @@ class TermKeyListener {
         }
     }
 
+    public void handleFnKey(boolean down) {
+        if (down) {
+            mFnKey.onPress();
+        } else {
+            mFnKey.onRelease();
+        }
+    }
+
     public int mapControlChar(int ch) {
         int result = ch;
         if (mControlKey.isActive()) {
             // Search is the control key.
             if (result >= 'a' && result <= 'z') {
                 result = (char) (result - 'a' + '\001');
+            } else if (result >= '0' && result <= '9') {
+                result = (char) (result - '0' + '\001');
             } else if (result == ' ') {
                 result = 0;
-            } else if ((result == '[') || (result == '1')) {
+            } else if (result == '[') {
                 result = 27;
-            } else if ((result == '\\') || (result == '.')) {
+            } else if (result == '\\') {
                 result = 28;
-            } else if ((result == ']') || (result == '4')) {
+            } else if (result == ']') {
                 result = 29;
-            } else if ((result == '^') || (result == '3')) {
+            } else if (result == '^') {
                 result = 30; // control-^
-            } else if ((result == '_') || (result == '2')) {
+            } else if (result == '_') {
                 result = 31;
-            } else if ((result == '5')) {
-                result = '|';
-            } else if ((result == '6')) {
-                result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_LEFT;
-            } else if ((result == '7')) {
-                result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_DOWN;
-            } else if ((result == '8')) {
+            }
+        } else if (mFnKey.isActive()) {
+            if (result == 'w') {
                 result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_UP;
-            } else if ((result == '9')) {
+            } else if (result == 'a') {
+                result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_LEFT;
+            } else if (result == 's') {
+                result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_DOWN;
+            } else if (result == 'd') {
                 result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_RIGHT;
+            } else if (result == 'p') {
+                result = KEYCODE_OFFSET + TermKeyListener.KEYCODE_PAGE_UP;
+            } else if (result == 'n') {
+                result = KEYCODE_OFFSET + TermKeyListener.KEYCODE_PAGE_DOWN;
+            } else if (result == 't') {
+                result = KEYCODE_OFFSET + KeyEvent.KEYCODE_TAB;
+            } else if (result == 'l') {
+                result = '|';
+            } else if (result == 'u') {
+                result = '_';
+            } else if (result == 'e') {
+                result = 27; // ^[ (Esc)
+            } else if (result == '.') {
+                result = 28; // ^\
+            } else if (result == '4') {
+                result = 29; // ^]
+            } else if (result == '3') {
+                result = 30; // control-^
+            } else if (result == '2') {
+                result = 31; // ^_
             }
         }
 
@@ -4257,6 +4334,7 @@ class TermKeyListener {
             mAltKey.adjustAfterKeypress();
             mCapKey.adjustAfterKeypress();
             mControlKey.adjustAfterKeypress();
+            mFnKey.adjustAfterKeypress();
         }
 
         return result;
@@ -4312,7 +4390,7 @@ class TermKeyListener {
         }
     }
 
-    private boolean handleKeyCode(int keyCode, OutputStream out, boolean appMode) throws IOException {
+    public boolean handleKeyCode(int keyCode, OutputStream out, boolean appMode) throws IOException {
         if (keyCode >= 0 && keyCode < mKeyCodes.length) {
             String code = null;
             if (appMode) {
