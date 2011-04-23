@@ -27,6 +27,8 @@
    <string name="copy_all">Copy all</string>
    <string name="paste">Paste</string>
 
+   <string name="service_notify_text">Terminal session is running</string>
+
    <!-- Preference dialog -->
    <string name="screen_preferences">Screen</string>
 

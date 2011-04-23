@@ -68,6 +68,12 @@ import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Binder;
+import android.os.IBinder;
+
 /**
  * A terminal emulator activity.
  */
@@ -207,12 +213,18 @@ public class Term extends Activity {
 
     private boolean mAlreadyStarted = false;
 
+    public TermService mTermService;
+    private Intent TSIntent;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         Log.e(Term.LOG_TAG, "onCreate");
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         readPrefs();
+
+        TSIntent = new Intent(this, TermService.class);
+        startService(TSIntent);
 
         setContentView(R.layout.term_activity);
 
@@ -248,6 +260,7 @@ public class Term extends Activity {
             Exec.close(mTermFd);
             mTermFd = null;
         }
+        stopService(TSIntent);
     }
 
     private void startListening() {
