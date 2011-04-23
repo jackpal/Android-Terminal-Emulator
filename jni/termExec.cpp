@@ -47,6 +47,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <termios.h>
+#include <signal.h>
 
 static jclass class_fileDescriptor;
 static jfieldID field_fileDescriptor_descriptor;
@@ -234,6 +235,11 @@ static void android_os_Exec_close(JNIEnv *env, jobject clazz, jobject fileDescri
     close(fd);
 }
 
+static void android_os_Exec_hangupProcessGroup(JNIEnv *env, jobject clazz,
+    jint procId) {
+    kill(-procId, SIGHUP);
+}
+
 
 static int register_FileDescriptor(JNIEnv *env)
 {
@@ -270,7 +276,9 @@ static JNINativeMethod method_table[] = {
     { "waitFor", "(I)I",
         (void*) android_os_Exec_waitFor},
     { "close", "(Ljava/io/FileDescriptor;)V",
-        (void*) android_os_Exec_close}
+        (void*) android_os_Exec_close},
+    { "hangupProcessGroup", "(I)V",
+        (void*) android_os_Exec_hangupProcessGroup}
 };
 
 /*

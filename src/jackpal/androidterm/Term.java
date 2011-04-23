@@ -119,6 +119,11 @@ public class Term extends Activity {
     private FileOutputStream mTermOut;
 
     /**
+     * The process ID of the remote process.
+     */
+    private int mProcId = 0;
+
+    /**
      * A key listener that tracks the modifier keys and allows the full ASCII
      * character set to be entered.
      */
@@ -220,6 +225,10 @@ public class Term extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mProcId != 0) {
+            Exec.hangupProcessGroup(mProcId);
+            mProcId = 0;
+        }
         if (mTermFd != null) {
             Exec.close(mTermFd);
             mTermFd = null;
@@ -230,7 +239,7 @@ public class Term extends Activity {
         int[] processId = new int[1];
 
         createSubprocess(processId);
-        final int procId = processId[0];
+        mProcId = processId[0];
 
         final Handler handler = new Handler() {
             @Override
@@ -241,8 +250,8 @@ public class Term extends Activity {
         Runnable watchForDeath = new Runnable() {
 
             public void run() {
-                Log.i(Term.LOG_TAG, "waiting for: " + procId);
-               int result = Exec.waitFor(procId);
+                Log.i(Term.LOG_TAG, "waiting for: " + mProcId);
+               int result = Exec.waitFor(mProcId);
                 Log.i(Term.LOG_TAG, "Subprocess exited: " + result);
                 handler.sendEmptyMessage(result);
              }
