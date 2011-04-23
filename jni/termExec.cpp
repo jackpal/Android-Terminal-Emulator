@@ -224,7 +224,6 @@ static int android_os_Exec_waitFor(JNIEnv *env, jobject clazz,
 static void android_os_Exec_close(JNIEnv *env, jobject clazz, jobject fileDescriptor)
 {
     int fd;
-    struct winsize sz;
 
     fd = env->GetIntField(fileDescriptor, field_fileDescriptor_descriptor);
 
