@@ -61,6 +61,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.CompletionInfo;
+import android.view.inputmethod.CorrectionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
@@ -3093,6 +3094,13 @@ class EmulatorView extends View implements GestureDetector.OnGestureListener {
             public boolean reportFullscreenMode(boolean arg0) {
                 if (Term.LOG_IME) {
                     Log.w(TAG, "reportFullscreenMode" + arg0);
+                }
+                return true;
+            }
+
+            public boolean commitCorrection (CorrectionInfo correctionInfo) {
+                if (Term.LOG_IME) {
+                    Log.w(TAG, "commitCorrection");
                 }
                 return true;
             }
