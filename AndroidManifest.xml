@@ -8,7 +8,7 @@
                 android:label="@string/application_terminal">
         <activity android:name="Term"
                 android:theme="@style/Theme"
-                android:launchMode="singleInstance"
+                android:launchMode="singleTask"
                 android:configChanges="keyboard|keyboardHidden|orientation"
                 android:windowSoftInputMode="adjustResize|stateVisible">
             <intent-filter>
