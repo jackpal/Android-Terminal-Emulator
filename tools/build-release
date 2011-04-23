@@ -5,4 +5,5 @@
 # of Android Terminal Emulator.
 
 cd ~/code/Android-Terminal-Emulator
-ant release && mv bin/Term-release.apk bin/Term.apk
+cd jni
+~/code/android-ndk-r5b/ndk-build && cd .. && ant release && mv bin/Term-release.apk bin/Term.apk
