@@ -22,6 +22,11 @@
    <string name="special_keys">Special keys</string>
    <string name="toggle_soft_keyboard">Toggle soft keyboard</string>
 
+   <string name="enable_wakelock">Take WakeLock</string>
+   <string name="disable_wakelock">Drop WakeLock</string>
+   <string name="enable_wifilock">Take WifiLock</string>
+   <string name="disable_wifilock">Drop WifiLock</string>
+
    <string name="edit_text">Edit text</string>
    <string name="select_text">Select text</string>
    <string name="copy_all">Copy all</string>

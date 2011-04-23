@@ -74,6 +74,9 @@ import android.content.ServiceConnection;
 import android.os.Binder;
 import android.os.IBinder;
 
+import android.net.wifi.WifiManager;
+import android.os.PowerManager;
+
 /**
  * A terminal emulator activity.
  */
@@ -216,6 +219,9 @@ public class Term extends Activity {
     public TermService mTermService;
     private Intent TSIntent;
 
+    private PowerManager.WakeLock mWakeLock;
+    private WifiManager.WifiLock mWifiLock;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -245,6 +251,11 @@ public class Term extends Activity {
 
         registerForContextMenu(mEmulatorView);
 
+        PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
+        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, Term.LOG_TAG);
+        WifiManager wm = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+        mWifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL, Term.LOG_TAG);
+
         updatePrefs();
         mAlreadyStarted = true;
     }
@@ -259,6 +270,12 @@ public class Term extends Activity {
         if (mTermFd != null) {
             Exec.close(mTermFd);
             mTermFd = null;
+        }
+        if (mWakeLock.isHeld()) {
+            mWakeLock.release();
+        }
+        if (mWifiLock.isHeld()) {
+            mWifiLock.release();
         }
         stopService(TSIntent);
     }
@@ -512,8 +529,29 @@ public class Term extends Activity {
             doDocumentKeys();
         } else if (id == R.id.menu_toggle_soft_keyboard) {
             doToggleSoftKeyboard();
+        } else if (id == R.id.menu_toggle_wakelock) {
+            doToggleWakeLock();
+        } else if (id == R.id.menu_toggle_wifilock) {
+            doToggleWifiLock();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem wakeLockItem = menu.findItem(R.id.menu_toggle_wakelock);
+        MenuItem wifiLockItem = menu.findItem(R.id.menu_toggle_wifilock);
+        if (mWakeLock.isHeld()) {
+            wakeLockItem.setTitle(R.string.disable_wakelock);
+        } else {
+            wakeLockItem.setTitle(R.string.enable_wakelock);
+        }
+        if (mWifiLock.isHeld()) {
+            wifiLockItem.setTitle(R.string.disable_wifilock);
+        } else {
+            wifiLockItem.setTitle(R.string.enable_wifilock);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -634,6 +672,22 @@ public class Term extends Activity {
             getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
 
+    }
+
+    private void doToggleWakeLock() {
+        if (mWakeLock.isHeld()) {
+            mWakeLock.release();
+        } else {
+            mWakeLock.acquire();
+        }
+    }
+
+    private void doToggleWifiLock() {
+        if (mWifiLock.isHeld()) {
+            mWifiLock.release();
+        } else {
+            mWifiLock.acquire();
+        }
     }
 }
 

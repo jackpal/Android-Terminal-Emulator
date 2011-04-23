@@ -26,4 +26,8 @@
         android:title="@string/special_keys" />
     <item android:id="@+id/menu_toggle_soft_keyboard"
         android:title="@string/toggle_soft_keyboard" />
+    <item android:id="@+id/menu_toggle_wakelock" />
+        android:title="@string/enable_wakelock" />
+    <item android:id="@+id/menu_toggle_wifilock" />
+        android:title="@string/enable_wifilock" />
 </menu>
