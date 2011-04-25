@@ -30,7 +30,7 @@ import java.io.FileDescriptor;
 public class Exec
 {
     static {
-        System.loadLibrary("androidterm");
+        System.loadLibrary("androidterm2");
     }
 
     /**
