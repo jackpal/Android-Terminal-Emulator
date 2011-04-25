@@ -32,18 +32,10 @@
          application and should be checked into Version Control Systems. -->
     <property file="default.properties" />
 
-    <!-- Custom Android task to deal with the project target, and import the
-         proper rules.
-         This requires ant 1.6.0 or above. -->
-    <path id="android.antlibs">
-        <pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
-        <pathelement path="${sdk.dir}/tools/lib/sdklib.jar" />
-        <pathelement path="${sdk.dir}/tools/lib/androidprefs.jar" />
-    </path>
 
-    <taskdef name="setup"
-        classname="com.android.ant.SetupTask"
-        classpathref="android.antlibs" />
+    <!-- Required pre-setup import -->
+    <import file="${sdk.dir}/tools/ant/pre_setup.xml" />
+
 
 <!-- extension targets. Uncomment the ones where you want to do custom work
      in between standard targets -->
@@ -60,12 +52,15 @@
     </target>
 -->
 
-
     <!-- Execute the Android Setup task that will setup some properties
          specific to the target, and import the build rules files.
 
          The rules file is imported from
-            <SDK>/platforms/<target_platform>/ant/ant_rules_r#.xml
+            <SDK>/tools/ant/
+         Depending on the project type it can be either:
+         - main_rules.xml
+         - lib_rules.xml
+         - test_rules.xml
 
          To customize existing targets, there are two options:
          - Customize only one target:
