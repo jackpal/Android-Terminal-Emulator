@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">Terminal Emulator</string>
+   <string name="preferences">Instellingen</string>
+   <string name="reset">Reset</string>
+   <string name="send_email">Email naar</string>
+   <string name="special_keys">Speciale knoppen</string>
+   <string name="toggle_soft_keyboard">Zet toetsenbord aan/uit</string>
+
+   <string name="edit_text">Pas tekst aan</string>
+   <string name="select_text">Selecteer tekst</string>
+   <string name="copy_all">Alles kopiëren</string>
+   <string name="paste">Plakken</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">Scherm</string>
+
+   <string name="title_statusbar_preference">Statusbalk</string>
+   <string name="summary_statusbar_preference">Statusbalk weergeven/verbergen.</string>
+   <string name="dialog_title_statusbar_preference">Statusbalk</string>
+
+   <string name="title_cursorstyle_preference">Cursor stijl</string>
+   <string name="summary_cursorstyle_preference">Kies cursor stijl.</string>
+   <string name="dialog_title_cursorstyle_preference">Cursor stijl</string>
+
+   <string name="title_cursorblink_preference">Cursor blink</string>
+   <string name="summary_cursorblink_preference">Kies cursor blink.</string>
+   <string name="dialog_title_cursorblink_preference">Cursor blink</string>
+
+   <string name="text_preferences">Tekst</string>
+
+   <string name="title_fontsize_preference">Lettergrootte</string>
+   <string name="summary_fontsize_preference">Kies karakter hoogte in punten.</string>
+   <string name="dialog_title_fontsize_preference">Lettergrootte</string>
+
+   <string name="title_color_preference">Kleuren</string>
+   <string name="summary_color_preference">Kies tekst kleur.</string>
+   <string name="dialog_title_color_preference">Tekst kleur</string>
+
+   <string name="keyboard_preferences">Toetsenbord</string>
+
+   <string name="title_controlkey_preference">Bedieningsknop</string>
+   <string name="summary_controlkey_preference">Kies bedieningsknop.</string>
+   <string name="dialog_title_controlkey_preference">Bedieningsknop</string>
+
+   <string name="title_ime_preference">Invoer methode</string>
+   <string name="summary_ime_preference">Kies invoer methode voor toetsenbord.</string>
+   <string name="dialog_title_ime_preference">Invoer methode</string>
+
+   <string name="shell_preferences">Shell</string>
+   <string name="title_shell_preference">Command line</string>
+   <string name="summary_shell_preference">Specificeer de shell command line.</string>
+   <string name="dialog_title_shell_preference">Shell</string>
+
+   <string name="title_initialcommand_preference">Oorspronkelijke opdracht</string>
+   <string name="summary_initialcommand_preference">Wordt naar de shell verzonden wanneer deze gestart wordt.</string>
+   <string name="dialog_title_initialcommand_preference">Oorspronkelijke opdracht</string>
+</resources>
