@@ -18,7 +18,7 @@
   <string name="application_terminal">Terminal Emulator</string>
   <string name="preferences">Einstellungen</string>
   <string name="reset">Zurücksetzen</string>
-  <string name="send_email">Email an</string>
+  <string name="send_email">E-Mail an</string>
   <string name="special_keys">Spezialtasten</string>
   <string name="toggle_soft_keyboard">Tastatur an/aus</string>
 
@@ -64,7 +64,7 @@
 
   <string name="shell_preferences">Shell</string>
   <string name="title_shell_preference">Shell</string>
-  <string name="summary_shell_preference">Die zu verwendene Shell auswählen.</string>
+  <string name="summary_shell_preference">Die zu verwendende Shell auswählen.</string>
   <string name="dialog_title_shell_preference">Shell</string>
 
   <string name="title_initialcommand_preference">Startkommando</string>
