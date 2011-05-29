@@ -71,5 +71,10 @@ public class Exec
      * Close a given file descriptor.
      */
     public static native void close(FileDescriptor fd);
+
+    /**
+     * Send SIGHUP to a process group.
+     */
+    public static native void hangupProcessGroup(int processId);
 }
 

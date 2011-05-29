@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2008 The Android Open Source Project
+# Copyright (C) 2011 Jack Palevich
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,15 +24,15 @@ TOP_LOCAL_PATH:= $(call my-dir)
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
-LOCAL_MODULE_TAGS := optional
-
 LOCAL_SRC_FILES := $(call all-subdir-java-files)
 
 LOCAL_PACKAGE_NAME := AndroidTerm
 
 LOCAL_OVERRIDES_PACKAGES := Term
 
-LOCAL_REQUIRED_MODULES := libandroidterm2
+LOCAL_MODULE_TAGS := optional
+
+LOCAL_JNI_SHARED_LIBRARIES := libandroidterm2
 
 include $(BUILD_PACKAGE)
 

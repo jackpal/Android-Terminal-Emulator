@@ -17,8 +17,8 @@
 
 <resources>
     <string-array name="entries_statusbar_preference">
-        <item>Show status bar</item>
-        <item>Hide status bar</item>
+        <item>Uyarı çubuğunu göster</item>
+        <item>Uyarı çubuğunu sakla</item>
     </string-array>
 
     <!-- Do not localize entryvalues -->
@@ -52,7 +52,7 @@
     </string-array>
 
     <string-array name="entries_fontsize_preference">
-        <item>4 x 8 pixels</item>
+        <item>4 x 8 piksel</item>
         <item>6 pt</item>
         <item>7 pt</item>
         <item>8 pt</item>
@@ -79,12 +79,12 @@
     </string-array>
 
     <string-array name="entries_color_preference">
-        <item>Black text on white</item>
-        <item>White text on black</item>
-        <item>White text on blue</item>
-        <item>Green text on black</item>
-        <item>Amber text on black</item>
-        <item>Red text on black</item>
+        <item>Beyaz arkaplan üzerinde siyah metin</item>
+        <item>Siyah arkaplan üzerinde beyaz metin</item>
+        <item>Mavi arkaplan üzerinde beyaz metin</item>
+        <item>Siyah arkaplan üzerinde yeşil metin</item>
+        <item>Siyah arkaplan üzerinde turuncu metin</item>
+        <item>Siyah arkaplan üzerinde kırmızı metin</item>
     </string-array>
 
     <!-- Do not localize entryvalues -->
@@ -99,12 +99,12 @@
 
     <string-array name="entries_controlkey_preference">
         <item>Jog ball</item>
-        <item>\@ key</item>
-        <item>Left Alt key</item>
-        <item>Right Alt key</item>
-        <item>Vol Up key</item>
-        <item>Vol Down key</item>
-        <item>Camera key</item>
+        <item>\@ Tuşu</item>
+        <item>Sol Alt Tuşu</item>
+        <item>Sağ Alt Tuşu</item>
+        <item>Ses Arttırma Tuşu</item>
+        <item>Ses Kısma Tuşu</item>
+        <item>Kamera Tuşu</item>
     </string-array>
 
     <!-- Do not localize entryvalues -->
@@ -118,30 +118,9 @@
         <item>6</item>
     </string-array>
 
-    <string-array name="entries_fnkey_preference">
-        <item>Jog ball</item>
-        <item>\@ key</item>
-        <item>Left Alt key</item>
-        <item>Right Alt key</item>
-        <item>Vol Up key</item>
-        <item>Vol Down key</item>
-        <item>Camera key</item>
-    </string-array>
-
-    <!-- Do not localize entryvalues -->
-    <string-array name="entryvalues_fnkey_preference">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-    </string-array>
-
     <string-array name="entries_ime_preference">
-        <item>Character-based</item>
-        <item>Word-based</item>
+        <item>Harf tabanlı</item>
+        <item>Kelime tabanlı</item>
     </string-array>
 
     <!-- Do not localize entryvalues -->

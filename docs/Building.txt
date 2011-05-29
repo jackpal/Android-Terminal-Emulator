@@ -66,3 +66,16 @@ Build the Java apk:
 
     This should happen automatically once you've created the Eclipse project.
 
+Command Line Build Instructions
+-------------------------------
+
+You can build Android Terminal Emulator from the command line, instead of from
+Eclipse. This is handy because it can be scripted.
+
+1) Install the "ant" build system.
+2) cd <the-android-terminal-emulator-directory>
+3) ant clean
+4) ant debug
+5) Connect a device to your machine, or start the emulator
+6) adb install -r bin/Term.apk
+7) adb shell am start -n jackpal.androidterm/jackpal.androidterm.Term

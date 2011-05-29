@@ -1,0 +1,4 @@
+#!/bin/bash
+# command line build script for installing and running terminal emulator.
+
+adb install -r bin/Term.apk && adb shell am start -n jackpal.androidterm/jackpal.androidterm.Term

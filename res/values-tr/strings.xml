@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">Terminal Emülatörü</string>
+   <string name="preferences">Tercihler</string>
+   <string name="reset">Terminali yeniden başlat</string>
+   <string name="send_email">Email olarak yolla</string>
+   <string name="special_keys">Özel tuşlar</string>
+   <string name="toggle_soft_keyboard">Ekran klavyesine geç</string>
+
+   <string name="edit_text">Metni düzenle</string>
+   <string name="select_text">Metni seç</string>
+   <string name="copy_all">Hepsini kopyala</string>
+   <string name="paste">Yapıştır</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">Ekran</string>
+
+   <string name="title_statusbar_preference">Uyarı çubuğu</string>
+   <string name="summary_statusbar_preference">Uyarı çubuğunu göster/gizle.</string>
+   <string name="dialog_title_statusbar_preference">Uyarı çubuğu</string>
+
+   <string name="title_cursorstyle_preference">İmleç stili</string>
+   <string name="summary_cursorstyle_preference">İmleç stili seçin.</string>
+   <string name="dialog_title_cursorstyle_preference">İmleç stili</string>
+
+   <string name="title_cursorblink_preference">Cursor blink</string>
+   <string name="summary_cursorblink_preference">Choose cursor blink.</string>
+   <string name="dialog_title_cursorblink_preference">Cursor blink</string>
+
+   <string name="text_preferences">Metin</string>
+
+   <string name="title_fontsize_preference">Karakter boyutu</string>
+   <string name="summary_fontsize_preference">Karakter büyüklüğü seçin.</string>
+   <string name="dialog_title_fontsize_preference">Karakter boyutu</string>
+
+   <string name="title_color_preference">Renkler</string>
+   <string name="summary_color_preference">Metin rengini seçin.</string>
+   <string name="dialog_title_color_preference">Metin rengi</string>
+
+   <string name="keyboard_preferences">Klavye</string>
+
+   <string name="title_controlkey_preference">Kontrol tuşu</string>
+   <string name="summary_controlkey_preference">Kontrol tuşunu seçin.</string>
+   <string name="dialog_title_controlkey_preference">Kontrol tuşu</string>
+
+   <string name="title_ime_preference">Giriş yöntemi</string>
+   <string name="summary_ime_preference">Ekran klavyesi için giriş yöntemi seçin.</string>
+   <string name="dialog_title_ime_preference">Giriş yöntemi</string>
+
+   <string name="shell_preferences">Kabuk</string>
+   <string name="title_shell_preference">Komut satırı</string>
+   <string name="summary_shell_preference">Kabukta kullanılacak komut satırını belirtin.</string>
+   <string name="dialog_title_shell_preference">Kabuk</string>
+
+   <string name="title_initialcommand_preference">Başlangıç komutu</string>
+   <string name="summary_initialcommand_preference">Başlangıçta kabukta çalıştır.</string>
+   <string name="dialog_title_initialcommand_preference">Başlangıç komutu</string>
+
+   <!-- Don't localize these default values -->
+   <string name="default_value_statusbar_preference">0</string>
+   <string name="default_value_cursorstyle_preference">0</string>
+   <string name="default_value_cursorblink_preference">0</string>
+   <string name="default_value_fontsize_preference">10</string>
+   <string name="default_value_color_preference">2</string>
+   <string name="default_value_controlkey_preference">0</string>
+   <string name="default_value_ime_preference">0</string>
+   <string name="default_value_shell_preference">/system/bin/sh -</string>
+   <string name="default_value_initialcommand_preference">export PATH=/data/local/bin:$PATH</string>
+</resources>

@@ -47,6 +47,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <termios.h>
+#include <signal.h>
 
 static jclass class_fileDescriptor;
 static jfieldID field_fileDescriptor_descriptor;
@@ -59,7 +60,7 @@ public:
     String8() {
         mString = 0;
     }
-    
+
     ~String8() {
         if (mString) {
             free(mString);
@@ -76,7 +77,7 @@ public:
         }
         mString[numChars] = '\0';
     }
-    
+
     const char* string() {
         return mString;
     }
@@ -103,7 +104,7 @@ static int create_subprocess(const char *cmd, const char *arg0, const char *arg1
         LOGE("[ trouble with /dev/ptmx - %s ]\n", strerror(errno));
         return -1;
     }
-    
+
     pid = fork();
     if(pid < 0) {
         LOGE("- fork failed: %s -\n", strerror(errno));
@@ -116,7 +117,7 @@ static int create_subprocess(const char *cmd, const char *arg0, const char *arg1
         int pts;
 
         setsid();
-        
+
         pts = open(devname, O_RDWR);
         if(pts < 0) exit(-1);
 
@@ -163,12 +164,12 @@ static jobject android_os_Exec_createSubProcess(JNIEnv *env, jobject clazz,
 
     int procId;
     int ptm = create_subprocess(cmd_8.string(), arg0Str, arg1Str, &procId);
-    
+
     if (processIdArray) {
         int procIdLen = env->GetArrayLength(processIdArray);
         if (procIdLen > 0) {
             jboolean isCopy;
-    
+
             int* pProcId = (int*) env->GetPrimitiveArrayCritical(processIdArray, &isCopy);
             if (pProcId) {
                 *pProcId = procId;
@@ -176,16 +177,16 @@ static jobject android_os_Exec_createSubProcess(JNIEnv *env, jobject clazz,
             }
         }
     }
-    
+
     jobject result = env->NewObject(class_fileDescriptor, method_fileDescriptor_init);
-    
+
     if (!result) {
         LOGE("Couldn't create a FileDescriptor.");
     }
     else {
         env->SetIntField(result, field_fileDescriptor_descriptor, ptm);
     }
-    
+
     return result;
 }
 
@@ -201,12 +202,12 @@ static void android_os_Exec_setPtyWindowSize(JNIEnv *env, jobject clazz,
     if (env->ExceptionOccurred() != NULL) {
         return;
     }
-    
+
     sz.ws_row = row;
     sz.ws_col = col;
     sz.ws_xpixel = xpixel;
     sz.ws_ypixel = ypixel;
-    
+
     ioctl(fd, TIOCSWINSZ, &sz);
 }
 
@@ -224,24 +225,37 @@ static int android_os_Exec_waitFor(JNIEnv *env, jobject clazz,
 static void android_os_Exec_close(JNIEnv *env, jobject clazz, jobject fileDescriptor)
 {
     int fd;
-    struct winsize sz;
 
     fd = env->GetIntField(fileDescriptor, field_fileDescriptor_descriptor);
 
     if (env->ExceptionOccurred() != NULL) {
         return;
     }
-    
+
     close(fd);
+}
+
+static void android_os_Exec_hangupProcessGroup(JNIEnv *env, jobject clazz,
+    jint procId) {
+    kill(-procId, SIGHUP);
 }
 
 
 static int register_FileDescriptor(JNIEnv *env)
 {
-    class_fileDescriptor = env->FindClass("java/io/FileDescriptor");
+    jclass localRef_class_fileDescriptor = env->FindClass("java/io/FileDescriptor");
+
+    if (localRef_class_fileDescriptor == NULL) {
+        LOGE("Can't find class java/io/FileDescriptor");
+        return -1;
+    }
+
+    class_fileDescriptor = (jclass) env->NewGlobalRef(localRef_class_fileDescriptor);
+
+    env->DeleteLocalRef(localRef_class_fileDescriptor);
 
     if (class_fileDescriptor == NULL) {
-        LOGE("Can't find java/io/FileDescriptor");
+        LOGE("Can't get global ref to class java/io/FileDescriptor");
         return -1;
     }
 
@@ -271,7 +285,9 @@ static JNINativeMethod method_table[] = {
     { "waitFor", "(I)I",
         (void*) android_os_Exec_waitFor},
     { "close", "(Ljava/io/FileDescriptor;)V",
-        (void*) android_os_Exec_close}
+        (void*) android_os_Exec_close},
+    { "hangupProcessGroup", "(I)V",
+        (void*) android_os_Exec_hangupProcessGroup}
 };
 
 /*
@@ -302,7 +318,7 @@ static int registerNativeMethods(JNIEnv* env, const char* className,
  */
 static int registerNatives(JNIEnv* env)
 {
-  if (!registerNativeMethods(env, classPathName, method_table, 
+  if (!registerNativeMethods(env, classPathName, method_table,
                  sizeof(method_table) / sizeof(method_table[0]))) {
     return JNI_FALSE;
   }
@@ -316,7 +332,7 @@ static int registerNatives(JNIEnv* env)
 /*
  * This is called by the VM when the shared library is first loaded.
  */
- 
+
 typedef union {
     JNIEnv* env;
     void* venv;
@@ -327,7 +343,7 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved) {
     uenv.venv = NULL;
     jint result = -1;
     JNIEnv* env = NULL;
-    
+
     LOGI("JNI_OnLoad");
 
     if (vm->GetEnv(&uenv.venv, JNI_VERSION_1_4) != JNI_OK) {
@@ -335,7 +351,7 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved) {
         goto bail;
     }
     env = uenv.env;
-    
+
     if ((result = register_FileDescriptor(env)) < 0) {
         LOGE("ERROR: registerFileDescriptor failed");
         goto bail;
@@ -345,9 +361,9 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved) {
         LOGE("ERROR: registerNatives failed");
         goto bail;
     }
-    
+
     result = JNI_VERSION_1_4;
-    
+
 bail:
     return result;
 }

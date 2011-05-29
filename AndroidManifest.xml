@@ -1,14 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jackpal.androidterm2"
-      android:versionName="1.0.21" android:versionCode="22">
-   <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+      android:versionName="1.0.29" android:versionCode="30">
    <uses-permission android:name="android.permission.INTERNET" />
    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+   <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application android:icon="@drawable/app_terminal"
                 android:label="@string/application_terminal">
         <activity android:name="Term"
                 android:theme="@style/Theme"
-                android:launchMode="singleInstance"
+                android:launchMode="singleTask"
                 android:configChanges="keyboard|keyboardHidden|orientation"
                 android:windowSoftInputMode="adjustResize|stateVisible">
             <intent-filter>
@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name="TermPreferences"/>
+        <service android:name="TermService" />
     </application>
-    <uses-sdk android:minSdkVersion="4" />
+    <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="10" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 </manifest>

@@ -1,0 +1,10 @@
+#!/bin/bash
+# command line build script for building release version
+# This will only work on my (Jack Palevich) computer, because it
+# requires the private key store used o sign the release version
+# of Android Terminal Emulator.
+
+cd ~/code/Android-Terminal-Emulator
+rm -rf bin obj
+cd jni
+~/code/android-ndk-r5b/ndk-build && cd .. && ant release && mv bin/Term-release.apk bin/Term.apk
