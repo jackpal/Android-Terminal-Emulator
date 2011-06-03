@@ -82,6 +82,19 @@
     <!-- Do not localize entryvalues -->
     <!-- skipping untranslatable /resources:0/string-array:name=entryvalues_controlkey_preference -->
 
+    <string-array name="entries_fnkey_preference">
+        <item>軌跡球</item>
+        <item>\@ 鍵</item>
+        <item>左 Alt 鍵</item>
+        <item>右 Alt 鍵</item>
+        <item>提升音量鍵</item>
+        <item>降低音量鍵</item>
+        <item>相機快門鍵</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <!-- skipping untranslatable /resources:0/string-array:name=entryvalues_fnkey_preference -->
+
     <string-array name="entries_ime_preference">
         <item>字本</item>
         <item>詞本</item>
