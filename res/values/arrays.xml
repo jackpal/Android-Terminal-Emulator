@@ -22,7 +22,7 @@
     </string-array>
 
     <!-- Do not localize entryvalues -->
-    <string-array name="entryvalues_statusbar_preference">
+    <string-array name="entryvalues_statusbar_preference" translatable="false">
         <item>1</item>
         <item>0</item>
     </string-array>
@@ -33,7 +33,7 @@
     </string-array>
 
     <!-- Do not localize entryvalues -->
-    <string-array name="entryvalues_cursorblink_preference">
+    <string-array name="entryvalues_cursorblink_preference" translatable="false">
         <item>0</item>
         <item>1</item>
     </string-array>
@@ -45,7 +45,7 @@
     </string-array>
 
     <!-- Do not localize entryvalues -->
-    <string-array name="entryvalues_cursorstyle_preference">
+    <string-array name="entryvalues_cursorstyle_preference" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -65,7 +65,7 @@
     </string-array>
 
     <!-- Do not localize entryvalues -->
-    <string-array name="entryvalues_fontsize_preference">
+    <string-array name="entryvalues_fontsize_preference" translatable="false">
         <item>0</item>
         <item>6</item>
         <item>7</item>
@@ -88,7 +88,7 @@
     </string-array>
 
     <!-- Do not localize entryvalues -->
-    <string-array name="entryvalues_color_preference">
+    <string-array name="entryvalues_color_preference" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -108,7 +108,7 @@
     </string-array>
 
     <!-- Do not localize entryvalues -->
-    <string-array name="entryvalues_controlkey_preference">
+    <string-array name="entryvalues_controlkey_preference" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -129,7 +129,7 @@
     </string-array>
 
     <!-- Do not localize entryvalues -->
-    <string-array name="entryvalues_fnkey_preference">
+    <string-array name="entryvalues_fnkey_preference" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -145,7 +145,7 @@
     </string-array>
 
     <!-- Do not localize entryvalues -->
-    <string-array name="entryvalues_ime_preference">
+    <string-array name="entryvalues_ime_preference" translatable="false">
         <item>0</item>
         <item>1</item>
     </string-array>

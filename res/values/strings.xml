@@ -83,14 +83,14 @@
    <string name="dialog_title_initialcommand_preference">Initial Command</string>
 
    <!-- Don't localize these default values -->
-   <string name="default_value_statusbar_preference">0</string>
-   <string name="default_value_cursorstyle_preference">0</string>
-   <string name="default_value_cursorblink_preference">0</string>
-   <string name="default_value_fontsize_preference">10</string>
-   <string name="default_value_color_preference">2</string>
-   <string name="default_value_controlkey_preference">5</string>
-   <string name="default_value_fnkey_preference">4</string>
-   <string name="default_value_ime_preference">0</string>
-   <string name="default_value_shell_preference">/system/bin/sh -</string>
-   <string name="default_value_initialcommand_preference">export PATH=/data/local/bin:$PATH</string>
+   <string name="default_value_statusbar_preference" translatable="false">0</string>
+   <string name="default_value_cursorstyle_preference" translatable="false">0</string>
+   <string name="default_value_cursorblink_preference" translatable="false">0</string>
+   <string name="default_value_fontsize_preference" translatable="false">10</string>
+   <string name="default_value_color_preference" translatable="false">2</string>
+   <string name="default_value_controlkey_preference" translatable="false">5</string>
+   <string name="default_value_fnkey_preference" translatable="false">4</string>
+   <string name="default_value_ime_preference" translatable="false">0</string>
+   <string name="default_value_shell_preference" translatable="false">/system/bin/sh -</string>
+   <string name="default_value_initialcommand_preference" translatable="false">export PATH=/data/local/bin:$PATH</string>
 </resources>
