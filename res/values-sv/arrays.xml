@@ -35,12 +35,21 @@
     </string-array>
     <string-array name="entries_controlkey_preference">
         <item>Trackball</item>
-        <item>\@ tangent</item>
-        <item>Vänster Alt tangent</item>
-        <item>Höger Alt tangent</item>
-        <item>Vol upp</item>
-        <item>Vol ner</item>
-        <item>Kamera tangent</item>
+        <item>\@-tangent</item>
+        <item>Vänster Alt-tangent</item>
+        <item>Höger Alt-tangent</item>
+        <item>Volym upp</item>
+        <item>Volym ner</item>
+        <item>Kamera-tangent</item>
+    </string-array>
+    <string-array name="entries_fnkey_preference">
+        <item>Trackball</item>
+        <item>\@-tangent</item>
+        <item>Vänster Alt-tangent</item>
+        <item>Höger Alt-tangent</item>
+        <item>Volym upp</item>
+        <item>Volym ner</item>
+        <item>Kamera-tangent</item>
     </string-array>
     <string-array name="entries_ime_preference">
         <item>Teckenbaserade</item>
