@@ -48,6 +48,17 @@
         <item>Touche Alt droite</item>
         <item>Touche Vol Haut</item>
         <item>Touche Vol Bas</item>
+        <item>Touche Camera</item>
+    </string-array>
+
+    <string-array name="entries_fnkey_preference">
+        <item>Trackball</item>
+        <item>Touche \@</item>
+        <item>Touche Alt gauche</item>
+        <item>Touche Alt droite</item>
+        <item>Touche Vol Haut</item>
+        <item>Touche Vol Bas</item>
+        <item>Touche Camera</item>
     </string-array>
 
     <string-array name="entries_ime_preference">

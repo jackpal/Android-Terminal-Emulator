@@ -22,9 +22,17 @@
    <string name="special_keys">Touches spéciales</string>
    <string name="toggle_soft_keyboard">Afficher/Masquer Clavier</string>
 
+   <string name="enable_wakelock">Activer WakeLock</string>
+   <string name="disable_wakelock">Désactiver WakeLock</string>
+   <string name="enable_wifilock">Activer WifiLock</string>
+   <string name="disable_wifilock">Désactiver WifiLock</string>
+
    <string name="edit_text">Modifier le texte</string>
+   <string name="select_text">Selectionner le texte</string>
    <string name="copy_all">Tout copier</string>
    <string name="paste">Coller</string>
+
+   <string name="service_notify_text">Une session terminal est en cours d'exécution</string>
 
    <!-- Preference dialog -->
    <string name="screen_preferences">Écran</string>
@@ -56,6 +64,10 @@
    <string name="title_controlkey_preference">Touche CTRL</string>
    <string name="summary_controlkey_preference">Choisir quelle touche utiliser pour control (CTRL)</string>
    <string name="dialog_title_controlkey_preference">Touche CTRL</string>
+
+   <string name="title_fnkey_preference">Touche Fn</string>
+   <string name="summary_fnkey_preference">Choisir quelle touche utiliser pour Fonction (Fn)</string>
+   <string name="dialog_title_fnkey_preference">Touche Fn</string>
 
    <string name="title_ime_preference">Méthode d\'entrée</string>
    <string name="summary_ime_preference">Choisir la méthode d\'entrée du clavier virtuel</string>
