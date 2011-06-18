@@ -1043,7 +1043,7 @@ class TranscriptScreen implements Screen {
                 || dy + h > mScreenRows) {
             throw new IllegalArgumentException();
         }
-        if (sy <= dy) {
+        if (sy > dy) {
             // Move in increasing order
             for (int y = 0; y < h; y++) {
                 int srcOffset = getOffset(sx, sy + y);
@@ -1838,10 +1838,10 @@ class TerminalEmulator {
             break;
 
         case 'M': // Reverse index
-            if (mCursorRow == 0) {
-                mScreen.blockCopy(0, mTopMargin + 1, mColumns, mBottomMargin
-                        - (mTopMargin + 1), 0, mTopMargin);
-                blockClear(0, mBottomMargin - 1, mColumns);
+            if (mCursorRow <= mTopMargin) {
+                mScreen.blockCopy(0, mTopMargin, mColumns, mBottomMargin
+                        - (mTopMargin + 1), 0, mTopMargin + 1);
+                blockClear(0, mTopMargin, mColumns);
             } else {
                 mCursorRow--;
             }
