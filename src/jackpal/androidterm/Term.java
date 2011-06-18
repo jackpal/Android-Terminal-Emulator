@@ -2087,6 +2087,9 @@ class TerminalEmulator {
                     code = 0;
                 }
             }
+
+            // See http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
+
             if (code == 0) { // reset
                 mInverseColors = false;
                 mForeColor = 7;
@@ -2097,10 +2100,21 @@ class TerminalEmulator {
                 mBackColor |= 0x8;
             } else if (code == 7) { // inverse
                 mInverseColors = true;
+            } else if (code == 22) { // Normal color or intensity, neither bright, bold nor faint
+                mForeColor &= 0x7;
+            } else if (code == 24) { // underline: none
+                mBackColor &= 0x7;
+            } else if (code == 27) { // image: positive
+                mInverseColors = false;
             } else if (code >= 30 && code <= 37) { // foreground color
                 mForeColor = (mForeColor & 0x8) | (code - 30);
+            } else if (code == 39) { // set default text color
+                mForeColor = 7;
+                mBackColor = mBackColor & 0x7;
             } else if (code >= 40 && code <= 47) { // background color
                 mBackColor = (mBackColor & 0x8) | (code - 40);
+            } else if (code == 49) { // set default background color
+                mBackColor = mBackColor & 0x8; // color 0, but preserve underscore.
             } else {
                 if (Term.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
                     Log.w(Term.LOG_TAG, String.format("SGR unknown code %d", code));
