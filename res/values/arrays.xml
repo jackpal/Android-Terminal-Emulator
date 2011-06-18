@@ -105,6 +105,7 @@
         <item>Vol Up key</item>
         <item>Vol Down key</item>
         <item>Camera key</item>
+        <item>None</item>
     </string-array>
 
     <!-- Do not localize entryvalues -->
@@ -116,6 +117,7 @@
         <item>4</item>
         <item>5</item>
         <item>6</item>
+        <item>7</item>
     </string-array>
 
     <string-array name="entries_fnkey_preference">
@@ -126,6 +128,7 @@
         <item>Vol Up key</item>
         <item>Vol Down key</item>
         <item>Camera key</item>
+        <item>None</item>
     </string-array>
 
     <!-- Do not localize entryvalues -->
@@ -137,6 +140,7 @@
         <item>4</item>
         <item>5</item>
         <item>6</item>
+        <item>7</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
@@ -148,5 +152,29 @@
     <string-array name="entryvalues_ime_preference">
         <item>0</item>
         <item>1</item>
+    </string-array>
+    
+    <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
+    <string-array name="control_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Left-Alt</item>
+        <item>Right-Alt</item>
+        <item>Vol-Up</item>
+        <item>Vol-Dn</item>
+        <item>Camera</item>
+        <item>None</item>
+    </string-array>
+    
+    <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
+    <string-array name="fn_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Left-Alt</item>
+        <item>Right-Alt</item>
+        <item>Vol-Up</item>
+        <item>Vol-Dn</item>
+        <item>Camera</item>
+        <item>None</item>
     </string-array>
 </resources>

@@ -174,18 +174,23 @@ public class Term extends Activity {
     private static final int[][] COLOR_SCHEMES = {
         {BLACK, WHITE}, {WHITE, BLACK}, {WHITE, BLUE}, {GREEN, BLACK}, {AMBER, BLACK}, {RED, BLACK}};
 
-    private static final int[] CONTROL_KEY_SCHEMES = {
+	private static final int CONTROL_KEY_ID_NONE = 7;
+	/** An integer not in the range of real key codes. */
+	private static final int KEYCODE_NONE = -1;
+
+	private static final int[] CONTROL_KEY_SCHEMES = {
         KeyEvent.KEYCODE_DPAD_CENTER,
         KeyEvent.KEYCODE_AT,
         KeyEvent.KEYCODE_ALT_LEFT,
         KeyEvent.KEYCODE_ALT_RIGHT,
         KeyEvent.KEYCODE_VOLUME_UP,
         KeyEvent.KEYCODE_VOLUME_DOWN,
-        KeyEvent.KEYCODE_CAMERA
+        KeyEvent.KEYCODE_CAMERA,
+        KEYCODE_NONE
     };
-    private static final String[] CONTROL_KEY_NAME = {
-        "Ball", "@", "Left-Alt", "Right-Alt", "Vol-Up", "Vol-Dn", "Camera"
-    };
+
+    private static final int FN_KEY_ID_NONE = 7;
+
     private static final int[] FN_KEY_SCHEMES = {
         KeyEvent.KEYCODE_DPAD_CENTER,
         KeyEvent.KEYCODE_AT,
@@ -193,10 +198,8 @@ public class Term extends Activity {
         KeyEvent.KEYCODE_ALT_RIGHT,
         KeyEvent.KEYCODE_VOLUME_UP,
         KeyEvent.KEYCODE_VOLUME_DOWN,
-        KeyEvent.KEYCODE_CAMERA
-    };
-    private static final String[] FN_KEY_NAME = {
-        "Ball", "@", "Left-Alt", "Right-Alt", "Vol-Up", "Vol-Dn", "Camera"
+        KeyEvent.KEYCODE_CAMERA,
+        KEYCODE_NONE
     };
 
     private int mControlKeyCode;
@@ -644,29 +647,35 @@ public class Term extends Activity {
     }
 
     private void doDocumentKeys() {
-        String controlKey = CONTROL_KEY_NAME[mControlKeyId];
-        String fnKey = FN_KEY_NAME[mFnKeyId];
-        new AlertDialog.Builder(this).
-            setTitle("Press " + controlKey + " and Key").
-            setMessage(controlKey + " Space : Control-@ (NUL)\n"
-                    + controlKey + " A..Z : Control-A..Z\n"
-                    + controlKey + " 0..9 : Control-0..9\n"
-                    + fnKey + " W : Up\n"
-                    + fnKey + " A : Left\n"
-                    + fnKey + " S : Down\n"
-                    + fnKey + " D : Right\n"
-                    + fnKey + " P : PageUp\n"
-                    + fnKey + " N : PageDown\n"
-                    + fnKey + " T : Tab\n"
-                    + fnKey + " L : | (pipe)\n"
-                    + fnKey + " U : _ (underscore)\n"
-                    + fnKey + " E : Control-[ (ESC)\n"
-                    + fnKey + " . : Control-\\\n"
-                    + fnKey + " 2 : Control-_\n"
-                    + fnKey + " 3 : Control-^\n"
-                    + fnKey + " 4 : Control-]"
-                    ).show();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        Resources r = getResources();
+        dialog.setTitle(r.getString(R.string.control_key_dialog_title));
+        dialog.setMessage(
+            formatMessage(mControlKeyId, CONTROL_KEY_ID_NONE,
+                r, R.array.control_keys_short_names,
+                R.string.control_key_dialog_control_text,
+                R.string.control_key_dialog_control_disabled_text, "CTRLKEY")
+            + "\n\n" +
+            formatMessage(mFnKeyId, FN_KEY_ID_NONE,
+                r, R.array.fn_keys_short_names,
+                R.string.control_key_dialog_fn_text,
+                R.string.control_key_dialog_fn_disabled_text, "FNKEY"));
+         dialog.show();
      }
+
+     private String formatMessage(int keyId, int disabledKeyId,
+         Resources r, int arrayId,
+         int enabledId,
+         int disabledId, String regex) {
+         if (keyId == disabledKeyId) {
+             return r.getString(disabledId);
+         }
+         String[] keyNames = r.getStringArray(arrayId);
+         String keyName = keyNames[keyId];
+         String template = r.getString(enabledId);
+         String result = template.replaceAll(regex, keyName);
+         return result;
+    }
 
     private void doToggleSoftKeyboard() {
         InputMethodManager imm = (InputMethodManager)
