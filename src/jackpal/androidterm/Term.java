@@ -313,6 +313,18 @@ public class Term extends Activity {
 
         mEmulatorView.initialize(mTermFd, mTermOut);
 
+        /* Check whether we've received an initial command from the
+         * launching application
+         */
+        String iInitialCommand = getIntent().getStringExtra("jackpal.androidterm.iInitialCommand");
+        if (iInitialCommand != null) {
+            if (mInitialCommand != null) {
+                mInitialCommand += "\r" + iInitialCommand;
+            } else {
+                mInitialCommand = iInitialCommand;
+            }
+        }
+
         sendInitialCommand();
     }
 
