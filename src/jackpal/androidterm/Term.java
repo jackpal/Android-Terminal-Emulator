@@ -4426,20 +4426,20 @@ class TermKeyListener {
                 result = (char) (result - 'a' + '\001');
             } else if (result >= 'A' && result <= 'Z') {
                 result = (char) (result - 'A' + '\001');
-            } else if (result >= '0' && result <= '9') {
-                result = (char) (result - '0' + '\001');
-            } else if (result == ' ') {
+            } else if (result == ' ' || result == '2') {
                 result = 0;
-            } else if (result == '[') {
-                result = 27;
-            } else if (result == '\\') {
+            } else if (result == '[' || result == '3') {
+                result = 27; // ^[ (Esc)
+            } else if (result == '\\' || result == '4') {
                 result = 28;
-            } else if (result == ']') {
+            } else if (result == ']' || result == '5') {
                 result = 29;
-            } else if (result == '^') {
+            } else if (result == '^' || result == '6') {
                 result = 30; // control-^
-            } else if (result == '_') {
+            } else if (result == '_' || result == '7') {
                 result = 31;
+            } else if (result == '8') {
+                result = 127; // DEL
             }
         } else if (mFnKey.isActive()) {
             if (result == 'w' || result == 'W') {
@@ -4464,12 +4464,6 @@ class TermKeyListener {
                 result = 27; // ^[ (Esc)
             } else if (result == '.') {
                 result = 28; // ^\
-            } else if (result == '4') {
-                result = 29; // ^]
-            } else if (result == '3') {
-                result = 30; // control-^
-            } else if (result == '2') {
-                result = 31; // ^_
             }
         }
 
