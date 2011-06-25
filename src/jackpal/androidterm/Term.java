@@ -4440,6 +4440,10 @@ class TermKeyListener {
                 result = 31;
             } else if (result == '8') {
                 result = 127; // DEL
+            } else if (result == '9') {
+                result = KEYCODE_OFFSET + TermKeyListener.KEYCODE_F11;
+            } else if (result == '0') {
+                result = KEYCODE_OFFSET + TermKeyListener.KEYCODE_F12;
             }
         } else if (mFnKey.isActive()) {
             if (result == 'w' || result == 'W') {
@@ -4464,6 +4468,19 @@ class TermKeyListener {
                 result = 27; // ^[ (Esc)
             } else if (result == '.') {
                 result = 28; // ^\
+            } else if (result > '0' && result <= '9') {
+                // F1-F9
+                result = (char)(result + KEYCODE_OFFSET + TermKeyListener.KEYCODE_F1 - 1);
+            } else if (result == '0') {
+                result = KEYCODE_OFFSET + TermKeyListener.KEYCODE_F10;
+            } else if (result == 'i' || result == 'I') {
+                result = KEYCODE_OFFSET + TermKeyListener.KEYCODE_INSERT;
+            } else if (result == 'x' || result == 'X') {
+                result = KEYCODE_OFFSET + TermKeyListener.KEYCODE_FORWARD_DEL;
+            } else if (result == 'h' || result == 'H') {
+                result = KEYCODE_OFFSET + TermKeyListener.KEYCODE_MOVE_HOME;
+            } else if (result == 'f' || result == 'F') {
+                result = KEYCODE_OFFSET + TermKeyListener.KEYCODE_MOVE_END;
             }
         }
 
