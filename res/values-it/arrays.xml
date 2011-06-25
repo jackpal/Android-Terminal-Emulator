@@ -22,7 +22,7 @@
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
-        <item>Cursore non lampeggiante</item>
+        <item>Cursore fisso</item>
         <item>Cursore lampeggiante</item>
     </string-array>
 
@@ -56,11 +56,24 @@
 
     <string-array name="entries_controlkey_preference">
         <item>Trackball</item>
-        <item>Tasto \@</item>
-        <item>Tasto Alt sin.</item>
-        <item>Tasto Alt des.</item>
-        <item>Pulsante Vol +</item>
-        <item>Pulsante Vol -</item>
+        <item>\@</item>
+        <item>Alt sin.</item>
+        <item>Alt des.</item>
+        <item>Volume +</item>
+        <item>Volume -</item>
+        <item>Fotocamera</item>
+        <item>Nessuno</item>
+    </string-array>
+
+    <string-array name="entries_fnkey_preference">
+        <item>Trackball</item>
+        <item>\@</item>
+        <item>Alt sinistro</item>
+        <item>Alt destro</item>
+        <item>Volume +</item>
+        <item>Volume -</item>
+        <item>Fotocamera</item>
+        <item>Nessuno</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
@@ -68,4 +81,25 @@
         <item>Word-based</item>
     </string-array>
 
+    <string-array name="control_keys_short_names">
+        <item>T.ball</item>
+        <item>\@</item>
+        <item>AltSX</item>
+        <item>AltDX</item>
+        <item>Vol+</item>
+        <item>Vol-</item>
+        <item>Camera</item>
+        <item>Ness.</item>
+    </string-array>
+
+    <string-array name="fn_keys_short_names">
+        <item>T.ball</item>
+        <item>\@</item>
+        <item>AltSX</item>
+        <item>AltDX</item>
+        <item>Vol+</item>
+        <item>Vol-</item>
+        <item>Camera</item>
+        <item>Ness.</item>
+    </string-array>
 </resources>
