@@ -4424,6 +4424,8 @@ class TermKeyListener {
             // Search is the control key.
             if (result >= 'a' && result <= 'z') {
                 result = (char) (result - 'a' + '\001');
+            } else if (result >= 'A' && result <= 'Z') {
+                result = (char) (result - 'A' + '\001');
             } else if (result >= '0' && result <= '9') {
                 result = (char) (result - '0' + '\001');
             } else if (result == ' ') {
@@ -4440,25 +4442,25 @@ class TermKeyListener {
                 result = 31;
             }
         } else if (mFnKey.isActive()) {
-            if (result == 'w') {
+            if (result == 'w' || result == 'W') {
                 result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_UP;
-            } else if (result == 'a') {
+            } else if (result == 'a' || result == 'A') {
                 result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_LEFT;
-            } else if (result == 's') {
+            } else if (result == 's' || result == 'S') {
                 result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_DOWN;
-            } else if (result == 'd') {
+            } else if (result == 'd' || result == 'D') {
                 result = KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_RIGHT;
-            } else if (result == 'p') {
+            } else if (result == 'p' || result == 'P') {
                 result = KEYCODE_OFFSET + TermKeyListener.KEYCODE_PAGE_UP;
-            } else if (result == 'n') {
+            } else if (result == 'n' || result == 'N') {
                 result = KEYCODE_OFFSET + TermKeyListener.KEYCODE_PAGE_DOWN;
-            } else if (result == 't') {
+            } else if (result == 't' || result == 'T') {
                 result = KEYCODE_OFFSET + KeyEvent.KEYCODE_TAB;
-            } else if (result == 'l') {
+            } else if (result == 'l' || result == 'L') {
                 result = '|';
-            } else if (result == 'u') {
+            } else if (result == 'u' || result == 'U') {
                 result = '_';
-            } else if (result == 'e') {
+            } else if (result == 'e' || result == 'E') {
                 result = 27; // ^[ (Esc)
             } else if (result == '.') {
                 result = 28; // ^\
