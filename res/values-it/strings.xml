@@ -16,11 +16,11 @@
 -->
 <resources>
    <string name="application_terminal">Emulatore terminale</string>
-   <string name="preferences">Preferenze</string>
-   <string name="reset">Reset term.</string>
+   <string name="preferences">Impostazioni</string>
+   <string name="reset">Reset terminale</string>
    <string name="send_email">Invia email</string>
    <string name="special_keys">Tasti speciali</string>
-   <string name="toggle_soft_keyboard">Attiva/disattiva tastiera</string>
+   <string name="toggle_soft_keyboard">Mostra/nascondi tastiera</string>
 
    <string name="enable_wakelock">Attiva WakeLock</string>
    <string name="disable_wakelock">Disattiva WakeLock</string>
