@@ -41,7 +41,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -49,6 +48,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import jackpal.androidterm.util.TermSettings;
 
 /**
  * A terminal emulator activity.
@@ -87,75 +88,14 @@ public class Term extends Activity {
      */
     private static final int EMULATOR_VIEW = R.id.emulatorView;
 
-    private int mStatusBar = 0;
-    private int mCursorStyle = 0;
-    private int mCursorBlink = 0;
-    private int mFontSize = 9;
-    private int mColorId = 2;
-    private int mControlKeyId = 5; // Default to Volume Down
-    private int mFnKeyId = 4; // Default to Volume Up
-    private int mUseCookedIME = 0;
-
-    private static final String STATUSBAR_KEY = "statusbar";
-    private static final String CURSORSTYLE_KEY = "cursorstyle";
-    private static final String CURSORBLINK_KEY = "cursorblink";
-    private static final String FONTSIZE_KEY = "fontsize";
-    private static final String COLOR_KEY = "color";
-    private static final String CONTROLKEY_KEY = "controlkey";
-    private static final String FNKEY_KEY = "fnkey";
-    private static final String IME_KEY = "ime";
-    private static final String SHELL_KEY = "shell";
-    private static final String INITIALCOMMAND_KEY = "initialcommand";
-
-    public static final int WHITE = 0xffffffff;
-    public static final int BLACK = 0xff000000;
-    public static final int BLUE =  0xff344ebd;
-    public static final int GREEN = 0xff00ff00;
-    public static final int AMBER = 0xffffb651;
-    public static final int RED =   0xffff0113;
-
-    private static final int[][] COLOR_SCHEMES = {
-        {BLACK, WHITE}, {WHITE, BLACK}, {WHITE, BLUE}, {GREEN, BLACK}, {AMBER, BLACK}, {RED, BLACK}};
-
-	private static final int CONTROL_KEY_ID_NONE = 7;
-	/** An integer not in the range of real key codes. */
-	private static final int KEYCODE_NONE = -1;
-
-	private static final int[] CONTROL_KEY_SCHEMES = {
-        KeyEvent.KEYCODE_DPAD_CENTER,
-        KeyEvent.KEYCODE_AT,
-        KeyEvent.KEYCODE_ALT_LEFT,
-        KeyEvent.KEYCODE_ALT_RIGHT,
-        KeyEvent.KEYCODE_VOLUME_UP,
-        KeyEvent.KEYCODE_VOLUME_DOWN,
-        KeyEvent.KEYCODE_CAMERA,
-        KEYCODE_NONE
-    };
-
-    private static final int FN_KEY_ID_NONE = 7;
-
-    private static final int[] FN_KEY_SCHEMES = {
-        KeyEvent.KEYCODE_DPAD_CENTER,
-        KeyEvent.KEYCODE_AT,
-        KeyEvent.KEYCODE_ALT_LEFT,
-        KeyEvent.KEYCODE_ALT_RIGHT,
-        KeyEvent.KEYCODE_VOLUME_UP,
-        KeyEvent.KEYCODE_VOLUME_DOWN,
-        KeyEvent.KEYCODE_CAMERA,
-        KEYCODE_NONE
-    };
-
-    private int mControlKeyCode;
-    private int mFnKeyCode;
-
     private final static String DEFAULT_SHELL = "/system/bin/sh -";
-    private String mShell;
 
+    private String mInitialCommand;
     private final static String DEFAULT_INITIAL_COMMAND =
         "export PATH=/data/local/bin:$PATH";
-    private String mInitialCommand;
 
     private SharedPreferences mPrefs;
+    private TermSettings mSettings;
 
     private final static int SELECT_TEXT_ID = 0;
     private final static int COPY_ALL_ID = 1;
@@ -174,7 +114,7 @@ public class Term extends Activity {
         super.onCreate(icicle);
         Log.e(TermDebug.LOG_TAG, "onCreate");
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        readPrefs();
+        mSettings = new TermSettings(mPrefs);
 
         TSIntent = new Intent(this, TermService.class);
         startService(TSIntent);
@@ -259,6 +199,7 @@ public class Term extends Activity {
         /* Check whether we've received an initial command from the
          * launching application
          */
+        mInitialCommand = mSettings.getInitialCommand();
         String iInitialCommand = getIntent().getStringExtra("jackpal.androidterm.iInitialCommand");
         if (iInitialCommand != null) {
             if (mInitialCommand != null) {
@@ -298,7 +239,7 @@ public class Term extends Activity {
     }
 
     private void createSubprocess(int[] processId) {
-        String shell = mShell;
+        String shell = mSettings.getShell();
         if (shell == null || shell.equals("")) {
             shell = DEFAULT_SHELL;
         }
@@ -363,55 +304,15 @@ public class Term extends Activity {
         return result;
     }
 
-    private void readPrefs() {
-        mStatusBar = readIntPref(STATUSBAR_KEY, mStatusBar, 1);
-        // mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 2);
-        // mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
-        mFontSize = readIntPref(FONTSIZE_KEY, mFontSize, 20);
-        mColorId = readIntPref(COLOR_KEY, mColorId, COLOR_SCHEMES.length - 1);
-        mControlKeyId = readIntPref(CONTROLKEY_KEY, mControlKeyId,
-                CONTROL_KEY_SCHEMES.length - 1);
-        mFnKeyId = readIntPref(FNKEY_KEY, mFnKeyId,
-                FN_KEY_SCHEMES.length - 1);
-        mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
-        {
-            String newShell = readStringPref(SHELL_KEY, mShell);
-            if ((newShell == null) || ! newShell.equals(mShell)) {
-                if (mShell != null) {
-                    Log.i(TermDebug.LOG_TAG, "New shell set. Restarting.");
-                    restart();
-                }
-                mShell = newShell;
-            }
-        }
-        {
-            String newInitialCommand = readStringPref(INITIALCOMMAND_KEY,
-                    mInitialCommand);
-            if ((newInitialCommand == null)
-                    || ! newInitialCommand.equals(mInitialCommand)) {
-                if (mInitialCommand != null) {
-                    Log.i(TermDebug.LOG_TAG, "New initial command set. Restarting.");
-                    restart();
-                }
-                mInitialCommand = newInitialCommand;
-            }
-        }
-    }
-
     private void updatePrefs() {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        mEmulatorView.setTextSize((int) (mFontSize * metrics.density));
-        mEmulatorView.setCursorStyle(mCursorStyle, mCursorBlink);
-        mEmulatorView.setUseCookedIME(mUseCookedIME != 0);
-        setColors();
-        mControlKeyCode = CONTROL_KEY_SCHEMES[mControlKeyId];
-        mFnKeyCode = FN_KEY_SCHEMES[mFnKeyId];
+        mEmulatorView.updatePrefs(mSettings, metrics);
         {
             Window win = getWindow();
             WindowManager.LayoutParams params = win.getAttributes();
             final int FULLSCREEN = WindowManager.LayoutParams.FLAG_FULLSCREEN;
-            int desiredFlag = mStatusBar != 0 ? 0 : FULLSCREEN;
+            int desiredFlag = mSettings.showStatusBar() ? 0 : FULLSCREEN;
             if (desiredFlag != (params.flags & FULLSCREEN)) {
                 if (mAlreadyStarted) {
                     // Can't switch to/from fullscreen after
@@ -424,34 +325,11 @@ public class Term extends Activity {
         }
     }
 
-    private int readIntPref(String key, int defaultValue, int maxValue) {
-        int val;
-        try {
-            val = Integer.parseInt(
-                mPrefs.getString(key, Integer.toString(defaultValue)));
-        } catch (NumberFormatException e) {
-            val = defaultValue;
-        }
-        val = Math.max(0, Math.min(val, maxValue));
-        return val;
-    }
-
-    private String readStringPref(String key, String defaultValue) {
-        return mPrefs.getString(key, defaultValue);
-    }
-
-    public int getControlKeyCode() {
-        return mControlKeyCode;
-    }
-
-    public int getFnKeyCode() {
-        return mFnKeyCode;
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        readPrefs();
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mSettings.readPrefs(mPrefs);
         updatePrefs();
         mEmulatorView.onResume();
     }
@@ -555,11 +433,6 @@ public class Term extends Activity {
         startActivity(new Intent(this, TermPreferences.class));
     }
 
-    private void setColors() {
-        int[] scheme = COLOR_SCHEMES[mColorId];
-        mEmulatorView.setColors(scheme[0], scheme[1]);
-    }
-
     private void doResetTerminal() {
         restart();
     }
@@ -606,12 +479,12 @@ public class Term extends Activity {
         Resources r = getResources();
         dialog.setTitle(r.getString(R.string.control_key_dialog_title));
         dialog.setMessage(
-            formatMessage(mControlKeyId, CONTROL_KEY_ID_NONE,
+            formatMessage(mSettings.getControlKeyId(), TermSettings.CONTROL_KEY_ID_NONE,
                 r, R.array.control_keys_short_names,
                 R.string.control_key_dialog_control_text,
                 R.string.control_key_dialog_control_disabled_text, "CTRLKEY")
             + "\n\n" +
-            formatMessage(mFnKeyId, FN_KEY_ID_NONE,
+            formatMessage(mSettings.getFnKeyId(), TermSettings.FN_KEY_ID_NONE,
                 r, R.array.fn_keys_short_names,
                 R.string.control_key_dialog_fn_text,
                 R.string.control_key_dialog_fn_disabled_text, "FNKEY"));

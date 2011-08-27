@@ -56,6 +56,7 @@ import jackpal.androidterm.model.TextRenderer;
 import jackpal.androidterm.session.TerminalEmulator;
 import jackpal.androidterm.session.TranscriptScreen;
 import jackpal.androidterm.util.ByteQueue;
+import jackpal.androidterm.util.TermSettings;
 
 /**
  * A view on a transcript and a terminal emulator. Displays the text of the
@@ -66,6 +67,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private final String TAG = "EmulatorView";
     private final boolean LOG_KEY_EVENTS = TermDebug.DEBUG && false;
 
+    private TermSettings mSettings;
     private Term mTerm;
 
     /**
@@ -275,14 +277,23 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     }
 
+    public void updatePrefs(TermSettings settings, DisplayMetrics metrics) {
+        mSettings = settings;
+        setTextSize((int) (mSettings.getFontSize() * metrics.density));
+        setCursorStyle(mSettings.getCursorStyle(), mSettings.getCursorBlink());
+        setUseCookedIME(mSettings.useCookedIME());
+        setColors();
+    }
+
     public void register(Term term, TermKeyListener listener) {
         mTerm = term;
         mKeyListener = listener;
     }
 
-    public void setColors(int foreground, int background) {
-        mForeground = foreground;
-        mBackground = background;
+    public void setColors() {
+        int[] scheme = mSettings.getColorScheme();
+        mForeground = scheme[0];
+        mBackground = scheme[1];
         updateText();
     }
 
@@ -635,8 +646,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mTermOut = termOut;
         mTermFd = termFd;
         mTextSize = 10;
-        mForeground = Term.WHITE;
-        mBackground = Term.BLACK;
+        mForeground = TermSettings.WHITE;
+        mBackground = TermSettings.BLACK;
         updateText();
         mTermIn = new FileInputStream(mTermFd);
         mReceiveBuffer = new byte[4 * 1024];
@@ -867,7 +878,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
 
     private boolean handleControlKey(int keyCode, boolean down) {
-        if (keyCode == mTerm.getControlKeyCode()) {
+        if (keyCode == mSettings.getControlKeyCode()) {
             if (LOG_KEY_EVENTS) {
                 Log.w(TAG, "handleControlKey " + keyCode);
             }
@@ -878,7 +889,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private boolean handleFnKey(int keyCode, boolean down) {
-        if (keyCode == mTerm.getFnKeyCode()) {
+        if (keyCode == mSettings.getFnKeyCode()) {
             if (LOG_KEY_EVENTS) {
                 Log.w(TAG, "handleFnKey " + keyCode);
             }
