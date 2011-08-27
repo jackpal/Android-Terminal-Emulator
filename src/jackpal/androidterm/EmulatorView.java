@@ -66,6 +66,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private final boolean LOG_KEY_EVENTS = TermDebug.DEBUG && false;
 
     private TermSettings mSettings;
+    private TermViewFlipper mViewFlipper;
 
     /**
      * We defer some initialization until we have been layed out in the view
@@ -612,6 +613,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mEmulator = session.getEmulator();
         mTermOut = session.getTermOut();
 
+        mViewFlipper = viewFlipper;
+
         mKeyListener = new TermKeyListener();
         mTextSize = 10;
         mForeground = TermSettings.WHITE;
@@ -619,6 +622,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         updateText();
 
         requestFocus();
+    }
+
+    public TermSession getTermSession() {
+        return mTermSession;
     }
 
     /**
@@ -713,9 +720,20 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
             float velocityY) {
-        // TODO: add animation man's (non animated) fling
-        mScrollRemainder = 0.0f;
-        onScroll(e1, e2, 2 * velocityX, -2 * velocityY);
+        if (Math.abs(velocityX) > Math.abs(velocityY)) {
+            // Assume user wanted side to side movement
+            if (velocityX > 0) {
+                // Left to right swipe -- previous window
+                mViewFlipper.showPrevious();
+            } else {
+                // Right to left swipe -- next window
+                mViewFlipper.showNext();
+            }
+        } else {
+            // TODO: add animation man's (non animated) fling
+            mScrollRemainder = 0.0f;
+            onScroll(e1, e2, 2 * velocityX, -2 * velocityY);
+        }
         return true;
     }
 

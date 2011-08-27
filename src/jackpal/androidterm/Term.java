@@ -48,6 +48,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.util.TermSettings;
@@ -79,6 +80,9 @@ public class Term extends Activity {
     private boolean mAlreadyStarted = false;
 
     private Intent TSIntent;
+
+    public static final int REQUEST_CHOOSE_WINDOW = 1;
+    public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
 
     private PowerManager.WakeLock mWakeLock;
     private WifiManager.WifiLock mWifiLock;
@@ -136,7 +140,6 @@ public class Term extends Activity {
             for (TermSession session : mTermSessions) {
                 EmulatorView view = createEmulatorView(session);
                 mViewFlipper.addView(view);
-                mViewFlipper.showNext();
             }
 
             updatePrefs();
@@ -213,7 +216,8 @@ public class Term extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         for (View v : mViewFlipper) {
-            ((EmulatorView) v).updatePrefs(mSettings, metrics);
+            ((EmulatorView) v).setDensity(metrics);
+            ((EmulatorView) v).updatePrefs(mSettings);
         }
         {
             Window win = getWindow();
@@ -238,6 +242,16 @@ public class Term extends Activity {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mSettings.readPrefs(mPrefs);
         updatePrefs();
+
+        if (mTermSessions != null && mTermSessions.size() < mViewFlipper.getChildCount()) {
+            for (int i = 0; i < mViewFlipper.getChildCount(); ++i) {
+                EmulatorView v = (EmulatorView) mViewFlipper.getChildAt(i);
+                if (!mTermSessions.contains(v.getTermSession())) {
+                    mViewFlipper.removeView(v);
+                    --i;
+                }
+            }
+        }
 
         mViewFlipper.resumeCurrentView();
     }
@@ -270,6 +284,12 @@ public class Term extends Activity {
         int id = item.getItemId();
         if (id == R.id.menu_preferences) {
             doPreferences();
+        } else if (id == R.id.menu_new_window) {
+            doCreateNewWindow();
+        } else if (id == R.id.menu_close_window) {
+            doCloseWindow();
+        } else if (id == R.id.menu_window_list) {
+            startActivityForResult(new Intent(this, WindowList.class), REQUEST_CHOOSE_WINDOW);
         } else if (id == R.id.menu_reset) {
             doResetTerminal();
         } else if (id == R.id.menu_send_email) {
@@ -284,6 +304,63 @@ public class Term extends Activity {
             doToggleWifiLock();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void doCreateNewWindow() {
+        if (mTermSessions == null) {
+            Log.w(TermDebug.LOG_TAG, "Couldn't create new window because mTermSessions == null");
+            return;
+        }
+
+        TermSession session = createTermSession();
+        mTermSessions.add(session);
+
+        EmulatorView view = createEmulatorView(session);
+        view.updatePrefs(mSettings);
+
+        mViewFlipper.addView(view);
+        mViewFlipper.setDisplayedChild(mViewFlipper.getChildCount()-1);
+    }
+
+    private void doCloseWindow() {
+        if (mTermSessions == null) {
+            return;
+        }
+
+        EmulatorView view = getCurrentEmulatorView();
+        if (view == null) {
+            return;
+        }
+        TermSession session = mTermSessions.remove(mViewFlipper.getDisplayedChild());
+        view.onPause();
+        session.finish();
+        mViewFlipper.removeView(view);
+        if (mTermSessions.size() == 0) {
+            finish();
+        } else {
+            mViewFlipper.showNext();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int request, int result, Intent data) {
+        switch (request) {
+        case REQUEST_CHOOSE_WINDOW:
+            if (result == RESULT_OK && data != null) {
+                int position = data.getIntExtra(EXTRA_WINDOW_ID, -2);
+                if (position >= 0) {
+                    mViewFlipper.setDisplayedChild(position);
+                } else if (position == -1) {
+                    doCreateNewWindow();
+                }
+            } else {
+                // Close the activity if user closed all sessions
+                if (mTermSessions.size() == 0) {
+                    finish();
+                }
+            }
+            break;
+        }
     }
 
     @Override

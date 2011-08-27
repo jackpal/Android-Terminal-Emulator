@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name="TermPreferences"/>
+        <activity android:name="WindowList"/>
         <service android:name="TermService" />
     </application>
     <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="10" />

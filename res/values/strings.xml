@@ -17,6 +17,11 @@
 <resources>
    <string name="application_terminal">Terminal Emulator</string>
    <string name="preferences">Preferences</string>
+   <string name="new_window">New window</string>
+   <string name="close_window">Close window</string>
+   <string name="window_list">Windows</string>
+   <string name="prev_window">Prev window</string>
+   <string name="next_window">Next window</string>
    <string name="reset">Reset term</string>
    <string name="send_email">Email to</string>
    <string name="special_keys">Special keys</string>
