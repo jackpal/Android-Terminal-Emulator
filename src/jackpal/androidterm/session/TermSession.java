@@ -116,6 +116,10 @@ public class TermSession {
                 try {
                     while(true) {
                         int read = mTermIn.read(mBuffer);
+                        if (read == -1) {
+                            // EOF -- process exited
+                            return;
+                        }
                         mByteQueue.write(mBuffer, 0, read);
                         mMsgHandler.sendMessage(
                                 mMsgHandler.obtainMessage(NEW_INPUT));
@@ -237,6 +241,10 @@ public class TermSession {
         // Inform the attached pty of our new size:
         Exec.setPtyWindowSize(mTermFd, rows, columns, 0, 0);
         mEmulator.updateSize(columns, rows);
+    }
+
+    public String getTranscriptText() {
+        return mTranscriptScreen.getTranscriptText();
     }
 
     /**

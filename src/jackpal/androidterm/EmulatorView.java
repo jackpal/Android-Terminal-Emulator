@@ -167,6 +167,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private boolean mIsSelectingText = false;
 
 
+    private float mDensity;
+
     private float mScaledDensity;
     private static final int SELECT_TEXT_OFFSET_Y = -40;
     private int mSelXAnchor = -1;
@@ -233,13 +235,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return mUpdateNotify;
     }
 
-    public EmulatorView(Context context) {
+    public EmulatorView(Context context, TermSession session, TermViewFlipper viewFlipper, DisplayMetrics metrics) {
         super(context);
-        commonConstructor();
+        commonConstructor(session, viewFlipper);
+        setDensity(metrics);
     }
 
-    public void setScaledDensity(float scaledDensity) {
-        mScaledDensity = scaledDensity;
+    public void setDensity(DisplayMetrics metrics) {
+        mDensity = metrics.density;
+        mScaledDensity = metrics.scaledDensity;
     }
 
     public void onResume() {
@@ -257,9 +261,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     }
 
-    public void updatePrefs(TermSettings settings, DisplayMetrics metrics) {
+    public void updatePrefs(TermSettings settings) {
         mSettings = settings;
-        setTextSize((int) (mSettings.getFontSize() * metrics.density));
+        setTextSize((int) (mSettings.getFontSize() * mDensity));
         setCursorStyle(mSettings.getCursorStyle(), mSettings.getCursorBlink());
         setUseCookedIME(mSettings.useCookedIME());
         setColors();
@@ -270,10 +274,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mForeground = scheme[0];
         mBackground = scheme[1];
         updateText();
-    }
-
-    public String getTranscriptText() {
-        return mEmulator.getTranscriptText();
     }
 
     public void resetTerminal() {
@@ -570,21 +570,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return mEmulator.getKeypadApplicationMode();
     }
 
-    public EmulatorView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public EmulatorView(Context context, AttributeSet attrs,
-            int defStyle) {
-        super(context, attrs, defStyle);
-        // TypedArray a =
-        //        context.obtainStyledAttributes(android.R.styleable.View);
-        // initializeScrollbars(a);
-        // a.recycle();
-        commonConstructor();
-    }
-
-    private void commonConstructor() {
+    private void commonConstructor(TermSession session, TermViewFlipper viewFlipper) {
         mTextRenderer = null;
         mCursorPaint = new Paint();
         mCursorPaint.setARGB(255,128,128,128);
@@ -594,6 +580,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mGestureDetector = new GestureDetector(this);
         // mGestureDetector.setIsLongpressEnabled(false);
         setVerticalScrollBarEnabled(true);
+        setFocusable(true);
+        setFocusableInTouchMode(true);
+
+        initialize(session, viewFlipper);
     }
 
     @Override
@@ -616,7 +606,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      *
      * @param session The terminal session this view will be displaying
      */
-    public void initialize(TermSession session) {
+    private void initialize(TermSession session, TermViewFlipper viewFlipper) {
         mTermSession = session;
         mTranscriptScreen = session.getTranscriptScreen();
         mEmulator = session.getEmulator();
@@ -627,6 +617,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mForeground = TermSettings.WHITE;
         mBackground = TermSettings.BLACK;
         updateText();
+
+        requestFocus();
     }
 
     /**

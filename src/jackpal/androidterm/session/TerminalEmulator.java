@@ -1227,9 +1227,6 @@ public class TerminalEmulator {
         blockClear(0, 0, mColumns, mRows);
     }
 
-    public String getTranscriptText() {
-        return mScreen.getTranscriptText();
-    }
     public String getSelectedText(int x1, int y1, int x2, int y2) {
         return mScreen.getSelectedText(x1, y1, x2, y2);
     }

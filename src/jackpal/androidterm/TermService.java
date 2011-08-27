@@ -16,7 +16,10 @@
 
 package jackpal.androidterm;
 
+import java.util.ArrayList;
+
 import android.app.Service;
+import android.os.Binder;
 import android.os.IBinder;
 import android.content.Intent;
 import android.util.Log;
@@ -24,6 +27,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 
+import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.util.ServiceForegroundCompat;
 
 public class TermService extends Service
@@ -33,6 +37,16 @@ public class TermService extends Service
 
     private static final int RUNNING_NOTIFICATION = 1;
     private ServiceForegroundCompat compat;
+
+    private ArrayList<TermSession> mTermSessions;
+
+    public class TSBinder extends Binder {
+        TermService getService() {
+            Log.i("TermService", "Activity binding to service");
+            return TermService.this;
+        }
+    }
+    private final IBinder mTSBinder = new TSBinder();
 
     @Override
     public void onStart(Intent intent, int flags) {
@@ -45,12 +59,14 @@ public class TermService extends Service
 
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        Log.i("TermService", "Activity called onBind()");
+        return mTSBinder;
     }
 
     @Override
     public void onCreate() {
         compat = new ServiceForegroundCompat(this);
+        mTermSessions = new ArrayList<TermSession>();
 
         /* Put the service in the foreground. */
         Notification notification = new Notification(R.drawable.app_terminal, getText(R.string.service_notify_text), System.currentTimeMillis());
@@ -68,6 +84,14 @@ public class TermService extends Service
     @Override
     public void onDestroy() {
         compat.stopForeground(true);
+        for (TermSession session : mTermSessions) {
+            session.finish();
+        }
+        mTermSessions.clear();
         return;
+    }
+
+    public ArrayList<TermSession> getSessions() {
+        return mTermSessions;
     }
 }

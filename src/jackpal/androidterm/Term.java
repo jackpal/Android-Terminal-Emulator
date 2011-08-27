@@ -17,17 +17,21 @@
 package jackpal.androidterm;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
@@ -35,6 +39,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -42,6 +47,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 
 import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.util.TermSettings;
@@ -52,18 +58,16 @@ import jackpal.androidterm.util.TermSettings;
 
 public class Term extends Activity {
     /**
-     * Our main view. Displays the emulated terminal screen.
+     * The ViewFlipper which holds the collection of EmulatorView widgets.
      */
-    private EmulatorView mEmulatorView;
+    private TermViewFlipper mViewFlipper;
 
     /**
-     * The name of our emulator view in the view resource.
+     * The name of the ViewFlipper in the resources.
      */
-    private static final int EMULATOR_VIEW = R.id.emulatorView;
+    private static final int VIEW_FLIPPER = R.id.view_flipper;
 
-    private TermSession mTermSession;
-
-    private String mInitialCommand;
+    private ArrayList<TermSession> mTermSessions;
 
     private SharedPreferences mPrefs;
     private TermSettings mSettings;
@@ -74,11 +78,26 @@ public class Term extends Activity {
 
     private boolean mAlreadyStarted = false;
 
-    public TermService mTermService;
     private Intent TSIntent;
 
     private PowerManager.WakeLock mWakeLock;
     private WifiManager.WifiLock mWifiLock;
+
+    private TermService mTermService;
+    private ServiceConnection mTSConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            Log.i(TermDebug.LOG_TAG, "Bound to TermService");
+            TermService.TSBinder binder = (TermService.TSBinder) service;
+            mTermService = binder.getService();
+            populateViewFlipper();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mTermService = null;
+        }
+    };
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -90,35 +109,12 @@ public class Term extends Activity {
         TSIntent = new Intent(this, TermService.class);
         startService(TSIntent);
 
-        setContentView(R.layout.term_activity);
-
-        mEmulatorView = (EmulatorView) findViewById(EMULATOR_VIEW);
-
-        /* Check whether we've received an initial command from the
-         * launching application
-         */
-        mInitialCommand = mSettings.getInitialCommand();
-        String iInitialCommand = getIntent().getStringExtra("jackpal.androidterm.iInitialCommand");
-        if (iInitialCommand != null) {
-            if (mInitialCommand != null) {
-                mInitialCommand += "\r" + iInitialCommand;
-            } else {
-                mInitialCommand = iInitialCommand;
-            }
+        if (!bindService(TSIntent, mTSConnection, BIND_AUTO_CREATE)) {
+            Log.w(TermDebug.LOG_TAG, "bind to service failed!");
         }
-        mTermSession = new TermSession(mSettings, mEmulatorView.getUpdateCallback(), mInitialCommand);
 
-        mEmulatorView.initialize(mTermSession);
-
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        mEmulatorView.setScaledDensity(metrics.scaledDensity);
-
-        mEmulatorView.setFocusable(true);
-        mEmulatorView.setFocusableInTouchMode(true);
-        mEmulatorView.requestFocus();
-
-        registerForContextMenu(mEmulatorView);
+        setContentView(R.layout.term_activity);
+        mViewFlipper = (TermViewFlipper) findViewById(VIEW_FLIPPER);
 
         PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TermDebug.LOG_TAG);
@@ -129,17 +125,38 @@ public class Term extends Activity {
         mAlreadyStarted = true;
     }
 
+    private void populateViewFlipper() {
+        if (mTermService != null) {
+            mTermSessions = mTermService.getSessions();
+
+            if (mTermSessions.size() == 0) {
+                mTermSessions.add(createTermSession());
+            }
+
+            for (TermSession session : mTermSessions) {
+                EmulatorView view = createEmulatorView(session);
+                mViewFlipper.addView(view);
+                mViewFlipper.showNext();
+            }
+
+            updatePrefs();
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mTermSession.finish();
+        mViewFlipper.removeAllViews();
+        unbindService(mTSConnection);
+        stopService(TSIntent);
+        mTermService = null;
+        mTSConnection = null;
         if (mWakeLock.isHeld()) {
             mWakeLock.release();
         }
         if (mWifiLock.isHeld()) {
             mWifiLock.release();
         }
-        stopService(TSIntent);
     }
 
     private void restart() {
@@ -147,10 +164,57 @@ public class Term extends Activity {
         finish();
     }
 
+    private TermSession createTermSession() {
+        /* Check whether we've received an initial command from the
+         * launching application
+         */
+        String initialCommand = mSettings.getInitialCommand();
+        String iInitialCommand = getIntent().getStringExtra("jackpal.androidterm.iInitialCommand");
+        if (iInitialCommand != null) {
+            if (initialCommand != null) {
+                initialCommand += "\r" + iInitialCommand;
+            } else {
+                initialCommand = iInitialCommand;
+            }
+        }
+
+        return new TermSession(mSettings, null, initialCommand);
+    }
+
+    private EmulatorView createEmulatorView(TermSession session) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        EmulatorView emulatorView = new EmulatorView(this, session, mViewFlipper, metrics);
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            Gravity.LEFT
+        );
+        emulatorView.setLayoutParams(params);
+
+        session.setUpdateCallback(emulatorView.getUpdateCallback());
+
+        registerForContextMenu(emulatorView);
+
+        return emulatorView;
+    }
+
+    private TermSession getCurrentTermSession() {
+        return mTermSessions.get(mViewFlipper.getDisplayedChild());
+    }
+
+    private EmulatorView getCurrentEmulatorView() {
+        return (EmulatorView) mViewFlipper.getCurrentView();
+    }
+
     private void updatePrefs() {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        mEmulatorView.updatePrefs(mSettings, metrics);
+
+        for (View v : mViewFlipper) {
+            ((EmulatorView) v).updatePrefs(mSettings, metrics);
+        }
         {
             Window win = getWindow();
             WindowManager.LayoutParams params = win.getAttributes();
@@ -174,20 +238,25 @@ public class Term extends Activity {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mSettings.readPrefs(mPrefs);
         updatePrefs();
-        mEmulatorView.onResume();
+
+        mViewFlipper.resumeCurrentView();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mEmulatorView.onPause();
+
+        mViewFlipper.pauseCurrentView();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        mEmulatorView.updateSize(true);
+        EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
+        if (v != null) {
+            v.updateSize(true);
+        }
     }
 
     @Override
@@ -251,7 +320,7 @@ public class Term extends Activity {
     public boolean onContextItemSelected(MenuItem item) {
           switch (item.getItemId()) {
           case SELECT_TEXT_ID:
-            mEmulatorView.toggleSelectingText();
+            getCurrentEmulatorView().toggleSelectingText();
             return true;
           case COPY_ALL_ID:
             doCopyAll();
@@ -289,14 +358,14 @@ public class Term extends Activity {
                 new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"
                         + addr));
 
-        intent.putExtra("body", mEmulatorView.getTranscriptText().trim());
+        intent.putExtra("body", getCurrentTermSession().getTranscriptText().trim());
         startActivity(intent);
     }
 
     private void doCopyAll() {
         ClipboardManager clip = (ClipboardManager)
              getSystemService(Context.CLIPBOARD_SERVICE);
-        clip.setText(mEmulatorView.getTranscriptText().trim());
+        clip.setText(getCurrentTermSession().getTranscriptText().trim());
     }
 
     private void doPaste() {
@@ -310,7 +379,7 @@ public class Term extends Activity {
             Log.e(TermDebug.LOG_TAG, "UTF-8 encoding not found.");
             return;
         }
-        mTermSession.write(paste.toString());
+        getCurrentTermSession().write(paste.toString());
     }
 
     private void doDocumentKeys() {

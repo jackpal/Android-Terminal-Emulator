@@ -16,15 +16,9 @@
 */
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<jackpal.androidterm.TermViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_flipper"
     android:layout_width="fill_parent" 
     android:layout_height="fill_parent"
-    android:orientation="vertical">
-
-    <jackpal.androidterm.EmulatorView android:id="@+id/emulatorView"
-	      android:layout_width="wrap_content"
-	      android:layout_height="wrap_content"
-	      android:layout_alignParentLeft="true"
-	      />
-   
-</LinearLayout>
+    android:background="@android:color/black"
+    />
