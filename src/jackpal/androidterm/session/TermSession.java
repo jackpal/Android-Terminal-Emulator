@@ -64,9 +64,13 @@ public class TermSession {
 
     private static final int NEW_INPUT = 1;
 
+    private boolean mIsRunning = false;
     private Handler mMsgHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            if (!mIsRunning) {
+                return;
+            }
             if (msg.what == NEW_INPUT) {
                 readFromProcess();
             }
@@ -86,6 +90,8 @@ public class TermSession {
 
         mTranscriptScreen = new TranscriptScreen(DEFAULT_COLUMNS, TRANSCRIPT_ROWS, DEFAULT_ROWS, 0, 7);
         mEmulator = new TerminalEmulator(mTranscriptScreen, DEFAULT_COLUMNS, DEFAULT_ROWS, mTermOut);
+
+        mIsRunning = true;
 
         Thread watcher = new Thread() {
              @Override
@@ -253,6 +259,7 @@ public class TermSession {
     public void finish() {
         Exec.hangupProcessGroup(mProcId);
         Exec.close(mTermFd);
+        mIsRunning = false;
         mTranscriptScreen.finish();
     }
 }
