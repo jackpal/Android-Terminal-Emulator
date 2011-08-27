@@ -16,8 +16,6 @@
 
 package jackpal.androidterm;
 
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -35,7 +33,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.text.ClipboardManager;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -53,9 +50,10 @@ import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
 import jackpal.androidterm.model.TextRenderer;
+import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.session.TerminalEmulator;
+import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.session.TranscriptScreen;
-import jackpal.androidterm.util.ByteQueue;
 import jackpal.androidterm.util.TermSettings;
 
 /**
@@ -68,7 +66,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private final boolean LOG_KEY_EVENTS = TermDebug.DEBUG && false;
 
     private TermSettings mSettings;
-    private Term mTerm;
 
     /**
      * We defer some initialization until we have been layed out in the view
@@ -80,15 +77,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mVisibleHeight;
     private Rect mVisibleRect = new Rect();
 
+    private TermSession mTermSession;
+
     /**
      * Our transcript. Contains the screen and the transcript.
      */
     private TranscriptScreen mTranscriptScreen;
-
-    /**
-     * Number of rows in the transcript.
-     */
-    private static final int TRANSCRIPT_ROWS = 10000;
 
     /**
      * Total width of each character, in pixels
@@ -160,27 +154,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private int mLeftColumn;
 
-    private FileDescriptor mTermFd;
     /**
      * Used to receive data from the remote process.
      */
-    private FileInputStream mTermIn;
-
     private FileOutputStream mTermOut;
-
-    private ByteQueue mByteQueue;
-
-    /**
-     * Used to temporarily hold data received from the remote process. Allocated
-     * once and used permanently to minimize heap thrashing.
-     */
-    private byte[] mReceiveBuffer;
-
-    /**
-     * Our private message id, which we use to receive new input from the
-     * remote process.
-     */
-    private static final int UPDATE = 1;
 
     private static final int SCREEN_CHECK_PERIOD = 1000;
     private static final int CURSOR_BLINK_PERIOD = 1000;
@@ -223,12 +200,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     };
 
-    /**
-     * Thread that polls for input from the remote process
-     */
-
-    private Thread mPollingThread;
-
     private GestureDetector mGestureDetector;
     private float mScrollRemainder;
     private TermKeyListener mKeyListener;
@@ -238,20 +209,29 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     /**
      * Our message handler class. Implements a periodic callback.
      */
-    private final Handler mHandler = new Handler() {
-        /**
-         * Handle the callback message. Call our enclosing class's update
-         * method.
-         *
-         * @param msg The callback message.
-         */
+    private final Handler mHandler = new Handler();
+
+    /**
+     * Called by the TermSession when the contents of the view need updating
+     */
+    private UpdateCallback mUpdateNotify = new UpdateCallback() {
         @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == UPDATE) {
-                update();
+        public void onUpdate() {
+            if ( mIsSelectingText ) {
+                int rowShift = mEmulator.getScrollCounter();
+                mSelY1 -= rowShift;
+                mSelY2 -= rowShift;
+                mSelYAnchor -= rowShift;
             }
+            mEmulator.clearScrollCounter();
+            ensureCursorVisible();
+            invalidate();
         }
     };
+
+    public UpdateCallback getUpdateCallback() {
+        return mUpdateNotify;
+    }
 
     public EmulatorView(Context context) {
         super(context);
@@ -283,11 +263,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         setCursorStyle(mSettings.getCursorStyle(), mSettings.getCursorBlink());
         setUseCookedIME(mSettings.useCookedIME());
         setColors();
-    }
-
-    public void register(Term term, TermKeyListener listener) {
-        mTerm = term;
-        mKeyListener = listener;
     }
 
     public void setColors() {
@@ -639,40 +614,19 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     /**
      * Call this to initialize the view.
      *
-     * @param termFd the file descriptor
-     * @param termOut the output stream for the pseudo-teletype
+     * @param session The terminal session this view will be displaying
      */
-    public void initialize(FileDescriptor termFd, FileOutputStream termOut) {
-        mTermOut = termOut;
-        mTermFd = termFd;
+    public void initialize(TermSession session) {
+        mTermSession = session;
+        mTranscriptScreen = session.getTranscriptScreen();
+        mEmulator = session.getEmulator();
+        mTermOut = session.getTermOut();
+
+        mKeyListener = new TermKeyListener();
         mTextSize = 10;
         mForeground = TermSettings.WHITE;
         mBackground = TermSettings.BLACK;
         updateText();
-        mTermIn = new FileInputStream(mTermFd);
-        mReceiveBuffer = new byte[4 * 1024];
-        mByteQueue = new ByteQueue(4 * 1024);
-    }
-
-    /**
-     * Accept a sequence of bytes (typically from the pseudo-tty) and process
-     * them.
-     *
-     * @param buffer a byte array containing bytes to be processed
-     * @param base the index of the first byte in the buffer to process
-     * @param length the number of bytes to process
-     */
-    public void append(byte[] buffer, int base, int length) {
-        mEmulator.append(buffer, base, length);
-        if ( mIsSelectingText ) {
-            int rowShift = mEmulator.getScrollCounter();
-            mSelY1 -= rowShift;
-            mSelY2 -= rowShift;
-            mSelYAnchor -= rowShift;
-        }
-        mEmulator.clearScrollCounter();
-        ensureCursorVisible();
-        invalidate();
     }
 
     /**
@@ -926,29 +880,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             mKnownSize = true;
         }
         updateSize(false);
-        if (!oldKnownSize) {
-            // Set up a thread to read input from the
-            // pseudo-teletype:
-
-            mPollingThread = new Thread(new Runnable() {
-
-                public void run() {
-                    try {
-                        while(true) {
-                            int read = mTermIn.read(mBuffer);
-                            mByteQueue.write(mBuffer, 0, read);
-                            mHandler.sendMessage(
-                                    mHandler.obtainMessage(UPDATE));
-                        }
-                    } catch (IOException e) {
-                    } catch (InterruptedException e) {
-                    }
-                }
-                private byte[] mBuffer = new byte[4096];
-            });
-            mPollingThread.setName("Input reader");
-            mPollingThread.start();
-        }
     }
 
     private void updateSize(int w, int h) {
@@ -956,19 +887,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mRows = Math.max(1, h / mCharacterHeight);
         mVisibleColumns = mVisibleWidth / mCharacterWidth;
 
-        // Inform the attached pty of our new size:
-        Exec.setPtyWindowSize(mTermFd, mRows, mColumns, w, h);
-
-
-        if (mTranscriptScreen != null) {
-            mEmulator.updateSize(mColumns, mRows);
-        } else {
-            mTranscriptScreen =
-                    new TranscriptScreen(mColumns, TRANSCRIPT_ROWS, mRows, 0, 7);
-            mEmulator =
-                    new TerminalEmulator(mTranscriptScreen, mColumns, mRows,
-                            mTermOut);
-        }
+        mTermSession.updateSize(mColumns, mRows);
 
         // Reset our paging:
         mTopRow = 0;
@@ -977,7 +896,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         invalidate();
     }
 
-    void updateSize(boolean force) {
+    public void updateSize(boolean force) {
         if (mKnownSize) {
             getWindowVisibleDisplayFrame(mVisibleRect);
             int w = mVisibleRect.width();
@@ -988,19 +907,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 mVisibleHeight = h;
                 updateSize(mVisibleWidth, mVisibleHeight);
             }
-        }
-    }
-
-    /**
-     * Look for new input from the ptty, send it to the terminal emulator.
-     */
-    private void update() {
-        int bytesAvailable = mByteQueue.getBytesAvailable();
-        int bytesToRead = Math.min(bytesAvailable, mReceiveBuffer.length);
-        try {
-            int bytesRead = mByteQueue.read(mReceiveBuffer, 0, bytesToRead);
-            append(mReceiveBuffer, 0, bytesRead);
-        } catch (InterruptedException e) {
         }
     }
 

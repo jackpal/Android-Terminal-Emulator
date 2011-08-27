@@ -16,11 +16,7 @@
 
 package jackpal.androidterm;
 
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,8 +28,6 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
@@ -49,6 +43,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.util.TermSettings;
 
 /**
@@ -62,37 +57,13 @@ public class Term extends Activity {
     private EmulatorView mEmulatorView;
 
     /**
-     * The pseudo-teletype (pty) file descriptor that we use to communicate with
-     * another process, typically a shell.
-     */
-    private FileDescriptor mTermFd;
-
-    /**
-     * Used to send data to the remote process.
-     */
-    private FileOutputStream mTermOut;
-
-    /**
-     * The process ID of the remote process.
-     */
-    private int mProcId = 0;
-
-    /**
-     * A key listener that tracks the modifier keys and allows the full ASCII
-     * character set to be entered.
-     */
-    private TermKeyListener mKeyListener;
-
-    /**
      * The name of our emulator view in the view resource.
      */
     private static final int EMULATOR_VIEW = R.id.emulatorView;
 
-    private final static String DEFAULT_SHELL = "/system/bin/sh -";
+    private TermSession mTermSession;
 
     private String mInitialCommand;
-    private final static String DEFAULT_INITIAL_COMMAND =
-        "export PATH=/data/local/bin:$PATH";
 
     private SharedPreferences mPrefs;
     private TermSettings mSettings;
@@ -123,18 +94,29 @@ public class Term extends Activity {
 
         mEmulatorView = (EmulatorView) findViewById(EMULATOR_VIEW);
 
+        /* Check whether we've received an initial command from the
+         * launching application
+         */
+        mInitialCommand = mSettings.getInitialCommand();
+        String iInitialCommand = getIntent().getStringExtra("jackpal.androidterm.iInitialCommand");
+        if (iInitialCommand != null) {
+            if (mInitialCommand != null) {
+                mInitialCommand += "\r" + iInitialCommand;
+            } else {
+                mInitialCommand = iInitialCommand;
+            }
+        }
+        mTermSession = new TermSession(mSettings, mEmulatorView.getUpdateCallback(), mInitialCommand);
+
+        mEmulatorView.initialize(mTermSession);
+
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         mEmulatorView.setScaledDensity(metrics.scaledDensity);
 
-        startListening();
-
-        mKeyListener = new TermKeyListener();
-
         mEmulatorView.setFocusable(true);
         mEmulatorView.setFocusableInTouchMode(true);
         mEmulatorView.requestFocus();
-        mEmulatorView.register(this, mKeyListener);
 
         registerForContextMenu(mEmulatorView);
 
@@ -150,14 +132,7 @@ public class Term extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mProcId != 0) {
-            Exec.hangupProcessGroup(mProcId);
-            mProcId = 0;
-        }
-        if (mTermFd != null) {
-            Exec.close(mTermFd);
-            mTermFd = null;
-        }
+        mTermSession.finish();
         if (mWakeLock.isHeld()) {
             mWakeLock.release();
         }
@@ -167,141 +142,9 @@ public class Term extends Activity {
         stopService(TSIntent);
     }
 
-    private void startListening() {
-        int[] processId = new int[1];
-
-        createSubprocess(processId);
-        mProcId = processId[0];
-
-        final Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-            }
-        };
-
-        Runnable watchForDeath = new Runnable() {
-
-            public void run() {
-                Log.i(TermDebug.LOG_TAG, "waiting for: " + mProcId);
-               int result = Exec.waitFor(mProcId);
-                Log.i(TermDebug.LOG_TAG, "Subprocess exited: " + result);
-                handler.sendEmptyMessage(result);
-             }
-
-        };
-        Thread watcher = new Thread(watchForDeath);
-        watcher.start();
-
-        mTermOut = new FileOutputStream(mTermFd);
-
-        mEmulatorView.initialize(mTermFd, mTermOut);
-
-        /* Check whether we've received an initial command from the
-         * launching application
-         */
-        mInitialCommand = mSettings.getInitialCommand();
-        String iInitialCommand = getIntent().getStringExtra("jackpal.androidterm.iInitialCommand");
-        if (iInitialCommand != null) {
-            if (mInitialCommand != null) {
-                mInitialCommand += "\r" + iInitialCommand;
-            } else {
-                mInitialCommand = iInitialCommand;
-            }
-        }
-
-        sendInitialCommand();
-    }
-
-    private void sendInitialCommand() {
-        String initialCommand = mInitialCommand;
-        if (initialCommand == null || initialCommand.equals("")) {
-            initialCommand = DEFAULT_INITIAL_COMMAND;
-        }
-        if (initialCommand.length() > 0) {
-            write(initialCommand + '\r');
-        }
-    }
-
     private void restart() {
         startActivity(getIntent());
         finish();
-    }
-
-    private void write(String data) {
-        try {
-            mTermOut.write(data.getBytes());
-            mTermOut.flush();
-        } catch (IOException e) {
-            // Ignore exception
-            // We don't really care if the receiver isn't listening.
-            // We just make a best effort to answer the query.
-        }
-    }
-
-    private void createSubprocess(int[] processId) {
-        String shell = mSettings.getShell();
-        if (shell == null || shell.equals("")) {
-            shell = DEFAULT_SHELL;
-        }
-        ArrayList<String> args = parse(shell);
-        String arg0 = args.get(0);
-        String arg1 = null;
-        String arg2 = null;
-        if (args.size() >= 2) {
-            arg1 = args.get(1);
-        }
-        if (args.size() >= 3) {
-            arg2 = args.get(2);
-        }
-        mTermFd = Exec.createSubprocess(arg0, arg1, arg2, processId);
-    }
-
-    private ArrayList<String> parse(String cmd) {
-        final int PLAIN = 0;
-        final int WHITESPACE = 1;
-        final int INQUOTE = 2;
-        int state = WHITESPACE;
-        ArrayList<String> result =  new ArrayList<String>();
-        int cmdLen = cmd.length();
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < cmdLen; i++) {
-            char c = cmd.charAt(i);
-            if (state == PLAIN) {
-                if (Character.isWhitespace(c)) {
-                    result.add(builder.toString());
-                    builder.delete(0,builder.length());
-                    state = WHITESPACE;
-                } else if (c == '"') {
-                    state = INQUOTE;
-                } else {
-                    builder.append(c);
-                }
-            } else if (state == WHITESPACE) {
-                if (Character.isWhitespace(c)) {
-                    // do nothing
-                } else if (c == '"') {
-                    state = INQUOTE;
-                } else {
-                    state = PLAIN;
-                    builder.append(c);
-                }
-            } else if (state == INQUOTE) {
-                if (c == '\\') {
-                    if (i + 1 < cmdLen) {
-                        i += 1;
-                        builder.append(cmd.charAt(i));
-                    }
-                } else if (c == '"') {
-                    state = PLAIN;
-                } else {
-                    builder.append(c);
-                }
-            }
-        }
-        if (builder.length() > 0) {
-            result.add(builder.toString());
-        }
-        return result;
     }
 
     private void updatePrefs() {
@@ -467,11 +310,7 @@ public class Term extends Activity {
             Log.e(TermDebug.LOG_TAG, "UTF-8 encoding not found.");
             return;
         }
-        try {
-            mTermOut.write(utf8);
-        } catch (IOException e) {
-            Log.e(TermDebug.LOG_TAG, "could not write paste text to terminal.");
-        }
+        mTermSession.write(paste.toString());
     }
 
     private void doDocumentKeys() {
