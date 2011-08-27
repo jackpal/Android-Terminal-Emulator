@@ -24,6 +24,8 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 
+import jackpal.androidterm.util.ServiceForegroundCompat;
+
 public class TermService extends Service
 {
     /* Parallels the value of START_STICKY on API Level >= 5 */

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm;
+package jackpal.androidterm.util;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
