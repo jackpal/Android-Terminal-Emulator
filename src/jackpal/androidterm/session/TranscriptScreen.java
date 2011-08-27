@@ -115,6 +115,19 @@ public class TranscriptScreen implements Screen {
         consistencyCheck();
    }
 
+    public void finish() {
+        /*
+         * The Android InputMethodService will sometimes hold a reference to
+         * us for a while after the activity closes, which is expensive because
+         * it means holding on to the now-useless mData array.  Explicitly
+         * get rid of our references to this data to help keep the amount of
+         * memory being leaked down.
+         */
+        mData = null;
+        mRowBuffer = null;
+        mLineWrap = null;
+    }
+
     /**
      * Convert a row value from the public external coordinate system to our
      * internal private coordinate system. External coordinate system:

@@ -253,5 +253,6 @@ public class TermSession {
     public void finish() {
         Exec.hangupProcessGroup(mProcId);
         Exec.close(mTermFd);
+        mTranscriptScreen.finish();
     }
 }
