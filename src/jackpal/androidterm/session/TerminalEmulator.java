@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import android.util.Log;
 
-import jackpal.androidterm.Term;
+import jackpal.androidterm.TermDebug;
 import jackpal.androidterm.model.Screen;
 
 /**
@@ -355,18 +355,18 @@ public class TerminalEmulator {
         for (int i = 0; i < length; i++) {
             byte b = buffer[base + i];
             try {
-                if (Term.LOG_CHARACTERS_FLAG) {
+                if (TermDebug.LOG_CHARACTERS_FLAG) {
                     char printableB = (char) b;
                     if (b < 32 || b > 126) {
                         printableB = ' ';
                     }
-                    Log.w(Term.LOG_TAG, "'" + Character.toString(printableB)
+                    Log.w(TermDebug.LOG_TAG, "'" + Character.toString(printableB)
                             + "' (" + Integer.toString(b) + ")");
                 }
                 process(b);
                 mProcessedCharCount++;
             } catch (Exception e) {
-                Log.e(Term.LOG_TAG, "Exception while processing character "
+                Log.e(TermDebug.LOG_TAG, "Exception while processing character "
                         + Integer.toString(mProcessedCharCount) + " code "
                         + Integer.toString(b), e);
             }
@@ -915,8 +915,8 @@ public class TerminalEmulator {
             } else if (code == 49) { // set default background color
                 mBackColor = mBackColor & 0x8; // color 0, but preserve underscore.
             } else {
-                if (Term.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
-                    Log.w(Term.LOG_TAG, String.format("SGR unknown code %d", code));
+                if (TermDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
+                    Log.w(TermDebug.LOG_TAG, String.format("SGR unknown code %d", code));
                 }
             }
         }
@@ -1072,21 +1072,21 @@ public class TerminalEmulator {
     }
 
     private void unimplementedSequence(byte b) {
-        if (Term.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
+        if (TermDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
             logError("unimplemented", b);
         }
         finishSequence();
     }
 
     private void unknownSequence(byte b) {
-        if (Term.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
+        if (TermDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
             logError("unknown", b);
         }
         finishSequence();
     }
 
     private void unknownParameter(int parameter) {
-        if (Term.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
+        if (TermDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
             StringBuilder buf = new StringBuilder();
             buf.append("Unknown parameter");
             buf.append(parameter);
@@ -1095,7 +1095,7 @@ public class TerminalEmulator {
     }
 
     private void logError(String errorType, byte b) {
-        if (Term.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
+        if (TermDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
             StringBuilder buf = new StringBuilder();
             buf.append(errorType);
             buf.append(" sequence ");
@@ -1122,8 +1122,8 @@ public class TerminalEmulator {
     }
 
     private void logError(String error) {
-        if (Term.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
-            Log.e(Term.LOG_TAG, error);
+        if (TermDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
+            Log.e(TermDebug.LOG_TAG, error);
         }
         finishSequence();
     }

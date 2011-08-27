@@ -61,7 +61,7 @@ public class TermService extends Service
         notification.setLatestEventInfo(this, getText(R.string.application_terminal), getText(R.string.service_notify_text), pendingIntent);
         compat.startForeground(RUNNING_NOTIFICATION, notification);
         
-        Log.d(Term.LOG_TAG, "TermService started");
+        Log.d(TermDebug.LOG_TAG, "TermService started");
         return;
     }
 

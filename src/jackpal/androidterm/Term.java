@@ -56,35 +56,6 @@ import android.view.inputmethod.InputMethodManager;
 
 public class Term extends Activity {
     /**
-     * Set to true to add debugging code and logging.
-     */
-    public static final boolean DEBUG = false;
-
-    /**
-     * Set to true to log IME calls.
-     */
-    public static final boolean LOG_IME = DEBUG && false;
-
-    /**
-     * Set to true to log each character received from the remote process to the
-     * android log, which makes it easier to debug some kinds of problems with
-     * emulating escape sequences and control codes.
-     */
-    public static final boolean LOG_CHARACTERS_FLAG = DEBUG && false;
-
-    /**
-     * Set to true to log unknown escape sequences.
-     */
-    public static final boolean LOG_UNKNOWN_ESCAPE_SEQUENCES = DEBUG && false;
-
-    /**
-     * The tag we use when logging, so that our messages can be distinguished
-     * from other messages in the log. Public because it's used by several
-     * classes.
-     */
-    public static final String LOG_TAG = "Term";
-
-    /**
      * Our main view. Displays the emulated terminal screen.
      */
     private EmulatorView mEmulatorView;
@@ -201,7 +172,7 @@ public class Term extends Activity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        Log.e(Term.LOG_TAG, "onCreate");
+        Log.e(TermDebug.LOG_TAG, "onCreate");
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         readPrefs();
 
@@ -228,9 +199,9 @@ public class Term extends Activity {
         registerForContextMenu(mEmulatorView);
 
         PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, Term.LOG_TAG);
+        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TermDebug.LOG_TAG);
         WifiManager wm = (WifiManager)getSystemService(Context.WIFI_SERVICE);
-        mWifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL, Term.LOG_TAG);
+        mWifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL, TermDebug.LOG_TAG);
 
         updatePrefs();
         mAlreadyStarted = true;
@@ -271,9 +242,9 @@ public class Term extends Activity {
         Runnable watchForDeath = new Runnable() {
 
             public void run() {
-                Log.i(Term.LOG_TAG, "waiting for: " + mProcId);
+                Log.i(TermDebug.LOG_TAG, "waiting for: " + mProcId);
                int result = Exec.waitFor(mProcId);
-                Log.i(Term.LOG_TAG, "Subprocess exited: " + result);
+                Log.i(TermDebug.LOG_TAG, "Subprocess exited: " + result);
                 handler.sendEmptyMessage(result);
              }
 
@@ -407,7 +378,7 @@ public class Term extends Activity {
             String newShell = readStringPref(SHELL_KEY, mShell);
             if ((newShell == null) || ! newShell.equals(mShell)) {
                 if (mShell != null) {
-                    Log.i(Term.LOG_TAG, "New shell set. Restarting.");
+                    Log.i(TermDebug.LOG_TAG, "New shell set. Restarting.");
                     restart();
                 }
                 mShell = newShell;
@@ -419,7 +390,7 @@ public class Term extends Activity {
             if ((newInitialCommand == null)
                     || ! newInitialCommand.equals(mInitialCommand)) {
                 if (mInitialCommand != null) {
-                    Log.i(Term.LOG_TAG, "New initial command set. Restarting.");
+                    Log.i(TermDebug.LOG_TAG, "New initial command set. Restarting.");
                     restart();
                 }
                 mInitialCommand = newInitialCommand;
@@ -620,13 +591,13 @@ public class Term extends Activity {
         try {
             utf8 = paste.toString().getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
-            Log.e(Term.LOG_TAG, "UTF-8 encoding not found.");
+            Log.e(TermDebug.LOG_TAG, "UTF-8 encoding not found.");
             return;
         }
         try {
             mTermOut.write(utf8);
         } catch (IOException e) {
-            Log.e(Term.LOG_TAG, "could not write paste text to terminal.");
+            Log.e(TermDebug.LOG_TAG, "could not write paste text to terminal.");
         }
     }
 
