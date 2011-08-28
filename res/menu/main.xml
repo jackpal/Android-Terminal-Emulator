@@ -18,10 +18,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_new_window"
         android:title="@string/new_window"
-        android:icon="@android:drawable/ic_menu_add" />
+        android:icon="@drawable/ic_menu_add" />
     <item android:id="@+id/menu_close_window"
         android:title="@string/close_window"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel" />
+        android:icon="@drawable/ic_menu_close_clear_cancel" />
     <item android:id="@+id/menu_window_list"
         android:title="@string/window_list"
         android:icon="@drawable/ic_menu_windows" />
@@ -31,7 +31,7 @@
         android:title="@string/special_keys" />
     <item android:id="@+id/menu_preferences"
         android:title="@string/preferences"
-        android:icon="@android:drawable/ic_menu_preferences" />
+        android:icon="@drawable/ic_menu_preferences" />
     <item android:id="@+id/menu_reset"
         android:title="@string/reset" />
     <item android:id="@+id/menu_send_email"
