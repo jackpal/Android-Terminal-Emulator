@@ -83,6 +83,7 @@ public class Term extends Activity {
 
     public static final int REQUEST_CHOOSE_WINDOW = 1;
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
+    private int onResumeSelectWindow = -1;
 
     private PowerManager.WakeLock mWakeLock;
     private WifiManager.WifiLock mWifiLock;
@@ -239,21 +240,28 @@ public class Term extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mSettings.readPrefs(mPrefs);
-        updatePrefs();
 
         if (mTermSessions != null && mTermSessions.size() < mViewFlipper.getChildCount()) {
             for (int i = 0; i < mViewFlipper.getChildCount(); ++i) {
                 EmulatorView v = (EmulatorView) mViewFlipper.getChildAt(i);
                 if (!mTermSessions.contains(v.getTermSession())) {
+                    v.onPause();
                     mViewFlipper.removeView(v);
                     --i;
                 }
             }
         }
 
-        mViewFlipper.resumeCurrentView();
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mSettings.readPrefs(mPrefs);
+        updatePrefs();
+
+        if (onResumeSelectWindow >= 0) {
+            mViewFlipper.setDisplayedChild(onResumeSelectWindow);
+            onResumeSelectWindow = -1;
+        } else {
+            mViewFlipper.resumeCurrentView();
+        }
     }
 
     @Override
@@ -349,7 +357,8 @@ public class Term extends Activity {
             if (result == RESULT_OK && data != null) {
                 int position = data.getIntExtra(EXTRA_WINDOW_ID, -2);
                 if (position >= 0) {
-                    mViewFlipper.setDisplayedChild(position);
+                    // Switch windows after session list is in sync, not here
+                    onResumeSelectWindow = position;
                 } else if (position == -1) {
                     doCreateNewWindow();
                 }
