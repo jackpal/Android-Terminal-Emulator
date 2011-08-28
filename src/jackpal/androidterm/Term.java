@@ -90,7 +90,6 @@ public class Term extends Activity {
 
     private TermService mTermService;
     private ServiceConnection mTSConnection = new ServiceConnection() {
-        @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             Log.i(TermDebug.LOG_TAG, "Bound to TermService");
             TermService.TSBinder binder = (TermService.TSBinder) service;
@@ -98,7 +97,6 @@ public class Term extends Activity {
             populateViewFlipper();
         }
 
-        @Override
         public void onServiceDisconnected(ComponentName arg0) {
             mTermService = null;
         }

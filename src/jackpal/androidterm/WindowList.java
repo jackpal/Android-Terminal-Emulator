@@ -45,22 +45,18 @@ public class WindowList extends ListActivity {
     class WindowListAdapter extends BaseAdapter {
         private LayoutInflater inflater = getLayoutInflater();
 
-        @Override
         public int getCount() {
             return sessions.size();
         }
 
-        @Override
         public Object getItem(int position) {
             return sessions.get(position);
         }
 
-        @Override
         public long getItemId(int position) {
             return position;
         }
 
-        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View child = inflater.inflate(R.layout.window_list_item, parent, false);
             TextView label = (TextView) child.findViewById(R.id.window_list_label);
@@ -70,7 +66,6 @@ public class WindowList extends ListActivity {
             final TermService service = mTermService;
             final int closePosition = position;
             close.setOnClickListener(new View.OnClickListener() {
-                @Override
                 public void onClick(View v) {
                     TermSession session = service.getSessions().remove(closePosition);
                     if (session != null) {
@@ -113,14 +108,12 @@ public class WindowList extends ListActivity {
     }
 
     private ServiceConnection mTSConnection = new ServiceConnection() {
-        @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             TermService.TSBinder binder = (TermService.TSBinder) service;
             mTermService = binder.getService();
             populateList();
         }
 
-        @Override
         public void onServiceDisconnected(ComponentName arg0) {
             mTermService = null;
         }

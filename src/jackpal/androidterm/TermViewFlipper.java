@@ -31,17 +31,14 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     class ViewFlipperIterator implements Iterator<View> {
         int pos = 0;
 
-        @Override
         public boolean hasNext() {
             return (pos < getChildCount());
         }
 
-        @Override
         public View next() {
             return getChildAt(pos++);
         }
 
-        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
@@ -57,7 +54,6 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         this.context = context;
     }
 
-    @Override
     public Iterator<View> iterator() {
         return new ViewFlipperIterator();
     }

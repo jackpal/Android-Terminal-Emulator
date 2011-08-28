@@ -218,7 +218,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * Called by the TermSession when the contents of the view need updating
      */
     private UpdateCallback mUpdateNotify = new UpdateCallback() {
-        @Override
         public void onUpdate() {
             if ( mIsSelectingText ) {
                 int rowShift = mEmulator.getScrollCounter();
