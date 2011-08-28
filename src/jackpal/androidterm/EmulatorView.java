@@ -88,7 +88,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     /**
      * Total width of each character, in pixels
      */
-    private int mCharacterWidth;
+    private float mCharacterWidth;
 
     /**
      * Total height of each character, in pixels
@@ -892,9 +892,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private void updateSize(int w, int h) {
-        mColumns = Math.max(1, w / mCharacterWidth);
+        mColumns = Math.max(1, (int) (((float) w) / mCharacterWidth));
         mRows = Math.max(1, h / mCharacterHeight);
-        mVisibleColumns = mVisibleWidth / mCharacterWidth;
+        mVisibleColumns = (int) (((float) mVisibleWidth) / mCharacterWidth);
 
         mTermSession.updateSize(mColumns, mRows);
 
@@ -1034,7 +1034,7 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
     }
 
-    public int getCharacterWidth() {
+    public float getCharacterWidth() {
         return kCharacterWidth;
     }
 
@@ -1104,7 +1104,7 @@ class PaintRenderer extends BaseTextRenderer {
         mCharHeight = (int) Math.ceil(mTextPaint.getFontSpacing());
         mCharAscent = (int) Math.ceil(mTextPaint.ascent());
         mCharDescent = mCharHeight + mCharAscent;
-        mCharWidth = (int) mTextPaint.measureText(EXAMPLE_CHAR, 0, 1);
+        mCharWidth = mTextPaint.measureText(EXAMPLE_CHAR, 0, 1);
     }
 
     public void drawTextRun(Canvas canvas, float x, float y, int lineOffset,
@@ -1141,13 +1141,13 @@ class PaintRenderer extends BaseTextRenderer {
         return mCharHeight;
     }
 
-    public int getCharacterWidth() {
+    public float getCharacterWidth() {
         return mCharWidth;
     }
 
 
     private Paint mTextPaint;
-    private int mCharWidth;
+    private float mCharWidth;
     private int mCharHeight;
     private int mCharAscent;
     private int mCharDescent;

@@ -23,7 +23,7 @@ import android.graphics.Canvas;
  */
 
 public interface TextRenderer {
-    int getCharacterWidth();
+    float getCharacterWidth();
     int getCharacterHeight();
     void drawTextRun(Canvas canvas, float x, float y,
             int lineOffset, char[] text,
