@@ -43,7 +43,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.CompletionInfo;
-import android.view.inputmethod.CorrectionInfo;
+//import android.view.inputmethod.CorrectionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
@@ -436,12 +436,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 return true;
             }
 
-            public boolean commitCorrection (CorrectionInfo correctionInfo) {
-                if (TermDebug.LOG_IME) {
-                    Log.w(TAG, "commitCorrection");
-                }
-                return true;
-            }
+            //public boolean commitCorrection (CorrectionInfo correctionInfo) {
+            //    if (TermDebug.LOG_IME) {
+            //        Log.w(TAG, "commitCorrection");
+            //    }
+            //    return true;
+            //}
 
             public boolean commitText(CharSequence text, int newCursorPosition) {
                 if (TermDebug.LOG_IME) {
@@ -805,6 +805,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             return true;
         } else if (handleFnKey(keyCode, true)) {
             return true;
+	} else if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
+		dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, TermKeyListener.KEYCODE_ESCAPE));
+		return true;
         } else if (isSystemKey(keyCode, event)) {
             // Don't intercept the system keys
             return super.onKeyDown(keyCode, event);
