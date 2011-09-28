@@ -43,6 +43,8 @@ LOCAL_C_INCLUDES += \
 # No special compiler flags.
 LOCAL_CFLAGS +=
 
+LOCAL_LDLIBS := -lm -llog -landroid
+
 # Don't prelink this library.  For more efficient code, you may want
 # to add this library to the prelink map and set this to true. However,
 # it's difficult to do this for applications that are not supplied as

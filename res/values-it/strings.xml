@@ -15,12 +15,12 @@
  * limitations under the License.
 -->
 <resources>
-   <string name="application_terminal">Emulatore Terminale</string>
-   <string name="preferences">Preferenze</string>
-   <string name="reset">Resetta term</string>
-   <string name="send_email">Invia Email</string>
-   <string name="special_keys">Combinazione tasti</string>
-   <string name="toggle_soft_keyboard">Attiva/disattiva keyboard</string>
+   <string name="application_terminal">Emulatore terminale</string>
+   <string name="preferences">Impostazioni</string>
+   <string name="reset">Reset terminale</string>
+   <string name="send_email">Invia email</string>
+   <string name="special_keys">Tasti speciali</string>
+   <string name="toggle_soft_keyboard">Mostra/nascondi tastiera</string>
 
    <string name="enable_wakelock">Attiva WakeLock</string>
    <string name="disable_wakelock">Disatt. WakeLock</string>
@@ -28,14 +28,16 @@
    <string name="disable_wifilock">Disatt. WifiLock</string>
 
    <string name="edit_text">Modifica testo</string>
+   <string name="select_text">Seleziona testo</string>
    <string name="copy_all">Copia tutto</string>
    <string name="paste">Incolla</string>
 
-   <!-- Preference dialog -->
+   <string name="service_notify_text">Terminale in esecuzione</string>
+
    <string name="screen_preferences">Schermo</string>
 
    <string name="title_statusbar_preference">Status bar</string>
-   <string name="summary_statusbar_preference">Mostra/nascondi status bar.</string>
+   <string name="summary_statusbar_preference">Mostra o nascondi la status bar.</string>
    <string name="dialog_title_statusbar_preference">Status bar</string>
 
    <string name="title_cursorstyle_preference">Stile cursore</string>
@@ -43,7 +45,7 @@
    <string name="dialog_title_cursorstyle_preference">Stile cursore</string>
 
    <string name="title_cursorblink_preference">Lampeggio cursore</string>
-   <string name="summary_cursorblink_preference">Scegli lampeggio cursore.</string>
+   <string name="summary_cursorblink_preference">Scegli il lampeggio del cursore.</string>
    <string name="dialog_title_cursorblink_preference">Lampeggio cursore</string>
 
    <string name="text_preferences">Testo</string>
@@ -52,22 +54,22 @@
    <string name="summary_fontsize_preference">Scegli l\'altezza dei caratteri in punti.</string>
    <string name="dialog_title_fontsize_preference">Dimensione carattere</string>
 
-   <string name="title_color_preference">Colori</string>
+   <string name="title_color_preference">Colore</string>
    <string name="summary_color_preference">Scegli il colore del testo.</string>
    <string name="dialog_title_color_preference">Colore testo</string>
 
-   <string name="keyboard_preferences">Tastierra</string>
+   <string name="keyboard_preferences">Tastiera</string>
 
-   <string name="title_controlkey_preference">Tasto control</string>
-   <string name="summary_controlkey_preference">Scegli tasto control.</string>
-   <string name="dialog_title_controlkey_preference">Tasto control</string>
+   <string name="title_controlkey_preference">Tasto Control</string>
+   <string name="summary_controlkey_preference">Scegli il tasto Control.</string>
+   <string name="dialog_title_controlkey_preference">Tasto Control</string>
 
    <string name="title_fnkey_preference">Tasto Fn</string>
-   <string name="summary_fnkey_preference">Scegli tasto Fn.</string>
+   <string name="summary_fnkey_preference">Scegli il tasto Fn.</string>
    <string name="dialog_title_fnkey_preference">Tasto Fn</string>
 
    <string name="title_ime_preference">Metodo inserimento</string>
-   <string name="summary_ime_preference">Scegli il metodo di inserimento per la tastiera virtuale.</string>
+   <string name="summary_ime_preference">Scegli il metodo di inserimento per la tastiera.</string>
    <string name="dialog_title_ime_preference">Metodo inserimento</string>
 
    <string name="shell_preferences">Shell</string>
@@ -76,7 +78,15 @@
    <string name="dialog_title_shell_preference">Shell</string>
 
    <string name="title_initialcommand_preference">Comando iniziale</string>
-   <string name="summary_initialcommand_preference">Inviato alla shell al suo avvio.</string>
+   <string name="summary_initialcommand_preference">Inviato alla shell all\'avvio.</string>
    <string name="dialog_title_initialcommand_preference">Comando iniziale</string>
+
+   <string name="control_key_dialog_title">Tasti Control e Fn</string>
+
+   <string name="control_key_dialog_control_text">CTRLKEY spazio : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 0..9 : Control-0..9</string>
+   <string name="control_key_dialog_control_disabled_text">Nessun tasto Control impostato.</string>
+
+   <string name="control_key_dialog_fn_text">FNKEY W : Su\nFNKEY A : Sinistra\nFNKEY S : Giù\nFNKEY D : Destra\nFNKEY P : Pag.Su\nFNKEY N : Pag.Giù\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY . : Control-\\\nFNKEY 2 : Control-_\nFNKEY 3 : Control-^\nFNKEY 4 : Control-]</string>
+   <string name="control_key_dialog_fn_disabled_text">Nessun tasto Fn impostato.</string>
 
 </resources>

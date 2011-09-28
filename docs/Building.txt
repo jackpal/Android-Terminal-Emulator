@@ -35,7 +35,7 @@ Build the shared library:
 
 This should chug away for a while and ultimately produce the file
 
-libs/armeabi/libandroidterm.so
+libs/armeabi/libandroidterm2.so
     
 Create the Eclipse project:
 
@@ -78,4 +78,4 @@ Eclipse. This is handy because it can be scripted.
 4) ant debug
 5) Connect a device to your machine, or start the emulator
 6) adb install -r bin/Term.apk
-7) adb shell am start -n jackpal.androidterm/jackpal.androidterm.Term
+7) adb shell am start -n jackpal.androidterm2/jackpal.androidterm2.Term

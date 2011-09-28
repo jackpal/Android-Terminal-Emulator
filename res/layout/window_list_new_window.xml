@@ -16,9 +16,12 @@
 */
 -->
 
-<jackpal.androidterm2.TermViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/view_flipper"
-    android:layout_width="fill_parent" 
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/black"
-    />
+    android:padding="15dp"
+    android:maxLines="1"
+    android:singleLine="true"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:text="@string/new_window"
+/>

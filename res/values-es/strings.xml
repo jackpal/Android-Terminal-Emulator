@@ -17,15 +17,27 @@
 <resources>
    <string name="application_terminal">Terminal</string>
    <string name="preferences">Preferencias</string>
-   <string name="reset">Resetear terminal</string>
-   <string name="send_email">Enviar Email</string>
+   <string name="new_window">Nueva ventana</string>
+   <string name="close_window">Cerrar ventana</string>
+   <string name="window_list">Ventanas</string>
+   <string name="prev_window">Anterior</string>
+   <string name="next_window">Siguiente</string>
+   <string name="reset">Cerrar terminal</string>
+   <string name="send_email">Enviar correo-e</string>
    <string name="special_keys">Teclas especiales</string>
    <string name="toggle_soft_keyboard">Activar teclado</string>
+
+   <string name="enable_wakelock">Bloquear protector</string>
+   <string name="disable_wakelock">Liberar protector</string>
+   <string name="enable_wifilock">Bloquear WiFi</string>
+   <string name="disable_wifilock">Liberar WiFi</string>
 
    <string name="edit_text">Editar texto</string>
    <string name="select_text">Seleccionar texto</string>
    <string name="copy_all">Copiar todo</string>
    <string name="paste">Pegar</string>
+
+   <string name="service_notify_text">Ejecutando sesión de terminal</string>
 
    <!-- Preference dialog -->
    <string name="screen_preferences">Pantalla</string>
@@ -35,40 +47,51 @@
    <string name="dialog_title_statusbar_preference">Barra de estado</string>
 
    <string name="title_cursorstyle_preference">Estilo cursor</string>
-   <string name="summary_cursorstyle_preference">Escoja estilo de cursor.</string>
+   <string name="summary_cursorstyle_preference">Escoge estilo de cursor.</string>
    <string name="dialog_title_cursorstyle_preference">Estilo cursor</string>
 
    <string name="title_cursorblink_preference">Parpadeo cursor</string>
-   <string name="summary_cursorblink_preference">Escoja parpadeo de cursor.</string>
+   <string name="summary_cursorblink_preference">Escoge parpadeo de cursor.</string>
    <string name="dialog_title_cursorblink_preference">Parpadeo cursor</string>
 
    <string name="text_preferences">Texto</string>
 
    <string name="title_fontsize_preference">Tamaño Fuente</string>
-   <string name="summary_fontsize_preference">Elija altura de los carácteres en puntos.</string>
+   <string name="summary_fontsize_preference">Elige altura de los carácteres en puntos.</string>
    <string name="dialog_title_fontsize_preference">Tamaño Fuente</string>
 
    <string name="title_color_preference">Colores</string>
-   <string name="summary_color_preference">Elija color de texto.</string>
+   <string name="summary_color_preference">Elige color de texto.</string>
    <string name="dialog_title_color_preference">Color de texto</string>
 
    <string name="keyboard_preferences">Teclado</string>
 
    <string name="title_controlkey_preference">Tecla Control</string>
-   <string name="summary_controlkey_preference">Elija tecla de control.</string>
+   <string name="summary_controlkey_preference">Elige tecla de control.</string>
    <string name="dialog_title_controlkey_preference">Tecla Control</string>
 
+   <string name="title_fnkey_preference">Tecla Fn</string>
+   <string name="summary_fnkey_preference">Elige tecla Fn.</string>
+   <string name="dialog_title_fnkey_preference">Tecla Fn</string>
+
    <string name="title_ime_preference">Método de entrada</string>
-   <string name="summary_ime_preference">Elija estodo de entrada para el teclado.</string>
+   <string name="summary_ime_preference">Elige método de entrada para el teclado.</string>
    <string name="dialog_title_ime_preference">Método de entrada</string>
 
    <string name="shell_preferences">Shell</string>
    <string name="title_shell_preference">Línea de comandos</string>
-   <string name="summary_shell_preference">Especifique la línea de comandos de shell.</string>
+   <string name="summary_shell_preference">Especifica la línea de comandos de shell.</string>
    <string name="dialog_title_shell_preference">Shell</string>
 
    <string name="title_initialcommand_preference">Comando inicial</string>
    <string name="summary_initialcommand_preference">Enviar al shell cuando se inicia.</string>
    <string name="dialog_title_initialcommand_preference">Comando inicial</string>
+
+   <string name="control_key_dialog_title">Teclas Control y Función</string>
+   <string name="control_key_dialog_control_text">CTRLKEY Espacio : Ctrl-@ (NUL)\nCTRLKEY A..Z : Ctrl-A..Z\nCTRLKEY 5 : Ctrl-]\nCTRLKEY 6 : Ctrl-^\nCTRLKEY 7 : Ctrl-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+   <string name="control_key_dialog_control_disabled_text">Tecla Control no establecida.</string>
+
+  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Arriba\nFNKEY A : Izquierda\nFNKEY S : Abajo\nFNKEY D : Derecha\nFNKEY P : RePág\nFNKEY N : AvPág\nFNKEY T : Tab\nFNKEY L : |\nFNKEY U : _\nFNKEY E : Ctrl-[ (ESC)\nFNKEY X : Supr\nFNKEY I : Insert\nFNKEY H : Inicio\nFNKEY F : Fin\nFNKEY . : Ctrl-\\\n</string>
+  <string name="control_key_dialog_fn_disabled_text">Tecla Fn no establecida.</string>
 
 </resources>
