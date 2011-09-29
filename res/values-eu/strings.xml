@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">Terminal Emulatzailea</string>
+   <string name="preferences">Hobespenak</string>
+   <string name="new_window">Leiho berria</string>
+   <string name="close_window">Leihoa itxi</string>
+   <string name="window_list">Leihoak</string>
+   <string name="prev_window">Aurreko leihoa</string>
+   <string name="next_window">Hurrengo leihoa</string>
+   <string name="reset">Berrezarri terminala</string>
+   <string name="send_email">Bidali eposta ...(r)i</string>
+   <string name="special_keys">Tekla bereziak</string>
+   <string name="toggle_soft_keyboard">Txandakatu soft teklatua</string>
+
+   <string name="enable_wakelock">Gaitu WakeLock</string>
+   <string name="disable_wakelock">Desgaitu WakeLock</string>
+   <string name="enable_wifilock">Gaitu WifiLock</string>
+   <string name="disable_wifilock">Desgaitu WifiLock</string>
+
+   <string name="edit_text">Editatu testua</string>
+   <string name="select_text">Hautatu testua</string>
+   <string name="copy_all">Kopiatu guztia</string>
+   <string name="paste">Itsatsi</string>
+
+   <string name="service_notify_text">Terminal saioa martxan dago</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">Pantaila</string>
+
+   <string name="title_statusbar_preference">Egoera-barra</string>
+   <string name="summary_statusbar_preference">Bistaratu/ezkutatu egoera-barra.</string>
+   <string name="dialog_title_statusbar_preference">Egoera-barra</string>
+
+   <string name="title_cursorstyle_preference">Kurtsore-estiloa</string>
+   <string name="summary_cursorstyle_preference">Hautatu kurtsore-estiloa.</string>
+   <string name="dialog_title_cursorstyle_preference">Kurtsore-estiloa</string>
+
+   <string name="title_cursorblink_preference">Kurtsore-keinua</string>
+   <string name="summary_cursorblink_preference">Hautatu kurtsore-keinua.</string>
+   <string name="dialog_title_cursorblink_preference">Kurtsore-keinua</string>
+
+   <string name="text_preferences">Testua</string>
+
+   <string name="title_fontsize_preference">Letra-tamaina</string>
+   <string name="summary_fontsize_preference">Hautatu karaktereen tamaina puntutan.</string>
+   <string name="dialog_title_fontsize_preference">Letra-tamaina</string>
+
+   <string name="title_color_preference">Koloreak</string>
+   <string name="summary_color_preference">Hautatu testuaren kolorea.</string>
+   <string name="dialog_title_color_preference">Testuaren kolorea</string>
+
+   <string name="keyboard_preferences">Teklatua</string>
+
+   <string name="title_controlkey_preference">Kontrol tekla</string>
+   <string name="summary_controlkey_preference">Hautatu kontrol tekla.</string>
+   <string name="dialog_title_controlkey_preference">Kontrol tekla</string>
+
+   <string name="title_fnkey_preference">Fn tekla</string>
+   <string name="summary_fnkey_preference">Hautatu Fn tekla.</string>
+   <string name="dialog_title_fnkey_preference">Fn tekla</string>
+
+   <string name="title_ime_preference">Sarrera-metodoa</string>
+   <string name="summary_ime_preference">Hautatu sarrera-metodoa soft teklatuarentzat.</string>
+   <string name="dialog_title_ime_preference">Sarrera-metodoa</string>
+
+   <string name="shell_preferences">Shell</string>
+   <string name="title_shell_preference">Komando lerroa</string>
+   <string name="summary_shell_preference">Zehaztu shell komando lerroa.</string>
+   <string name="dialog_title_shell_preference">Shell</string>
+
+   <string name="title_initialcommand_preference">Hasierako komandoa</string>
+   <string name="summary_initialcommand_preference">Bidali shell-era abiarazten denean.</string>
+   <string name="dialog_title_initialcommand_preference">Hasierako Komandoa</string>
+
+   <!-- Don't localize these default values -->
+   <string name="default_value_statusbar_preference">0</string>
+   <string name="default_value_cursorstyle_preference">0</string>
+   <string name="default_value_cursorblink_preference">0</string>
+   <string name="default_value_fontsize_preference">10</string>
+   <string name="default_value_color_preference">2</string>
+   <string name="default_value_controlkey_preference">5</string>
+   <string name="default_value_fnkey_preference">4</string>
+   <string name="default_value_ime_preference">0</string>
+   <string name="default_value_shell_preference">/system/bin/sh -</string>
+   <string name="default_value_initialcommand_preference">export PATH=/data/local/bin:$PATH</string>
+   
+   <string name="control_key_dialog_title">Kontrol and Funtzio Teklak</string>
+   <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
+        actual control key key name. -->
+   <string name="control_key_dialog_control_text">CTRLKEY Zuriunea : Kontrol-@ (NUL)\nCTRLKEY A..Z : Kontrol-A..Z\nCTRLKEY 5 : Kontrol-]\nCTRLKEY 6 : Kontrol-^\nCTRLKEY 7 : Kontrol-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+  <string name="control_key_dialog_control_disabled_text">Ez da kontrol teklarik ezarri.</string>
+  <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
+       actual function key key name. -->
+  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Gora\nFNKEY A : Ezkerra\nFNKEY S : Behera\nFNKEY D : Eskuina\nFNKEY P : Hurrengo-orria\nFNKEY N : Aurreko-orria\nFNKEY T : Tabulatzailea\nFNKEY L : | (kanalizazioa)\nFNKEY U : _ (azpimarra)\nFNKEY E : Kontrol-[ (ESC)\nFNKEY X : Ezabatu\nFNKEY I : Txertatu\nFNKEY H : Etxea\nFNKEY F : Bukaera\nFNKEY . : Kontrol-\\\n</string>
+  <string name="control_key_dialog_fn_disabled_text">Ez da funtzio teklarik ezarri.</string>
+   
+</resources>
