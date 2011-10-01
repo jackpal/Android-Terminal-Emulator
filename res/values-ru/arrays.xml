@@ -50,11 +50,33 @@
         <item>Правый Alt</item>
         <item>Громкость вверх</item>
         <item>Громкость вниз</item>
+        <item>Кнопка камеры</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
         <item>По знакам</item>
         <item>По словам</item>
+    </string-array>
+
+    <string-array name="entries_cursorblink_preference">
+        <item>Немигающий курсор</item>
+        <item>Мигающий курсор</item>
+    </string-array>
+
+    <string-array name="entries_cursorstyle_preference">
+        <item>Прямоугольный</item>
+        <item>Подчёркивание</item>
+        <item>Вертикальная черта</item>
+    </string-array>
+
+    <string-array name="entries_fnkey_preference">
+        <item>Jog ball</item>
+        <item>Клавиша \@</item>
+        <item>Левый Alt</item>
+        <item>Правый Alt</item>
+        <item>Громкость вверх</item>
+        <item>Громкость вниз</item>
+        <item>Кнопка камеры</item>
     </string-array>
 
 </resources>
