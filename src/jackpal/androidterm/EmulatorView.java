@@ -16,9 +16,7 @@
 
 package jackpal.androidterm;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -155,12 +153,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private int mLeftColumn;
 
-    /**
-     * Used to receive data from the remote process.
-     */
-    private FileOutputStream mTermOut;
-
-    private static final int SCREEN_CHECK_PERIOD = 1000;
     private static final int CURSOR_BLINK_PERIOD = 1000;
 
     private boolean mCursorVisible = true;
@@ -312,12 +304,16 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
             private void sendText(CharSequence text) {
                 int n = text.length();
+                char c;
                 try {
                     for(int i = 0; i < n; i++) {
-                        char c = text.charAt(i);
-                        mapAndSend(c);
+                        c = text.charAt(i);
+                        if (Character.isHighSurrogate(c)) {
+                            mapAndSend(Character.toCodePoint(c, text.charAt(++i)));
+                        } else {
+                            mapAndSend(c);
+                        }
                     }
-                    mTermOut.flush();
                 } catch (IOException e) {
                     Log.e(TAG, "error writing ", e);
                 }
@@ -326,9 +322,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             private void mapAndSend(int c) throws IOException {
                 int result = mKeyListener.mapControlChar(c);
                 if (result < TermKeyListener.KEYCODE_OFFSET) {
-                    mTermOut.write(result);
+                    mTermSession.write(result);
                 } else {
-                    mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, mTermOut, getKeypadApplicationMode());
+                    mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, getKeypadApplicationMode());
                 }
             }
 
@@ -610,11 +606,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mTermSession = session;
         mTranscriptScreen = session.getTranscriptScreen();
         mEmulator = session.getEmulator();
-        mTermOut = session.getTermOut();
 
         mViewFlipper = viewFlipper;
 
-        mKeyListener = new TermKeyListener();
+        mKeyListener = new TermKeyListener(session);
         mTextSize = 10;
         mForeground = TermSettings.WHITE;
         mBackground = TermSettings.BLACK;
@@ -813,8 +808,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         // Translate the keyCode into an ASCII character.
 
         try {
-            mKeyListener.keyDown(keyCode, event, mTermOut,
-                    getKeypadApplicationMode());
+            mKeyListener.keyDown(keyCode, event, getKeypadApplicationMode());
         } catch (IOException e) {
             // Ignore I/O exceptions
         }
@@ -1804,13 +1798,17 @@ class TermKeyListener {
 
     private boolean mCapsLock;
 
-    static public final int KEYCODE_OFFSET = 1000;
+    private TermSession mTermSession;
+
+    // Map keycodes out of (above) the Unicode code point space.
+    static public final int KEYCODE_OFFSET = 0xA00000;
 
     /**
      * Construct a term key listener.
      *
      */
-    public TermKeyListener() {
+    public TermKeyListener(TermSession termSession) {
+        mTermSession = termSession;
         initKeyCodes();
     }
 
@@ -1912,8 +1910,8 @@ class TermKeyListener {
      * @param keyCode the keycode of the keyDown event
      *
      */
-    public void keyDown(int keyCode, KeyEvent event, OutputStream out, boolean appMode) throws IOException {
-        if (handleKeyCode(keyCode, out, appMode)) {
+    public void keyDown(int keyCode, KeyEvent event, boolean appMode) throws IOException {
+        if (handleKeyCode(keyCode, appMode)) {
             return;
         }
         int result = -1;
@@ -1950,13 +1948,13 @@ class TermKeyListener {
         result = mapControlChar(result);
 
         if (result >= KEYCODE_OFFSET) {
-            handleKeyCode(result - KEYCODE_OFFSET, out, appMode);
+            handleKeyCode(result - KEYCODE_OFFSET, appMode);
         } else if (result >= 0) {
-            out.write(result);
+            mTermSession.write(result);
         }
     }
 
-    public boolean handleKeyCode(int keyCode, OutputStream out, boolean appMode) throws IOException {
+    public boolean handleKeyCode(int keyCode, boolean appMode) throws IOException {
         if (keyCode >= 0 && keyCode < mKeyCodes.length) {
             String code = null;
             if (appMode) {
@@ -1966,10 +1964,7 @@ class TermKeyListener {
                 code = mKeyCodes[keyCode];
             }
             if (code != null) {
-                int length = code.length();
-                for (int i = 0; i < length; i++) {
-                    out.write(code.charAt(i));
-                }
+                mTermSession.write(code);
                 return true;
             }
         }

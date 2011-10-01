@@ -56,6 +56,9 @@
 
    <string name="text_preferences">Text</string>
 
+   <string name="title_utf8_by_default_preference">Enable UTF-8 mode by default</string>
+   <string name="summary_utf8_by_default_preference">Whether UTF-8 mode is enabled by default.</string>
+
    <string name="title_fontsize_preference">Font size</string>
    <string name="summary_fontsize_preference">Choose character height in points.</string>
    <string name="dialog_title_fontsize_preference">Font size</string>

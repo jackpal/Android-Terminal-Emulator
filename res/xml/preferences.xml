@@ -73,6 +73,12 @@
                 android:entryValues="@array/entryvalues_color_preference"
                 android:dialogTitle="@string/dialog_title_color_preference" />
 
+        <CheckBoxPreference
+                android:key="utf8_by_default"
+                android:defaultValue="false"
+                android:title="@string/title_utf8_by_default_preference"
+                android:summary="@string/summary_utf8_by_default_preference" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

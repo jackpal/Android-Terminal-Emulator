@@ -20,6 +20,11 @@ import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
+import java.nio.charset.CodingErrorAction;
 import java.util.ArrayList;
 
 import android.os.Handler;
@@ -52,6 +57,10 @@ public class TermSession {
     private Thread mPollingThread;
     private ByteQueue mByteQueue;
     private byte[] mReceiveBuffer;
+
+    private CharBuffer mWriteCharBuffer;
+    private ByteBuffer mWriteByteBuffer;
+    private CharsetEncoder mUTF8Encoder;
 
     private static final int DEFAULT_COLUMNS = 80;
     private static final int DEFAULT_ROWS = 24;
@@ -89,7 +98,7 @@ public class TermSession {
         mTermIn = new FileInputStream(mTermFd);
 
         mTranscriptScreen = new TranscriptScreen(DEFAULT_COLUMNS, TRANSCRIPT_ROWS, DEFAULT_ROWS, 0, 7);
-        mEmulator = new TerminalEmulator(mTranscriptScreen, DEFAULT_COLUMNS, DEFAULT_ROWS, mTermOut);
+        mEmulator = new TerminalEmulator(settings, mTranscriptScreen, DEFAULT_COLUMNS, DEFAULT_ROWS, mTermOut);
 
         mIsRunning = true;
 
@@ -104,6 +113,12 @@ public class TermSession {
         };
         watcher.setName("Process watcher");
         watcher.start();
+
+        mWriteCharBuffer = CharBuffer.allocate(2);
+        mWriteByteBuffer = ByteBuffer.allocate(4);
+        mUTF8Encoder = Charset.forName("UTF-8").newEncoder();
+        mUTF8Encoder.onMalformedInput(CodingErrorAction.REPLACE);
+        mUTF8Encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
 
         mReceiveBuffer = new byte[4 * 1024];
         mByteQueue = new ByteQueue(4 * 1024);
@@ -146,12 +161,30 @@ public class TermSession {
 
     public void write(String data) {
         try {
-            mTermOut.write(data.getBytes());
+            mTermOut.write(data.getBytes("UTF-8"));
             mTermOut.flush();
         } catch (IOException e) {
             // Ignore exception
             // We don't really care if the receiver isn't listening.
             // We just make a best effort to answer the query.
+        }
+    }
+
+    public void write(int codePoint) {
+        CharBuffer charBuf = mWriteCharBuffer;
+        ByteBuffer byteBuf = mWriteByteBuffer;
+        CharsetEncoder encoder = mUTF8Encoder;
+        try {
+            charBuf.clear();
+            byteBuf.clear();
+            Character.toChars(codePoint, charBuf.array(), 0);
+            encoder.reset();
+            encoder.encode(charBuf, byteBuf, true);
+            encoder.flush(byteBuf);
+            mTermOut.write(byteBuf.array(), 0, byteBuf.position()-1);
+            mTermOut.flush();
+        } catch (IOException e) {
+            // Ignore exception
         }
     }
 

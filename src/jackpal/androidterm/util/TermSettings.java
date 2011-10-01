@@ -35,6 +35,7 @@ public class TermSettings {
     private int mUseCookedIME = 0;
     private String mShell;
     private String mInitialCommand;
+    private boolean mUTF8ByDefault = false;
 
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String CURSORSTYLE_KEY = "cursorstyle";
@@ -46,6 +47,7 @@ public class TermSettings {
     private static final String IME_KEY = "ime";
     private static final String SHELL_KEY = "shell";
     private static final String INITIALCOMMAND_KEY = "initialcommand";
+    private static final String UTF8_KEY = "utf8_by_default";
 
     public static final int WHITE = 0xffffffff;
     public static final int BLACK = 0xff000000;
@@ -101,6 +103,7 @@ public class TermSettings {
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
         mShell = readStringPref(SHELL_KEY, mShell);
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
+        mUTF8ByDefault = readBooleanPref(UTF8_KEY, false);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 
@@ -118,6 +121,10 @@ public class TermSettings {
 
     private String readStringPref(String key, String defaultValue) {
         return mPrefs.getString(key, defaultValue);
+    }
+
+    private boolean readBooleanPref(String key, boolean defaultValue) {
+        return mPrefs.getBoolean(key, defaultValue);
     }
 
     public boolean showStatusBar() {
@@ -166,5 +173,9 @@ public class TermSettings {
 
     public String getInitialCommand() {
         return mInitialCommand;
+    }
+
+    public boolean defaultToUTF8Mode() {
+        return mUTF8ByDefault;
     }
 }

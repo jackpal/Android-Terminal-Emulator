@@ -18,11 +18,18 @@ package jackpal.androidterm.session;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
 
 import android.util.Log;
 
 import jackpal.androidterm.TermDebug;
 import jackpal.androidterm.model.Screen;
+import jackpal.androidterm.util.TermSettings;
+import jackpal.androidterm.util.UnicodeTranscript;
 
 /**
  * Renders text into a screen. Contains all the terminal-specific knowlege and
@@ -32,6 +39,7 @@ import jackpal.androidterm.model.Screen;
  * video, color) alternate screen cursor key and keypad escape sequences.
  */
 public class TerminalEmulator {
+    private TermSettings mTermSettings;
 
     /**
      * The cursor row. Numbered 0..mRows-1.
@@ -117,6 +125,11 @@ public class TerminalEmulator {
      * Escape processing state: ESC [ ?
      */
     private static final int ESC_LEFT_SQUARE_BRACKET_QUESTION_MARK = 6;
+
+    /**
+     * Escape processing state: ESC %
+     */
+    private static final int ESC_PERCENT = 7;
 
     /**
      * True if the current escape sequence should continue, false if the current
@@ -221,6 +234,13 @@ public class TerminalEmulator {
     private boolean mAboutToAutoWrap;
 
     /**
+     * True if we just auto-wrapped and no character has been emitted on this
+     * line yet.  Used to ensure combining characters following a character
+     * at the edge of the screen are stored in the proper place.
+     */
+    private boolean mJustWrapped = false;
+
+    /**
      * Used for debugging, counts how many chars have been processed.
      */
     private int mProcessedCharCount;
@@ -247,6 +267,16 @@ public class TerminalEmulator {
     private int mScrollCounter = 0;
 
     /**
+     * UTF-8 support
+     */
+    private static final int UNICODE_REPLACEMENT_CHAR = 0xfffd;
+    private boolean mUTF8Mode = false;
+    private int mUTF8ToFollow = 0;
+    private ByteBuffer mUTF8ByteBuffer;
+    private CharBuffer mInputCharBuffer;
+    private CharsetDecoder mUTF8Decoder;
+
+    /**
      * Construct a terminal emulator that uses the supplied screen
      *
      * @param screen the screen to render characters into.
@@ -254,13 +284,21 @@ public class TerminalEmulator {
      * @param rows the number of rows to emulate
      * @param termOut the output file descriptor that talks to the pseudo-tty.
      */
-    public TerminalEmulator(Screen screen, int columns, int rows,
-            FileOutputStream termOut) {
+    public TerminalEmulator(TermSettings termSettings,
+            Screen screen, int columns, int rows, FileOutputStream termOut) {
+        mTermSettings = termSettings;
         mScreen = screen;
         mRows = rows;
         mColumns = columns;
         mTabStop = new boolean[mColumns];
         mTermOut = termOut;
+
+        mUTF8ByteBuffer = ByteBuffer.allocate(4);
+        mInputCharBuffer = CharBuffer.allocate(2);
+        mUTF8Decoder = Charset.forName("UTF-8").newDecoder();
+        mUTF8Decoder.onMalformedInput(CodingErrorAction.REPLACE);
+        mUTF8Decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+
         reset();
     }
 
@@ -378,6 +416,11 @@ public class TerminalEmulator {
     }
 
     private void process(byte b) {
+        // Let the UTF-8 decoder try to handle it if we're in UTF-8 mode
+        if (mUTF8Mode && handleUTF8Sequence(b)) {
+            return;
+        }
+
         switch (b) {
         case 0: // NUL
             // Do nothing
@@ -465,6 +508,10 @@ public class TerminalEmulator {
                 doEscLSBQuest(b);
                 break;
 
+            case ESC_PERCENT:
+                doEscPercent(b);
+                break;
+
             default:
                 unknownSequence(b);
                 break;
@@ -474,6 +521,57 @@ public class TerminalEmulator {
             }
             break;
         }
+    }
+
+    private boolean handleUTF8Sequence(byte b) {
+        if (mUTF8ToFollow == 0 && ((b >> 7) & 0x1) == 0) {
+            // ASCII character -- we don't need to handle this
+            return false;
+        }
+
+        if (mUTF8ToFollow > 0) {
+            if (((b >> 6) & 0x3) != 0x2) {
+                /* Not a UTF-8 continuation byte (doesn't begin with 0b10)
+                   Replace the entire sequence with the replacement char */
+                mUTF8ToFollow = 0;
+                mUTF8ByteBuffer.clear();
+                emit(UNICODE_REPLACEMENT_CHAR);
+                return true;
+            }
+
+            mUTF8ByteBuffer.put(b);
+            if (--mUTF8ToFollow == 0) {
+                // Sequence complete -- decode and emit it
+                ByteBuffer byteBuf = mUTF8ByteBuffer;
+                CharBuffer charBuf = mInputCharBuffer;
+                CharsetDecoder decoder = mUTF8Decoder;
+
+                byteBuf.rewind();
+                decoder.reset();
+                decoder.decode(byteBuf, charBuf, true);
+                decoder.flush(charBuf);
+                emit(charBuf.array());
+
+                byteBuf.clear();
+                charBuf.clear();
+            }
+        } else {
+            if (((b >> 5) & 0x7) == 0x6) { // 0b110 -- two-byte sequence
+                mUTF8ToFollow = 1;
+            } else if (((b >> 4) & 0xf) == 0xe) { // 0b1110 -- three-byte sequence
+                mUTF8ToFollow = 2;
+            } else if (((b >> 3) & 0x1f) == 0x1e) { // 0b11110 -- four-byte sequence
+                mUTF8ToFollow = 3;
+            } else {
+                // Not a valid UTF-8 sequence start -- replace this char
+                emit(UNICODE_REPLACEMENT_CHAR);
+                return true;
+            }
+
+            mUTF8ByteBuffer.put(b);
+        }
+
+        return true;
     }
 
     private void setAltCharSet(boolean alternateCharSet) {
@@ -487,6 +585,19 @@ public class TerminalEmulator {
             }
         }
         return mColumns - 1;
+    }
+
+    private void doEscPercent(byte b) {
+        switch (b) {
+        case '@': // Esc % @ -- return to ISO 2022 mode
+           mUTF8Mode = false;
+           break;
+        case 'G': // Esc % G -- UTF-8 mode
+           mUTF8Mode = true;
+           break;
+        default: // unimplemented character set
+           break;
+        }
     }
 
     private void doEscLSBQuest(byte b) {
@@ -1142,17 +1253,19 @@ public class TerminalEmulator {
     }
 
     /**
-     * Send an ASCII character to the screen.
+     * Send a Unicode code point to the screen.
      *
-     * @param b the ASCII character to display.
+     * @param c The code point of the character to display
      */
-    private void emit(byte b) {
+    private void emit(int c) {
         boolean autoWrap = autoWrapEnabled();
+        int width = UnicodeTranscript.charWidth(c);
 
         if (autoWrap) {
-            if (mCursorCol == mColumns - 1 && mAboutToAutoWrap) {
+            if (mCursorCol == mColumns - 1 && (mAboutToAutoWrap || width == 2)) {
                 mScreen.setLineWrap(mCursorRow);
                 mCursorCol = 0;
+                mJustWrapped = true;
                 if (mCursorRow + 1 < mBottomMargin) {
                     mCursorRow++;
                 } else {
@@ -1161,21 +1274,67 @@ public class TerminalEmulator {
             }
         }
 
-        if (mInsertMode) { // Move character to right one space
-            int destCol = mCursorCol + 1;
+        if (mInsertMode & width != 0) { // Move character to right one space
+            int destCol = mCursorCol + width;
             if (destCol < mColumns) {
                 mScreen.blockCopy(mCursorCol, mCursorRow, mColumns - destCol,
                         1, destCol, mCursorRow);
             }
         }
 
-        mScreen.set(mCursorCol, mCursorRow, b, getForeColor(), getBackColor());
+        if (width == 0) {
+            // Combining character -- store along with character it modifies
+            if (mJustWrapped) {
+                mScreen.set(mColumns - 1, mCursorRow - 1, c, getForeColor(), getBackColor());
+            } else {
+                mScreen.set(mCursorCol - 1, mCursorRow, c, getForeColor(), getBackColor());
+            }
+        } else {
+            mScreen.set(mCursorCol, mCursorRow, c, getForeColor(), getBackColor());
+            mJustWrapped = false;
+        }
 
         if (autoWrap) {
             mAboutToAutoWrap = (mCursorCol == mColumns - 1);
         }
 
-        mCursorCol = Math.min(mCursorCol + 1, mColumns - 1);
+        mCursorCol = Math.min(mCursorCol + width, mColumns - 1);
+    }
+
+    private void emit(byte b) {
+        emit((int) b);
+    }
+
+    /**
+     * Send a UTF-16 char or surrogate pair to the screen.
+     *
+     * @param c A char[2] containing either a single UTF-16 char or a surrogate pair to be sent to the screen.
+     */
+    private void emit(char[] c) {
+        if (Character.isHighSurrogate(c[0])) {
+            emit(Character.toCodePoint(c[0], c[1]));
+        } else {
+            emit((int) c[0]);
+        }
+    }
+
+    /**
+     * Send an array of UTF-16 chars to the screen.
+     *
+     * @param c A char[] array whose contents are to be sent to the screen.
+     */
+    private void emit(char[] c, int offset, int length) {
+        for (int i = offset; i < length; ++i) {
+            if (c[i] == 0) {
+                break;
+            }
+            if (Character.isHighSurrogate(c[i])) {
+                emit(Character.toCodePoint(c[i], c[i+1]));
+                ++i;
+            } else {
+                emit((int) c[i]);
+            }
+        }
     }
 
     private void setCursorRow(int row) {
@@ -1228,6 +1387,11 @@ public class TerminalEmulator {
         // mProcessedCharCount is preserved unchanged.
         setDefaultTabStops();
         blockClear(0, 0, mColumns, mRows);
+
+        mUTF8Mode = mTermSettings.defaultToUTF8Mode();
+        mUTF8ToFollow = 0;
+        mUTF8ByteBuffer.clear();
+        mInputCharBuffer.clear();
     }
 
     public String getSelectedText(int x1, int y1, int x2, int y2) {
