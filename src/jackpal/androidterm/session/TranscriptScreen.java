@@ -436,7 +436,13 @@ public class TranscriptScreen implements Screen {
         char[] rowBuffer = mRowBuffer;
         char[] data = mData;
         int columns = mColumns;
-        for (int row = -mActiveTranscriptRows; row < mScreenRows; row++) {
+        if (selY1 < -mActiveTranscriptRows) {
+            selY1 = -mActiveTranscriptRows;
+        }
+        if (selY2 >= mScreenRows) {
+            selY2 = mScreenRows - 1;
+        }
+        for (int row = selY1; row <= selY2; row++) {
             int offset = getOffset(row);
             int lastPrintingChar = -1;
             for (int column = 0; column < columns; column++) {
@@ -449,23 +455,21 @@ public class TranscriptScreen implements Screen {
                 }
                 rowBuffer[column] = c;
             }
-            if ( row >= selY1 && row <= selY2 ) {
-                int x1 = 0;
-                int x2 = 0;
-                if ( row == selY1 ) {
-                    x1 = selX1;
-                }
-                if ( row == selY2 ) {
-                    x2 = selX2;
-                } else {
-                    x2 = columns;
-                }
-                if (mLineWrap[externalToInternalRow(row)]) {
-                    builder.append(rowBuffer, x1, x2 - x1);
-                } else {
-                    builder.append(rowBuffer, x1, Math.max(0, Math.min(x2 - x1 + 1, lastPrintingChar + 1 - x1)));
-                    builder.append('\n');
-                }
+            int x1 = 0;
+            int x2 = 0;
+            if ( row == selY1 ) {
+                x1 = selX1;
+            }
+            if ( row == selY2 ) {
+                x2 = selX2;
+            } else {
+                x2 = columns;
+            }
+            if (mLineWrap[externalToInternalRow(row)]) {
+                builder.append(rowBuffer, x1, x2 - x1);
+            } else {
+                builder.append(rowBuffer, x1, Math.max(0, Math.min(x2 - x1 + 1, lastPrintingChar + 1 - x1)));
+                builder.append('\n');
             }
         }
         return builder.toString();
