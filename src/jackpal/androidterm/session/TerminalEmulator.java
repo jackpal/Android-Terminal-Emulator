@@ -305,9 +305,13 @@ public class TerminalEmulator {
         while ((end >= 0) && transcriptText.charAt(end) == '\n') {
             end--;
         }
+        char c, cLow;
         for(int i = 0; i <= end; i++) {
-            byte c = (byte) transcriptText.charAt(i);
-            if (c == '\n') {
+            c = transcriptText.charAt(i);
+            if (Character.isHighSurrogate(c)) {
+                cLow = transcriptText.charAt(++i);
+                emit(Character.toCodePoint(c, cLow));
+            } else if (c == '\n') {
                 setCursorCol(0);
                 doLinefeed();
             } else {
@@ -1022,8 +1026,7 @@ public class TerminalEmulator {
     private void scroll() {
         //System.out.println("Scroll(): mTopMargin " + mTopMargin + " mBottomMargin " + mBottomMargin);
         mScrollCounter ++;
-        mScreen.scroll(mTopMargin, mBottomMargin,
-                getForeColor(), getBackColor());
+        mScreen.scroll(mTopMargin, mBottomMargin);
     }
 
     /**

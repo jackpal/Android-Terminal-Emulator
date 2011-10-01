@@ -30,6 +30,17 @@ public interface Screen {
     void setLineWrap(int row);
 
     /**
+     * Store a Unicode code point into the screen at location (x, y)
+     *
+     * @param x X coordinate (also known as column)
+     * @param y Y coordinate (also known as row)
+     * @param codePoint Unicode code point to store
+     * @param foreColor the foreground color
+     * @param backColor the background color
+     */
+    void set(int x, int y, int codePoint, int foreColor, int backColor);
+
+    /**
      * Store byte b into the screen at location (x, y)
      *
      * @param x X coordinate (also known as column)
@@ -47,7 +58,7 @@ public interface Screen {
      * @param topMargin First line that is scrolled.
      * @param bottomMargin One line after the last line that is scrolled.
      */
-    void scroll(int topMargin, int bottomMargin, int foreColor, int backColor);
+    void scroll(int topMargin, int bottomMargin);
 
     /**
      * Block copy characters from one position in the screen to another. The two

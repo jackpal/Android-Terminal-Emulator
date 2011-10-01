@@ -1043,7 +1043,7 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
     }
 
     public void drawTextRun(Canvas canvas, float x, float y,
-            int lineOffset, char[] text, int index, int count,
+            int lineOffset, int runWidth, char[] text, int index, int count,
             boolean cursor, int foreColor, int backColor) {
         setColorMatrix(mForePaint[foreColor & 7],
                 cursor ? mCursorPaint : mBackPaint[backColor & 7]);
@@ -1054,7 +1054,8 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
         destRect.top = (destY - kCharacterHeight);
         destRect.bottom = destY;
         for(int i = 0; i < count; i++) {
-            char c = text[i + index];
+            // XXX No Unicode support in bitmap font
+            char c = (char) (text[i + index] & 0xff);
             if ((cursor || (c != 32)) && (c < 128)) {
                 int cellX = c & 31;
                 int cellY = (c >> 5) & 3;
@@ -1108,7 +1109,7 @@ class PaintRenderer extends BaseTextRenderer {
     }
 
     public void drawTextRun(Canvas canvas, float x, float y, int lineOffset,
-            char[] text, int index, int count,
+            int runWidth, char[] text, int index, int count,
             boolean cursor, int foreColor, int backColor) {
         if (cursor) {
             mTextPaint.setColor(mCursorPaint);
@@ -1117,7 +1118,7 @@ class PaintRenderer extends BaseTextRenderer {
         }
         float left = x + lineOffset * mCharWidth;
         canvas.drawRect(left, y + mCharAscent,
-                left + count * mCharWidth, y + mCharDescent,
+                left + runWidth * mCharWidth, y + mCharDescent,
                 mTextPaint);
         boolean bold = ( foreColor & 0x8 ) != 0;
         boolean underline = (backColor & 0x8) != 0;

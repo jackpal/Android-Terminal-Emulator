@@ -16,11 +16,14 @@
 
 package jackpal.androidterm.session;
 
+import java.util.Arrays;
+
 import android.graphics.Canvas;
 import android.util.Log;
 
 import jackpal.androidterm.model.Screen;
 import jackpal.androidterm.model.TextRenderer;
+import jackpal.androidterm.util.UnicodeTranscript;
 
 /**
  * A TranscriptScreen is a screen that remembers data that's been scrolled. The
@@ -43,48 +46,11 @@ public class TranscriptScreen implements Screen {
     private int mTotalRows;
 
     /**
-     * The number of rows in the active portion of the transcript. Doesn't
-     * include the screen.
-     */
-    private int mActiveTranscriptRows;
-
-    /**
-     * Which row is currently the topmost line of the transcript. Used to
-     * implement a circular buffer.
-     */
-    private int mHead;
-
-    /**
-     * The number of active rows, includes both the transcript and the screen.
-     */
-    private int mActiveRows;
-
-    /**
      * The number of rows in the screen.
      */
     private int mScreenRows;
 
-    /**
-     * The data for both the screen and the transcript. The first mScreenRows *
-     * mLineWidth characters are the screen, the rest are the transcript.
-     * The low byte encodes the ASCII character, the high byte encodes the
-     * foreground and background colors, plus underline and bold.
-     */
-    private char[] mData;
-
-    /**
-     * The data's stored as color-encoded chars, but the drawing routines require chars, so we
-     * need a temporary buffer to hold a row's worth of characters.
-     */
-    private char[] mRowBuffer;
-
-    /**
-     * Flags that keep track of whether the current line logically wraps to the
-     * next line. This is used when resizing the screen and when copying to the
-     * clipboard or an email attachment
-     */
-
-    private boolean[] mLineWrap;
+    private UnicodeTranscript mData;
 
     /**
      * Create a transcript screen.
@@ -103,16 +69,9 @@ public class TranscriptScreen implements Screen {
     private void init(int columns, int totalRows, int screenRows, int foreColor, int backColor) {
         mColumns = columns;
         mTotalRows = totalRows;
-        mActiveTranscriptRows = 0;
-        mHead = 0;
-        mActiveRows = screenRows;
         mScreenRows = screenRows;
-        int totalSize = columns * totalRows;
-        mData = new char[totalSize];
-        blockSet(0, 0, mColumns, mScreenRows, ' ', foreColor, backColor);
-        mRowBuffer = new char[columns];
-        mLineWrap = new boolean[totalRows];
-        consistencyCheck();
+        mData = new UnicodeTranscript(columns, totalRows, screenRows, foreColor, backColor);
+        mData.blockSet(0, 0, mColumns, mScreenRows, ' ', foreColor, backColor);
    }
 
     public void finish() {
@@ -124,63 +83,27 @@ public class TranscriptScreen implements Screen {
          * memory being leaked down.
          */
         mData = null;
-        mRowBuffer = null;
-        mLineWrap = null;
-    }
-
-    /**
-     * Convert a row value from the public external coordinate system to our
-     * internal private coordinate system. External coordinate system:
-     * -mActiveTranscriptRows to mScreenRows-1, with the screen being
-     * 0..mScreenRows-1 Internal coordinate system: 0..mScreenRows-1 rows of
-     * mData are the visible rows. mScreenRows..mActiveRows - 1 are the
-     * transcript, stored as a circular buffer.
-     *
-     * @param row a row in the external coordinate system.
-     * @return The row corresponding to the input argument in the private
-     *         coordinate system.
-     */
-    private int externalToInternalRow(int row) {
-        if (row < -mActiveTranscriptRows || row >= mScreenRows) {
-            String errorMessage = "externalToInternalRow "+ row +
-                " " + mActiveTranscriptRows + " " + mScreenRows;
-            Log.e(TAG, errorMessage);
-            throw new IllegalArgumentException(errorMessage);
-        }
-        if (row >= 0) {
-            return row; // This is a visible row.
-        }
-        return mScreenRows
-                + ((mHead + mActiveTranscriptRows + row) % mActiveTranscriptRows);
-    }
-
-    private int getOffset(int externalLine) {
-        return externalToInternalRow(externalLine) * mColumns;
-    }
-
-    private int getOffset(int x, int y) {
-        return getOffset(y) + x;
     }
 
     public void setLineWrap(int row) {
-        mLineWrap[externalToInternalRow(row)] = true;
+        mData.setLineWrap(row);
     }
 
     /**
-     * Store byte b into the screen at location (x, y)
+     * Store a Unicode code point into the screen at location (x, y)
      *
      * @param x X coordinate (also known as column)
      * @param y Y coordinate (also known as row)
-     * @param b ASCII character to store
+     * @param codePoint Unicode codepoint to store
      * @param foreColor the foreground color
      * @param backColor the background color
      */
-    public void set(int x, int y, byte b, int foreColor, int backColor) {
-        mData[getOffset(x, y)] = encode(b, foreColor, backColor);
+    public void set(int x, int y, int codePoint, int foreColor, int backColor) {
+        mData.setChar(x, y, codePoint, foreColor, backColor);
     }
 
-    private char encode(int b, int foreColor, int backColor) {
-        return (char) ((foreColor << 12) | (backColor << 8) | b);
+    public void set(int x, int y, byte b, int foreColor, int backColor) {
+        mData.setChar(x, y, b, foreColor, backColor);
     }
 
     /**
@@ -190,89 +113,8 @@ public class TranscriptScreen implements Screen {
      * @param topMargin First line that is scrolled.
      * @param bottomMargin One line after the last line that is scrolled.
      */
-    public void scroll(int topMargin, int bottomMargin, int foreColor,
-            int backColor) {
-        // Separate out reasons so that stack crawls help us
-        // figure out which condition was violated.
-        if (topMargin > bottomMargin - 1) {
-            throw new IllegalArgumentException();
-        }
-
-        if (topMargin > mScreenRows - 1) {
-            throw new IllegalArgumentException();
-        }
-
-        if (bottomMargin > mScreenRows) {
-            throw new IllegalArgumentException();
-        }
-
-        // Adjust the transcript so that the last line of the transcript
-        // is ready to receive the newly scrolled data
-        consistencyCheck();
-        int expansionRows = Math.min(1, mTotalRows - mActiveRows);
-        int rollRows = 1 - expansionRows;
-        mActiveRows += expansionRows;
-        mActiveTranscriptRows += expansionRows;
-        if (mActiveTranscriptRows > 0) {
-            mHead = (mHead + rollRows) % mActiveTranscriptRows;
-        }
-        consistencyCheck();
-
-        // Block move the scroll line to the transcript
-        int topOffset = getOffset(topMargin);
-        int destOffset = getOffset(-1);
-        System.arraycopy(mData, topOffset, mData, destOffset, mColumns);
-
-        int topLine = externalToInternalRow(topMargin);
-        int destLine = externalToInternalRow(-1);
-        System.arraycopy(mLineWrap, topLine, mLineWrap, destLine, 1);
-
-        // Block move the scrolled data up
-        int numScrollChars = (bottomMargin - topMargin - 1) * mColumns;
-        System.arraycopy(mData, topOffset + mColumns, mData, topOffset,
-                numScrollChars);
-        int numScrollLines = (bottomMargin - topMargin - 1);
-        System.arraycopy(mLineWrap, topLine + 1, mLineWrap, topLine,
-                numScrollLines);
-
-        // Erase the bottom line of the scroll region
-        blockSet(0, bottomMargin - 1, mColumns, 1, ' ', foreColor, backColor);
-        mLineWrap[externalToInternalRow(bottomMargin-1)] = false;
-    }
-
-    private void consistencyCheck() {
-        checkPositive(mColumns);
-        checkPositive(mTotalRows);
-        checkRange(0, mActiveTranscriptRows, mTotalRows);
-        if (mActiveTranscriptRows == 0) {
-            checkEqual(mHead, 0);
-        } else {
-            checkRange(0, mHead, mActiveTranscriptRows-1);
-        }
-        checkEqual(mScreenRows + mActiveTranscriptRows, mActiveRows);
-        checkRange(0, mScreenRows, mTotalRows);
-
-        checkEqual(mTotalRows, mLineWrap.length);
-        checkEqual(mTotalRows*mColumns, mData.length);
-        checkEqual(mColumns, mRowBuffer.length);
-    }
-
-    private void checkPositive(int n) {
-        if (n < 0) {
-            throw new IllegalArgumentException("checkPositive " + n);
-        }
-    }
-
-    private void checkRange(int a, int b, int c) {
-        if (a > b || b > c) {
-            throw new IllegalArgumentException("checkRange " + a + " <= " + b + " <= " + c);
-        }
-    }
-
-    private void checkEqual(int a, int b) {
-        if (a != b) {
-            throw new IllegalArgumentException("checkEqual " + a + " == " + b);
-        }
+    public void scroll(int topMargin, int bottomMargin) {
+        mData.scroll(topMargin, bottomMargin);
     }
 
     /**
@@ -289,27 +131,7 @@ public class TranscriptScreen implements Screen {
      * @param dy destination Y coordinate
      */
     public void blockCopy(int sx, int sy, int w, int h, int dx, int dy) {
-        if (sx < 0 || sx + w > mColumns || sy < 0 || sy + h > mScreenRows
-                || dx < 0 || dx + w > mColumns || dy < 0
-                || dy + h > mScreenRows) {
-            throw new IllegalArgumentException();
-        }
-        if (sy > dy) {
-            // Move in increasing order
-            for (int y = 0; y < h; y++) {
-                int srcOffset = getOffset(sx, sy + y);
-                int dstOffset = getOffset(dx, dy + y);
-                System.arraycopy(mData, srcOffset, mData, dstOffset, w);
-            }
-        } else {
-            // Move in decreasing order
-            for (int y = 0; y < h; y++) {
-                int y2 = h - (y + 1);
-                int srcOffset = getOffset(sx, sy + y2);
-                int dstOffset = getOffset(dx, dy + y2);
-                System.arraycopy(mData, srcOffset, mData, dstOffset, w);
-            }
-        }
+        mData.blockCopy(sx, sy, w, h, dx, dy);
     }
 
     /**
@@ -326,17 +148,7 @@ public class TranscriptScreen implements Screen {
      */
     public void blockSet(int sx, int sy, int w, int h, int val,
             int foreColor, int backColor) {
-        if (sx < 0 || sx + w > mColumns || sy < 0 || sy + h > mScreenRows) {
-            throw new IllegalArgumentException();
-        }
-        char[] data = mData;
-        char encodedVal = encode(val, foreColor, backColor);
-        for (int y = 0; y < h; y++) {
-            int offset = getOffset(sx, sy + y);
-            for (int x = 0; x < w; x++) {
-                data[offset + x] = encodedVal;
-            }
-        }
+        mData.blockSet(sx, sy, w, h, val, foreColor, backColor);
     }
 
     /**
@@ -354,53 +166,109 @@ public class TranscriptScreen implements Screen {
      */
     public final void drawText(int row, Canvas canvas, float x, float y,
             TextRenderer renderer, int cx, int selx1, int selx2, String imeText) {
+        char[] line;
+        byte[] color;
+        try {
+            line = mData.getLine(row);
+            color = mData.getLineColor(row);
+        } catch (IllegalArgumentException e) {
+            // Out-of-bounds rows are blank.
+            return;
+        }
+        int defaultForeColor = mData.getDefaultForeColor();
+        int defaultBackColor = mData.getDefaultBackColor();
 
-        // Out-of-bounds rows are blank.
-        if (row < -mActiveTranscriptRows || row >= mScreenRows) {
+        if (line == null) {
+            // Line is blank.
+            if (selx1 != selx2) {
+                // We need to draw a selection
+                char[] blank = new char[selx2-selx1];
+                Arrays.fill(blank, ' ');
+                renderer.drawTextRun(canvas, x, y, selx1, selx2-selx1,
+                                blank, 0, 1, true,
+                                defaultForeColor, defaultBackColor);
+            } else if (cx != -1) {
+                // We need to draw the cursor
+                renderer.drawTextRun(canvas, x, y, cx, 1,
+                                " ".toCharArray(), 0, 1, true,
+                                defaultForeColor, defaultBackColor);
+            }
+
             return;
         }
 
-        // Copy the data from the byte array to a char array so they can
-        // be drawn.
-
-        int offset = getOffset(row);
-        char[] rowBuffer = mRowBuffer;
-        char[] data = mData;
         int columns = mColumns;
-        int lastColors = 0;
+        int lastForeColor = 0;
+        int lastBackColor = 0;
+        int runWidth = 0;
         int lastRunStart = -1;
+        int lastRunStartIndex = -1;
+        boolean forceFlushRun = false;
+        char cHigh = 0;
         final int CURSOR_MASK = 0x10000;
-        for (int i = 0; i < columns; i++) {
-            char c = data[offset + i];
-            int colors = (char) (c & 0xff00);
-            if (cx == i || (i >= selx1 && i <= selx2)) {
-                // Set cursor background color:
-                colors |= CURSOR_MASK;
+        int column = 0;
+        int index = 0;
+        while (column < columns) {
+            int foreColor, backColor;
+            if (color != null) {
+                foreColor = (color[column] >> 4) & 0xf;
+                backColor = color[column] & 0xf;
+            } else {
+                foreColor = defaultForeColor;
+                backColor = defaultBackColor;
             }
-            rowBuffer[i] = (char) (c & 0x00ff);
-            if (colors != lastColors) {
+            int width;
+            if (Character.isHighSurrogate(line[index])) {
+                cHigh = line[index++];
+                continue;
+            } else if (Character.isLowSurrogate(line[index])) {
+                width = UnicodeTranscript.charWidth(cHigh, line[index]);
+            } else {
+                width = UnicodeTranscript.charWidth(line[index]);
+            }
+            if (cx == column || (column >= selx1 && column <= selx2)) {
+                // Set cursor background color:
+                backColor |= CURSOR_MASK;
+            }
+            if (foreColor != lastForeColor || backColor != lastBackColor || (width > 0 && forceFlushRun)) {
                 if (lastRunStart >= 0) {
-                    renderer.drawTextRun(canvas, x, y, lastRunStart, rowBuffer,
-                            lastRunStart, i - lastRunStart,
-                            (lastColors & CURSOR_MASK) != 0,
-                            0xf & (lastColors >> 12), 0xf & (lastColors >> 8));
+                    renderer.drawTextRun(canvas, x, y, lastRunStart, runWidth,
+                            line,
+                            lastRunStartIndex, index - lastRunStartIndex,
+                            (lastBackColor & CURSOR_MASK) != 0,
+                            lastForeColor, lastBackColor);
                 }
-                lastColors = colors;
-                lastRunStart = i;
+                lastForeColor = foreColor;
+                lastBackColor = backColor;
+                runWidth = 0;
+                lastRunStart = column;
+                lastRunStartIndex = index;
+                forceFlushRun = false;
+            }
+            runWidth += width;
+            column += width;
+            index++;
+            if (width > 1) {
+                /* We cannot draw two or more East Asian wide characters in the
+                   same run, because we need to make each wide character take
+                   up two columns, which may not match the font's idea of the
+                   character width */
+                forceFlushRun = true;
             }
         }
         if (lastRunStart >= 0) {
-            renderer.drawTextRun(canvas, x, y, lastRunStart, rowBuffer,
-                    lastRunStart, columns - lastRunStart,
-                    (lastColors & CURSOR_MASK) != 0,
-                    0xf & (lastColors >> 12), 0xf & (lastColors >> 8));
+            renderer.drawTextRun(canvas, x, y, lastRunStart, runWidth,
+                    line,
+                    lastRunStartIndex, index - lastRunStartIndex,
+                    (lastBackColor & CURSOR_MASK) != 0,
+                    lastForeColor, lastBackColor);
         }
 
         if (cx >= 0 && imeText.length() > 0) {
             int imeLength = Math.min(columns, imeText.length());
             int imeOffset = imeText.length() - imeLength;
             int imePosition = Math.min(cx, columns - imeLength);
-            renderer.drawTextRun(canvas, x, y, imePosition, imeText.toCharArray(),
+            renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
                     imeOffset, imeLength, true, 0x0f, 0x00);
         }
      }
@@ -411,7 +279,7 @@ public class TranscriptScreen implements Screen {
      * @return the count of active rows.
      */
     public int getActiveRows() {
-        return mActiveRows;
+        return mData.getActiveRows();
     }
 
     /**
@@ -420,11 +288,11 @@ public class TranscriptScreen implements Screen {
      * @return the count of active transcript rows.
      */
     public int getActiveTranscriptRows() {
-        return mActiveTranscriptRows;
+        return mData.getActiveTranscriptRows();
     }
 
     public String getTranscriptText() {
-        return internalGetTranscriptText(true, 0, -mActiveTranscriptRows, mColumns, mScreenRows);
+        return internalGetTranscriptText(true, 0, -mData.getActiveTranscriptRows(), mColumns, mScreenRows);
     }
 
     public String getSelectedText(int selX1, int selY1, int selX2, int selY2) {
@@ -433,30 +301,18 @@ public class TranscriptScreen implements Screen {
 
     private String internalGetTranscriptText(boolean stripColors, int selX1, int selY1, int selX2, int selY2) {
         StringBuilder builder = new StringBuilder();
-        char[] rowBuffer = mRowBuffer;
-        char[] data = mData;
+        UnicodeTranscript data = mData;
         int columns = mColumns;
-        if (selY1 < -mActiveTranscriptRows) {
-            selY1 = -mActiveTranscriptRows;
+        char[] line;
+        if (selY1 < -data.getActiveTranscriptRows()) {
+            selY1 = -data.getActiveTranscriptRows();
         }
         if (selY2 >= mScreenRows) {
             selY2 = mScreenRows - 1;
         }
         for (int row = selY1; row <= selY2; row++) {
-            int offset = getOffset(row);
-            int lastPrintingChar = -1;
-            for (int column = 0; column < columns; column++) {
-                char c = data[offset + column];
-                if (stripColors) {
-                    c = (char) (c & 0xff);
-                }
-                if ((c & 0xff) != ' ') {
-                    lastPrintingChar = column;
-                }
-                rowBuffer[column] = c;
-            }
             int x1 = 0;
-            int x2 = 0;
+            int x2;
             if ( row == selY1 ) {
                 x1 = selX1;
             }
@@ -465,10 +321,24 @@ public class TranscriptScreen implements Screen {
             } else {
                 x2 = columns;
             }
-            if (mLineWrap[externalToInternalRow(row)]) {
-                builder.append(rowBuffer, x1, x2 - x1);
-            } else {
-                builder.append(rowBuffer, x1, Math.max(0, Math.min(x2 - x1 + 1, lastPrintingChar + 1 - x1)));
+            line = data.getLine(row, x1, x2);
+            if (line == null) {
+                if (!data.getLineWrap(row)) {
+                    builder.append('\n');
+                }
+                continue;
+            }
+            int lastPrintingChar = -1;
+            int length = line.length;
+            for (int i = 0; i < length; i++) {
+                if (line[i] == 0) {
+                    break;
+                } else if (line[i] != ' ') {
+                    lastPrintingChar = i;
+                }
+            }
+            builder.append(line, 0, lastPrintingChar + 1);
+            if (!data.getLineWrap(row)) {
                 builder.append('\n');
             }
         }
