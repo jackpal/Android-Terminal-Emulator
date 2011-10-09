@@ -155,6 +155,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private static final int CURSOR_BLINK_PERIOD = 1000;
 
+    private static final int SCREEN_CHECK_PERIOD = 1000;
+
     private boolean mCursorVisible = true;
 
     private boolean mIsSelectingText = false;
