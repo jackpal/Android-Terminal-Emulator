@@ -524,13 +524,13 @@ public class TerminalEmulator {
     }
 
     private boolean handleUTF8Sequence(byte b) {
-        if (mUTF8ToFollow == 0 && ((b >> 7) & 0x1) == 0) {
+        if (mUTF8ToFollow == 0 && (b & 0x80) == 0) {
             // ASCII character -- we don't need to handle this
             return false;
         }
 
         if (mUTF8ToFollow > 0) {
-            if (((b >> 6) & 0x3) != 0x2) {
+            if ((b & 0xc0) != 0x80) {
                 /* Not a UTF-8 continuation byte (doesn't begin with 0b10)
                    Replace the entire sequence with the replacement char */
                 mUTF8ToFollow = 0;
@@ -556,11 +556,11 @@ public class TerminalEmulator {
                 charBuf.clear();
             }
         } else {
-            if (((b >> 5) & 0x7) == 0x6) { // 0b110 -- two-byte sequence
+            if ((b & 0xe0) == 0xc0) { // 0b110 -- two-byte sequence
                 mUTF8ToFollow = 1;
-            } else if (((b >> 4) & 0xf) == 0xe) { // 0b1110 -- three-byte sequence
+            } else if ((b & 0xf0) == 0xe0) { // 0b1110 -- three-byte sequence
                 mUTF8ToFollow = 2;
-            } else if (((b >> 3) & 0x1f) == 0x1e) { // 0b11110 -- four-byte sequence
+            } else if ((b & 0xf8) == 0xf0) { // 0b11110 -- four-byte sequence
                 mUTF8ToFollow = 3;
             } else {
                 // Not a valid UTF-8 sequence start -- replace this char
