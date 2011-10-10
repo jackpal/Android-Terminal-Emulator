@@ -16,7 +16,6 @@
 
 package jackpal.androidterm.util;
 
-import android.text.AndroidCharacter;
 import android.util.Log;
 
 /**
@@ -360,6 +359,10 @@ public class UnicodeTranscript {
      * @return The display width of the Unicode code point.
      */
     public static int charWidth(int codePoint) {
+        // Early out for spaces
+        if (codePoint == 32) {
+            return 1;
+        }
         switch (Character.getType(codePoint)) {
         case Character.CONTROL:
         case Character.FORMAT:
@@ -368,7 +371,7 @@ public class UnicodeTranscript {
             return 0;
         }
 
-        if (Integer.valueOf(android.os.Build.VERSION.SDK) < 8) {
+        if (PostAndroid3Utils.SDK < 8) {
             /* No East Asian wide char support when running on Android < 2.2,
                because getEastAsianWidth() was introduced in API 8 */
             return 1;
@@ -376,9 +379,9 @@ public class UnicodeTranscript {
 
         if (Character.charCount(codePoint) == 1) {
             // Android's getEastAsianWidth() only works for BMP characters
-            switch (AndroidCharacter.getEastAsianWidth((char) codePoint)) {
-            case AndroidCharacter.EAST_ASIAN_WIDTH_FULL_WIDTH:
-            case AndroidCharacter.EAST_ASIAN_WIDTH_WIDE:
+            switch (PostAndroid3Utils.AndroidCharacterComp.getEastAsianWidth((char) codePoint)) {
+            case PostAndroid3Utils.AndroidCharacterComp.EAST_ASIAN_WIDTH_FULL_WIDTH:
+            case PostAndroid3Utils.AndroidCharacterComp.EAST_ASIAN_WIDTH_WIDE:
                 return 2;
             }
         } else {
@@ -405,7 +408,7 @@ public class UnicodeTranscript {
      * character requested will be followed by a NUL; the contents of the rest
      * of the array could potentially be garbage.
      *
-     * @param row The row number to get (-mActiveTranscriptRows..mScreenRows-1) 
+     * @param row The row number to get (-mActiveTranscriptRows..mScreenRows-1)
      * @param x1 The first screen position that's wanted
      * @param x2 One after the last screen position that's wanted
      * @return A char[] array containing the requested contents
@@ -447,7 +450,7 @@ public class UnicodeTranscript {
             x2 = line.getSpaceUsed();
         }
         int length = x2 - x1;
-        
+
         if (tmpLine == null || tmpLine.length < length + 1) {
             tmpLine = new char[length+1];
         }
@@ -582,7 +585,7 @@ public class UnicodeTranscript {
 
     private byte[] allocateColor(int row, int columns) {
         byte[] color = new byte[columns];
-        
+
         // Set all of the columns to the default colors
         byte defaultColor = encodeColor(mDefaultForeColor, mDefaultBackColor);
         for (int i = 0; i < columns; ++i) {
@@ -777,7 +780,7 @@ class FullUnicodeLine {
             Character.toChars(codePoint, text, pos);
         } else {
             /* Store a combining character at the end of the existing contents,
-               so that it modifies them */ 
+               so that it modifies them */
             Character.toChars(codePoint, text, pos + oldLen);
         }
 
@@ -805,7 +808,7 @@ class FullUnicodeLine {
                 // Array needs growing
                 char[] newText = new char[text.length + columns];
                 System.arraycopy(text, 0, newText, 0, nextPos);
-        
+
                 System.arraycopy(text, nextPos, newText, nextPos + 1, spaceUsed - nextPos);
                 mText = text = newText;
             } else {
