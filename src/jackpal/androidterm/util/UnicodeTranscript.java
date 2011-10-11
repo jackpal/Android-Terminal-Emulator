@@ -822,7 +822,7 @@ class FullUnicodeLine {
             // Correct the offset for the next column to reflect width change
             if (column == 0) {
                 offset[1] = (short) (newLen - 1);
-            } else {
+            } else if (column + 1 < columns) {
                 offset[column + 1] = (short) (offset[column] + newLen - 1);
             }
             ++column;
