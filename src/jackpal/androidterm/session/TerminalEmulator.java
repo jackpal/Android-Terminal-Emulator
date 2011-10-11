@@ -313,6 +313,12 @@ public class TerminalEmulator {
         if (rows <= 0) {
             throw new IllegalArgumentException("rows:" + rows);
         }
+        /* Save the character at the cursor (if one exists) and store an
+         * ASCII ESC character at the cursor's location
+         * This is an epic hack that lets us restore the cursor later...
+         */
+        String charAtCursor = mScreen.getSelectedText(mCursorCol, mCursorRow, mCursorCol, mCursorRow);
+        mScreen.set(mCursorCol, mCursorRow, 27, 0, 0);
 
         String transcriptText = mScreen.getTranscriptText();
 
@@ -339,6 +345,8 @@ public class TerminalEmulator {
         mCursorCol = 0;
         mAboutToAutoWrap = false;
 
+        int newCursorRow = -1;
+        int newCursorCol = -1;
         int end = transcriptText.length()-1;
         while ((end >= 0) && transcriptText.charAt(end) == '\n') {
             end--;
@@ -352,9 +360,24 @@ public class TerminalEmulator {
             } else if (c == '\n') {
                 setCursorCol(0);
                 doLinefeed();
+            } else if (c == 27) {
+                /* We marked the cursor location with ESC earlier, so this
+                   is the place to restore the cursor to */
+                newCursorRow = mCursorRow;
+                newCursorCol = mCursorCol;
+                if (charAtCursor != null && charAtCursor.length() > 0) {
+                    // Emit the real character that was in this spot
+                    emit(charAtCursor.toCharArray(), 0, charAtCursor.length());
+                }
             } else {
                 emit(c);
             }
+        }
+
+        // If we marked a cursor location, move the cursor there now
+        if (newCursorRow != -1 && newCursorCol != -1) {
+            mCursorRow = newCursorRow;
+            mCursorCol = newCursorCol;
         }
     }
 

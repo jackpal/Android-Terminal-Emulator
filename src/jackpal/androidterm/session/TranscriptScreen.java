@@ -326,7 +326,7 @@ public class TranscriptScreen implements Screen {
             }
             line = data.getLine(row, x1, x2);
             if (line == null) {
-                if (!data.getLineWrap(row)) {
+                if (!data.getLineWrap(row) && row < selY2 && row < mScreenRows - 1) {
                     builder.append('\n');
                 }
                 continue;
@@ -346,7 +346,7 @@ public class TranscriptScreen implements Screen {
                 lastPrintingChar = i - 1;
             }
             builder.append(line, 0, lastPrintingChar + 1);
-            if (!data.getLineWrap(row)) {
+            if (!data.getLineWrap(row) && row < selY2 && row < mScreenRows - 1) {
                 builder.append('\n');
             }
         }

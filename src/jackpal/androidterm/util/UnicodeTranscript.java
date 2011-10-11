@@ -363,6 +363,13 @@ public class UnicodeTranscript {
         if (codePoint > 31 && codePoint < 127) {
             return 1;
         }
+
+        /* HACK: We're using ASCII ESC to save the location of the cursor
+           across screen resizes, so we need to pretend that it has width 1 */
+        if (codePoint == 27) {
+            return 1;
+        }
+
         switch (Character.getType(codePoint)) {
         case Character.CONTROL:
         case Character.FORMAT:
