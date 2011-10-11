@@ -330,12 +330,17 @@ public class TranscriptScreen implements Screen {
             }
             int lastPrintingChar = -1;
             int length = line.length;
-            for (int i = 0; i < length; i++) {
+            int i;
+            for (i = 0; i < length; i++) {
                 if (line[i] == 0) {
                     break;
                 } else if (line[i] != ' ') {
                     lastPrintingChar = i;
                 }
+            }
+            if (data.getLineWrap(row) && lastPrintingChar > -1 && x2 == columns) {
+                // If the line was wrapped, we shouldn't lose trailing space
+                lastPrintingChar = i - 1;
             }
             builder.append(line, 0, lastPrintingChar + 1);
             if (!data.getLineWrap(row)) {
