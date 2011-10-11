@@ -132,6 +132,19 @@ public interface Screen {
     String getSelectedText(StringBuilder colors, int x1, int y1, int x2, int y2);
 
     /**
+     * Try to resize the screen without losing its contents.
+     *
+     * @param columns
+     * @param rows
+     * @param cursor An int[2] containing the current cursor position
+     *               { col, row }.  If the resize succeeds, the array will be
+     *               updated to reflect the new location.
+     * @return Whether the resize succeeded. If the operation fails, save the
+     *         contents of the screen and then use the standard resize.
+     */
+    boolean fastResize(int columns, int rows, int[] cursor);
+
+    /**
      * Resize the screen
      * @param columns
      * @param rows

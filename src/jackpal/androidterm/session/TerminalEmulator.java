@@ -313,18 +313,29 @@ public class TerminalEmulator {
         if (rows <= 0) {
             throw new IllegalArgumentException("rows:" + rows);
         }
-        /* Save the character at the cursor (if one exists) and store an
-         * ASCII ESC character at the cursor's location
-         * This is an epic hack that lets us restore the cursor later...
-         */
-        StringBuilder cursorColor = new StringBuilder(1);
-        String charAtCursor = mScreen.getSelectedText(cursorColor, mCursorCol, mCursorRow, mCursorCol, mCursorRow);
-        mScreen.set(mCursorCol, mCursorRow, 27, 0, 0);
 
-        StringBuilder colors = new StringBuilder();
-        String transcriptText = mScreen.getTranscriptText(colors);
+        // Try to resize the screen without getting the transcript
+        int[] cursor = { mCursorCol, mCursorRow };
+        boolean fastResize = mScreen.fastResize(columns, rows, cursor);
 
-        mScreen.resize(columns, rows, mForeColor, mBackColor);
+        StringBuilder cursorColor = null;
+        String charAtCursor = null;
+        StringBuilder colors = null;
+        String transcriptText = null;
+        if (!fastResize) {
+            /* Save the character at the cursor (if one exists) and store an
+             * ASCII ESC character at the cursor's location
+             * This is an epic hack that lets us restore the cursor later...
+             */
+            cursorColor = new StringBuilder(1);
+            charAtCursor = mScreen.getSelectedText(cursorColor, mCursorCol, mCursorRow, mCursorCol, mCursorRow);
+            mScreen.set(mCursorCol, mCursorRow, 27, 0, 0);
+
+            colors = new StringBuilder();
+            transcriptText = mScreen.getTranscriptText(colors);
+
+            mScreen.resize(columns, rows, mForeColor, mBackColor);
+        }
 
         if (mRows != rows) {
             mRows = rows;
@@ -338,11 +349,16 @@ public class TerminalEmulator {
             mTabStop = new boolean[mColumns];
             int toTransfer = Math.min(oldColumns, columns);
             System.arraycopy(oldTabStop, 0, mTabStop, 0, toTransfer);
-            while (mCursorCol >= columns) {
-                mCursorCol -= columns;
-                mCursorRow = Math.min(mBottomMargin-1, mCursorRow + 1);
-            }
         }
+
+        if (fastResize) {
+            // Only need to make sure the cursor is in the right spot
+            mCursorCol = cursor[0];
+            mCursorRow = cursor[1];
+
+            return;
+        }
+
         mCursorRow = 0;
         mCursorCol = 0;
         mAboutToAutoWrap = false;

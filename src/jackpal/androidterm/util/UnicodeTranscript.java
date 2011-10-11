@@ -137,6 +137,109 @@ public class UnicodeTranscript {
     }
 
     /**
+     * Resize the screen which this transcript backs.  Currently, this
+     * only works if the number of columns does not change.
+     *
+     * @param newColumns The number of columns the screen should have.
+     * @param newRows The number of rows the screen should have.
+     * @param cursor An int[2] containing the cursor location.
+     * @return Whether or not the resize succeeded.  If the resize failed,
+     *         the caller may "resize" the screen by copying out all the data
+     *         and placing it into a new transcript of the correct size.
+     */
+    public boolean resize(int newColumns, int newRows, int[] cursor) {
+        if (newColumns != mColumns || newRows > mTotalRows) {
+            return false;
+        }
+
+        int screenRows = mScreenRows;
+        int activeTranscriptRows = mActiveTranscriptRows;
+        int shift = screenRows - newRows;
+        if (shift < -activeTranscriptRows) {
+            // We want to add blank lines at the bottom instead of at the top
+            Object[] lines = mLines;
+            byte[][] color = mColor;
+            boolean[] lineWrap = mLineWrap;
+            int screenFirstRow = mScreenFirstRow;
+            int totalRows = mTotalRows;
+            for (int i = 0; i < activeTranscriptRows - shift; ++i) {
+                int index = (screenFirstRow + screenRows + i) % totalRows;
+                lines[index] = null;
+                color[index] = null;
+                lineWrap[index] = false;
+            }
+            shift = -activeTranscriptRows;
+        } else if (shift > 0 && cursor[1] != screenRows - 1) {
+            /* When shrinking the screen, we want to hide blank lines at the
+               bottom in preference to lines at the top of the screen */
+            Object[] lines = mLines;
+            for (int i = screenRows - 1; i >= 0; --i) {
+                int index = externalToInternalRow(i);
+                if (lines[index] == null) {
+                    // Line is blank
+                    --shift;
+                    if (shift == 0) {
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
+
+                char[] line;
+                if (lines[index] instanceof char[]) {
+                    line = (char[]) lines[index];
+                } else {
+                    line = ((FullUnicodeLine) lines[index]).getLine();
+                }
+
+                int len = line.length;
+                int j;
+                for (j = 0; j < len; ++j) {
+                    if (line[j] == 0) {
+                        // We've reached the end of the line
+                        j = len;
+                        break;
+                    } else if (line[j] != ' ') {
+                        // Line is not blank
+                        break;
+                    }
+                }
+
+                if (j == len) {
+                    // Line is blank
+                    --shift;
+                    if (shift == 0) {
+                        break;
+                    } else {
+                        continue;
+                    }
+                } else {
+                    // Line not blank -- we keep it and everything above
+                    break;
+                }
+            }
+        }
+
+        if (shift > 0 || (shift < 0 && mScreenFirstRow >= -shift)) {
+            // All we're doing is moving the top of the screen.
+            mScreenFirstRow = (mScreenFirstRow + shift) % mTotalRows;
+        } else if (shift < 0) {
+            // The new top of the screen wraps around the top of the array.
+            mScreenFirstRow = mTotalRows + mScreenFirstRow + shift;
+        }
+
+        if (mActiveTranscriptRows + shift < 0) {
+            mActiveTranscriptRows = 0;
+        } else {
+            mActiveTranscriptRows += shift;
+        }
+        cursor[1] -= shift;
+        mScreenRows = newRows;
+
+        return true;
+    }
+
+    /**
      * Block copy lines and associated metadata from one location to another
      * in the circular buffer, taking wraparound into account.
      *

@@ -383,6 +383,16 @@ public class TranscriptScreen implements Screen {
         return builder.toString();
     }
 
+    public boolean fastResize(int columns, int rows, int[] cursor) {
+        if (mData.resize(columns, rows, cursor)) {
+            mColumns = columns;
+            mScreenRows = rows;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void resize(int columns, int rows, int foreColor, int backColor) {
         init(columns, mTotalRows, rows, foreColor, backColor);
     }
