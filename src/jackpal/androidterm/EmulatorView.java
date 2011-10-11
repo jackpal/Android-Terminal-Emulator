@@ -285,6 +285,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         outAttrs.inputType = mUseCookedIme ?
                 EditorInfo.TYPE_CLASS_TEXT :
                 EditorInfo.TYPE_NULL;
+        outAttrs.imeOptions = EditorInfo.IME_FLAG_NO_EXTRACT_UI;
         return new InputConnection() {
             private boolean mInBatchEdit;
             /**
@@ -388,7 +389,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (TermDebug.LOG_IME) {
                     Log.w(TAG, "getExtractedText" + arg0 + "," + arg1);
                 }
-                return null;
+                return new ExtractedText();
             }
 
             public CharSequence getTextAfterCursor(int n, int flags) {
