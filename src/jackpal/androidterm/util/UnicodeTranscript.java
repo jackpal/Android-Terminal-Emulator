@@ -359,8 +359,8 @@ public class UnicodeTranscript {
      * @return The display width of the Unicode code point.
      */
     public static int charWidth(int codePoint) {
-        // Early out for spaces
-        if (codePoint == 32) {
+        // Early out for ASCII printable characters
+        if (codePoint > 31 && codePoint < 127) {
             return 1;
         }
         switch (Character.getType(codePoint)) {
