@@ -267,6 +267,18 @@ public class Term extends Activity {
         super.onPause();
 
         mViewFlipper.pauseCurrentView();
+
+        /* Explicitly close the input method
+           Otherwise, the soft keyboard could cover up whatever activity takes
+           our place */
+        final IBinder token = mViewFlipper.getWindowToken();
+        new Thread() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(token, 0);
+            }
+        }.start();
     }
 
     @Override
