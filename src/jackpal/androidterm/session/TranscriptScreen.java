@@ -317,7 +317,10 @@ public class TranscriptScreen implements Screen {
                 x1 = selX1;
             }
             if ( row == selY2 ) {
-                x2 = selX2;
+                x2 = selX2 + 1;
+                if (x2 > columns) {
+                    x2 = columns;
+                }
             } else {
                 x2 = columns;
             }
