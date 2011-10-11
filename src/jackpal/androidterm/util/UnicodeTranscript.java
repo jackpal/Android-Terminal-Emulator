@@ -51,9 +51,10 @@ public class UnicodeTranscript {
     private int mScreenRows;
     private int mColumns;
     private int mActiveTranscriptRows = 0;
-    private int mNextTranscriptRow = 0;
     private int mDefaultForeColor = 0;
     private int mDefaultBackColor = 0;
+
+    private int mScreenFirstRow = 0;
 
     private char[] tmpChar = new char[2];
     private char[] tmpLine;
@@ -99,9 +100,10 @@ public class UnicodeTranscript {
      * External coordinate system:
      * -mActiveTranscriptRows to mScreenRows-1, with the screen being
      * 0..mScreenRows-1
-     * Internal coordinate system: 0..mScreenRows-1 is the active screen,
-     * whereas mScreenRows..mActiveTranscriptRows is the transcript (as a
-     * circular buffer).
+     * Internal coordinate system: the mScreenRows lines starting at
+     * mScreenFirstRow comprise the screen, while the mActiveTranscriptRows
+     * lines ending at mScreenRows-1 form the transcript (as a circular
+     * buffer).
      *
      * @param extRow a row in the external coordinate system.
      * @return The row corresponding to the input argument in the private
@@ -116,12 +118,12 @@ public class UnicodeTranscript {
         }
 
         if (extRow >= 0) {
-            return extRow;
+            return (mScreenFirstRow + extRow) % mTotalRows;
         } else {
-            if (mNextTranscriptRow >= -extRow) {
-                return mScreenRows + mNextTranscriptRow + extRow;
+            if (-extRow > mScreenFirstRow) {
+                return mTotalRows + mScreenFirstRow + extRow;
             } else {
-                return mScreenRows + mActiveTranscriptRows + mNextTranscriptRow + extRow;
+                return mScreenFirstRow + extRow;
             }
         }
     }
@@ -132,6 +134,49 @@ public class UnicodeTranscript {
 
     public boolean getLineWrap(int row) {
         return mLineWrap[externalToInternalRow(row)];
+    }
+
+    /**
+     * Block copy lines and associated metadata from one location to another
+     * in the circular buffer, taking wraparound into account.
+     *
+     * @param src The first line to be copied.
+     * @param len The number of lines to be copied.
+     * @param shift The offset of the destination from the source.
+     */
+    private void blockCopyLines(int src, int len, int shift) {
+        int totalRows = mTotalRows;
+
+        int dst;
+        if (src + shift >= 0) {
+            dst = (src + shift) % totalRows;
+        } else {
+            dst = totalRows + src + shift;
+        }
+
+        if (src + len <= totalRows && dst + len <= totalRows) {
+            // Fast path -- no wraparound
+            System.arraycopy(mLines, src, mLines, dst, len);
+            System.arraycopy(mColor, src, mColor, dst, len);
+            System.arraycopy(mLineWrap, src, mLineWrap, dst, len);
+            return;
+        }
+
+        if (shift < 0) {
+            // Do the copy from top to bottom
+            for (int i = 0; i < len; ++i) {
+                mLines[(dst + i) % totalRows] = mLines[(src + i) % totalRows];
+                mColor[(dst + i) % totalRows] = mColor[(src + i) % totalRows];
+                mLineWrap[(dst + i) % totalRows] = mLineWrap[(src + i) % totalRows];
+            }
+        } else {
+            // Do the copy from bottom to top
+            for (int i = len - 1; i >= 0; --i) {
+                mLines[(dst + i) % totalRows] = mLines[(src + i) % totalRows];
+                mColor[(dst + i) % totalRows] = mColor[(src + i) % totalRows];
+                mLineWrap[(dst + i) % totalRows] = mLineWrap[(src + i) % totalRows];
+            }
+        }
     }
 
     /**
@@ -158,37 +203,56 @@ public class UnicodeTranscript {
 
         int screenRows = mScreenRows;
         int totalRows = mTotalRows;
-        int nextTranscriptRow = mNextTranscriptRow;
-        --bottomMargin;
 
-        /* Save the scrolled line, move the lines below it up one line, then
-           insert the scrolled line into the transcript */
+        if (topMargin == 0 && bottomMargin == screenRows) {
+            // Fast path -- scroll the entire screen
+            mScreenFirstRow = (mScreenFirstRow + 1) % totalRows;
+            if (mActiveTranscriptRows < totalRows - screenRows) {
+                ++mActiveTranscriptRows;
+            }
+
+            // Blank the bottom margin
+            int blankRow = externalToInternalRow(bottomMargin - 1);
+            mLines[blankRow] = null;
+            mColor[blankRow] = null;
+            mLineWrap[blankRow] = false;
+
+            return;
+        }
+
+        int screenFirstRow = mScreenFirstRow;
+        int scrollLen = bottomMargin - topMargin;
+        int topMarginInt = externalToInternalRow(topMargin);
+        int bottomMarginInt = externalToInternalRow(bottomMargin);
+
+        /* Save the scrolled line, move the lines above it on the screen down
+           one line, move the lines on screen below the bottom margin down
+           one line, then insert the scrolled line into the transcript */
         Object[] lines = mLines;
         byte[][] color = mColor;
         boolean[] lineWrap = mLineWrap;
-        Object scrollLine = lines[topMargin];
-        byte[] scrollColor = color[topMargin];
-        boolean scrollLineWrap = lineWrap[topMargin];
-        System.arraycopy(lines, topMargin + 1, lines, topMargin, bottomMargin - topMargin);
-        System.arraycopy(color, topMargin + 1, color, topMargin, bottomMargin - topMargin);
-        System.arraycopy(lineWrap, topMargin + 1, lineWrap, topMargin, bottomMargin - topMargin);
-        lines[screenRows + nextTranscriptRow] = scrollLine;
-        color[screenRows + nextTranscriptRow] = scrollColor;
-        lineWrap[screenRows + nextTranscriptRow] = scrollLineWrap;
-        ++nextTranscriptRow;
-        if (screenRows + nextTranscriptRow >= totalRows) {
-            // Wrap around the circular buffer
-            nextTranscriptRow = 0;
-        }
-        mNextTranscriptRow = nextTranscriptRow;
-        if (mActiveTranscriptRows + screenRows < totalRows) {
+        Object scrollLine = lines[topMarginInt];
+        byte[] scrollColor = color[topMarginInt];
+        boolean scrollLineWrap = lineWrap[topMarginInt];
+        blockCopyLines(screenFirstRow, topMargin, 1);
+        blockCopyLines(bottomMarginInt, screenRows - bottomMargin, 1);
+        lines[screenFirstRow] = scrollLine;
+        color[screenFirstRow] = scrollColor;
+        lineWrap[screenFirstRow] = scrollLineWrap;
+
+        // Update the screen location
+        mScreenFirstRow = (screenFirstRow + 1) % totalRows;
+        if (mActiveTranscriptRows < totalRows - screenRows) {
             ++mActiveTranscriptRows;
         }
 
-        // Make sure the new last line is blank
-        lines[bottomMargin] = null;
-        color[bottomMargin] = null;
-        lineWrap[bottomMargin] = false;
+        // Blank the bottom margin
+        int blankRow = externalToInternalRow(bottomMargin - 1);
+        lines[blankRow] = null;
+        color[blankRow] = null;
+        lineWrap[blankRow] = false;
+
+        return;
     }
 
     /**
