@@ -317,10 +317,12 @@ public class TerminalEmulator {
          * ASCII ESC character at the cursor's location
          * This is an epic hack that lets us restore the cursor later...
          */
-        String charAtCursor = mScreen.getSelectedText(mCursorCol, mCursorRow, mCursorCol, mCursorRow);
+        StringBuilder cursorColor = new StringBuilder(1);
+        String charAtCursor = mScreen.getSelectedText(cursorColor, mCursorCol, mCursorRow, mCursorCol, mCursorRow);
         mScreen.set(mCursorCol, mCursorRow, 27, 0, 0);
 
-        String transcriptText = mScreen.getTranscriptText();
+        StringBuilder colors = new StringBuilder();
+        String transcriptText = mScreen.getTranscriptText(colors);
 
         mScreen.resize(columns, rows, mForeColor, mBackColor);
 
@@ -352,11 +354,16 @@ public class TerminalEmulator {
             end--;
         }
         char c, cLow;
+        int foreColor, backColor;
+        int colorOffset = 0;
         for(int i = 0; i <= end; i++) {
             c = transcriptText.charAt(i);
+            foreColor = (colors.charAt(i-colorOffset) >> 4) & 0xf;
+            backColor = colors.charAt(i-colorOffset) & 0xf;
             if (Character.isHighSurrogate(c)) {
                 cLow = transcriptText.charAt(++i);
-                emit(Character.toCodePoint(c, cLow));
+                emit(Character.toCodePoint(c, cLow), foreColor, backColor);
+                ++colorOffset;
             } else if (c == '\n') {
                 setCursorCol(0);
                 doLinefeed();
@@ -367,10 +374,12 @@ public class TerminalEmulator {
                 newCursorCol = mCursorCol;
                 if (charAtCursor != null && charAtCursor.length() > 0) {
                     // Emit the real character that was in this spot
-                    emit(charAtCursor.toCharArray(), 0, charAtCursor.length());
+                    foreColor = (cursorColor.charAt(0) >> 4) & 0xf;
+                    backColor = cursorColor.charAt(0) & 0xf;
+                    emit(charAtCursor.toCharArray(), 0, charAtCursor.length(), foreColor, backColor);
                 }
             } else {
-                emit(c);
+                emit(c, foreColor, backColor);
             }
         }
 
@@ -1279,8 +1288,10 @@ public class TerminalEmulator {
      * Send a Unicode code point to the screen.
      *
      * @param c The code point of the character to display
+     * @param foreColor The foreground color of the character
+     * @param backColor The background color of the character
      */
-    private void emit(int c) {
+    private void emit(int c, int foreColor, int backColor) {
         boolean autoWrap = autoWrapEnabled();
         int width = UnicodeTranscript.charWidth(c);
 
@@ -1308,12 +1319,12 @@ public class TerminalEmulator {
         if (width == 0) {
             // Combining character -- store along with character it modifies
             if (mJustWrapped) {
-                mScreen.set(mColumns - 1, mCursorRow - 1, c, getForeColor(), getBackColor());
+                mScreen.set(mColumns - 1, mCursorRow - 1, c, foreColor, backColor);
             } else {
-                mScreen.set(mCursorCol - 1, mCursorRow, c, getForeColor(), getBackColor());
+                mScreen.set(mCursorCol - 1, mCursorRow, c, foreColor, backColor);
             }
         } else {
-            mScreen.set(mCursorCol, mCursorRow, c, getForeColor(), getBackColor());
+            mScreen.set(mCursorCol, mCursorRow, c, foreColor, backColor);
             mJustWrapped = false;
         }
 
@@ -1322,6 +1333,10 @@ public class TerminalEmulator {
         }
 
         mCursorCol = Math.min(mCursorCol + width, mColumns - 1);
+    }
+
+    private void emit(int c) {
+        emit(c, getForeColor(), getBackColor());
     }
 
     private void emit(byte b) {
@@ -1346,18 +1361,22 @@ public class TerminalEmulator {
      *
      * @param c A char[] array whose contents are to be sent to the screen.
      */
-    private void emit(char[] c, int offset, int length) {
+    private void emit(char[] c, int offset, int length, int foreColor, int backColor) {
         for (int i = offset; i < length; ++i) {
             if (c[i] == 0) {
                 break;
             }
             if (Character.isHighSurrogate(c[i])) {
-                emit(Character.toCodePoint(c[i], c[i+1]));
+                emit(Character.toCodePoint(c[i], c[i+1]), foreColor, backColor);
                 ++i;
             } else {
-                emit((int) c[i]);
+                emit((int) c[i], foreColor, backColor);
             }
         }
+    }
+
+    private void emit(char[] c, int offset, int length) {
+        emit(c, offset, length, getForeColor(), getBackColor());
     }
 
     private void setCursorRow(int row) {

@@ -292,18 +292,27 @@ public class TranscriptScreen implements Screen {
     }
 
     public String getTranscriptText() {
-        return internalGetTranscriptText(true, 0, -mData.getActiveTranscriptRows(), mColumns, mScreenRows);
+        return internalGetTranscriptText(null, 0, -mData.getActiveTranscriptRows(), mColumns, mScreenRows);
+    }
+
+    public String getTranscriptText(StringBuilder colors) {
+        return internalGetTranscriptText(colors, 0, -mData.getActiveTranscriptRows(), mColumns, mScreenRows);
     }
 
     public String getSelectedText(int selX1, int selY1, int selX2, int selY2) {
-        return internalGetTranscriptText(true, selX1, selY1, selX2, selY2);
+        return internalGetTranscriptText(null, selX1, selY1, selX2, selY2);
     }
 
-    private String internalGetTranscriptText(boolean stripColors, int selX1, int selY1, int selX2, int selY2) {
+    public String getSelectedText(StringBuilder colors, int selX1, int selY1, int selX2, int selY2) {
+        return internalGetTranscriptText(colors, selX1, selY1, selX2, selY2);
+    }
+
+    private String internalGetTranscriptText(StringBuilder colors, int selX1, int selY1, int selX2, int selY2) {
         StringBuilder builder = new StringBuilder();
         UnicodeTranscript data = mData;
         int columns = mColumns;
         char[] line;
+        byte[] rowColorBuffer = null;
         if (selY1 < -data.getActiveTranscriptRows()) {
             selY1 = -data.getActiveTranscriptRows();
         }
@@ -325,9 +334,15 @@ public class TranscriptScreen implements Screen {
                 x2 = columns;
             }
             line = data.getLine(row, x1, x2);
+            if (colors != null) {
+                rowColorBuffer = data.getLineColor(row, x1, x2);
+            }
             if (line == null) {
                 if (!data.getLineWrap(row) && row < selY2 && row < mScreenRows - 1) {
                     builder.append('\n');
+                    if (colors != null) {
+                        colors.append((char) 0);
+                    }
                 }
                 continue;
             }
@@ -346,8 +361,23 @@ public class TranscriptScreen implements Screen {
                 lastPrintingChar = i - 1;
             }
             builder.append(line, 0, lastPrintingChar + 1);
+            if (colors != null) {
+                int column = 0;
+                for (int j = 0; j < lastPrintingChar + 1; ++j) {
+                    colors.append((char) rowColorBuffer[column]);
+                    if (Character.isHighSurrogate(line[j])) {
+                        column += UnicodeTranscript.charWidth(Character.toCodePoint(line[j], line[j+1]));
+                        ++j;
+                    } else {
+                        column += UnicodeTranscript.charWidth(line[j]);
+                    }
+                }
+            }
             if (!data.getLineWrap(row) && row < selY2 && row < mScreenRows - 1) {
                 builder.append('\n');
+                if (colors != null) {
+                    colors.append((char) 0);
+                }
             }
         }
         return builder.toString();

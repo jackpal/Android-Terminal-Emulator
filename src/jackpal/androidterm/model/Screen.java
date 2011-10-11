@@ -100,6 +100,15 @@ public interface Screen {
     String getTranscriptText();
 
     /**
+     * Get the contents of the transcript buffer as a text string with color
+     * information.
+     *
+     * @param colors A StringBuilder which will hold the colors.
+     * @return the contents of the transcript buffer.
+     */
+    String getTranscriptText(StringBuilder colors);
+
+    /**
      * Get the selected text inside transcript buffer as a text string.
      * @param x1 Selection start
      * @param y1 Selection start
@@ -108,6 +117,19 @@ public interface Screen {
      * @return the contents of the transcript buffer.
      */
     String getSelectedText(int x1, int y1, int x2, int y2);
+
+    /**
+     * Get the selected text inside transcript buffer as a text string with
+     * color information.
+     *
+     * @param colors A StringBuilder which will hold the colors.
+     * @param x1 Selection start
+     * @param y1 Selection start
+     * @param x2 Selection end
+     * @param y2 Selection end
+     * @return the contents of the transcript buffer.
+     */
+    String getSelectedText(StringBuilder colors, int x1, int y1, int x2, int y2);
 
     /**
      * Resize the screen
