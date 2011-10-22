@@ -48,15 +48,15 @@ public class PostAndroid3Utils {
                 } catch (NoSuchMethodException e) {
                     // Pre Android API level 8
                 }
-            } else {
-                if (mGetEastAsianWidthMethod != null) {
-                    try {
-                        Integer objectResult = (Integer) mGetEastAsianWidthMethod.invoke(
-                                null, new Object[]{new Character(c)});
-                        result = objectResult.intValue();
-                    } catch(Exception e) {
-                        Log.e(TAG, "Unexpected exception when calling getEastAsianWidth", e);
-                    }
+            }
+
+            if (mGetEastAsianWidthMethod != null) {
+                try {
+                    Integer objectResult = (Integer) mGetEastAsianWidthMethod.invoke(
+                            null, new Object[]{new Character(c)});
+                    result = objectResult.intValue();
+                } catch(Exception e) {
+                    Log.e(TAG, "Unexpected exception when calling getEastAsianWidth", e);
                 }
             }
             return result;
