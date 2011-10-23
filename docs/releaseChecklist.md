@@ -1,6 +1,6 @@
 ## Android Terminal Emulator Release Checklist
 
-# Test on 1.5
+# Test on 1.5 
 
 # Test on 1.6
 
@@ -30,4 +30,14 @@ git push --tags
 # Publish to market
 
 https://market.android.com/publish
+
+# Update the Android Terminal Emulator Wiki
+
+https://github.com/jackpal/Android-Terminal-Emulator/wiki/Recent-Updates
+
+# Upload a new pre-compiled version for people who can't access Market.
+
+https://github.com/jackpal/Android-Terminal-Emulator/downloads
+
+
 
