@@ -312,7 +312,14 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     for(int i = 0; i < n; i++) {
                         c = text.charAt(i);
                         if (Character.isHighSurrogate(c)) {
-                            mapAndSend(Character.toCodePoint(c, text.charAt(++i)));
+                            int codePoint;
+                            if (++i < n) {
+                                codePoint = Character.toCodePoint(c, text.charAt(i));
+                            } else {
+                                // Unicode Replacement Glyph, aka white question mark in black diamond.
+                                codePoint = '\ufffd';
+                            }
+                            mapAndSend(codePoint);
                         } else {
                             mapAndSend(c);
                         }
