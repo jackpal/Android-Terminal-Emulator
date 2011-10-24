@@ -30,3 +30,7 @@ for i in $(ls $SRC); do
     fi
     cp "$SRC/$i/$ASSET" "$DSTDIR/$ASSET"
 done
+
+# Create the Android 1.5 version of the icon
+
+cp "$SRC/drawable-mdpi/$ASSET" "$DST/drawable/ASSET"
