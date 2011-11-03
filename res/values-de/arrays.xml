@@ -56,7 +56,17 @@
 
   <string-array name="entries_controlkey_preference">
     <item>Trackball</item>
-    <item>\@ Taste</item>
+    <item>\@-Taste</item>
+    <item>Linke Alt-Taste</item>
+    <item>Rechte Alt-Taste</item>
+    <item>Lauter</item>
+    <item>Leiser</item>
+    <item>Kamera-Taste</item>
+  </string-array>
+
+  <string-array name="entries_fnkey_preference">
+    <item>Trackball</item>
+    <item>\@-Taste</item>
     <item>Linke Alt-Taste</item>
     <item>Rechte Alt-Taste</item>
     <item>Lauter</item>

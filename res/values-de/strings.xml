@@ -22,10 +22,17 @@
   <string name="special_keys">Spezialtasten</string>
   <string name="toggle_soft_keyboard">Tastatur an/aus</string>
 
+  <string name="enable_wakelock">Aktiviere WakeLock</string>
+  <string name="disable_wakelock">Deaktiviere WakeLock</string>
+  <string name="enable_wifilock">Aktiviere WifiLock</string>
+  <string name="disable_wifilock">Deaktiviere WifiLock</string>
+
   <string name="edit_text">Text bearbeiten</string>
   <string name="select_text">Text selektieren</string>
   <string name="copy_all">Alles kopieren</string>
   <string name="paste">Einfügen</string>
+
+  <string name="service_notify_text">Terminal-Sitzung läuft</string>
 
   <!-- Preference dialog -->
   <string name="screen_preferences">Bildschirm</string>
@@ -57,6 +64,10 @@
   <string name="title_controlkey_preference">Steuerungstaste</string>
   <string name="summary_controlkey_preference">Die Steuerungstaste auswählen.</string>
   <string name="dialog_title_controlkey_preference">Steuerungstaste</string>
+
+  <string name="title_fnkey_preference">Fn-Taste</string>
+  <string name="summary_fnkey_preference">Die Fn-Taste auswählen.</string>
+  <string name="dialog_title_fnkey_preference">Fn-Taste</string>
 
   <string name="title_ime_preference">Eingabemethode</string>
   <string name="summary_ime_preference">Die Eingabemethode für die Soft-Tastatur auswählen.</string>
