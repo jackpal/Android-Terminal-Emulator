@@ -173,7 +173,7 @@ public class UnicodeTranscript {
             /* When shrinking the screen, we want to hide blank lines at the
                bottom in preference to lines at the top of the screen */
             Object[] lines = mLines;
-            for (int i = screenRows - 1; i >= 0; --i) {
+            for (int i = screenRows - 1; i > cursor[1]; --i) {
                 int index = externalToInternalRow(i);
                 if (lines[index] == null) {
                     // Line is blank
