@@ -992,13 +992,21 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 abstract class BaseTextRenderer implements TextRenderer {
     protected int[] mForePaint = {
             0xff000000, // Black
-            0xffff0000, // Red
+            0xffcc0000, // Red
+            0xff00cc00, // green
+            0xffcccc00, // yellow
+            0xff0000cc, // blue
+            0xffcc00cc, // magenta
+            0xff00cccc, // cyan
+            0xffcccccc, // "white"/light gray -- is overridden by constructor
+            0xff666666, // bright black/dark gray
+            0xffff0000, // red
             0xff00ff00, // green
             0xffffff00, // yellow
             0xff0000ff, // blue
             0xffff00ff, // magenta
             0xff00ffff, // cyan
-            0xffffffff  // white -- is overridden by constructor
+            0xffffffff  // white
     };
     protected int[] mBackPaint = {
             0xff000000, // Black -- is overridden by constructor
@@ -1049,7 +1057,7 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
     public void drawTextRun(Canvas canvas, float x, float y,
             int lineOffset, int runWidth, char[] text, int index, int count,
             boolean cursor, int foreColor, int backColor) {
-        setColorMatrix(mForePaint[foreColor & 7],
+        setColorMatrix(mForePaint[foreColor],
                 cursor ? mCursorPaint : mBackPaint[backColor & 7]);
         int destX = (int) x + kCharacterWidth * lineOffset;
         int destY = (int) y;
@@ -1132,7 +1140,7 @@ class PaintRenderer extends BaseTextRenderer {
         if (underline) {
             mTextPaint.setUnderlineText(true);
         }
-        mTextPaint.setColor(mForePaint[foreColor & 0x7]);
+        mTextPaint.setColor(mForePaint[foreColor]);
         canvas.drawText(text, index, count, left, y, mTextPaint);
         if (bold) {
             mTextPaint.setFakeBoldText(false);
