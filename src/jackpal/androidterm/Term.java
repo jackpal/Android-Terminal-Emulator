@@ -218,6 +218,11 @@ public class Term extends Activity {
             ((EmulatorView) v).setDensity(metrics);
             ((EmulatorView) v).updatePrefs(mSettings);
         }
+        if (mTermSessions != null) {
+            for (TermSession session : mTermSessions) {
+                session.updatePrefs(mSettings);
+            }
+        }
         {
             Window win = getWindow();
             WindowManager.LayoutParams params = win.getAttributes();

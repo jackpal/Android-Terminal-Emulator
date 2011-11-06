@@ -271,6 +271,7 @@ public class TerminalEmulator {
      */
     private static final int UNICODE_REPLACEMENT_CHAR = 0xfffd;
     private boolean mUTF8Mode = false;
+    private boolean mUTF8EscapeUsed = false;
     private int mUTF8ToFollow = 0;
     private ByteBuffer mUTF8ByteBuffer;
     private CharBuffer mInputCharBuffer;
@@ -639,9 +640,11 @@ public class TerminalEmulator {
         switch (b) {
         case '@': // Esc % @ -- return to ISO 2022 mode
            mUTF8Mode = false;
+           mUTF8EscapeUsed = true;
            break;
         case 'G': // Esc % G -- UTF-8 mode
            mUTF8Mode = true;
+           mUTF8EscapeUsed = true;
            break;
         default: // unimplemented character set
            break;
@@ -1447,9 +1450,23 @@ public class TerminalEmulator {
         blockClear(0, 0, mColumns, mRows);
 
         mUTF8Mode = mTermSettings.defaultToUTF8Mode();
+        mUTF8EscapeUsed = false;
         mUTF8ToFollow = 0;
         mUTF8ByteBuffer.clear();
         mInputCharBuffer.clear();
+    }
+
+    public void updatePrefs(TermSettings settings) {
+        mTermSettings = settings;
+        if (!mUTF8EscapeUsed) {
+            boolean newUTF8Mode = settings.defaultToUTF8Mode();
+            if (mUTF8Mode && !newUTF8Mode) {
+                mUTF8ToFollow = 0;
+                mUTF8ByteBuffer.clear();
+                mInputCharBuffer.clear();
+            }
+            mUTF8Mode = newUTF8Mode;
+        }
     }
 
     public String getSelectedText(int x1, int y1, int x2, int y2) {

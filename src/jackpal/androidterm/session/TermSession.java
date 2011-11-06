@@ -297,6 +297,11 @@ public class TermSession {
         }
     }
 
+    public void updatePrefs(TermSettings settings) {
+        mSettings = settings;
+        mEmulator.updatePrefs(settings);
+    }
+
     public void finish() {
         Exec.hangupProcessGroup(mProcId);
         Exec.close(mTermFd);
