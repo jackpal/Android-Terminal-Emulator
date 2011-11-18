@@ -20,6 +20,7 @@ import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -63,6 +64,8 @@ public class TermSession {
     private CharBuffer mWriteCharBuffer;
     private ByteBuffer mWriteByteBuffer;
     private CharsetEncoder mUTF8Encoder;
+
+    private String mProcessExitMessage;
 
     private static final int DEFAULT_COLUMNS = 80;
     private static final int DEFAULT_ROWS = 24;
@@ -311,12 +314,26 @@ public class TermSession {
         mEmulator.reset();
     }
 
+    /* XXX We should really get this ourselves from the resource bundle, but
+       we cannot hold a context */
+    public void setProcessExitMessage(String message) {
+        mProcessExitMessage = message;
+    }
+
     private void onProcessExit(int result) {
         if (mSettings.closeWindowOnProcessExit()) {
             if (mFinishCallback != null) {
                 mFinishCallback.onSessionFinish(this);
             }
             finish();
+        } else if (mProcessExitMessage != null) {
+            try {
+                byte[] msg = ("\r\n[" + mProcessExitMessage + "]").getBytes("UTF-8");
+                mEmulator.append(msg, 0, msg.length);
+                mNotify.onUpdate();
+            } catch (UnsupportedEncodingException e) {
+                // Never happens
+            }
         }
     }
 

@@ -226,7 +226,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public EmulatorView(Context context, TermSession session, TermViewFlipper viewFlipper, DisplayMetrics metrics) {
         super(context);
-        commonConstructor(session, viewFlipper);
+        commonConstructor(context, session, viewFlipper);
         setDensity(metrics);
     }
 
@@ -572,7 +572,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return mEmulator.getKeypadApplicationMode();
     }
 
-    private void commonConstructor(TermSession session, TermViewFlipper viewFlipper) {
+    private void commonConstructor(Context context, TermSession session, TermViewFlipper viewFlipper) {
         mTextRenderer = null;
         mCursorPaint = new Paint();
         mCursorPaint.setARGB(255,128,128,128);
@@ -587,6 +587,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         initialize(session, viewFlipper);
         session.setUpdateCallback(mUpdateNotify);
+        // XXX We should really be able to fetch this from within TermSession
+        session.setProcessExitMessage(context.getString(R.string.process_exit_message));
     }
 
     @Override

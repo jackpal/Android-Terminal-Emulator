@@ -41,6 +41,8 @@
 
    <string name="service_notify_text">Terminal session is running</string>
 
+   <string name="process_exit_message">Terminal session finished</string>
+
    <!-- Preference dialog -->
    <string name="screen_preferences">Screen</string>
 
