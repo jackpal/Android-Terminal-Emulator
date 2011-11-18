@@ -186,7 +186,7 @@ public class Term extends Activity {
             }
         }
 
-        return new TermSession(mSettings, null, initialCommand);
+        return new TermSession(mSettings, initialCommand);
     }
 
     private EmulatorView createEmulatorView(TermSession session) {
@@ -200,8 +200,6 @@ public class Term extends Activity {
             Gravity.LEFT
         );
         emulatorView.setLayoutParams(params);
-
-        session.setUpdateCallback(emulatorView.getUpdateCallback());
 
         registerForContextMenu(emulatorView);
 

@@ -86,9 +86,8 @@ public class TermSession {
         }
     };
 
-    public TermSession(TermSettings settings, UpdateCallback notify, String initialCommand) {
+    public TermSession(TermSettings settings, String initialCommand) {
         mSettings = settings;
-        mNotify = notify;
 
         int[] processId = new int[1];
 

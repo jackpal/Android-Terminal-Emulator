@@ -224,10 +224,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     };
 
-    public UpdateCallback getUpdateCallback() {
-        return mUpdateNotify;
-    }
-
     public EmulatorView(Context context, TermSession session, TermViewFlipper viewFlipper, DisplayMetrics metrics) {
         super(context);
         commonConstructor(session, viewFlipper);
@@ -590,6 +586,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         setFocusableInTouchMode(true);
 
         initialize(session, viewFlipper);
+        session.setUpdateCallback(mUpdateNotify);
     }
 
     @Override
