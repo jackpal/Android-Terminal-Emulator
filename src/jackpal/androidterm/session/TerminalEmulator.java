@@ -628,7 +628,7 @@ public class TerminalEmulator {
     }
 
     private int nextTabStop(int cursorCol) {
-        for (int i = cursorCol; i < mColumns; i++) {
+        for (int i = cursorCol + 1; i < mColumns; i++) {
             if (mTabStop[i]) {
                 return i;
             }
