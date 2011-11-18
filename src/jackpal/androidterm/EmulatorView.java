@@ -736,7 +736,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         } else {
             // TODO: add animation man's (non animated) fling
             mScrollRemainder = 0.0f;
-            onScroll(e1, e2, 2 * velocityX, -2 * velocityY);
+            onScroll(e1, e2, 0.1f * velocityX, -0.1f * velocityY);
         }
         return true;
     }
