@@ -447,7 +447,10 @@ public class Term extends Activity {
     }
 
     private void doResetTerminal() {
-        restart();
+        TermSession session = getCurrentTermSession();
+        if (session != null) {
+            session.reset();
+        }
     }
 
     private void doEmailTranscript() {
