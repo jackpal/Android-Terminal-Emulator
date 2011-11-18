@@ -37,6 +37,8 @@
    <string name="copy_all">Copy all</string>
    <string name="paste">Paste</string>
 
+   <string name="window_title">Window %1$d</string>
+
    <string name="service_notify_text">Terminal session is running</string>
 
    <!-- Preference dialog -->

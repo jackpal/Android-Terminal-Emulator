@@ -78,7 +78,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         if (getChildCount() == 0) {
             return;
         }
-        String title = "Window " + (getDisplayedChild()+1);
+        String title = context.getString(R.string.window_title, getDisplayedChild()+1);
         if (mToast == null) {
             mToast = Toast.makeText(context, title, Toast.LENGTH_SHORT);
         } else {
