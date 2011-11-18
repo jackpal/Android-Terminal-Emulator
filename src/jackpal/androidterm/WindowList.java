@@ -16,8 +16,6 @@
 
 package jackpal.androidterm;
 
-import java.util.ArrayList;
-
 import android.app.ListActivity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -35,14 +33,16 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.session.TermSession;
+import jackpal.androidterm.util.SessionList;
 
 public class WindowList extends ListActivity {
-    private ArrayList<TermSession> sessions;
+    private SessionList sessions;
     private WindowListAdapter mWindowListAdapter;
     private TermService mTermService;
 
-    class WindowListAdapter extends BaseAdapter {
+    class WindowListAdapter extends BaseAdapter implements UpdateCallback {
         private LayoutInflater inflater = getLayoutInflater();
 
         public int getCount() {
@@ -76,6 +76,10 @@ public class WindowList extends ListActivity {
             });
 
             return child;
+        }
+
+        public void onUpdate() {
+            notifyDataSetChanged();
         }
     }
 
@@ -146,6 +150,9 @@ public class WindowList extends ListActivity {
     protected void onPause() {
         super.onPause();
 
+        if (sessions != null) {
+            sessions.removeCallback(mWindowListAdapter);
+        }
         unbindService(mTSConnection);
     }
 
@@ -153,10 +160,13 @@ public class WindowList extends ListActivity {
         sessions = mTermService.getSessions();
 
         if (mWindowListAdapter == null) {
-            setListAdapter(new WindowListAdapter());
+            WindowListAdapter adapter = new WindowListAdapter();
+            setListAdapter(adapter);
+            mWindowListAdapter = adapter;
         } else {
             mWindowListAdapter.notifyDataSetChanged();
         }
+        sessions.addCallback(mWindowListAdapter);
     }
 
     @Override

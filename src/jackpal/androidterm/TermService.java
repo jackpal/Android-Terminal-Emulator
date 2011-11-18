@@ -16,8 +16,6 @@
 
 package jackpal.androidterm;
 
-import java.util.ArrayList;
-
 import android.app.Service;
 import android.os.Binder;
 import android.os.IBinder;
@@ -27,10 +25,13 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 
+import jackpal.androidterm.model.SessionFinishCallback;
+import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.util.ServiceForegroundCompat;
+import jackpal.androidterm.util.SessionList;
 
-public class TermService extends Service
+public class TermService extends Service implements SessionFinishCallback
 {
     /* Parallels the value of START_STICKY on API Level >= 5 */
     private static final int COMPAT_START_STICKY = 1;
@@ -38,7 +39,7 @@ public class TermService extends Service
     private static final int RUNNING_NOTIFICATION = 1;
     private ServiceForegroundCompat compat;
 
-    private ArrayList<TermSession> mTermSessions;
+    private SessionList mTermSessions;
 
     public class TSBinder extends Binder {
         TermService getService() {
@@ -66,7 +67,7 @@ public class TermService extends Service
     @Override
     public void onCreate() {
         compat = new ServiceForegroundCompat(this);
-        mTermSessions = new ArrayList<TermSession>();
+        mTermSessions = new SessionList();
 
         /* Put the service in the foreground. */
         Notification notification = new Notification(R.drawable.ic_stat_service_notification_icon, getText(R.string.service_notify_text), System.currentTimeMillis());
@@ -91,7 +92,11 @@ public class TermService extends Service
         return;
     }
 
-    public ArrayList<TermSession> getSessions() {
+    public SessionList getSessions() {
         return mTermSessions;
+    }
+
+    public void onSessionFinish(TermSession session) {
+        mTermSessions.remove(session);
     }
 }

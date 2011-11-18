@@ -17,7 +17,6 @@
 package jackpal.androidterm;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -51,14 +50,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.session.TermSession;
+import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
 /**
  * A terminal emulator activity.
  */
 
-public class Term extends Activity {
+public class Term extends Activity implements UpdateCallback {
     /**
      * The ViewFlipper which holds the collection of EmulatorView widgets.
      */
@@ -69,7 +70,7 @@ public class Term extends Activity {
      */
     private static final int VIEW_FLIPPER = R.id.view_flipper;
 
-    private ArrayList<TermSession> mTermSessions;
+    private SessionList mTermSessions;
 
     private SharedPreferences mPrefs;
     private TermSettings mSettings;
@@ -135,6 +136,7 @@ public class Term extends Activity {
     private void populateViewFlipper() {
         if (mTermService != null) {
             mTermSessions = mTermService.getSessions();
+            mTermSessions.addCallback(this);
 
             if (mTermSessions.size() == 0) {
                 mTermSessions.add(createTermSession());
@@ -248,6 +250,9 @@ public class Term extends Activity {
     public void onResume() {
         super.onResume();
 
+        if (mTermSessions != null) {
+            mTermSessions.addCallback(this);
+        }
         if (mTermSessions != null && mTermSessions.size() < mViewFlipper.getChildCount()) {
             for (int i = 0; i < mViewFlipper.getChildCount(); ++i) {
                 EmulatorView v = (EmulatorView) mViewFlipper.getChildAt(i);
@@ -276,6 +281,9 @@ public class Term extends Activity {
         super.onPause();
 
         mViewFlipper.pauseCurrentView();
+        if (mTermSessions != null) {
+            mTermSessions.removeCallback(this);
+        }
 
         /* Explicitly close the input method
            Otherwise, the soft keyboard could cover up whatever activity takes
@@ -481,6 +489,28 @@ public class Term extends Activity {
             }
         default:
             return super.onKeyUp(keyCode, event);
+        }
+    }
+
+    // Called when the list of sessions changes
+    public void onUpdate() {
+        SessionList sessions = mTermSessions;
+        if (sessions == null) {
+            return;
+        }
+
+        if (sessions.size() == 0) {
+            mStopServiceOnFinish = true;
+            finish();
+        } else if (sessions.size() < mViewFlipper.getChildCount()) {
+            for (int i = 0; i < mViewFlipper.getChildCount(); ++i) {
+                EmulatorView v = (EmulatorView) mViewFlipper.getChildAt(i);
+                if (!sessions.contains(v.getTermSession())) {
+                    v.onPause();
+                    mViewFlipper.removeView(v);
+                    --i;
+                }
+            }
         }
     }
 
