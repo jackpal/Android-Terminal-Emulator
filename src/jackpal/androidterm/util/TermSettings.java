@@ -60,7 +60,7 @@ public class TermSettings {
     public static final int AMBER = 0xffffb651;
     public static final int RED =   0xffff0113;
 
-    public static final int[][] COLOR_SCHEMES = {{BLACK, WHITE}, {WHITE, BLACK}, {WHITE, BLUE}, {GREEN, BLACK}, {AMBER, BLACK}, {RED, BLACK}};
+    public static final int[][] COLOR_SCHEMES = {{0, BLACK, 7, WHITE}, {7, WHITE, 0, BLACK}, {7, WHITE, 4, BLUE}, {2, GREEN, 0, BLACK}, {3, AMBER, 0, BLACK}, {1, RED, 0, BLACK}};
 
     /** An integer not in the range of real key codes. */
     public static final int KEYCODE_NONE = -1;

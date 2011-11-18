@@ -105,7 +105,8 @@ public class TermSession {
         mTermOut = new FileOutputStream(mTermFd);
         mTermIn = new FileInputStream(mTermFd);
 
-        mTranscriptScreen = new TranscriptScreen(DEFAULT_COLUMNS, TRANSCRIPT_ROWS, DEFAULT_ROWS, 0, 7);
+        int[] colorScheme = settings.getColorScheme();
+        mTranscriptScreen = new TranscriptScreen(DEFAULT_COLUMNS, TRANSCRIPT_ROWS, DEFAULT_ROWS, colorScheme[0], colorScheme[2]);
         mEmulator = new TerminalEmulator(settings, mTranscriptScreen, DEFAULT_COLUMNS, DEFAULT_ROWS, mTermOut);
 
         mIsRunning = true;
@@ -308,6 +309,9 @@ public class TermSession {
     public void updatePrefs(TermSettings settings) {
         mSettings = settings;
         mEmulator.updatePrefs(settings);
+
+        int[] colorScheme = settings.getColorScheme();
+        mTranscriptScreen.setDefaultColors(colorScheme[0], colorScheme[2]);
     }
 
     public void reset() {

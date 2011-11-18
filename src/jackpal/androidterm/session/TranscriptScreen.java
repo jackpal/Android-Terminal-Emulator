@@ -74,6 +74,10 @@ public class TranscriptScreen implements Screen {
         mData.blockSet(0, 0, mColumns, mScreenRows, ' ', foreColor, backColor);
    }
 
+    public void setDefaultColors(int foreColor, int backColor) {
+        mData.setDefaultColors(foreColor, backColor);
+    }
+
     public void finish() {
         /*
          * The Android InputMethodService will sometimes hold a reference to

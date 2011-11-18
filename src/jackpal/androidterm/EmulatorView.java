@@ -109,11 +109,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * Foreground color.
      */
     private int mForeground;
+    private int mForegroundIndex;
 
     /**
      * Background color.
      */
     private int mBackground;
+    private int mBackgroundIndex;
 
     /**
      * Used to paint the cursor
@@ -260,8 +262,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public void setColors() {
         int[] scheme = mSettings.getColorScheme();
-        mForeground = scheme[0];
-        mBackground = scheme[1];
+        mForegroundIndex = scheme[0];
+        mForeground = scheme[1];
+        mBackgroundIndex = scheme[2];
+        mBackground = scheme[3];
         updateText();
     }
 
@@ -875,12 +879,14 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private void updateText() {
         if (mTextSize > 0) {
-            mTextRenderer = new PaintRenderer(mTextSize, mForeground,
-                    mBackground);
+            mTextRenderer = new PaintRenderer(mTextSize,
+                    mForegroundIndex, mForeground,
+                    mBackgroundIndex, mBackground);
         }
         else {
             mTextRenderer = new Bitmap4x8FontRenderer(getResources(),
-                    mForeground, mBackground);
+                    mForegroundIndex, mForeground,
+                    mBackgroundIndex, mBackground);
         }
         mBackgroundPaint.setColor(mBackground);
         mCharacterWidth = mTextRenderer.getCharacterWidth();
@@ -1023,10 +1029,10 @@ abstract class BaseTextRenderer implements TextRenderer {
     };
     protected final static int mCursorPaint = 0xff808080;
 
-    public BaseTextRenderer(int forePaintColor, int backPaintColor) {
-        mForePaint[7] = forePaintColor;
-        mBackPaint[0] = backPaintColor;
-
+    public BaseTextRenderer(int forePaintIndex, int forePaintColor,
+            int backPaintIndex, int backPaintColor) {
+        mForePaint[forePaintIndex] = forePaintColor;
+        mBackPaint[backPaintIndex] = backPaintColor;
     }
 }
 
@@ -1041,8 +1047,9 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
     private static final float BYTE_SCALE = 1.0f / 255.0f;
 
     public Bitmap4x8FontRenderer(Resources resources,
-            int forePaintColor, int backPaintColor) {
-        super(forePaintColor, backPaintColor);
+            int forePaintIndex, int forePaintColor,
+            int backPaintIndex, int backPaintColor) {
+        super(forePaintIndex, forePaintColor, backPaintIndex, backPaintColor);
         mFont = BitmapFactory.decodeResource(resources,
                 R.drawable.atari_small);
         mPaint = new Paint();
@@ -1110,8 +1117,10 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
 }
 
 class PaintRenderer extends BaseTextRenderer {
-    public PaintRenderer(int fontSize, int forePaintColor, int backPaintColor) {
-        super(forePaintColor, backPaintColor);
+    public PaintRenderer(int fontSize,
+            int forePaintIndex, int forePaintColor,
+            int backPaintIndex, int backPaintColor) {
+        super(forePaintIndex, forePaintColor, backPaintIndex, backPaintColor);
         mTextPaint = new Paint();
         mTextPaint.setTypeface(Typeface.MONOSPACE);
         mTextPaint.setAntiAlias(true);

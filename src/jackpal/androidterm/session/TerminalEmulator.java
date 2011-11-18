@@ -249,11 +249,13 @@ public class TerminalEmulator {
      * Foreground color, 0..7, mask with 8 for bold
      */
     private int mForeColor;
+    private int mDefaultForeColor;
 
     /**
      * Background color, 0..7, mask with 8 for underline
      */
     private int mBackColor;
+    private int mDefaultBackColor;
 
     private boolean mInverseColors;
 
@@ -1074,8 +1076,8 @@ public class TerminalEmulator {
 
             if (code == 0) { // reset
                 mInverseColors = false;
-                mForeColor = 7;
-                mBackColor = 0;
+                mForeColor = mDefaultForeColor;
+                mBackColor = mDefaultBackColor;
             } else if (code == 1) { // bold
                 mForeColor |= 0x8;
             } else if (code == 3) { // italics, but rarely used as such; "standout" (inverse colors) with TERM=screen
@@ -1099,12 +1101,12 @@ public class TerminalEmulator {
             } else if (code >= 30 && code <= 37) { // foreground color
                 mForeColor = (mForeColor & 0x8) | (code - 30);
             } else if (code == 39) { // set default text color
-                mForeColor = 7;
+                mForeColor = mDefaultForeColor;
                 mBackColor = mBackColor & 0x7;
             } else if (code >= 40 && code <= 47) { // background color
                 mBackColor = (mBackColor & 0x8) | (code - 40);
             } else if (code == 49) { // set default background color
-                mBackColor = mBackColor & 0x8; // color 0, but preserve underscore.
+                mBackColor = mDefaultBackColor | (mBackColor & 0x8); // preserve underscore.
             } else {
                 if (TermDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
                     Log.w(TermDebug.LOG_TAG, String.format("SGR unknown code %d", code));
@@ -1465,8 +1467,11 @@ public class TerminalEmulator {
         mTopMargin = 0;
         mBottomMargin = mRows;
         mAboutToAutoWrap = false;
-        mForeColor = 7;
-        mBackColor = 0;
+        int[] colorScheme = mTermSettings.getColorScheme();
+        mDefaultForeColor = colorScheme[0];
+        mDefaultBackColor = colorScheme[2];
+        mForeColor = colorScheme[0];
+        mBackColor = colorScheme[2];
         mInverseColors = false;
         mbKeypadApplicationMode = false;
         mAlternateCharSet = false;
@@ -1492,6 +1497,9 @@ public class TerminalEmulator {
             }
             mUTF8Mode = newUTF8Mode;
         }
+        int[] colorScheme = mTermSettings.getColorScheme();
+        mDefaultForeColor = colorScheme[0];
+        mDefaultBackColor = colorScheme[2];
     }
 
     public String getSelectedText(int x1, int y1, int x2, int y2) {
