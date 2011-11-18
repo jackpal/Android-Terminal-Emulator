@@ -97,6 +97,21 @@
         <item>5</item>
     </string-array>
 
+    <string-array name="entries_backaction_preference">
+        <item>Closes all terminal windows</item>
+        <item>Closes this terminal window only</item>
+        <item>Closes activity, leaving sessions running</item>
+        <item>Sends ESC to terminal</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <string-array name="entryvalues_backaction_preference">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <string-array name="entries_controlkey_preference">
         <item>Jog ball</item>
         <item>\@ key</item>

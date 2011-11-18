@@ -71,6 +71,10 @@
 
    <string name="keyboard_preferences">Keyboard</string>
 
+   <string name="title_backaction_preference">Back button behavior</string>
+   <string name="summary_backaction_preference">Choose what pressing the back button does.</string>
+   <string name="dialog_title_backaction_preference">Back button behavior</string>
+
    <string name="title_controlkey_preference">Control key</string>
    <string name="summary_controlkey_preference">Choose control key.</string>
    <string name="dialog_title_controlkey_preference">Control key</string>
@@ -98,6 +102,7 @@
    <string name="default_value_cursorblink_preference">0</string>
    <string name="default_value_fontsize_preference">10</string>
    <string name="default_value_color_preference">2</string>
+   <string name="default_value_backaction_preference">0</string>
    <string name="default_value_controlkey_preference">5</string>
    <string name="default_value_fnkey_preference">4</string>
    <string name="default_value_ime_preference">0</string>

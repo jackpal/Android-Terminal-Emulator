@@ -40,6 +40,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -78,6 +79,7 @@ public class Term extends Activity {
     private final static int PASTE_ID = 2;
 
     private boolean mAlreadyStarted = false;
+    private boolean mStopServiceOnFinish = false;
 
     private Intent TSIntent;
 
@@ -87,6 +89,8 @@ public class Term extends Activity {
 
     private PowerManager.WakeLock mWakeLock;
     private WifiManager.WifiLock mWifiLock;
+
+    private boolean mBackKeyPressed;
 
     private TermService mTermService;
     private ServiceConnection mTSConnection = new ServiceConnection() {
@@ -150,7 +154,9 @@ public class Term extends Activity {
         super.onDestroy();
         mViewFlipper.removeAllViews();
         unbindService(mTSConnection);
-        stopService(TSIntent);
+        if (mStopServiceOnFinish) {
+            stopService(TSIntent);
+        }
         mTermService = null;
         mTSConnection = null;
         if (mWakeLock.isHeld()) {
@@ -359,6 +365,7 @@ public class Term extends Activity {
         session.finish();
         mViewFlipper.removeView(view);
         if (mTermSessions.size() == 0) {
+            mStopServiceOnFinish = true;
             finish();
         } else {
             mViewFlipper.showNext();
@@ -380,6 +387,7 @@ public class Term extends Activity {
             } else {
                 // Close the activity if user closed all sessions
                 if (mTermSessions.size() == 0) {
+                    mStopServiceOnFinish = true;
                     finish();
                 }
             }
@@ -433,6 +441,50 @@ public class Term extends Activity {
             return super.onContextItemSelected(item);
           }
         }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        /* The pre-Eclair default implementation of onKeyDown() would prevent
+           our handling of the Back key in onKeyUp() from taking effect, so
+           ignore it here */
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            /* Android pre-Eclair has no key event tracking, and a back key
+               down event delivered to an activity above us in the back stack
+               could be succeeded by a back key up event to us, so we need to
+               keep track of our own back key presses */
+            mBackKeyPressed = true;
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+        case KeyEvent.KEYCODE_BACK:
+            if (!mBackKeyPressed) {
+                /* This key up event might correspond to a key down delivered
+                   to another activity -- ignore */
+                return false;
+            }
+            mBackKeyPressed = false;
+            switch (mSettings.getBackKeyAction()) {
+            case TermSettings.BACK_KEY_STOPS_SERVICE:
+                mStopServiceOnFinish = true;
+            case TermSettings.BACK_KEY_CLOSES_ACTIVITY:
+                finish();
+                return true;
+            case TermSettings.BACK_KEY_CLOSES_WINDOW:
+                doCloseWindow();
+                return true;
+            default:
+                return false;
+            }
+        default:
+            return super.onKeyUp(keyCode, event);
+        }
+    }
 
     private boolean canPaste() {
         ClipboardManager clip = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);

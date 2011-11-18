@@ -812,7 +812,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             return true;
         } else if (isSystemKey(keyCode, event)) {
             // Don't intercept the system keys
-            return super.onKeyDown(keyCode, event);
+            if (keyCode != KeyEvent.KEYCODE_BACK || mSettings.getBackKeyAction() != TermSettings.BACK_KEY_SENDS_ESC) {
+                return super.onKeyDown(keyCode, event);
+            }
         }
 
         // Translate the keyCode into an ASCII character.
@@ -836,7 +838,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             return true;
         } else if (isSystemKey(keyCode, event)) {
             // Don't intercept the system keys
-            return super.onKeyUp(keyCode, event);
+            if (keyCode != KeyEvent.KEYCODE_BACK || mSettings.getBackKeyAction() != TermSettings.BACK_KEY_SENDS_ESC) {
+                return super.onKeyUp(keyCode, event);
+            }
         }
 
         mKeyListener.keyUp(keyCode);
@@ -1953,6 +1957,10 @@ class TermKeyListener {
             if (event.getRepeatCount() == 0) {
                 mCapsLock = !mCapsLock;
             }
+            break;
+
+        case KeyEvent.KEYCODE_BACK:
+            result = 27; // ESC
             break;
 
         default: {

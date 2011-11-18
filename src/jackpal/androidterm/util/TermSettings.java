@@ -36,6 +36,7 @@ public class TermSettings {
     private String mShell;
     private String mInitialCommand;
     private boolean mUTF8ByDefault = false;
+    private int mBackKeyAction = 0; // Default to closing activity
 
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String CURSORSTYLE_KEY = "cursorstyle";
@@ -48,6 +49,7 @@ public class TermSettings {
     private static final String SHELL_KEY = "shell";
     private static final String INITIALCOMMAND_KEY = "initialcommand";
     private static final String UTF8_KEY = "utf8_by_default";
+    private static final String BACKACTION_KEY = "backaction";
 
     public static final int WHITE = 0xffffffff;
     public static final int BLACK = 0xff000000;
@@ -85,6 +87,12 @@ public class TermSettings {
         KEYCODE_NONE
     };
 
+    public static final int BACK_KEY_STOPS_SERVICE = 0;
+    public static final int BACK_KEY_CLOSES_WINDOW = 1;
+    public static final int BACK_KEY_CLOSES_ACTIVITY = 2;
+    public static final int BACK_KEY_SENDS_ESC = 3;
+    private static final int BACK_KEY_MAX = 3;
+
     public TermSettings(SharedPreferences prefs) {
         readPrefs(prefs);
     }
@@ -104,6 +112,7 @@ public class TermSettings {
         mShell = readStringPref(SHELL_KEY, mShell);
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
         mUTF8ByDefault = readBooleanPref(UTF8_KEY, false);
+        mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 
@@ -177,5 +186,9 @@ public class TermSettings {
 
     public boolean defaultToUTF8Mode() {
         return mUTF8ByDefault;
+    }
+
+    public int getBackKeyAction() {
+        return mBackKeyAction;
     }
 }

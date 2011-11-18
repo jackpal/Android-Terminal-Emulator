@@ -85,6 +85,15 @@
             android:title="@string/keyboard_preferences">
 
         <ListPreference
+                android:key="backaction"
+                android:defaultValue="@string/default_value_backaction_preference"
+                android:title="@string/title_backaction_preference"
+                android:summary="@string/summary_backaction_preference"
+                android:entries="@array/entries_backaction_preference"
+                android:entryValues="@array/entryvalues_backaction_preference"
+                android:dialogTitle="@string/dialog_title_backaction_preference" />
+
+        <ListPreference
                 android:key="controlkey"
                 android:defaultValue="@string/default_value_controlkey_preference"
                 android:title="@string/title_controlkey_preference"
