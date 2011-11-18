@@ -264,6 +264,54 @@ public class TerminalEmulator {
     private boolean mAlternateCharSet;
 
     /**
+     * Special graphics character set
+     */
+    private static final char[] mSpecialGraphicsCharMap = new char[128];
+    static {
+        for (char i = 0; i < 128; ++i) {
+            mSpecialGraphicsCharMap[i] = i;
+        }
+        mSpecialGraphicsCharMap['_'] = ' ';	// Blank
+        mSpecialGraphicsCharMap['b'] = 0x2409;	// Tab
+        mSpecialGraphicsCharMap['c'] = 0x240C;	// Form feed
+        mSpecialGraphicsCharMap['d'] = 0x240D;	// Carriage return
+        mSpecialGraphicsCharMap['e'] = 0x240A;	// Line feed
+        mSpecialGraphicsCharMap['h'] = 0x2424;	// New line
+        mSpecialGraphicsCharMap['i'] = 0x240B;	// Vertical tab/"lantern"
+        mSpecialGraphicsCharMap['}'] = 0x00A3;	// Pound sterling symbol
+        mSpecialGraphicsCharMap['f'] = 0x00B0;	// Degree symbol
+        mSpecialGraphicsCharMap['`'] = 0x2B25;	// Diamond
+        mSpecialGraphicsCharMap['~'] = 0x2022;	// Bullet point
+        mSpecialGraphicsCharMap['y'] = 0x2264;	// Less-than-or-equals sign (<=)
+        mSpecialGraphicsCharMap['|'] = 0x2260;	// Not equals sign (!=)
+        mSpecialGraphicsCharMap['z'] = 0x2265;	// Greater-than-or-equals sign (>=)
+        mSpecialGraphicsCharMap['g'] = 0x00B1;	// Plus-or-minus sign (+/-)
+        mSpecialGraphicsCharMap['{'] = 0x03C0;	// Lowercase Greek letter pi
+        mSpecialGraphicsCharMap['.'] = 0x25BC;	// Down arrow
+        mSpecialGraphicsCharMap[','] = 0x25C0;	// Left arrow
+        mSpecialGraphicsCharMap['+'] = 0x25B6;	// Right arrow
+        mSpecialGraphicsCharMap['-'] = 0x25B2;	// Up arrow
+        mSpecialGraphicsCharMap['h'] = '#';	// Board of squares
+        mSpecialGraphicsCharMap['a'] = 0x2592;	// Checkerboard
+        mSpecialGraphicsCharMap['0'] = 0x2588;	// Solid block
+        mSpecialGraphicsCharMap['q'] = 0x2500;	// Horizontal line (box drawing)
+        mSpecialGraphicsCharMap['x'] = 0x2502;	// Vertical line (box drawing)
+        mSpecialGraphicsCharMap['m'] = 0x2514;	// Lower left hand corner (box drawing)
+        mSpecialGraphicsCharMap['j'] = 0x2518;	// Lower right hand corner (box drawing)
+        mSpecialGraphicsCharMap['l'] = 0x250C;	// Upper left hand corner (box drawing)
+        mSpecialGraphicsCharMap['k'] = 0x2510;	// Upper right hand corner (box drawing)
+        mSpecialGraphicsCharMap['w'] = 0x252C;	// T pointing downwards (box drawing)
+        mSpecialGraphicsCharMap['u'] = 0x2524;	// T pointing leftwards (box drawing)
+        mSpecialGraphicsCharMap['t'] = 0x251C;	// T pointing rightwards (box drawing)
+        mSpecialGraphicsCharMap['v'] = 0x2534;	// T pointing upwards (box drawing)
+        mSpecialGraphicsCharMap['n'] = 0x253C;	// Large plus/lines crossing (box drawing)
+        mSpecialGraphicsCharMap['o'] = 0x23BA;	// Horizontal scanline 1
+        mSpecialGraphicsCharMap['p'] = 0x23BB;	// Horizontal scanline 3
+        mSpecialGraphicsCharMap['r'] = 0x23BC;	// Horizontal scanline 7
+        mSpecialGraphicsCharMap['s'] = 0x23BD;	// Horizontal scanline 9
+    }
+
+    /**
      * Used for moving selection up along with the scrolling text
      */
     private int mScrollCounter = 0;
@@ -1386,7 +1434,11 @@ public class TerminalEmulator {
     }
 
     private void emit(byte b) {
-        emit((int) b);
+        if (mAlternateCharSet && b < 128) {
+            emit((int) mSpecialGraphicsCharMap[b]);
+        } else {
+            emit((int) b);
+        }
     }
 
     /**
