@@ -188,7 +188,7 @@ public class Term extends Activity implements UpdateCallback {
             }
         }
 
-        return new TermSession(mSettings, initialCommand);
+        return new TermSession(mSettings, mTermService, initialCommand);
     }
 
     private EmulatorView createEmulatorView(TermSession session) {

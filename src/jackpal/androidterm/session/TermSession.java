@@ -33,6 +33,7 @@ import android.util.Log;
 
 import jackpal.androidterm.Exec;
 import jackpal.androidterm.TermDebug;
+import jackpal.androidterm.model.SessionFinishCallback;
 import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.util.ByteQueue;
 import jackpal.androidterm.util.TermSettings;
@@ -45,6 +46,7 @@ import jackpal.androidterm.util.TermSettings;
 public class TermSession {
     private TermSettings mSettings;
     private UpdateCallback mNotify;
+    private SessionFinishCallback mFinishCallback;
 
     private int mProcId;
     private FileDescriptor mTermFd;
@@ -72,6 +74,7 @@ public class TermSession {
     private static final int TRANSCRIPT_ROWS = 10000;
 
     private static final int NEW_INPUT = 1;
+    private static final int PROCESS_EXITED = 2;
 
     private boolean mIsRunning = false;
     private Handler mMsgHandler = new Handler() {
@@ -82,12 +85,15 @@ public class TermSession {
             }
             if (msg.what == NEW_INPUT) {
                 readFromProcess();
+            } else if (msg.what == PROCESS_EXITED) {
+                onProcessExit((Integer) msg.obj);
             }
         }
     };
 
-    public TermSession(TermSettings settings, String initialCommand) {
+    public TermSession(TermSettings settings, SessionFinishCallback finishCallback, String initialCommand) {
         mSettings = settings;
+        mFinishCallback = finishCallback;
 
         int[] processId = new int[1];
 
@@ -107,7 +113,7 @@ public class TermSession {
                 Log.i(TermDebug.LOG_TAG, "waiting for: " + mProcId);
                 int result = Exec.waitFor(mProcId);
                 Log.i(TermDebug.LOG_TAG, "Subprocess exited: " + result);
-                mMsgHandler.sendEmptyMessage(result);
+                mMsgHandler.sendMessage(mMsgHandler.obtainMessage(PROCESS_EXITED, result));
              }
         };
         watcher.setName("Process watcher");
@@ -303,6 +309,15 @@ public class TermSession {
 
     public void reset() {
         mEmulator.reset();
+    }
+
+    private void onProcessExit(int result) {
+        if (mSettings.closeWindowOnProcessExit()) {
+            if (mFinishCallback != null) {
+                mFinishCallback.onSessionFinish(this);
+            }
+            finish();
+        }
     }
 
     public void finish() {

@@ -96,6 +96,9 @@
    <string name="summary_initialcommand_preference">Sent to the shell when it starts.</string>
    <string name="dialog_title_initialcommand_preference">Initial Command</string>
 
+   <string name="title_close_window_on_process_exit_preference">Close window on exit</string>
+   <string name="summary_close_window_on_process_exit_preference">Whether a window should close when its shell exits.</string>
+
    <!-- Don't localize these default values -->
    <string name="default_value_statusbar_preference">0</string>
    <string name="default_value_cursorstyle_preference">0</string>

@@ -137,5 +137,10 @@
             android:title="@string/title_initialcommand_preference"
             android:summary="@string/summary_initialcommand_preference"
             android:dialogTitle="@string/dialog_title_initialcommand_preference" />
+    <CheckBoxPreference
+            android:key="close_window_on_process_exit"
+            android:defaultValue="false"
+            android:title="@string/title_close_window_on_process_exit_preference"
+            android:summary="@string/summary_close_window_on_process_exit_preference" />
     </PreferenceCategory>
 </PreferenceScreen>
