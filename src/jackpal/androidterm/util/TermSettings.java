@@ -37,6 +37,7 @@ public class TermSettings {
     private String mInitialCommand;
     private boolean mUTF8ByDefault = false;
     private int mBackKeyAction = 0; // Default to closing activity
+    private String mTermType;
     private boolean mCloseOnExit = false;
 
     private static final String STATUSBAR_KEY = "statusbar";
@@ -51,6 +52,7 @@ public class TermSettings {
     private static final String INITIALCOMMAND_KEY = "initialcommand";
     private static final String UTF8_KEY = "utf8_by_default";
     private static final String BACKACTION_KEY = "backaction";
+    private static final String TERMTYPE_KEY = "termtype";
     private static final String CLOSEONEXIT_KEY = "close_window_on_process_exit";
 
     public static final int WHITE = 0xffffffff;
@@ -115,6 +117,7 @@ public class TermSettings {
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
         mUTF8ByDefault = readBooleanPref(UTF8_KEY, false);
         mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
+        mTermType = readStringPref(TERMTYPE_KEY, mTermType);
         mCloseOnExit = readBooleanPref(CLOSEONEXIT_KEY, false);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
@@ -193,6 +196,10 @@ public class TermSettings {
 
     public int getBackKeyAction() {
         return mBackKeyAction;
+    }
+
+    public String getTermType() {
+        return mTermType;
     }
 
     public boolean closeWindowOnProcessExit() {

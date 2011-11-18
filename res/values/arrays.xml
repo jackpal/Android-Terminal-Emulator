@@ -192,4 +192,11 @@
         <item>Camera</item>
         <item>None</item>
     </string-array>
+
+    <!-- These are values of TERM - do not localize -->
+    <string-array name="entries_termtype_preference">
+        <item>vt100</item>
+        <item>screen</item>
+        <item>linux</item>
+    </string-array>
 </resources>

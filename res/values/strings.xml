@@ -98,6 +98,10 @@
    <string name="summary_initialcommand_preference">Sent to the shell when it starts.</string>
    <string name="dialog_title_initialcommand_preference">Initial Command</string>
 
+   <string name="title_termtype_preference">Terminal type</string>
+   <string name="summary_termtype_preference">What terminal type to report to the shell.</string>
+   <string name="dialog_title_termtype_preference">Terminal type</string>
+
    <string name="title_close_window_on_process_exit_preference">Close window on exit</string>
    <string name="summary_close_window_on_process_exit_preference">Whether a window should close when its shell exits.</string>
 
@@ -113,6 +117,7 @@
    <string name="default_value_ime_preference">0</string>
    <string name="default_value_shell_preference">/system/bin/sh -</string>
    <string name="default_value_initialcommand_preference">export PATH=/data/local/bin:$PATH</string>
+   <string name="default_value_termtype_preference">vt100</string>
    
    <string name="control_key_dialog_title">Control and Function Keys</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the

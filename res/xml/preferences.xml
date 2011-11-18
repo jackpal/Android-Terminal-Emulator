@@ -137,6 +137,14 @@
             android:title="@string/title_initialcommand_preference"
             android:summary="@string/summary_initialcommand_preference"
             android:dialogTitle="@string/dialog_title_initialcommand_preference" />
+    <ListPreference
+            android:key="termtype"
+            android:defaultValue="@string/default_value_termtype_preference"
+            android:title="@string/title_termtype_preference"
+            android:summary="@string/summary_termtype_preference"
+            android:entries="@array/entries_termtype_preference"
+            android:entryValues="@array/entries_termtype_preference"
+            android:dialogTitle="@string/dialog_title_termtype_preference" />
     <CheckBoxPreference
             android:key="close_window_on_process_exit"
             android:defaultValue="false"
