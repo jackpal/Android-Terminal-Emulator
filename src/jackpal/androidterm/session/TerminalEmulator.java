@@ -636,6 +636,15 @@ public class TerminalEmulator {
         return mColumns - 1;
     }
 
+    private int prevTabStop(int cursorCol) {
+        for (int i = cursorCol - 1; i >= 0; i--) {
+            if (mTabStop[i]) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
     private void doEscPercent(byte b) {
         switch (b) {
         case '@': // Esc % @ -- return to ISO 2022 mode
@@ -964,6 +973,14 @@ public class TerminalEmulator {
             unimplementedSequence(b);
             break;
 
+        case 'X': // Erase characters
+            blockClear(mCursorCol, mCursorRow, getArg0(0));
+            break;
+
+        case 'Z': // Back tab
+            setCursorCol(prevTabStop(mCursorCol));
+            break;
+
         case '?': // Esc [ ? -- start of a private mode set
             continueSequence(ESC_LEFT_SQUARE_BRACKET_QUESTION_MARK);
             break;
@@ -1061,12 +1078,20 @@ public class TerminalEmulator {
                 mBackColor = 0;
             } else if (code == 1) { // bold
                 mForeColor |= 0x8;
+            } else if (code == 3) { // italics, but rarely used as such; "standout" (inverse colors) with TERM=screen
+                mInverseColors = true;
             } else if (code == 4) { // underscore
                 mBackColor |= 0x8;
             } else if (code == 7) { // inverse
                 mInverseColors = true;
+            } else if (code == 10) { // exit alt charset (TERM=linux)
+                setAltCharSet(false);
+            } else if (code == 11) { // enter alt charset (TERM=linux)
+                setAltCharSet(true);
             } else if (code == 22) { // Normal color or intensity, neither bright, bold nor faint
                 mForeColor &= 0x7;
+            } else if (code == 23) { // not italic, but rarely used as such; clears standout with TERM=screen
+                mInverseColors = false;
             } else if (code == 24) { // underline: none
                 mBackColor &= 0x7;
             } else if (code == 27) { // image: positive
