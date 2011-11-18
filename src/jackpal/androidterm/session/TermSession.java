@@ -202,17 +202,10 @@ public class TermSession {
         if (shell == null || shell.equals("")) {
             shell = DEFAULT_SHELL;
         }
-        ArrayList<String> args = parse(shell);
-        String arg0 = args.get(0);
-        String arg1 = null;
-        String arg2 = null;
-        if (args.size() >= 2) {
-            arg1 = args.get(1);
-        }
-        if (args.size() >= 3) {
-            arg2 = args.get(2);
-        }
-        mTermFd = Exec.createSubprocess(arg0, arg1, arg2, processId);
+        ArrayList<String> argList = parse(shell);
+        String arg0 = argList.get(0);
+        String[] args = argList.toArray(new String[1]);
+        mTermFd = Exec.createSubprocess(arg0, args, null, processId);
     }
 
     private ArrayList<String> parse(String cmd) {

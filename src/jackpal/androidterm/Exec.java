@@ -30,7 +30,7 @@ import java.io.FileDescriptor;
 public class Exec
 {
     static {
-        System.loadLibrary("jackpal-androidterm2");
+        System.loadLibrary("jackpal-androidterm3");
     }
 
     /**
@@ -41,15 +41,16 @@ public class Exec
      * file descriptor.
      *
      * @param cmd The command to execute
-     * @param arg0 The first argument to the command, may be null
-     * @param arg1 the second argument to the command, may be null
+     * @param args An array of arguments to the command
+     * @param envVars An array of strings of the form "VAR=value" to be added
+     * to the environment of the process
      * @param processId A one-element array to which the process ID of the
      * started process will be written.
      * @return the file descriptor of the started process.
      *
      */
     public static native FileDescriptor createSubprocess(
-        String cmd, String arg0, String arg1, int[] processId);
+        String cmd, String[] args, String[] envVars, int[] processId);
         
     /**
      * Set the widow size for a given pty. Allows programs

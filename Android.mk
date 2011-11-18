@@ -30,7 +30,7 @@ LOCAL_PACKAGE_NAME := AndroidTerm
 
 LOCAL_MODULE_TAGS := optional
 
-LOCAL_JNI_SHARED_LIBRARIES := libjackpal-androidterm2
+LOCAL_JNI_SHARED_LIBRARIES := libjackpal-androidterm3
 
 include $(BUILD_PACKAGE)
 

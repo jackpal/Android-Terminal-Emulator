@@ -72,6 +72,9 @@ public:
             free(mString);
         }
         mString = (char*) malloc(numChars + 1);
+        if (!mString) {
+            return;
+        }
         for (size_t i = 0; i < numChars; i++) {
             mString[i] = (char) o[i];
         }
@@ -85,8 +88,17 @@ private:
     char* mString;
 };
 
-static int create_subprocess(const char *cmd, const char *arg0, const char *arg1,
-    int* pProcessId)
+static int throwOutOfMemoryError(JNIEnv *env, const char *message)
+{
+    jclass exClass;
+    const char *className = "java/lang/OutOfMemoryError";
+
+    exClass = env->FindClass(className);
+    return env->ThrowNew(exClass, message);
+}
+
+static int create_subprocess(const char *cmd,
+    char *const argv[], char *const envp[], int* pProcessId)
 {
     char *devname;
     int ptm;
@@ -125,7 +137,13 @@ static int create_subprocess(const char *cmd, const char *arg0, const char *arg1
         dup2(pts, 1);
         dup2(pts, 2);
 
-        execl(cmd, cmd, arg0, arg1, NULL);
+        if (envp) {
+            for (; *envp; ++envp) {
+                putenv(*envp);
+            }
+        }
+
+        execv(cmd, argv);
         exit(-1);
     } else {
         *pProcessId = (int) pid;
@@ -135,7 +153,8 @@ static int create_subprocess(const char *cmd, const char *arg0, const char *arg1
 
 
 static jobject android_os_Exec_createSubProcess(JNIEnv *env, jobject clazz,
-    jstring cmd, jstring arg0, jstring arg1, jintArray processIdArray)
+    jstring cmd, jobjectArray args, jobjectArray envVars,
+    jintArray processIdArray)
 {
     const jchar* str = cmd ? env->GetStringCritical(cmd, 0) : 0;
     String8 cmd_8;
@@ -144,26 +163,66 @@ static jobject android_os_Exec_createSubProcess(JNIEnv *env, jobject clazz,
         env->ReleaseStringCritical(cmd, str);
     }
 
-    str = arg0 ? env->GetStringCritical(arg0, 0) : 0;
-    const char* arg0Str = 0;
-    String8 arg0_8;
-    if (str) {
-        arg0_8.set(str, env->GetStringLength(arg0));
-        env->ReleaseStringCritical(arg0, str);
-        arg0Str = arg0_8.string();
+    jsize size = args ? env->GetArrayLength(args) : 0;
+    char **argv = NULL;
+    String8 tmp_8;
+    if (size > 0) {
+        argv = (char **)malloc((size+1)*sizeof(char *));
+        if (!argv) {
+            throwOutOfMemoryError(env, "Couldn't allocate argv array");
+            return NULL;
+        }
+        for (int i = 0; i < size; ++i) {
+            jstring arg = reinterpret_cast<jstring>(env->GetObjectArrayElement(args, i));
+            str = env->GetStringCritical(arg, 0);
+            if (!str) {
+                throwOutOfMemoryError(env, "Couldn't get argument from array");
+                return NULL;
+            }
+            tmp_8.set(str, env->GetStringLength(arg));
+            env->ReleaseStringCritical(arg, str);
+            argv[i] = strdup(tmp_8.string());
+        }
+        argv[size] = NULL;
     }
 
-    str = arg1 ? env->GetStringCritical(arg1, 0) : 0;
-    const char* arg1Str = 0;
-    String8 arg1_8;
-    if (str) {
-        arg1_8.set(str, env->GetStringLength(arg1));
-        env->ReleaseStringCritical(arg1, str);
-        arg1Str = arg1_8.string();
+    size = envVars ? env->GetArrayLength(envVars) : 0;
+    char **envp = NULL;
+    if (size > 0) {
+        envp = (char **)malloc((size+1)*sizeof(char *));
+        if (!envp) {
+            throwOutOfMemoryError(env, "Couldn't allocate envp array");
+            return NULL;
+        }
+        for (int i = 0; i < size; ++i) {
+            jstring var = reinterpret_cast<jstring>(env->GetObjectArrayElement(envVars, i));
+            str = env->GetStringCritical(var, 0);
+            if (!str) {
+                throwOutOfMemoryError(env, "Couldn't get env var from array");
+                return NULL;
+            }
+            tmp_8.set(str, env->GetStringLength(var));
+            env->ReleaseStringCritical(var, str);
+            envp[i] = strdup(tmp_8.string());
+        }
+        envp[size] = NULL;
     }
 
     int procId;
-    int ptm = create_subprocess(cmd_8.string(), arg0Str, arg1Str, &procId);
+    int ptm = create_subprocess(cmd_8.string(), argv, envp, &procId);
+
+    if (argv) {
+        for (char **tmp = argv; *tmp; ++tmp) {
+            free(*tmp);
+        }
+        free(argv);
+    }
+    if (envp) {
+        for (char **tmp = envp; *tmp; ++tmp) {
+            free(*tmp);
+        }
+        free(envp);
+    }
 
     if (processIdArray) {
         int procIdLen = env->GetArrayLength(processIdArray);
@@ -278,7 +337,7 @@ static int register_FileDescriptor(JNIEnv *env)
 static const char *classPathName = "jackpal/androidterm/Exec";
 
 static JNINativeMethod method_table[] = {
-    { "createSubprocess", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[I)Ljava/io/FileDescriptor;",
+    { "createSubprocess", "(Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[I)Ljava/io/FileDescriptor;",
         (void*) android_os_Exec_createSubProcess },
     { "setPtyWindowSize", "(Ljava/io/FileDescriptor;IIII)V",
         (void*) android_os_Exec_setPtyWindowSize},
