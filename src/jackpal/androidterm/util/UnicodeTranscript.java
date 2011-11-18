@@ -545,17 +545,11 @@ public class UnicodeTranscript {
             return 0;
         }
 
-        if (PostAndroid3Utils.SDK < 8) {
-            /* No East Asian wide char support when running on Android < 2.2,
-               because getEastAsianWidth() was introduced in API 8 */
-            return 1;
-        }
-
         if (Character.charCount(codePoint) == 1) {
             // Android's getEastAsianWidth() only works for BMP characters
-            switch (PostAndroid3Utils.AndroidCharacterComp.getEastAsianWidth((char) codePoint)) {
-            case PostAndroid3Utils.AndroidCharacterComp.EAST_ASIAN_WIDTH_FULL_WIDTH:
-            case PostAndroid3Utils.AndroidCharacterComp.EAST_ASIAN_WIDTH_WIDE:
+            switch (AndroidCompat.AndroidCharacterComp.getEastAsianWidth((char) codePoint)) {
+            case AndroidCompat.AndroidCharacterComp.EAST_ASIAN_WIDTH_FULL_WIDTH:
+            case AndroidCompat.AndroidCharacterComp.EAST_ASIAN_WIDTH_WIDE:
                 return 2;
             }
         } else {
