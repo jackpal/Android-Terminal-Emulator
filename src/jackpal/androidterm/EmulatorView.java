@@ -258,6 +258,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         setCursorStyle(mSettings.getCursorStyle(), mSettings.getCursorBlink());
         setUseCookedIME(mSettings.useCookedIME());
         setColors();
+        mKeyListener.setBackKeyCharacter(settings.getBackKeyCharacter());
     }
 
     public void setColors() {
@@ -814,8 +815,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         } else if (handleFnKey(keyCode, true)) {
             return true;
         } else if (isSystemKey(keyCode, event)) {
-            // Don't intercept the system keys
-            if (keyCode != KeyEvent.KEYCODE_BACK || mSettings.getBackKeyAction() != TermSettings.BACK_KEY_SENDS_ESC) {
+            if (! isInterceptedSystemKey(keyCode) ) {
+                // Don't intercept the system keys
                 return super.onKeyDown(keyCode, event);
             }
         }
@@ -830,6 +831,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return true;
     }
 
+    /** Do we want to intercept this system key? */
+    private boolean isInterceptedSystemKey(int keyCode) {
+        return keyCode == KeyEvent.KEYCODE_BACK && mSettings.backKeySendsCharacter();
+    }
+
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (LOG_KEY_EVENTS) {
@@ -841,7 +847,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             return true;
         } else if (isSystemKey(keyCode, event)) {
             // Don't intercept the system keys
-            if (keyCode != KeyEvent.KEYCODE_BACK || mSettings.getBackKeyAction() != TermSettings.BACK_KEY_SENDS_ESC) {
+            if ( ! isInterceptedSystemKey(keyCode) ) {
                 return super.onKeyUp(keyCode, event);
             }
         }
@@ -1830,6 +1836,8 @@ class TermKeyListener {
 
     private TermSession mTermSession;
 
+    private int mBackKeyCode;
+
     // Map keycodes out of (above) the Unicode code point space.
     static public final int KEYCODE_OFFSET = 0xA00000;
 
@@ -1840,6 +1848,10 @@ class TermKeyListener {
     public TermKeyListener(TermSession termSession) {
         mTermSession = termSession;
         initKeyCodes();
+    }
+
+    public void setBackKeyCharacter(int code) {
+        mBackKeyCode = code;
     }
 
     public void handleControlKey(boolean down) {
@@ -1968,7 +1980,7 @@ class TermKeyListener {
             break;
 
         case KeyEvent.KEYCODE_BACK:
-            result = 27; // ESC
+            result = mBackKeyCode;
             break;
 
         default: {

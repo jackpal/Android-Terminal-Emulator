@@ -102,6 +102,7 @@
         <item>Closes this terminal window only</item>
         <item>Closes activity, leaving sessions running</item>
         <item>Sends ESC to terminal</item>
+        <item>Sends TAB to terminal</item>
     </string-array>
 
     <!-- Do not localize entryvalues -->
@@ -110,6 +111,7 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
@@ -168,7 +170,7 @@
         <item>0</item>
         <item>1</item>
     </string-array>
-    
+
     <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
     <string-array name="control_keys_short_names">
         <item>Ball</item>
@@ -180,7 +182,7 @@
         <item>Camera</item>
         <item>None</item>
     </string-array>
-    
+
     <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
     <string-array name="fn_keys_short_names">
         <item>Ball</item>

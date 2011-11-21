@@ -36,7 +36,7 @@ public class TermSettings {
     private String mShell;
     private String mInitialCommand;
     private boolean mUTF8ByDefault = false;
-    private int mBackKeyAction = 0; // Default to closing activity
+    private int mBackKeyAction = BACK_KEY_SENDS_ESC;
     private String mTermType;
     private boolean mCloseOnExit = false;
 
@@ -95,7 +95,8 @@ public class TermSettings {
     public static final int BACK_KEY_CLOSES_WINDOW = 1;
     public static final int BACK_KEY_CLOSES_ACTIVITY = 2;
     public static final int BACK_KEY_SENDS_ESC = 3;
-    private static final int BACK_KEY_MAX = 3;
+    public static final int BACK_KEY_SENDS_TAB = 4;
+    private static final int BACK_KEY_MAX = 4;
 
     public TermSettings(SharedPreferences prefs) {
         readPrefs(prefs);
@@ -196,6 +197,17 @@ public class TermSettings {
 
     public int getBackKeyAction() {
         return mBackKeyAction;
+    }
+
+    public boolean backKeySendsCharacter() {
+        return mBackKeyAction >= BACK_KEY_SENDS_ESC;
+    }
+    public int getBackKeyCharacter() {
+        switch (mBackKeyAction) {
+            case BACK_KEY_SENDS_ESC: return 27;
+            case BACK_KEY_SENDS_TAB: return 9;
+            default: return 0;
+        }
     }
 
     public String getTermType() {
