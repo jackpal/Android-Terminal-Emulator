@@ -1149,8 +1149,8 @@ public class TerminalEmulator {
             } else if (code >= 30 && code <= 37) { // foreground color
                 mForeColor = (mForeColor & 0x8) | (code - 30);
             } else if (code == 39) { // set default text color
-                mForeColor = mDefaultForeColor;
-                mBackColor = mBackColor & 0x7;
+                mForeColor = mDefaultForeColor | (mForeColor & 0x8); // preserve bold
+                mBackColor = mBackColor & 0x7; // no underline
             } else if (code >= 40 && code <= 47) { // background color
                 mBackColor = (mBackColor & 0x8) | (code - 40);
             } else if (code == 49) { // set default background color
