@@ -148,6 +148,7 @@ public class Term extends Activity implements UpdateCallback {
             }
 
             updatePrefs();
+            mViewFlipper.resumeCurrentView();
         }
     }
 
