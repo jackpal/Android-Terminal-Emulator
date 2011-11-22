@@ -183,9 +183,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     /**
      * True if we must poll to discover if the view has changed size.
      * This is the only known way to detect the view changing size due to
-     * the IME being shown or hidden in Android 1.5 (API level 3) or 1.6 (API level 4).
+     * the IME being shown or hidden in API level <= 7.
      */
-    private boolean mbPollForWindowSizeChange = AndroidCompat.SDK <= 4;
+    private boolean mbPollForWindowSizeChange = AndroidCompat.SDK <= 7;
 
     private Runnable mCheckSize = mbPollForWindowSizeChange
         ? new Runnable() {
