@@ -51,6 +51,7 @@ import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.session.TerminalEmulator;
 import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.session.TranscriptScreen;
+import jackpal.androidterm.util.AndroidCompat;
 import jackpal.androidterm.util.TermSettings;
 
 /**
@@ -175,15 +176,20 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mSelY2 = -1;
 
     /**
-     * Used to poll if the view has changed size. Wish there was a better way to do this.
+     * True if we must poll to discover if the view has changed size.
+     * This is the only known way to detect the view changing size due to
+     * the IME being shown or hidden in Android 1.5 (API level 3) or 1.6 (API level 4).
      */
-    private Runnable mCheckSize = new Runnable() {
+    private boolean mbPollForWindowSizeChange = AndroidCompat.SDK <= 4;
 
-        public void run() {
-            updateSize(false);
-            mHandler.postDelayed(this, SCREEN_CHECK_PERIOD);
+    private Runnable mCheckSize = mbPollForWindowSizeChange
+        ? new Runnable() {
+            public void run() {
+                updateSize(false);
+                mHandler.postDelayed(this, SCREEN_CHECK_PERIOD);
+            }
         }
-    };
+        : null;
 
     private Runnable mBlinkCursor = new Runnable() {
         public void run() {
@@ -239,14 +245,18 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public void onResume() {
         updateSize(false);
-        mHandler.postDelayed(mCheckSize, SCREEN_CHECK_PERIOD);
+        if (mbPollForWindowSizeChange) {
+            mHandler.postDelayed(mCheckSize, SCREEN_CHECK_PERIOD);
+        }
         if (mCursorBlink != 0) {
             mHandler.postDelayed(mBlinkCursor, CURSOR_BLINK_PERIOD);
         }
     }
 
     public void onPause() {
-        mHandler.removeCallbacks(mCheckSize);
+        if (mbPollForWindowSizeChange) {
+            mHandler.removeCallbacks(mCheckSize);
+        }
         if (mCursorBlink != 0) {
             mHandler.removeCallbacks(mBlinkCursor);
         }
@@ -935,6 +945,18 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 mVisibleHeight = h;
                 updateSize(mVisibleWidth, mVisibleHeight);
             }
+        }
+    }
+
+    /**
+     * Called when the view changes size.
+     * (Note: Not always called on Android 1.5 or Android 1.6)
+     */
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (this == mViewFlipper.getCurrentView()) {
+            updateSize(false);
         }
     }
 
