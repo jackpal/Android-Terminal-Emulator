@@ -38,7 +38,7 @@ public class TermSettings {
     private boolean mUTF8ByDefault = false;
     private int mBackKeyAction = BACK_KEY_SENDS_ESC;
     private String mTermType;
-    private boolean mCloseOnExit = false;
+    private boolean mCloseOnExit = true;
 
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String CURSORSTYLE_KEY = "cursorstyle";
@@ -119,7 +119,7 @@ public class TermSettings {
         mUTF8ByDefault = readBooleanPref(UTF8_KEY, false);
         mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
         mTermType = readStringPref(TERMTYPE_KEY, mTermType);
-        mCloseOnExit = readBooleanPref(CLOSEONEXIT_KEY, false);
+        mCloseOnExit = readBooleanPref(CLOSEONEXIT_KEY, mCloseOnExit);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 

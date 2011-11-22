@@ -72,7 +72,7 @@ public class TermSession {
     private static final String DEFAULT_SHELL = "/system/bin/sh -";
     private static final String DEFAULT_INITIAL_COMMAND =
         "export PATH=/data/local/bin:$PATH";
-    private static final String DEFAULT_TERMTYPE = "vt100";
+    private static final String DEFAULT_TERMTYPE = "screen";
 
     // Number of rows in the transcript
     private static final int TRANSCRIPT_ROWS = 10000;
