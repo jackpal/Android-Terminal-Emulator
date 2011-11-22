@@ -60,7 +60,7 @@ public class WindowList extends ListActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             View child = inflater.inflate(R.layout.window_list_item, parent, false);
             TextView label = (TextView) child.findViewById(R.id.window_list_label);
-            label.setText("Window " + (position+1));
+            label.setText(getString(R.string.window_title, position + 1));
 
             View close = child.findViewById(R.id.window_list_close);
             final TermService service = mTermService;
