@@ -11,7 +11,7 @@
                 android:theme="@style/Theme"
                 android:launchMode="singleTask"
                 android:configChanges="keyboard|keyboardHidden|orientation"
-                android:windowSoftInputMode="adjustResize|stateVisible">
+                android:windowSoftInputMode="adjustResize|stateAlwaysVisible">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
