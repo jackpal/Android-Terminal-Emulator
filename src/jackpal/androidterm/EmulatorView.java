@@ -913,7 +913,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        boolean oldKnownSize = mKnownSize;
         if (!mKnownSize) {
             mKnownSize = true;
         }
@@ -937,6 +936,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public void updateSize(boolean force) {
         if (mKnownSize) {
             getWindowVisibleDisplayFrame(mVisibleRect);
+            // Work around bug in getWindowVisibleDisplayFrame
+            if (AndroidCompat.SDK < 10) {
+                if (!mSettings.showStatusBar()) {
+                    mVisibleRect.top = 0;
+                }
+            }
             int w = mVisibleRect.width();
             int h = mVisibleRect.height();
             // Log.w("Term", "(" + w + ", " + h + ")");
