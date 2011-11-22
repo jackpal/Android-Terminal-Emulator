@@ -25,6 +25,8 @@ import android.graphics.Canvas;
 public interface TextRenderer {
     float getCharacterWidth();
     int getCharacterHeight();
+    /** @return pixels above top row of text to avoid looking cramped. */
+    int getTopMargin();
     void drawTextRun(Canvas canvas, float x, float y,
             int lineOffset, int runWidth, char[] text,
             int index, int count, boolean cursor, int foreColor, int backColor);

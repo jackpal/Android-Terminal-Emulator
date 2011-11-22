@@ -94,6 +94,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mCharacterHeight;
 
     /**
+     * Top-of-screen margin
+     */
+    private int mTopOfScreenMargin;
+
+    /**
      * Used to render text
      */
     private TextRenderer mTextRenderer;
@@ -921,9 +926,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private void updateSize(int w, int h) {
         mColumns = Math.max(1, (int) (((float) w) / mCharacterWidth));
-        mRows = Math.max(1, h / mCharacterHeight);
         mVisibleColumns = (int) (((float) mVisibleWidth) / mCharacterWidth);
 
+        mTopOfScreenMargin = mTextRenderer.getTopMargin();
+        mRows = Math.max(1, (h - mTopOfScreenMargin) / mCharacterHeight);
         mTermSession.updateSize(mColumns, mRows);
 
         // Reset our paging:
@@ -970,9 +976,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         updateSize(false);
         int w = getWidth();
         int h = getHeight();
+
         canvas.drawRect(0, 0, w, h, mBackgroundPaint);
         float x = -mLeftColumn * mCharacterWidth;
-        float y = mCharacterHeight;
+        float y = mCharacterHeight + mTopOfScreenMargin;
         int endLine = mTopRow + mRows;
         int cx = mEmulator.getCursorCol();
         int cy = mEmulator.getCursorRow();
@@ -1097,6 +1104,10 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
         return kCharacterHeight;
     }
 
+    public int getTopMargin() {
+        return 0;
+    }
+
     public void drawTextRun(Canvas canvas, float x, float y,
             int lineOffset, int runWidth, char[] text, int index, int count,
             boolean cursor, int foreColor, int backColor) {
@@ -1174,8 +1185,8 @@ class PaintRenderer extends BaseTextRenderer {
             mTextPaint.setColor(mBackPaint[backColor & 0x7]);
         }
         float left = x + lineOffset * mCharWidth;
-        canvas.drawRect(left, y + mCharAscent,
-                left + runWidth * mCharWidth, y + mCharDescent,
+        canvas.drawRect(left, y + mCharAscent - mCharDescent,
+                left + runWidth * mCharWidth, y,
                 mTextPaint);
         boolean bold = ( foreColor & 0x8 ) != 0;
         boolean underline = (backColor & 0x8) != 0;
@@ -1186,7 +1197,7 @@ class PaintRenderer extends BaseTextRenderer {
             mTextPaint.setUnderlineText(true);
         }
         mTextPaint.setColor(mForePaint[foreColor]);
-        canvas.drawText(text, index, count, left, y, mTextPaint);
+        canvas.drawText(text, index, count, left, y - mCharDescent, mTextPaint);
         if (bold) {
             mTextPaint.setFakeBoldText(false);
         }
@@ -1201,6 +1212,10 @@ class PaintRenderer extends BaseTextRenderer {
 
     public float getCharacterWidth() {
         return mCharWidth;
+    }
+
+    public int getTopMargin() {
+        return mCharDescent;
     }
 
 
