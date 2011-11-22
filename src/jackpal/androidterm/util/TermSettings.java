@@ -36,7 +36,7 @@ public class TermSettings {
     private String mShell;
     private String mInitialCommand;
     private boolean mUTF8ByDefault = false;
-    private int mBackKeyAction = BACK_KEY_STOPS_SERVICE;
+    private int mBackKeyAction = BACK_KEY_CLOSES_ACTIVITY;
     private String mTermType;
     private boolean mCloseOnExit = true;
 
