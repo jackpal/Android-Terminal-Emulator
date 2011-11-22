@@ -318,6 +318,9 @@ public class TermSession {
 
     public void reset() {
         mEmulator.reset();
+        if (mNotify != null) {
+            mNotify.onUpdate();
+        }
     }
 
     /* XXX We should really get this ourselves from the resource bundle, but
