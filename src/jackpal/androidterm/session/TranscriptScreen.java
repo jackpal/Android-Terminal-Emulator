@@ -178,6 +178,10 @@ public class TranscriptScreen implements Screen {
         } catch (IllegalArgumentException e) {
             // Out-of-bounds rows are blank.
             return;
+        } catch (NullPointerException e) {
+            // Attempt to draw on a finished transcript
+            // XXX Figure out why this happens on Honeycomb
+            return;
         }
         int defaultForeColor = mData.getDefaultForeColor();
         int defaultBackColor = mData.getDefaultBackColor();
