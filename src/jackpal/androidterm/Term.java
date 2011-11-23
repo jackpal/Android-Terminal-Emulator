@@ -52,6 +52,7 @@ import android.widget.Toast;
 
 import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.session.TermSession;
+import jackpal.androidterm.util.AndroidCompat;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
@@ -454,7 +455,7 @@ public class Term extends Activity implements UpdateCallback {
         /* The pre-Eclair default implementation of onKeyDown() would prevent
            our handling of the Back key in onKeyUp() from taking effect, so
            ignore it here */
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (AndroidCompat.SDK < 5 && keyCode == KeyEvent.KEYCODE_BACK) {
             /* Android pre-Eclair has no key event tracking, and a back key
                down event delivered to an activity above us in the back stack
                could be succeeded by a back key up event to us, so we need to
@@ -470,12 +471,14 @@ public class Term extends Activity implements UpdateCallback {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
         case KeyEvent.KEYCODE_BACK:
-            if (!mBackKeyPressed) {
-                /* This key up event might correspond to a key down delivered
-                   to another activity -- ignore */
-                return false;
+            if (AndroidCompat.SDK < 5) {
+                if (!mBackKeyPressed) {
+                    /* This key up event might correspond to a key down
+                       delivered to another activity -- ignore */
+                    return false;
+                }
+                mBackKeyPressed = false;
             }
-            mBackKeyPressed = false;
             switch (mSettings.getBackKeyAction()) {
             case TermSettings.BACK_KEY_STOPS_SERVICE:
                 mStopServiceOnFinish = true;
