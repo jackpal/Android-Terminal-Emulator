@@ -74,7 +74,7 @@
    
    <string name="keyboard_preferences">Clavier</string>
    
-   <string name="title_backaction_preference">Comportement bouton retour</string>
+   <string name="title_backaction_preference">Bouton retour</string>
    <string name="summary_backaction_preference">Choisir l\'action du bouton retour quand il est cliqué</string>
    <string name="dialog_title_backaction_preference">Comportement bouton retour</string>
    
@@ -103,8 +103,8 @@
    <string name="summary_termtype_preference">Type de terminal à reporter au shell</string>
    <string name="dialog_title_termtype_preference">Type de Terminal</string>
    
-   <string name="title_close_window_on_process_exit_preference">Quitter avec \'exit\'</string>
-   <string name="summary_close_window_on_process_exit_preference">Quitter le terminal en exécutant la commande \'exit\'</string>
+   <string name="title_close_window_on_process_exit_preference">Quitter avec exit</string>
+   <string name="summary_close_window_on_process_exit_preference">Quitter le terminal en exécutant la commande exit</string>
    
    <string name="control_key_dialog_title">Touches Control et Fonction</string>
 </resources>
