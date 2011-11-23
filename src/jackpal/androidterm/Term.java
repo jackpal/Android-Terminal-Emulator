@@ -287,6 +287,13 @@ public class Term extends Activity implements UpdateCallback {
             mTermSessions.removeCallback(this);
         }
 
+        if (AndroidCompat.SDK < 5) {
+            /* If we lose focus between a back key down and a back key up,
+               we shouldn't respond to the next back key up event unless
+               we get another key down first */
+            mBackKeyPressed = false;
+        }
+
         /* Explicitly close the input method
            Otherwise, the soft keyboard could cover up whatever activity takes
            our place */
