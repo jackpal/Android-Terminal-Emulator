@@ -36,8 +36,8 @@
         android:title="@string/reset" />
     <item android:id="@+id/menu_send_email"
         android:title="@string/send_email" />
-    <item android:id="@+id/menu_toggle_wakelock" />
+    <item android:id="@+id/menu_toggle_wakelock"
         android:title="@string/enable_wakelock" />
-    <item android:id="@+id/menu_toggle_wifilock" />
+    <item android:id="@+id/menu_toggle_wifilock"
         android:title="@string/enable_wifilock" />
 </menu>
