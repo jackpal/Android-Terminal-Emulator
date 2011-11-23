@@ -87,18 +87,6 @@
    <string name="summary_initialcommand_preference">Bidali shell-era abiarazten denean.</string>
    <string name="dialog_title_initialcommand_preference">Hasierako Komandoa</string>
 
-   <!-- Don't localize these default values -->
-   <string name="default_value_statusbar_preference">0</string>
-   <string name="default_value_cursorstyle_preference">0</string>
-   <string name="default_value_cursorblink_preference">0</string>
-   <string name="default_value_fontsize_preference">10</string>
-   <string name="default_value_color_preference">2</string>
-   <string name="default_value_controlkey_preference">5</string>
-   <string name="default_value_fnkey_preference">4</string>
-   <string name="default_value_ime_preference">0</string>
-   <string name="default_value_shell_preference">/system/bin/sh -</string>
-   <string name="default_value_initialcommand_preference">export PATH=/data/local/bin:$PATH</string>
-   
    <string name="control_key_dialog_title">Kontrol and Funtzio Teklak</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
         actual control key key name. -->

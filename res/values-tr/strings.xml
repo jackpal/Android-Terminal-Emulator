@@ -70,15 +70,4 @@
    <string name="title_initialcommand_preference">Başlangıç komutu</string>
    <string name="summary_initialcommand_preference">Başlangıçta kabukta çalıştır.</string>
    <string name="dialog_title_initialcommand_preference">Başlangıç komutu</string>
-
-   <!-- Don't localize these default values -->
-   <string name="default_value_statusbar_preference">0</string>
-   <string name="default_value_cursorstyle_preference">0</string>
-   <string name="default_value_cursorblink_preference">0</string>
-   <string name="default_value_fontsize_preference">10</string>
-   <string name="default_value_color_preference">2</string>
-   <string name="default_value_controlkey_preference">0</string>
-   <string name="default_value_ime_preference">0</string>
-   <string name="default_value_shell_preference">/system/bin/sh -</string>
-   <string name="default_value_initialcommand_preference">export PATH=/data/local/bin:$PATH</string>
 </resources>

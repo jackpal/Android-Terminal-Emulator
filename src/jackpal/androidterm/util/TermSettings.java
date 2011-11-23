@@ -33,13 +33,13 @@ public class TermSettings {
     private int mCursorBlink;
     private int mFontSize;
     private int mColorId;
+    private boolean mUTF8ByDefault;
+    private int mBackKeyAction;
     private int mControlKeyId;
     private int mFnKeyId;
     private int mUseCookedIME;
     private String mShell;
     private String mInitialCommand;
-    private boolean mUTF8ByDefault;
-    private int mBackKeyAction;
     private String mTermType;
     private boolean mCloseOnExit;
 
@@ -48,13 +48,13 @@ public class TermSettings {
     private static final String CURSORBLINK_KEY = "cursorblink";
     private static final String FONTSIZE_KEY = "fontsize";
     private static final String COLOR_KEY = "color";
+    private static final String UTF8_KEY = "utf8_by_default";
+    private static final String BACKACTION_KEY = "backaction";
     private static final String CONTROLKEY_KEY = "controlkey";
     private static final String FNKEY_KEY = "fnkey";
     private static final String IME_KEY = "ime";
     private static final String SHELL_KEY = "shell";
     private static final String INITIALCOMMAND_KEY = "initialcommand";
-    private static final String UTF8_KEY = "utf8_by_default";
-    private static final String BACKACTION_KEY = "backaction";
     private static final String TERMTYPE_KEY = "termtype";
     private static final String CLOSEONEXIT_KEY = "close_window_on_process_exit";
 
@@ -130,6 +130,8 @@ public class TermSettings {
         // mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
         mFontSize = readIntPref(FONTSIZE_KEY, mFontSize, 20);
         mColorId = readIntPref(COLOR_KEY, mColorId, COLOR_SCHEMES.length - 1);
+        mUTF8ByDefault = readBooleanPref(UTF8_KEY, mUTF8ByDefault);
+        mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
         mControlKeyId = readIntPref(CONTROLKEY_KEY, mControlKeyId,
                 CONTROL_KEY_SCHEMES.length - 1);
         mFnKeyId = readIntPref(FNKEY_KEY, mFnKeyId,
@@ -137,8 +139,6 @@ public class TermSettings {
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
         mShell = readStringPref(SHELL_KEY, mShell);
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
-        mUTF8ByDefault = readBooleanPref(UTF8_KEY, mUTF8ByDefault);
-        mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
         mTermType = readStringPref(TERMTYPE_KEY, mTermType);
         mCloseOnExit = readBooleanPref(CLOSEONEXIT_KEY, mCloseOnExit);
         mPrefs = null;  // we leak a Context if we hold on to this
@@ -184,6 +184,26 @@ public class TermSettings {
         return COLOR_SCHEMES[mColorId];
     }
 
+    public boolean defaultToUTF8Mode() {
+        return mUTF8ByDefault;
+    }
+
+    public int getBackKeyAction() {
+        return mBackKeyAction;
+    }
+
+    public boolean backKeySendsCharacter() {
+        return mBackKeyAction >= BACK_KEY_SENDS_ESC;
+    }
+
+    public int getBackKeyCharacter() {
+        switch (mBackKeyAction) {
+            case BACK_KEY_SENDS_ESC: return 27;
+            case BACK_KEY_SENDS_TAB: return 9;
+            default: return 0;
+        }
+    }
+
     public int getControlKeyId() {
         return mControlKeyId;
     }
@@ -210,25 +230,6 @@ public class TermSettings {
 
     public String getInitialCommand() {
         return mInitialCommand;
-    }
-
-    public boolean defaultToUTF8Mode() {
-        return mUTF8ByDefault;
-    }
-
-    public int getBackKeyAction() {
-        return mBackKeyAction;
-    }
-
-    public boolean backKeySendsCharacter() {
-        return mBackKeyAction >= BACK_KEY_SENDS_ESC;
-    }
-    public int getBackKeyCharacter() {
-        switch (mBackKeyAction) {
-            case BACK_KEY_SENDS_ESC: return 27;
-            case BACK_KEY_SENDS_TAB: return 9;
-            default: return 0;
-        }
     }
 
     public String getTermType() {
