@@ -18,7 +18,7 @@
    <!-- == Interface == -->
    <string name="application_terminal">Terminal Emulator</string>
    <string name="preferences">Préférences</string>
-   <string name="new_window">Nlle fenêtre</string>
+   <string name="new_window">Nouvelle fenêtre</string>
    <string name="close_window">Fermer fenêtre</string>
    <string name="window_list">Fenêtre</string>
    <string name="prev_window">Fenêtre Prec.</string>
@@ -27,72 +27,84 @@
    <string name="send_email">Envoyer par e-mail</string>
    <string name="special_keys">Touches spéciales</string>
    <string name="toggle_soft_keyboard">Afficher/Masquer Clavier</string>
-
-   <!--Finir la traduction des 4 lignes suivantes -->
+   
    <string name="enable_wakelock">Activer WakeLock</string>
    <string name="disable_wakelock">Désactiver WakeLock</string>
    <string name="enable_wifilock">Activer WifiLock</string>
    <string name="disable_wifilock">Désactiver WifiLock</string>
-
+   
    <string name="edit_text">Modifier le texte</string>
    <string name="select_text">Selectionner le texte</string>
    <string name="copy_all">Tout copier</string>
    <string name="paste">Coller</string>
    
    <string name="window_title">Fenêtre %1$d</string>
-
+   
    <string name="service_notify_text">Session terminal en cours d\'exécution</string>
    
    <string name="process_exit_message">Session terminal terminée</string>
-
+   
    <!-- == Préférences == -->
    <string name="screen_preferences">Écran</string>
-
+   
    <string name="title_statusbar_preference">Barre de statut</string>
    <string name="summary_statusbar_preference">Afficher/Masquer la barre de statut</string>
    <string name="dialog_title_statusbar_preference">Barre de statut</string>
-
+   
    <string name="title_cursorstyle_preference">Style du curseur</string>
    <string name="summary_cursorstyle_preference">Choisir le style du curseur</string>
    <string name="dialog_title_cursorstyle_preference">Style du curseur</string>
-
+   
    <string name="title_cursorblink_preference">Clignotement curseur</string>
    <string name="summary_cursorblink_preference">Choisir si le curseur doit clignoter</string>
    <string name="dialog_title_cursorblink_preference">Clignotement curseur</string>
-
+   
    <string name="text_preferences">Texte</string>
    
    <string name="title_utf8_by_default_preference">UTF-8 par défaut</string>
    <string name="summary_utf8_by_default_preference">Activer le mode UTF-8 par défaut</string>
-
+   
    <string name="title_fontsize_preference">Taille police</string>
    <string name="summary_fontsize_preference">Choisir la taille de la police de caractères en points</string>
    <string name="dialog_title_fontsize_preference">Taille de la police</string>
-
+   
    <string name="title_color_preference">Couleurs</string>
    <string name="summary_color_preference">Choisir la couleur du texte</string>
    <string name="dialog_title_color_preference">Couleur du texte</string>
-
+   
    <string name="keyboard_preferences">Clavier</string>
-
+   
+   <string name="title_backaction_preference">Comportement bouton retour</string>
+   <string name="summary_backaction_preference">Choisir l\'action du bouton retour quand il est cliqué</string>
+   <string name="dialog_title_backaction_preference">Comportement bouton retour</string>
+   
    <string name="title_controlkey_preference">Touche CTRL</string>
-   <string name="summary_controlkey_preference">Choisir quelle touche utiliser pour control (CTRL)</string>
+   <string name="summary_controlkey_preference">Choisir quelle touche utiliser pour Control (CTRL)</string>
    <string name="dialog_title_controlkey_preference">Touche CTRL</string>
-
+   
    <string name="title_fnkey_preference">Touche Fn</string>
    <string name="summary_fnkey_preference">Choisir quelle touche utiliser pour Fonction (Fn)</string>
    <string name="dialog_title_fnkey_preference">Touche Fn</string>
-
+   
    <string name="title_ime_preference">Méthode d\'entrée</string>
    <string name="summary_ime_preference">Choisir la méthode d\'entrée du clavier virtuel</string>
    <string name="dialog_title_ime_preference">Méthode d\'entrée</string>
-
+   
    <string name="shell_preferences">Shell</string>
    <string name="title_shell_preference">Ligne de commande</string>
    <string name="summary_shell_preference">Régler la ligne de commande du shell</string>
    <string name="dialog_title_shell_preference">Shell</string>
-
+   
    <string name="title_initialcommand_preference">Commande initiale</string>
    <string name="summary_initialcommand_preference">Choisir une commande au démarrage du shell</string>
    <string name="dialog_title_initialcommand_preference">Commande initiale</string>
+   
+   <string name="title_termtype_preference">Type de terminal</string>
+   <string name="summary_termtype_preference">Type de terminal à reporter au shell</string>
+   <string name="dialog_title_termtype_preference">Type de Terminal</string>
+   
+   <string name="title_close_window_on_process_exit_preference">Quitter avec \'exit\'</string>
+   <string name="summary_close_window_on_process_exit_preference">Quitter le terminal en exécutant la commande \'exit\'</string>
+   
+   <string name="control_key_dialog_title">Touches Control et Fonction</string>
 </resources>
