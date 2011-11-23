@@ -69,10 +69,6 @@ public class TermSession {
 
     private static final int DEFAULT_COLUMNS = 80;
     private static final int DEFAULT_ROWS = 24;
-    private static final String DEFAULT_SHELL = "/system/bin/sh -";
-    private static final String DEFAULT_INITIAL_COMMAND =
-        "export PATH=/data/local/bin:$PATH";
-    private static final String DEFAULT_TERMTYPE = "screen";
 
     // Number of rows in the transcript
     private static final int TRANSCRIPT_ROWS = 10000;
@@ -161,9 +157,6 @@ public class TermSession {
     }
 
     private void sendInitialCommand(String initialCommand) {
-        if (initialCommand == null || initialCommand.equals("")) {
-            initialCommand = DEFAULT_INITIAL_COMMAND;
-        }
         if (initialCommand.length() > 0) {
             write(initialCommand + '\r');
         }
@@ -200,17 +193,11 @@ public class TermSession {
 
     private void createSubprocess(int[] processId) {
         String shell = mSettings.getShell();
-        if (shell == null || shell.equals("")) {
-            shell = DEFAULT_SHELL;
-        }
         ArrayList<String> argList = parse(shell);
         String arg0 = argList.get(0);
         String[] args = argList.toArray(new String[1]);
 
         String termType = mSettings.getTermType();
-        if (termType == null) {
-            termType = DEFAULT_TERMTYPE;
-        }
         String[] env = new String[1];
         env[0] = "TERM=" + termType;
 

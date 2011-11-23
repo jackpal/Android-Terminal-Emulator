@@ -16,8 +16,11 @@
 
 package jackpal.androidterm.util;
 
+import android.content.res.Resources;
 import android.content.SharedPreferences;
 import android.view.KeyEvent;
+
+import jackpal.androidterm.R;
 
 /**
  * Terminal emulator settings
@@ -25,20 +28,20 @@ import android.view.KeyEvent;
 public class TermSettings {
     private SharedPreferences mPrefs;
 
-    private int mStatusBar = 0;
-    private int mCursorStyle = 0;
-    private int mCursorBlink = 0;
-    private int mFontSize = 9;
-    private int mColorId = 2;
-    private int mControlKeyId = 5; // Default to Volume Down
-    private int mFnKeyId = 4; // Default to Volume Up
-    private int mUseCookedIME = 0;
+    private int mStatusBar;
+    private int mCursorStyle;
+    private int mCursorBlink;
+    private int mFontSize;
+    private int mColorId;
+    private int mControlKeyId;
+    private int mFnKeyId;
+    private int mUseCookedIME;
     private String mShell;
     private String mInitialCommand;
-    private boolean mUTF8ByDefault = false;
-    private int mBackKeyAction = BACK_KEY_CLOSES_ACTIVITY;
+    private boolean mUTF8ByDefault;
+    private int mBackKeyAction;
     private String mTermType;
-    private boolean mCloseOnExit = true;
+    private boolean mCloseOnExit;
 
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String CURSORSTYLE_KEY = "cursorstyle";
@@ -98,8 +101,26 @@ public class TermSettings {
     public static final int BACK_KEY_SENDS_TAB = 4;
     private static final int BACK_KEY_MAX = 4;
 
-    public TermSettings(SharedPreferences prefs) {
+    public TermSettings(Resources res, SharedPreferences prefs) {
+        readDefaultPrefs(res);
         readPrefs(prefs);
+    }
+
+    private void readDefaultPrefs(Resources res) {
+        mStatusBar = Integer.parseInt(res.getString(R.string.pref_statusbar_default));
+        mCursorStyle = Integer.parseInt(res.getString(R.string.pref_cursorstyle_default));
+        mCursorBlink = Integer.parseInt(res.getString(R.string.pref_cursorblink_default));
+        mFontSize = Integer.parseInt(res.getString(R.string.pref_fontsize_default));
+        mColorId = Integer.parseInt(res.getString(R.string.pref_color_default));
+        mUTF8ByDefault = res.getBoolean(R.bool.pref_utf8_by_default_default);
+        mBackKeyAction = Integer.parseInt(res.getString(R.string.pref_backaction_default));
+        mControlKeyId = Integer.parseInt(res.getString(R.string.pref_controlkey_default));
+        mFnKeyId = Integer.parseInt(res.getString(R.string.pref_fnkey_default));
+        mUseCookedIME = Integer.parseInt(res.getString(R.string.pref_ime_default));
+        mShell = res.getString(R.string.pref_shell_default);
+        mInitialCommand = res.getString(R.string.pref_initialcommand_default);
+        mTermType = res.getString(R.string.pref_termtype_default);
+        mCloseOnExit = res.getBoolean(R.bool.pref_close_window_on_process_exit_default);
     }
 
     public void readPrefs(SharedPreferences prefs) {
@@ -116,7 +137,7 @@ public class TermSettings {
         mUseCookedIME = readIntPref(IME_KEY, mUseCookedIME, 1);
         mShell = readStringPref(SHELL_KEY, mShell);
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
-        mUTF8ByDefault = readBooleanPref(UTF8_KEY, false);
+        mUTF8ByDefault = readBooleanPref(UTF8_KEY, mUTF8ByDefault);
         mBackKeyAction = readIntPref(BACKACTION_KEY, mBackKeyAction, BACK_KEY_MAX);
         mTermType = readStringPref(TERMTYPE_KEY, mTermType);
         mCloseOnExit = readBooleanPref(CLOSEONEXIT_KEY, mCloseOnExit);

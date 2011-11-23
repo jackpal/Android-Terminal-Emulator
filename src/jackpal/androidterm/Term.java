@@ -113,7 +113,7 @@ public class Term extends Activity implements UpdateCallback {
         super.onCreate(icicle);
         Log.e(TermDebug.LOG_TAG, "onCreate");
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mSettings = new TermSettings(mPrefs);
+        mSettings = new TermSettings(getResources(), mPrefs);
 
         TSIntent = new Intent(this, TermService.class);
         startService(TSIntent);

@@ -105,20 +105,6 @@
    <string name="title_close_window_on_process_exit_preference">Close window on exit</string>
    <string name="summary_close_window_on_process_exit_preference">Whether a window should close when its shell exits.</string>
 
-   <!-- Don't localize these default values -->
-   <string name="default_value_statusbar_preference">0</string>
-   <string name="default_value_cursorstyle_preference">0</string>
-   <string name="default_value_cursorblink_preference">0</string>
-   <string name="default_value_fontsize_preference">10</string>
-   <string name="default_value_color_preference">2</string>
-   <string name="default_value_backaction_preference">3</string>
-   <string name="default_value_controlkey_preference">5</string>
-   <string name="default_value_fnkey_preference">4</string>
-   <string name="default_value_ime_preference">0</string>
-   <string name="default_value_shell_preference">/system/bin/sh -</string>
-   <string name="default_value_initialcommand_preference">export PATH=/data/local/bin:$PATH</string>
-   <string name="default_value_termtype_preference">screen</string>
-
    <string name="control_key_dialog_title">Control and Function Keys</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
         actual control key key name. -->

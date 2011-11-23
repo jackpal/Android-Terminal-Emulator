@@ -22,7 +22,7 @@
 
         <ListPreference
                 android:key="statusbar"
-                android:defaultValue="@string/default_value_statusbar_preference"
+                android:defaultValue="@string/pref_statusbar_default"
                 android:title="@string/title_statusbar_preference"
                 android:summary="@string/summary_statusbar_preference"
                 android:entries="@array/entries_statusbar_preference"
@@ -33,7 +33,7 @@
 <!--
         <ListPreference
                 android:key="cursorstyle"
-                android:defaultValue="@string/default_value_cursorstyle_preference"
+                android:defaultValue="@string/pref_cursorstyle_default"
                 android:title="@string/title_cursorstyle_preference"
                 android:summary="@string/summary_cursorstyle_preference"
                 android:entries="@array/entries_cursorstyle_preference"
@@ -42,7 +42,7 @@
 
         <ListPreference
                 android:key="cursorblink"
-                android:defaultValue="@string/default_value_cursorblink_preference"
+                android:defaultValue="@string/pref_cursorblink_default"
                 android:title="@string/title_cursorblink_preference"
                 android:summary="@string/summary_cursorblink_preference"
                 android:entries="@array/entries_cursorblink_preference"
@@ -57,7 +57,7 @@
 
         <ListPreference
                 android:key="fontsize"
-                android:defaultValue="@string/default_value_fontsize_preference"
+                android:defaultValue="@string/pref_fontsize_default"
                 android:title="@string/title_fontsize_preference"
                 android:summary="@string/summary_fontsize_preference"
                 android:entries="@array/entries_fontsize_preference"
@@ -66,7 +66,7 @@
 
         <ListPreference
                 android:key="color"
-                android:defaultValue="@string/default_value_color_preference"
+                android:defaultValue="@string/pref_color_default"
                 android:title="@string/title_color_preference"
                 android:summary="@string/summary_color_preference"
                 android:entries="@array/entries_color_preference"
@@ -75,7 +75,7 @@
 
         <CheckBoxPreference
                 android:key="utf8_by_default"
-                android:defaultValue="false"
+                android:defaultValue="@bool/pref_utf8_by_default_default"
                 android:title="@string/title_utf8_by_default_preference"
                 android:summary="@string/summary_utf8_by_default_preference" />
 
@@ -86,7 +86,7 @@
 
         <ListPreference
                 android:key="backaction"
-                android:defaultValue="@string/default_value_backaction_preference"
+                android:defaultValue="@string/pref_backaction_default"
                 android:title="@string/title_backaction_preference"
                 android:summary="@string/summary_backaction_preference"
                 android:entries="@array/entries_backaction_preference"
@@ -95,7 +95,7 @@
 
         <ListPreference
                 android:key="controlkey"
-                android:defaultValue="@string/default_value_controlkey_preference"
+                android:defaultValue="@string/pref_controlkey_default"
                 android:title="@string/title_controlkey_preference"
                 android:summary="@string/summary_controlkey_preference"
                 android:entries="@array/entries_controlkey_preference"
@@ -104,7 +104,7 @@
 
         <ListPreference
                 android:key="fnkey"
-                android:defaultValue="@string/default_value_fnkey_preference"
+                android:defaultValue="@string/pref_fnkey_default"
                 android:title="@string/title_fnkey_preference"
                 android:summary="@string/summary_fnkey_preference"
                 android:entries="@array/entries_fnkey_preference"
@@ -113,7 +113,7 @@
 
         <ListPreference
                 android:key="ime"
-                android:defaultValue="@string/default_value_ime_preference"
+                android:defaultValue="@string/pref_ime_default"
                 android:title="@string/title_ime_preference"
                 android:summary="@string/summary_ime_preference"
                 android:entries="@array/entries_ime_preference"
@@ -127,19 +127,19 @@
 
     <EditTextPreference
             android:key="shell"
-            android:defaultValue="@string/default_value_shell_preference"
+            android:defaultValue="@string/pref_shell_default"
             android:title="@string/title_shell_preference"
             android:summary="@string/summary_shell_preference"
             android:dialogTitle="@string/dialog_title_shell_preference" />
     <EditTextPreference
             android:key="initialcommand"
-            android:defaultValue="@string/default_value_initialcommand_preference"
+            android:defaultValue="@string/pref_initialcommand_default"
             android:title="@string/title_initialcommand_preference"
             android:summary="@string/summary_initialcommand_preference"
             android:dialogTitle="@string/dialog_title_initialcommand_preference" />
     <ListPreference
             android:key="termtype"
-            android:defaultValue="@string/default_value_termtype_preference"
+            android:defaultValue="@string/pref_termtype_default"
             android:title="@string/title_termtype_preference"
             android:summary="@string/summary_termtype_preference"
             android:entries="@array/entries_termtype_preference"
@@ -147,7 +147,7 @@
             android:dialogTitle="@string/dialog_title_termtype_preference" />
     <CheckBoxPreference
             android:key="close_window_on_process_exit"
-            android:defaultValue="true"
+            android:defaultValue="@bool/pref_close_window_on_process_exit_default"
             android:title="@string/title_close_window_on_process_exit_preference"
             android:summary="@string/summary_close_window_on_process_exit_preference" />
     </PreferenceCategory>
