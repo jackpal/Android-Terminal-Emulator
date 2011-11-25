@@ -54,6 +54,14 @@
     <item>Roter Text auf schwarz</item>
   </string-array>
 
+  <string-array name="entries_backaction_preference">
+    <item>Schliesst alle Terminal Fenster</item>
+    <item>Schliesst nur dieses Terminal Fenster</item>
+    <item>Aktivität schliessen, Sessions erhalten lassen</item>
+    <item>Sendet ESC zum Terminal</item>
+    <item>Sendet TAB zum Terminal</item>
+  </string-array>
+    
   <string-array name="entries_controlkey_preference">
     <item>Trackball</item>
     <item>\@ Taste</item>
@@ -61,10 +69,47 @@
     <item>Rechte Alt-Taste</item>
     <item>Lauter</item>
     <item>Leiser</item>
+    <item>Kamera Taste</item>
+    <item>Keine</item>    
   </string-array>
-
+  
+  <string-array name="entries_fnkey_preference">
+    <item>Trackball</item>
+    <item>\@ Taste</item>
+    <item>Linke Alt-Taste</item>
+    <item>Rechte Alt-Taste</item>
+    <item>Lauter</item>
+    <item>Leiser</item>
+    <item>Kamera Taste</item>
+    <item>Keine</item>
+  </string-array>
+    
   <string-array name="entries_ime_preference">
     <item>Zeichen-basiert</item>
     <item>Wort-basiert</item>
   </string-array>
+  
+    <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
+    <string-array name="control_keys_short_names">
+       <item>Trackball</item>
+       <item>\@ Taste</item>
+       <item>Linke Alt-Taste</item>
+       <item>Rechte Alt-Taste</item>
+       <item>Lauter</item>
+       <item>Leiser</item>
+       <item>Kamera Taste</item>
+       <item>Keine</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
+    <string-array name="fn_keys_short_names">
+       <item>Trackball</item>
+       <item>\@ Taste</item>
+       <item>Linke Alt-Taste</item>
+       <item>Rechte Alt-Taste</item>
+       <item>Lauter</item>
+       <item>Leiser</item>
+       <item>Kamera Taste</item>
+       <item>Keine</item>
+    </string-array>
 </resources>
