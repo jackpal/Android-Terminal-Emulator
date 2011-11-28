@@ -76,7 +76,7 @@
    
    <string name="title_backaction_preference">Bouton retour</string>
    <string name="summary_backaction_preference">Choisir l\'action du bouton retour quand il est cliqué</string>
-   <string name="dialog_title_backaction_preference">Comportement bouton retour</string>
+   <string name="dialog_title_backaction_preference">Bouton retour</string>
    
    <string name="title_controlkey_preference">Touche CTRL</string>
    <string name="summary_controlkey_preference">Choisir quelle touche utiliser pour Control (CTRL)</string>
