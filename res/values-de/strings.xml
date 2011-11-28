@@ -1,72 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-   * Copyright (C) 2008 The Android Open Source Project
-   *
-   * Licensed under the Apache License, Version 2.0 (the "License");
-   * you may not use this file except in compliance with the License.
-   * You may obtain a copy of the License at
-   *
-   *      http://www.apache.org/licenses/LICENSE-2.0
-   *
-   * Unless required by applicable law or agreed to in writing, software
-   * distributed under the License is distributed on an "AS IS" BASIS,
-   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   * See the License for the specific language governing permissions and
-   * limitations under the License.
-  -->
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
 <resources>
-  <string name="application_terminal">Terminal Emulator</string>
-  <string name="preferences">Einstellungen</string>
-  <string name="reset">Zurücksetzen</string>
-  <string name="send_email">Email an</string>
-  <string name="special_keys">Spezialtasten</string>
-  <string name="toggle_soft_keyboard">Tastatur an/aus</string>
+   <string name="application_terminal">Terminal Emulator</string>
+   <string name="preferences">Einstellungen</string>
+   <string name="new_window">Neues Fenster</string>
+   <string name="close_window">Fenster schliessen</string>
+   <string name="window_list">Fenster</string>
+   <string name="prev_window">Vorh. Fenster</string>
+   <string name="next_window">Nächst. Fenster</string>
+   <string name="reset">Zurücksetzen</string>
+   <string name="send_email">Email an</string>
+   <string name="special_keys">Spezialtasten</string>
+   <string name="toggle_soft_keyboard">Tastatur an/aus</string>
 
-  <string name="edit_text">Text bearbeiten</string>
-  <string name="copy_all">Alles kopieren</string>
-  <string name="paste">Einfügen</string>
+   <string name="enable_wakelock">Take WakeLock</string>
+   <string name="disable_wakelock">Drop WakeLock</string>
+   <string name="enable_wifilock">Take WifiLock</string>
+   <string name="disable_wifilock">Drop WifiLock</string>
+   
+   <string name="edit_text">Text bearbeiten</string>
+   <string name="select_text">Text auswählen</string>
+   <string name="copy_all">Alles kopieren</string>
+   <string name="paste">Einfügen</string> 
+   
+   <string name="service_notify_text">Terminal Sitzung wird ausgeführt</string>
 
-  <!-- Preference dialog -->
-  <string name="screen_preferences">Bildschirm</string>
+   <string name="window_title">Fenster %1$d</string>  
 
-  <string name="title_statusbar_preference">Statuszeile</string>
-  <string name="summary_statusbar_preference">Die Statuszeile anzeigen/verbergen.</string>
-  <string name="dialog_title_statusbar_preference">Statuszeile</string>
+   <string name="process_exit_message">Terminal Sitzung beendet</string>
+   <!-- Preference dialog -->
+   <string name="screen_preferences">Bildschirm</string>
 
-  <string name="title_cursorstyle_preference">Aussehen Cursor</string>
-  <string name="summary_cursorstyle_preference">Das Aussehen des Cursors auswählen.</string>
-  <string name="dialog_title_cursorstyle_preference">Aussehen Cursor</string>
+   <string name="title_statusbar_preference">Statuszeile</string>
+   <string name="summary_statusbar_preference">Die Statuszeile anzeigen/verbergen.</string>
+   <string name="dialog_title_statusbar_preference">Statuszeile</string>
 
-  <string name="title_cursorblink_preference">Cursor-Blinken</string>
-  <string name="summary_cursorblink_preference">Die Art auswählen, wie der Cursor blinken soll.</string>
-  <string name="dialog_title_cursorblink_preference">Cursor-Blinken</string>
+   <string name="title_cursorstyle_preference">Aussehen Cursor</string>
+   <string name="summary_cursorstyle_preference">Das Aussehen des Cursors auswählen.</string>
+   <string name="dialog_title_cursorstyle_preference">Aussehen Cursor</string>
 
-  <string name="text_preferences">Text</string>
+   <string name="title_cursorblink_preference">Cursor-Blinken</string>
+   <string name="summary_cursorblink_preference">Die Art auswählen, wie der Cursor blinken soll.</string>
+   <string name="dialog_title_cursorblink_preference">Cursor-Blinken</string>
 
-  <string name="title_fontsize_preference">Schriftgröße</string>
-  <string name="summary_fontsize_preference">Die Zeichengröße in Punkten auswählen.</string>
-  <string name="dialog_title_fontsize_preference">Schriftgröße</string>
+   <string name="text_preferences">Text</string>
 
-  <string name="title_color_preference">Farben</string>
-  <string name="summary_color_preference">Die Textfarben auswählen.</string>
-  <string name="dialog_title_color_preference">Textfarbe</string>
+   <string name="title_utf8_by_default_preference">UTF-8 als Standard definieren</string>
+   <string name="summary_utf8_by_default_preference">Ab der UTF-8 Modus standartmässig eingeschaltet werden soll.</string>
 
-  <string name="keyboard_preferences">Tastatur</string>
+   <string name="title_fontsize_preference">Schriftgröße</string>
+   <string name="summary_fontsize_preference">Die Zeichengröße in Punkten auswählen.</string>
+   <string name="dialog_title_fontsize_preference">Schriftgröße</string>
 
-  <string name="title_controlkey_preference">Steuerungstaste</string>
-  <string name="summary_controlkey_preference">Die Steuerungstaste auswählen.</string>
-  <string name="dialog_title_controlkey_preference">Steuerungstaste</string>
+   <string name="title_color_preference">Farben</string>
+   <string name="summary_color_preference">Die Textfarben auswählen.</string>
+   <string name="dialog_title_color_preference">Textfarbe</string>
 
-  <string name="title_ime_preference">Eingabemethode</string>
-  <string name="summary_ime_preference">Die Eingabemethode für die Soft-Tastatur auswählen.</string>
-  <string name="dialog_title_ime_preference">Eingabemethode</string>
+   <string name="keyboard_preferences">Tastatur</string>
 
-  <string name="shell_preferences">Shell</string>
-  <string name="title_shell_preference">Shell</string>
-  <string name="summary_shell_preference">Die zu verwendene Shell auswählen.</string>
-  <string name="dialog_title_shell_preference">Shell</string>
+   <string name="title_backaction_preference">Zurück-Knopf Verhalten</string>
+   <string name="summary_backaction_preference">Festlegen der Aktion bei drücken des Zurück-Knopfes.</string>
+   <string name="dialog_title_backaction_preference">Zurück-Knopf Verhalten</string>
 
-  <string name="title_initialcommand_preference">Startkommando</string>
-  <string name="summary_initialcommand_preference">Kommando eingeben, dass beim Start an die Shell gesendet wird.</string>
-  <string name="dialog_title_initialcommand_preference">Startkommando</string>
+   <string name="title_controlkey_preference">Steuerungstaste</string>
+   <string name="summary_controlkey_preference">Die Steuerungstaste auswählen.</string>
+   <string name="dialog_title_controlkey_preference">Steuerungstaste</string>
+
+   <string name="title_fnkey_preference">Fn Taste</string>
+   <string name="summary_fnkey_preference">Wähle Fn Taste.</string>
+   <string name="dialog_title_fnkey_preference">Fn Taste</string>
+
+   <string name="title_ime_preference">Eingabemethode</string>
+   <string name="summary_ime_preference">Die Eingabemethode für die Soft-Tastatur auswählen.</string>
+   <string name="dialog_title_ime_preference">Eingabemethode</string>
+
+   <string name="shell_preferences">Shell</string>
+   <string name="title_shell_preference">Shell</string>
+   <string name="summary_shell_preference">Die zu verwendene Shell auswählen.</string>
+   <string name="dialog_title_shell_preference">Shell</string>
+
+   <string name="title_initialcommand_preference">Startkommando</string>
+   <string name="summary_initialcommand_preference">Kommando eingeben, dass beim Start an die Shell gesendet wird.</string>
+   <string name="dialog_title_initialcommand_preference">Startkommando</string>
+   <!-- BOYA -->
+   <string name="title_termtype_preference">Terminal Typ</string>
+   <string name="summary_termtype_preference">Was für einen Terminal Typ soll die Shell Ausführen.</string>
+   <string name="dialog_title_termtype_preference">Terminal Typ</string>
+
+   <string name="title_close_window_on_process_exit_preference">Bei Programmbeendigung Fenster schliessen</string>
+   <string name="summary_close_window_on_process_exit_preference">Ob das Fenster geschlossen werden soll wenn die Shell geschlossen wird.</string>
+
+   <string name="control_key_dialog_title">Kontrol- and Funktionstasten</string>
+   <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
+        actual control key key name. -->
+   <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+  <string name="control_key_dialog_control_disabled_text">Keine Kontroltaste festgelegt.</string>
+  <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
+       actual function key key name. -->
+  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
+  <string name="control_key_dialog_fn_disabled_text">Keine Funktionstaste fergelegt.</string>
+
 </resources>
