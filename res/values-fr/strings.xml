@@ -28,6 +28,8 @@
    <string name="special_keys">Touches spéciales</string>
    <string name="toggle_soft_keyboard">Afficher/Masquer Clavier</string>
    
+   <string name="reset_toast_notification">L\'état de cette fenêtre vient d\'être mis a défaut.</string>
+   
    <string name="enable_wakelock">Activer WakeLock</string>
    <string name="disable_wakelock">Désactiver WakeLock</string>
    <string name="enable_wifilock">Activer WifiLock</string>

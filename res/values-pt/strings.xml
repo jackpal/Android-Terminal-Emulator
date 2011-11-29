@@ -26,7 +26,9 @@
    <string name="send_email">Email to</string>
    <string name="special_keys">Special keys</string>
    <string name="toggle_soft_keyboard">Toggle soft keyboard</string>
-
+   
+   <string name="reset_toast_notification">Estado d\'esta janela foi zerado.</string>
+   
    <string name="enable_wakelock">Take WakeLock</string>
    <string name="disable_wakelock">Drop WakeLock</string>
    <string name="enable_wifilock">Take WifiLock</string>
