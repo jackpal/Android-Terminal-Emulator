@@ -79,6 +79,8 @@ public class Term extends Activity implements UpdateCallback {
     private final static int SELECT_TEXT_ID = 0;
     private final static int COPY_ALL_ID = 1;
     private final static int PASTE_ID = 2;
+    private final static int SEND_CONTROL_KEY_ID = 3;
+    private final static int SEND_FN_KEY_ID = 4;
 
     private boolean mAlreadyStarted = false;
     private boolean mStopServiceOnFinish = false;
@@ -435,6 +437,8 @@ public class Term extends Activity implements UpdateCallback {
       menu.add(0, SELECT_TEXT_ID, 0, R.string.select_text);
       menu.add(0, COPY_ALL_ID, 0, R.string.copy_all);
       menu.add(0, PASTE_ID, 0,  R.string.paste);
+      menu.add(0, SEND_CONTROL_KEY_ID, 0, R.string.send_control_key);
+      menu.add(0, SEND_FN_KEY_ID, 0, R.string.send_fn_key);
       if (!canPaste()) {
           menu.getItem(PASTE_ID).setEnabled(false);
       }
@@ -451,6 +455,12 @@ public class Term extends Activity implements UpdateCallback {
             return true;
           case PASTE_ID:
             doPaste();
+            return true;
+          case SEND_CONTROL_KEY_ID:
+            doSendControlKey();
+            return true;
+          case SEND_FN_KEY_ID:
+            doSendFnKey();
             return true;
           default:
             return super.onContextItemSelected(item);
@@ -575,6 +585,14 @@ public class Term extends Activity implements UpdateCallback {
             return;
         }
         getCurrentTermSession().write(paste.toString());
+    }
+
+    private void doSendControlKey() {
+        getCurrentEmulatorView().sendControlKey();
+    }
+
+    private void doSendFnKey() {
+        getCurrentEmulatorView().sendFnKey();
     }
 
     private void doDocumentKeys() {
