@@ -22,6 +22,11 @@
    <string name="special_keys">特殊键</string>
    <string name="toggle_soft_keyboard">打开/关闭软键盘</string>
 
+   <string name="enable_wakelock">使用唤醒锁定</string>
+   <string name="disable_wakelock">解除唤醒锁定</string>
+   <string name="enable_wifilock">使用WiFi锁定</string>
+   <string name="disable_wifilock">解除WiFi锁定</string>
+
    <string name="edit_text">编辑文本</string>
    <string name="copy_all">全部复制</string>
    <string name="paste">粘贴</string>
@@ -30,7 +35,7 @@
    <string name="screen_preferences">屏幕</string>
 
    <string name="title_statusbar_preference">状态栏</string>
-   <string name="summary_statusbar_preference">显示/隐藏状态栏。</string>
+   <string name="summary_statusbar_preference">显示/隐藏状态栏</string>
    <string name="dialog_title_statusbar_preference">状态栏</string>
 
    <string name="title_cursorstyle_preference">光标样式</string>
@@ -56,6 +61,10 @@
    <string name="title_controlkey_preference">Ctrl 键</string>
    <string name="summary_controlkey_preference">设置 Ctrl 键</string>
    <string name="dialog_title_controlkey_preference">Ctrl 键</string>
+
+   <string name="title_fnkey_preference">Fn 键</string>
+   <string name="summary_fnkey_preference">设置 Fn 按键</string>
+   <string name="dialog_title_fnkey_preference">Fn 键</string>
 
    <string name="title_ime_preference">输入方式</string>
    <string name="summary_ime_preference">选择输入方式或软键盘</string>
