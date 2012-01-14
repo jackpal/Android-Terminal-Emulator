@@ -19,7 +19,10 @@ package jackpal.androidterm;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
+import jackpal.androidterm.compat.AndroidCompat;
+
 public class TermPreferences extends PreferenceActivity {
+    private static final String ACTIONBAR_KEY = "actionbar";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,11 @@ public class TermPreferences extends PreferenceActivity {
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
+
+        // Disable the action bar pref on older platforms without an action bar
+        if (AndroidCompat.SDK < 11) {
+            getPreferenceManager().findPreference(ACTIONBAR_KEY).setEnabled(false);
+        }
     }
 
 }

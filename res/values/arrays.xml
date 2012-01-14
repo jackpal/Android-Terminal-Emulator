@@ -27,6 +27,19 @@
         <item>0</item>
     </string-array>
 
+    <string-array name="entries_actionbar_preference">
+        <!-- <item>Action bar disabled</item> -->
+        <item>Always show action bar</item>
+        <item>Hide action bar (touch top of screen or Menu key to show)</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <string-array name="entryvalues_actionbar_preference">
+        <!-- <item>0</item> -->
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <string-array name="entries_cursorblink_preference">
         <item>Non-blinking cursor</item>
         <item>Blinking cursor</item>

@@ -119,6 +119,7 @@ public class Term extends Activity implements UpdateCallback {
     };
 
     private ActionBarCompat mActionBar;
+    private int mActionBarMode = TermSettings.ACTION_BAR_MODE_NONE;
 
     private WindowListAdapter mWinListAdapter;
     private class WindowListActionBarAdapter extends WindowListAdapter implements UpdateCallback {
@@ -157,6 +158,9 @@ public class Term extends Activity implements UpdateCallback {
             int oldPosition = mViewFlipper.getDisplayedChild();
             if (position != oldPosition) {
                 mViewFlipper.setDisplayedChild(position);
+                if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {
+                    mActionBar.hide();
+                }
             }
             return true;
         }
@@ -173,9 +177,7 @@ public class Term extends Activity implements UpdateCallback {
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
-            if (!mHaveFullHwKeyboard) {
-                doToggleSoftKeyboard();
-            }
+            doUIToggle((int) e.getX(), (int) e.getY(), view.getVisibleWidth(), view.getVisibleHeight());
             return true;
         }
 
@@ -199,9 +201,21 @@ public class Term extends Activity implements UpdateCallback {
 
     private EmulatorView.WindowSizeCallback mSizeCallback = new EmulatorView.WindowSizeCallback() {
         public void onGetSize(Rect rect) {
-            if (mActionBar != null) {
+            if (mActionBarMode == TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE) {
                 // Fixed action bar takes space away from the EmulatorView
                 rect.top += mActionBar.getHeight();
+            }
+        }
+    };
+    private View.OnKeyListener mBackKeyListener = new View.OnKeyListener() {
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_BACK && mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES && mActionBar.isShowing()) {
+                /* We need to intercept the key event before the view sees it,
+                   otherwise the view will handle it before we get it */
+                onKeyUp(keyCode, event);
+                return true;
+            } else {
+                return false;
             }
         }
     };
@@ -221,7 +235,16 @@ public class Term extends Activity implements UpdateCallback {
         }
 
         if (AndroidCompat.SDK >= 11) {
-            setTheme(R.style.Theme_Holo);
+            int actionBarMode = mSettings.actionBarMode();
+            mActionBarMode = actionBarMode;
+            switch (actionBarMode) {
+            case TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE:
+                setTheme(R.style.Theme_Holo);
+                break;
+            case TermSettings.ACTION_BAR_MODE_HIDES:
+                setTheme(R.style.Theme_Holo_ActionBarOverlay);
+                break;
+            }
         }
 
         setContentView(R.layout.term_activity);
@@ -341,6 +364,7 @@ public class Term extends Activity implements UpdateCallback {
 
         emulatorView.setExtGestureListener(new EmulatorViewGestureListener(emulatorView));
         emulatorView.setWindowSizeCallback(mSizeCallback);
+        emulatorView.setOnKeyListener(mBackKeyListener);
         registerForContextMenu(emulatorView);
 
         return emulatorView;
@@ -372,13 +396,16 @@ public class Term extends Activity implements UpdateCallback {
             WindowManager.LayoutParams params = win.getAttributes();
             final int FULLSCREEN = WindowManager.LayoutParams.FLAG_FULLSCREEN;
             int desiredFlag = mSettings.showStatusBar() ? 0 : FULLSCREEN;
-            if (desiredFlag != (params.flags & FULLSCREEN)) {
+            if (desiredFlag != (params.flags & FULLSCREEN) || (AndroidCompat.SDK >= 11 && mActionBarMode != mSettings.actionBarMode())) {
                 if (mAlreadyStarted) {
                     // Can't switch to/from fullscreen after
                     // starting the activity.
                     restart();
                 } else {
                     win.setFlags(desiredFlag, FULLSCREEN);
+                    if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {
+                        mActionBar.hide();
+                    }
                 }
             }
         }
@@ -504,6 +531,10 @@ public class Term extends Activity implements UpdateCallback {
             doToggleWakeLock();
         } else if (id == R.id.menu_toggle_wifilock) {
             doToggleWifiLock();
+        }
+        // Hide the action bar if appropriate
+        if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {
+            mActionBar.hide();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -644,6 +675,10 @@ public class Term extends Activity implements UpdateCallback {
                 }
                 mBackKeyPressed = false;
             }
+            if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES && mActionBar.isShowing()) {
+                mActionBar.hide();
+                return true;
+            }
             switch (mSettings.getBackKeyAction()) {
             case TermSettings.BACK_KEY_STOPS_SERVICE:
                 mStopServiceOnFinish = true;
@@ -655,6 +690,13 @@ public class Term extends Activity implements UpdateCallback {
                 return true;
             default:
                 return false;
+            }
+        case KeyEvent.KEYCODE_MENU:
+            if (mActionBar != null && !mActionBar.isShowing()) {
+                mActionBar.show();
+                return true;
+            } else {
+                return super.onKeyUp(keyCode, event);
             }
         default:
             return super.onKeyUp(keyCode, event);
@@ -789,5 +831,41 @@ public class Term extends Activity implements UpdateCallback {
             mWifiLock.acquire();
         }
         ActivityCompat.invalidateOptionsMenu(this);
+    }
+
+    private void doToggleActionBar() {
+        ActionBarCompat bar = mActionBar;
+        if (bar == null) {
+            return;
+        }
+        if (bar.isShowing()) {
+            bar.hide();
+        } else {
+            bar.show();
+        }
+    }
+
+    private void doUIToggle(int x, int y, int width, int height) {
+        switch (mActionBarMode) {
+        case TermSettings.ACTION_BAR_MODE_NONE:
+            if (AndroidCompat.SDK >= 11 && (mHaveFullHwKeyboard || y < height / 2)) {
+                openOptionsMenu();
+            } else {
+                doToggleSoftKeyboard();
+            }
+            break;
+        case TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE:
+            if (!mHaveFullHwKeyboard) {
+                doToggleSoftKeyboard();
+            }
+            break;
+        case TermSettings.ACTION_BAR_MODE_HIDES:
+            if (mHaveFullHwKeyboard || y < height / 2) {
+                doToggleActionBar();
+            } else {
+                doToggleSoftKeyboard();
+            }
+            break;
+        }
     }
 }

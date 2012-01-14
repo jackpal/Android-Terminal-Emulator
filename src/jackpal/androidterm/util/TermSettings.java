@@ -29,6 +29,7 @@ public class TermSettings {
     private SharedPreferences mPrefs;
 
     private int mStatusBar;
+    private int mActionBarMode;
     private int mCursorStyle;
     private int mCursorBlink;
     private int mFontSize;
@@ -44,6 +45,7 @@ public class TermSettings {
     private boolean mCloseOnExit;
 
     private static final String STATUSBAR_KEY = "statusbar";
+    private static final String ACTIONBAR_KEY = "actionbar";
     private static final String CURSORSTYLE_KEY = "cursorstyle";
     private static final String CURSORBLINK_KEY = "cursorblink";
     private static final String FONTSIZE_KEY = "fontsize";
@@ -66,6 +68,11 @@ public class TermSettings {
     public static final int RED =   0xffff0113;
 
     public static final int[][] COLOR_SCHEMES = {{0, BLACK, 7, WHITE}, {7, WHITE, 0, BLACK}, {7, WHITE, 4, BLUE}, {2, GREEN, 0, BLACK}, {3, AMBER, 0, BLACK}, {1, RED, 0, BLACK}};
+
+    public static final int ACTION_BAR_MODE_NONE = 0;
+    public static final int ACTION_BAR_MODE_ALWAYS_VISIBLE = 1;
+    public static final int ACTION_BAR_MODE_HIDES = 2;
+    private static final int ACTION_BAR_MODE_MAX = 2;
 
     /** An integer not in the range of real key codes. */
     public static final int KEYCODE_NONE = -1;
@@ -108,6 +115,7 @@ public class TermSettings {
 
     private void readDefaultPrefs(Resources res) {
         mStatusBar = Integer.parseInt(res.getString(R.string.pref_statusbar_default));
+        mActionBarMode = res.getInteger(R.integer.pref_actionbar_default);
         mCursorStyle = Integer.parseInt(res.getString(R.string.pref_cursorstyle_default));
         mCursorBlink = Integer.parseInt(res.getString(R.string.pref_cursorblink_default));
         mFontSize = Integer.parseInt(res.getString(R.string.pref_fontsize_default));
@@ -126,6 +134,7 @@ public class TermSettings {
     public void readPrefs(SharedPreferences prefs) {
         mPrefs = prefs;
         mStatusBar = readIntPref(STATUSBAR_KEY, mStatusBar, 1);
+        mActionBarMode = readIntPref(ACTIONBAR_KEY, mActionBarMode, ACTION_BAR_MODE_MAX);
         // mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 2);
         // mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
         mFontSize = readIntPref(FONTSIZE_KEY, mFontSize, 20);
@@ -166,6 +175,10 @@ public class TermSettings {
 
     public boolean showStatusBar() {
         return (mStatusBar != 0);
+    }
+
+    public int actionBarMode() {
+        return mActionBarMode;
     }
 
     public int getCursorStyle() {
