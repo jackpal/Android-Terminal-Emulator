@@ -38,6 +38,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -109,6 +110,31 @@ public class Term extends Activity implements UpdateCallback {
             mTermService = null;
         }
     };
+
+    private class EmulatorViewGestureListener extends SimpleOnGestureListener {
+        private EmulatorView view;
+
+        public EmulatorViewGestureListener(EmulatorView view) {
+            this.view = view;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (Math.abs(velocityX) > Math.abs(velocityY)) {
+                // Assume user wanted side to side movement
+                if (velocityX > 0) {
+                    // Left to right swipe -- previous window
+                    mViewFlipper.showPrevious();
+                } else {
+                    // Right to left swipe -- next window
+                    mViewFlipper.showNext();
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -202,7 +228,7 @@ public class Term extends Activity implements UpdateCallback {
     private EmulatorView createEmulatorView(TermSession session) {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        EmulatorView emulatorView = new EmulatorView(this, session, mViewFlipper, metrics);
+        EmulatorView emulatorView = new EmulatorView(this, session, metrics);
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -211,6 +237,7 @@ public class Term extends Activity implements UpdateCallback {
         );
         emulatorView.setLayoutParams(params);
 
+        emulatorView.setExtGestureListener(new EmulatorViewGestureListener(emulatorView));
         registerForContextMenu(emulatorView);
 
         return emulatorView;
