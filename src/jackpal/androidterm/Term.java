@@ -46,10 +46,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import jackpal.androidterm.compat.ActionBarCompat;
@@ -108,6 +110,7 @@ public class Term extends Activity implements UpdateCallback {
             TermService.TSBinder binder = (TermService.TSBinder) service;
             mTermService = binder.getService();
             populateViewFlipper();
+            populateWindowList();
         }
 
         public void onServiceDisconnected(ComponentName arg0) {
@@ -116,6 +119,48 @@ public class Term extends Activity implements UpdateCallback {
     };
 
     private ActionBarCompat mActionBar;
+
+    private WindowListAdapter mWinListAdapter;
+    private class WindowListActionBarAdapter extends WindowListAdapter implements UpdateCallback {
+        // From android.R.style in API 13
+        private static final int TextAppearance_Holo_Widget_ActionBar_Title = 0x01030112;
+
+        public WindowListActionBarAdapter(SessionList sessions) {
+            super(sessions);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            TextView label = new TextView(Term.this);
+            label.setText(getString(R.string.window_title, position + 1));
+            if (AndroidCompat.SDK >= 13) {
+                label.setTextAppearance(Term.this, TextAppearance_Holo_Widget_ActionBar_Title);
+            } else {
+                label.setTextAppearance(Term.this, android.R.style.TextAppearance_Medium);
+            }
+            return label;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            return super.getView(position, convertView, parent);
+        }
+
+        public void onUpdate() {
+            notifyDataSetChanged();
+            mActionBar.setSelectedNavigationItem(mViewFlipper.getDisplayedChild());
+        }
+    }
+
+    private ActionBarCompat.OnNavigationListener mWinListItemSelected = new ActionBarCompat.OnNavigationListener() {
+        public boolean onNavigationItemSelected(int position, long id) {
+            int oldPosition = mViewFlipper.getDisplayedChild();
+            if (position != oldPosition) {
+                mViewFlipper.setDisplayedChild(position);
+            }
+            return true;
+        }
+    };
 
     private boolean mHaveFullHwKeyboard = false;
 
@@ -191,7 +236,12 @@ public class Term extends Activity implements UpdateCallback {
         }
         mWifiLock = wm.createWifiLock(wifiLockMode, TermDebug.LOG_TAG);
 
-        mActionBar = ActivityCompat.getActionBar(this);
+        ActionBarCompat actionBar = ActivityCompat.getActionBar(this);
+        if (actionBar != null) {
+            mActionBar = actionBar;
+            actionBar.setNavigationMode(ActionBarCompat.NAVIGATION_MODE_LIST);
+            actionBar.setDisplayOptions(0, ActionBarCompat.DISPLAY_SHOW_TITLE);
+        }
 
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
 
@@ -215,6 +265,25 @@ public class Term extends Activity implements UpdateCallback {
 
             updatePrefs();
             mViewFlipper.resumeCurrentView();
+        }
+    }
+
+    private void populateWindowList() {
+        if (mActionBar == null) {
+            // Not needed
+            return;
+        }
+
+        if (mTermSessions != null) {
+            if (mWinListAdapter == null) {
+                WindowListAdapter adapter = new WindowListActionBarAdapter(mTermSessions);
+                mWinListAdapter = adapter;
+                mTermSessions.addCallback(adapter);
+                mViewFlipper.addCallback(adapter);
+                mActionBar.setListNavigationCallbacks(mWinListAdapter, mWinListItemSelected);
+            } else {
+                mWinListAdapter.setSessions(mTermSessions);
+            }
         }
     }
 
@@ -321,6 +390,10 @@ public class Term extends Activity implements UpdateCallback {
 
         if (mTermSessions != null) {
             mTermSessions.addCallback(this);
+            if (mWinListAdapter != null) {
+                mTermSessions.addCallback(mWinListAdapter);
+                mViewFlipper.addCallback(mWinListAdapter);
+            }
         }
         if (mTermSessions != null && mTermSessions.size() < mViewFlipper.getChildCount()) {
             for (int i = 0; i < mViewFlipper.getChildCount(); ++i) {
@@ -352,6 +425,10 @@ public class Term extends Activity implements UpdateCallback {
         mViewFlipper.pauseCurrentView();
         if (mTermSessions != null) {
             mTermSessions.removeCallback(this);
+            if (mWinListAdapter != null) {
+                mTermSessions.removeCallback(mWinListAdapter);
+                mViewFlipper.removeCallback(mWinListAdapter);
+            }
         }
 
         if (AndroidCompat.SDK < 5) {
@@ -388,6 +465,11 @@ public class Term extends Activity implements UpdateCallback {
         EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
         if (v != null) {
             v.updateSize(true);
+        }
+
+        if (mWinListAdapter != null) {
+            // Force Android to redraw the label in the navigation dropdown
+            mWinListAdapter.notifyDataSetChanged();
         }
     }
 

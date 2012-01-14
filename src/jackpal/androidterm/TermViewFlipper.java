@@ -17,6 +17,7 @@
 package jackpal.androidterm;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -24,9 +25,12 @@ import android.view.View;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import jackpal.androidterm.model.UpdateCallback;
+
 public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     private Context context;
     private Toast mToast;
+    private LinkedList<UpdateCallback> callbacks;
 
     class ViewFlipperIterator implements Iterator<View> {
         int pos = 0;
@@ -47,15 +51,31 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     public TermViewFlipper(Context context) {
         super(context);
         this.context = context;
+        callbacks = new LinkedList<UpdateCallback>();
     }
 
     public TermViewFlipper(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
+        callbacks = new LinkedList<UpdateCallback>();
     }
 
     public Iterator<View> iterator() {
         return new ViewFlipperIterator();
+    }
+
+    public void addCallback(UpdateCallback callback) {
+        callbacks.add(callback);
+    }
+
+    public void removeCallback(UpdateCallback callback) {
+        callbacks.remove(callback);
+    }
+
+    private void notifyChange() {
+        for (UpdateCallback callback : callbacks) {
+            callback.onUpdate();
+        }
     }
 
     public void pauseCurrentView() {
@@ -93,6 +113,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         super.showPrevious();
         showTitle();
         resumeCurrentView();
+        notifyChange();
     }
 
     @Override
@@ -101,6 +122,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         super.showNext();
         showTitle();
         resumeCurrentView();
+        notifyChange();
     }
 
     @Override
@@ -109,5 +131,6 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         super.setDisplayedChild(position);
         showTitle();
         resumeCurrentView();
+        notifyChange();
     }
 }
