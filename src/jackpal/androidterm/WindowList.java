@@ -42,47 +42,6 @@ public class WindowList extends ListActivity {
     private WindowListAdapter mWindowListAdapter;
     private TermService mTermService;
 
-    class WindowListAdapter extends BaseAdapter implements UpdateCallback {
-        private LayoutInflater inflater = getLayoutInflater();
-
-        public int getCount() {
-            return sessions.size();
-        }
-
-        public Object getItem(int position) {
-            return sessions.get(position);
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View child = inflater.inflate(R.layout.window_list_item, parent, false);
-            TextView label = (TextView) child.findViewById(R.id.window_list_label);
-            label.setText(getString(R.string.window_title, position + 1));
-
-            View close = child.findViewById(R.id.window_list_close);
-            final TermService service = mTermService;
-            final int closePosition = position;
-            close.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    TermSession session = service.getSessions().remove(closePosition);
-                    if (session != null) {
-                        session.finish();
-                        notifyDataSetChanged();
-                    }
-                }
-            });
-
-            return child;
-        }
-
-        public void onUpdate() {
-            notifyDataSetChanged();
-        }
-    }
-
     /**
      * View which isn't automatically in the pressed state if its parent is
      * pressed.  This allows the window's entry to be pressed without the close
@@ -151,6 +110,9 @@ public class WindowList extends ListActivity {
         if (sessions != null) {
             sessions.removeCallback(mWindowListAdapter);
         }
+        if (mWindowListAdapter != null) {
+            mWindowListAdapter.setSessions(null);
+        }
         unbindService(mTSConnection);
     }
 
@@ -158,11 +120,11 @@ public class WindowList extends ListActivity {
         sessions = mTermService.getSessions();
 
         if (mWindowListAdapter == null) {
-            WindowListAdapter adapter = new WindowListAdapter();
+            WindowListAdapter adapter = new WindowListAdapter(sessions);
             setListAdapter(adapter);
             mWindowListAdapter = adapter;
         } else {
-            mWindowListAdapter.notifyDataSetChanged();
+            mWindowListAdapter.setSessions(sessions);
         }
         sessions.addCallback(mWindowListAdapter);
     }
