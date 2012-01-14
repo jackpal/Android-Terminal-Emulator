@@ -17,8 +17,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="TermPreferences"/>
-        <activity android:name="WindowList"/>
+        <activity android:name="TermPreferences"
+                android:label="@string/preferences" />
+        <activity android:name="WindowList"
+                android:label="@string/window_list" />
         <service android:name="TermService" />
     </application>
     <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="10" />

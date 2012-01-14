@@ -127,8 +127,6 @@ public class WindowList extends ListActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        setTitle(R.string.window_list);
-
         ListView listView = getListView();
         View newWindow = getLayoutInflater().inflate(R.layout.window_list_new_window, listView, false);
         listView.addHeaderView(newWindow, null, true);
