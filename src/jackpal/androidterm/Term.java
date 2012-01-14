@@ -111,11 +111,21 @@ public class Term extends Activity implements UpdateCallback {
         }
     };
 
+    private boolean mHaveFullHwKeyboard = false;
+
     private class EmulatorViewGestureListener extends SimpleOnGestureListener {
         private EmulatorView view;
 
         public EmulatorViewGestureListener(EmulatorView view) {
             this.view = view;
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            if (!mHaveFullHwKeyboard) {
+                doToggleSoftKeyboard();
+            }
+            return true;
         }
 
         @Override
@@ -161,6 +171,8 @@ public class Term extends Activity implements UpdateCallback {
             wifiLockMode = WIFI_MODE_FULL_HIGH_PERF;
         }
         mWifiLock = wm.createWifiLock(wifiLockMode, TermDebug.LOG_TAG);
+
+        mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
 
         updatePrefs();
         mAlreadyStarted = true;
@@ -340,9 +352,16 @@ public class Term extends Activity implements UpdateCallback {
         }.start();
     }
 
+    private boolean checkHaveFullHwKeyboard(Configuration c) {
+        return (c.keyboard == Configuration.KEYBOARD_QWERTY) &&
+            (c.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO);
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+
+        mHaveFullHwKeyboard = checkHaveFullHwKeyboard(newConfig);
 
         EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
         if (v != null) {
