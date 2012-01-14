@@ -752,7 +752,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         invalidate();
 
         return true;
-   }
+    }
 
     public void onSingleTapConfirmed(MotionEvent e) {
     }
