@@ -91,6 +91,8 @@ public class Term extends Activity implements UpdateCallback {
 
     private PowerManager.WakeLock mWakeLock;
     private WifiManager.WifiLock mWifiLock;
+    // Available on API 12 and later
+    private static final int WIFI_MODE_FULL_HIGH_PERF = 3;
 
     private boolean mBackKeyPressed;
 
@@ -128,7 +130,11 @@ public class Term extends Activity implements UpdateCallback {
         PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TermDebug.LOG_TAG);
         WifiManager wm = (WifiManager)getSystemService(Context.WIFI_SERVICE);
-        mWifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL, TermDebug.LOG_TAG);
+        int wifiLockMode = WifiManager.WIFI_MODE_FULL;
+        if (AndroidCompat.SDK >= 12) {
+            wifiLockMode = WIFI_MODE_FULL_HIGH_PERF;
+        }
+        mWifiLock = wm.createWifiLock(wifiLockMode, TermDebug.LOG_TAG);
 
         updatePrefs();
         mAlreadyStarted = true;
