@@ -51,9 +51,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.session.TermSession;
-import jackpal.androidterm.util.AndroidCompat;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 

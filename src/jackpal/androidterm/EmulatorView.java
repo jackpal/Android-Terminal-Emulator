@@ -46,12 +46,12 @@ import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 
+import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.model.TextRenderer;
 import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.session.TerminalEmulator;
 import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.session.TranscriptScreen;
-import jackpal.androidterm.util.AndroidCompat;
 import jackpal.androidterm.util.TermSettings;
 
 /**

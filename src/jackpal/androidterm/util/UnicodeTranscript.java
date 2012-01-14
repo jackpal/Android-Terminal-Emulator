@@ -18,6 +18,8 @@ package jackpal.androidterm.util;
 
 import android.util.Log;
 
+import jackpal.androidterm.compat.AndroidCharacterCompat;
+
 /**
  * A backing store for a TranscriptScreen.
  *
@@ -547,9 +549,9 @@ public class UnicodeTranscript {
 
         if (Character.charCount(codePoint) == 1) {
             // Android's getEastAsianWidth() only works for BMP characters
-            switch (AndroidCompat.AndroidCharacterComp.getEastAsianWidth((char) codePoint)) {
-            case AndroidCompat.AndroidCharacterComp.EAST_ASIAN_WIDTH_FULL_WIDTH:
-            case AndroidCompat.AndroidCharacterComp.EAST_ASIAN_WIDTH_WIDE:
+            switch (AndroidCharacterCompat.getEastAsianWidth((char) codePoint)) {
+            case AndroidCharacterCompat.EAST_ASIAN_WIDTH_FULL_WIDTH:
+            case AndroidCharacterCompat.EAST_ASIAN_WIDTH_WIDE:
                 return 2;
             }
         } else {
