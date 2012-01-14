@@ -27,6 +27,7 @@ import android.content.SharedPreferences;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -51,8 +52,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
 import jackpal.androidterm.compat.AndroidCompat;
+import jackpal.androidterm.compat.MenuItemCompat;
 import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.util.SessionList;
@@ -112,6 +115,8 @@ public class Term extends Activity implements UpdateCallback {
         }
     };
 
+    private ActionBarCompat mActionBar;
+
     private boolean mHaveFullHwKeyboard = false;
 
     private class EmulatorViewGestureListener extends SimpleOnGestureListener {
@@ -147,6 +152,15 @@ public class Term extends Activity implements UpdateCallback {
         }
     }
 
+    private EmulatorView.WindowSizeCallback mSizeCallback = new EmulatorView.WindowSizeCallback() {
+        public void onGetSize(Rect rect) {
+            if (mActionBar != null) {
+                // Fixed action bar takes space away from the EmulatorView
+                rect.top += mActionBar.getHeight();
+            }
+        }
+    };
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -161,6 +175,10 @@ public class Term extends Activity implements UpdateCallback {
             Log.w(TermDebug.LOG_TAG, "bind to service failed!");
         }
 
+        if (AndroidCompat.SDK >= 11) {
+            setTheme(R.style.Theme_Holo);
+        }
+
         setContentView(R.layout.term_activity);
         mViewFlipper = (TermViewFlipper) findViewById(VIEW_FLIPPER);
 
@@ -172,6 +190,8 @@ public class Term extends Activity implements UpdateCallback {
             wifiLockMode = WIFI_MODE_FULL_HIGH_PERF;
         }
         mWifiLock = wm.createWifiLock(wifiLockMode, TermDebug.LOG_TAG);
+
+        mActionBar = ActivityCompat.getActionBar(this);
 
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
 
@@ -251,6 +271,7 @@ public class Term extends Activity implements UpdateCallback {
         emulatorView.setLayoutParams(params);
 
         emulatorView.setExtGestureListener(new EmulatorViewGestureListener(emulatorView));
+        emulatorView.setWindowSizeCallback(mSizeCallback);
         registerForContextMenu(emulatorView);
 
         return emulatorView;
@@ -373,6 +394,8 @@ public class Term extends Activity implements UpdateCallback {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_new_window), MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+        MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_close_window), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 

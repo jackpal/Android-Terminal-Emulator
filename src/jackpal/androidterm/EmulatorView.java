@@ -215,8 +215,14 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private GestureDetector.OnGestureListener mExtGestureListener;
     private float mScrollRemainder;
     private TermKeyListener mKeyListener;
+    private WindowSizeCallback mSizeCallback;
 
     private String mImeBuffer = "";
+
+    // Used by activity to inform us how much of the window belongs to us
+    public interface WindowSizeCallback {
+        public abstract void onGetSize(Rect rect);
+    }
 
     /**
      * Our message handler class. Implements a periodic callback.
@@ -614,6 +620,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         session.setProcessExitMessage(context.getString(R.string.process_exit_message));
     }
 
+    public void setWindowSizeCallback(WindowSizeCallback callback) {
+        mSizeCallback = callback;
+    }
+
     public void setExtGestureListener(GestureDetector.OnGestureListener listener) {
         mExtGestureListener = listener;
     }
@@ -965,6 +975,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (!mSettings.showStatusBar()) {
                     mVisibleRect.top = 0;
                 }
+            }
+            if (mSizeCallback != null) {
+                // Let activity adjust our size
+                mSizeCallback.onGetSize(mVisibleRect);
             }
             int w = mVisibleRect.width();
             int h = mVisibleRect.height();
