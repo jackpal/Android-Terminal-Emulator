@@ -51,6 +51,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import jackpal.androidterm.compat.ActivityCompat;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.session.TermSession;
@@ -673,6 +674,7 @@ public class Term extends Activity implements UpdateCallback {
         } else {
             mWakeLock.acquire();
         }
+        ActivityCompat.invalidateOptionsMenu(this);
     }
 
     private void doToggleWifiLock() {
@@ -681,5 +683,6 @@ public class Term extends Activity implements UpdateCallback {
         } else {
             mWifiLock.acquire();
         }
+        ActivityCompat.invalidateOptionsMenu(this);
     }
 }

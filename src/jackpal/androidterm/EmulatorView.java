@@ -41,6 +41,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.CompletionInfo;
+import android.view.inputmethod.CorrectionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
@@ -460,14 +461,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 return true;
             }
 
-            /** API Level 11, we are currently at API level 10, so don't use this.
             public boolean commitCorrection (CorrectionInfo correctionInfo) {
                 if (TermDebug.LOG_IME) {
                     Log.w(TAG, "commitCorrection");
                 }
                 return true;
             }
-            */
 
             public boolean commitText(CharSequence text, int newCursorPosition) {
                 if (TermDebug.LOG_IME) {

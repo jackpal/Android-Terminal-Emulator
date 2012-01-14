@@ -23,6 +23,6 @@
                 android:label="@string/window_list" />
         <service android:name="TermService" />
     </application>
-    <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="10" />
+    <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="11" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 </manifest>
