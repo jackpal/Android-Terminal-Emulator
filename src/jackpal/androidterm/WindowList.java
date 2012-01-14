@@ -26,6 +26,7 @@ import android.os.IBinder;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -33,6 +34,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import jackpal.androidterm.compat.ActionBarCompat;
+import jackpal.androidterm.compat.ActivityCompat;
+import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.util.SessionList;
@@ -91,6 +95,14 @@ public class WindowList extends ListActivity {
         listView.addHeaderView(newWindow, null, true);
 
         setResult(RESULT_CANCELED);
+
+        // Display up indicator on action bar home button
+        if (AndroidCompat.SDK >= 11) {
+            ActionBarCompat bar = ActivityCompat.getActionBar(this);
+            if (bar != null) {
+                bar.setDisplayOptions(ActionBarCompat.DISPLAY_HOME_AS_UP, ActionBarCompat.DISPLAY_HOME_AS_UP);
+            }
+        }
     }
 
     @Override
@@ -135,5 +147,17 @@ public class WindowList extends ListActivity {
         data.putExtra(Term.EXTRA_WINDOW_ID, position-1);
         setResult(RESULT_OK, data);
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case ActionBarCompat.ID_HOME:
+            // Action bar home button selected
+            finish();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
