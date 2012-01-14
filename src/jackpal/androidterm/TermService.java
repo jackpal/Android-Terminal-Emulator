@@ -26,12 +26,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 
 import jackpal.androidterm.compat.ServiceForegroundCompat;
-import jackpal.androidterm.model.SessionFinishCallback;
 import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.util.SessionList;
 
-public class TermService extends Service implements SessionFinishCallback
+public class TermService extends Service implements TermSession.FinishCallback
 {
     /* Parallels the value of START_STICKY on API Level >= 5 */
     private static final int COMPAT_START_STICKY = 1;
