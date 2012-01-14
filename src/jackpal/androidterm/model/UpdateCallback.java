@@ -17,7 +17,7 @@
 package jackpal.androidterm.model;
 
 /**
- * Callback to be invoked when updates to a TermSession's transcript occur.
+ * Generic callback to be invoked to notify of updates.
  */
 public interface UpdateCallback {
     void onUpdate();
