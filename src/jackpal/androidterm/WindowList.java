@@ -25,20 +25,14 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
 import jackpal.androidterm.compat.AndroidCompat;
-import jackpal.androidterm.model.UpdateCallback;
-import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.util.SessionList;
 
 public class WindowList extends ListActivity {

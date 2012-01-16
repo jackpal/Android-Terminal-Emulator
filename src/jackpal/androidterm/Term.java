@@ -52,7 +52,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;

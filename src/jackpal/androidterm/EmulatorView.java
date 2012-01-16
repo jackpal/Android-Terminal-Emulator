@@ -32,14 +32,12 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.ClipboardManager;
-import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.CorrectionInfo;
 import android.view.inputmethod.EditorInfo;
@@ -806,6 +804,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     }
 
+    @SuppressWarnings("deprecation")
     private boolean onTouchEventWhileSelectingText(MotionEvent ev) {
         int action = ev.getAction();
         int cx = (int)(ev.getX() / mCharacterWidth);

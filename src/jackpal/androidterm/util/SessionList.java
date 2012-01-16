@@ -27,6 +27,7 @@ import jackpal.androidterm.session.TermSession;
  * An ArrayList of TermSessions which allows users to register callbacks in
  * order to be notified when the list is changed.
  */
+@SuppressWarnings("serial")
 public class SessionList extends ArrayList<TermSession>
 {
     LinkedList<UpdateCallback> callbacks = new LinkedList<UpdateCallback>();

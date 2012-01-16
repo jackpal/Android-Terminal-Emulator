@@ -22,11 +22,9 @@ import android.os.IBinder;
 import android.content.Intent;
 import android.util.Log;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 
 import jackpal.androidterm.compat.ServiceForegroundCompat;
-import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.util.SessionList;
 
@@ -76,7 +74,7 @@ public class TermService extends Service implements TermSession.FinishCallback
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
         notification.setLatestEventInfo(this, getText(R.string.application_terminal), getText(R.string.service_notify_text), pendingIntent);
         compat.startForeground(RUNNING_NOTIFICATION, notification);
-        
+
         Log.d(TermDebug.LOG_TAG, "TermService started");
         return;
     }
