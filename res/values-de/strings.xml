@@ -26,6 +26,8 @@
    <string name="send_email">Email an</string>
    <string name="special_keys">Spezialtasten</string>
    <string name="toggle_soft_keyboard">Tastatur an/aus</string>
+	
+   <string name="reset_toast_notification">Der Status dieses Terminalfensters wurde zurückgesetzt.</string>
 
    <string name="enable_wakelock">Take WakeLock</string>
    <string name="disable_wakelock">Drop WakeLock</string>
