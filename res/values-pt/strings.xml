@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+* Copyright (C) 2008 The Android Open Source Project
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
 -->
 <resources>
    <string name="application_terminal">Terminal Emulator</string>
@@ -27,8 +27,8 @@
    <string name="special_keys">Special keys</string>
    <string name="toggle_soft_keyboard">Toggle soft keyboard</string>
    
-   <string name="reset_toast_notification">This window\'s terminal state has been reset.</string>
-
+   <string name="reset_toast_notification">Estado d\'esta janela foi zerado.</string>
+   
    <string name="enable_wakelock">Take WakeLock</string>
    <string name="disable_wakelock">Drop WakeLock</string>
    <string name="enable_wifilock">Take WifiLock</string>
@@ -51,10 +51,6 @@
    <string name="title_statusbar_preference">Status bar</string>
    <string name="summary_statusbar_preference">Show/hide status bar.</string>
    <string name="dialog_title_statusbar_preference">Status bar</string>
-
-   <string name="title_actionbar_preference">Action bar</string>
-   <string name="summary_actionbar_preference">Choose the action bar\'s behavior (Android 3.0 and up).</string>
-   <string name="dialog_title_actionbar_preference">Action bar behavior</string>
 
    <string name="title_cursorstyle_preference">Cursor style</string>
    <string name="summary_cursorstyle_preference">Choose cursor style.</string>
@@ -113,11 +109,11 @@
 
    <string name="control_key_dialog_title">Control and Function Keys</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
-        actual control key key name. -->
+actual control key key name. -->
    <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
   <string name="control_key_dialog_control_disabled_text">No control key set.</string>
   <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
-       actual function key key name. -->
+actual function key key name. -->
   <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
   <string name="control_key_dialog_fn_disabled_text">No function key set.</string>
 
