@@ -52,6 +52,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
@@ -520,7 +521,9 @@ public class Term extends Activity implements UpdateCallback {
             startActivityForResult(new Intent(this, WindowList.class), REQUEST_CHOOSE_WINDOW);
         } else if (id == R.id.menu_reset) {
             doResetTerminal();
-            Toast.makeText(this,R.string.reset_toast_notification,Toast.LENGTH_SHORT).show();
+            Toast toast = Toast.makeText(this,R.string.reset_toast_notification,Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         } else if (id == R.id.menu_send_email) {
             doEmailTranscript();
         } else if (id == R.id.menu_special_keys) {

@@ -21,6 +21,7 @@ import java.util.LinkedList;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -101,6 +102,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         String title = context.getString(R.string.window_title, getDisplayedChild()+1);
         if (mToast == null) {
             mToast = Toast.makeText(context, title, Toast.LENGTH_SHORT);
+            mToast.setGravity(Gravity.CENTER, 0, 0);
         } else {
             mToast.setText(title);
         }
