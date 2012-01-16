@@ -166,6 +166,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private boolean mIsSelectingText = false;
 
+    private boolean mIsControlKeySent = false;
+    private boolean mIsFnKeySent = false;
+
 
     private float mDensity;
 
@@ -359,6 +362,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 } else {
                     mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, getKeypadApplicationMode());
                 }
+                clearSpecialKeyStatus();
             }
 
             public boolean beginBatchEdit() {
@@ -895,6 +899,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
 
         mKeyListener.keyUp(keyCode);
+        clearSpecialKeyStatus();
         return true;
     }
 
@@ -923,6 +928,17 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private boolean isSystemKey(int keyCode, KeyEvent event) {
         return event.isSystem();
+    }
+
+    private void clearSpecialKeyStatus() {
+        if (mIsControlKeySent) {
+            mIsControlKeySent = false;
+            mKeyListener.handleControlKey(false);
+        }
+        if (mIsFnKeySent) {
+            mIsFnKeySent = false;
+            mKeyListener.handleFnKey(false);
+        }
     }
 
     private void updateText() {
@@ -1066,6 +1082,16 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public String getSelectedText() {
         return mEmulator.getSelectedText(mSelX1, mSelY1, mSelX2, mSelY2);
+    }
+
+    public void sendControlKey() {
+        mIsControlKeySent = true;
+        mKeyListener.handleControlKey(true);
+    }
+
+    public void sendFnKey() {
+        mIsFnKeySent = true;
+        mKeyListener.handleFnKey(true);
     }
 }
 

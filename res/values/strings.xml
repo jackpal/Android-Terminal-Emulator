@@ -38,6 +38,8 @@
    <string name="select_text">Select text</string>
    <string name="copy_all">Copy all</string>
    <string name="paste">Paste</string>
+   <string name="send_control_key">Send control key</string>
+   <string name="send_fn_key">Send fn key</string>
 
    <string name="window_title">Window %1$d</string>
 
