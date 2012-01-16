@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.ServiceConnection;
@@ -518,7 +519,7 @@ public class Term extends Activity implements UpdateCallback {
         } else if (id == R.id.menu_new_window) {
             doCreateNewWindow();
         } else if (id == R.id.menu_close_window) {
-            doCloseWindow();
+            confirmCloseWindow();
         } else if (id == R.id.menu_window_list) {
             startActivityForResult(new Intent(this, WindowList.class), REQUEST_CHOOSE_WINDOW);
         } else if (id == R.id.menu_reset) {
@@ -558,6 +559,19 @@ public class Term extends Activity implements UpdateCallback {
 
         mViewFlipper.addView(view);
         mViewFlipper.setDisplayedChild(mViewFlipper.getChildCount()-1);
+    }
+
+    private void confirmCloseWindow() {
+        final AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setIcon(android.R.drawable.ic_dialog_alert);
+        b.setMessage(R.string.confirm_window_close_message);
+        b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int id) {
+               doCloseWindow();
+           }
+        });
+        b.setNegativeButton(android.R.string.no, null);
+        b.show();
     }
 
     private void doCloseWindow() {
