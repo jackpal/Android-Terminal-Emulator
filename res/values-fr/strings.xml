@@ -28,7 +28,7 @@
    <string name="special_keys">Touches spéciales</string>
    <string name="toggle_soft_keyboard">Afficher/Masquer Clavier</string>
    
-   <string name="reset_toast_notification">L\'état de cette fenêtre vient d\'être mis a défaut.</string>
+   <string name="reset_toast_notification">Etat de cette fenêtre par défaut.</string>
    
    <string name="enable_wakelock">Activer WakeLock</string>
    <string name="disable_wakelock">Désactiver WakeLock</string>
@@ -52,6 +52,10 @@
    <string name="title_statusbar_preference">Barre de statut</string>
    <string name="summary_statusbar_preference">Afficher/Masquer la barre de statut</string>
    <string name="dialog_title_statusbar_preference">Barre de statut</string>
+   
+   <string name="title_actionbar_preference">Barre d\'actions</string>
+   <string name="summary_actionbar_preference">Choisir le comportement de la barre d\'actions (A partir d\'Android 3.0)</string>
+   <string name="dialog_title_actionbar_preference">Barre d\'actions</string>
    
    <string name="title_cursorstyle_preference">Style du curseur</string>
    <string name="summary_cursorstyle_preference">Choisir le style du curseur</string>
@@ -109,4 +113,6 @@
    <string name="summary_close_window_on_process_exit_preference">Quitter le terminal en exécutant la commande exit</string>
    
    <string name="control_key_dialog_title">Touches Control et Fonction</string>
+   
+   <string name="confirm_window_close_message">Fermer cette fenêtre ?</string>
 </resources>
