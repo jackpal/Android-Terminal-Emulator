@@ -51,9 +51,13 @@
    <string name="summary_statusbar_preference">Die Statuszeile anzeigen/verbergen.</string>
    <string name="dialog_title_statusbar_preference">Statuszeile</string>
 
-   <string name="title_cursorstyle_preference">Aussehen Cursor</string>
+   <string name="title_actionbar_preference">Aktionsleiste</string>
+   <string name="summary_actionbar_preference">Wählen sie das Verhalten der Aktionsleiste (ab Android 3.0).</string>
+   <string name="dialog_title_actionbar_preference">Verhalten der Aktionsleiste</string>
+   
+   <string name="title_cursorstyle_preference">Aussehen des Cursor</string>
    <string name="summary_cursorstyle_preference">Das Aussehen des Cursors auswählen.</string>
-   <string name="dialog_title_cursorstyle_preference">Aussehen Cursor</string>
+   <string name="dialog_title_cursorstyle_preference">Aussehen des Cursor</string>
 
    <string name="title_cursorblink_preference">Cursor-Blinken</string>
    <string name="summary_cursorblink_preference">Die Art auswählen, wie der Cursor blinken soll.</string>
@@ -116,4 +120,5 @@
   <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
   <string name="control_key_dialog_fn_disabled_text">Keine Funktionstaste fergelegt.</string>
 
+  <string name="confirm_window_close_message">Dieses Fenster schliessen?</string>
 </resources>

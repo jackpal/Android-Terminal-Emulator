@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* Copyright (C) 2008 The Android Open Source Project
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">Terminal Emulator</string>
+   <string name="preferences">Preferencias</string>
+   <string name="new_window">Nova janela</string>
+   <string name="close_window">Fechar janela</string>
+   <string name="window_list">Janelas</string>
+   <string name="prev_window">Janela anterior</string>
+   <string name="next_window">Próxima janela</string>
+   <string name="reset">Zerar term</string>
+   <string name="send_email">Email para</string>
+   <string name="special_keys">Teclas especias</string>
+   <string name="toggle_soft_keyboard">Alternar teclado virtual</string>
+   
+   <string name="reset_toast_notification">Estado desta janela foi zerado.</string>
+   
+   <string name="enable_wakelock">Take WakeLock</string>
+   <string name="disable_wakelock">Drop WakeLock</string>
+   <string name="enable_wifilock">Take WifiLock</string>
+   <string name="disable_wifilock">Drop WifiLock</string>
+
+   <string name="edit_text">Editar texto</string>
+   <string name="select_text">Selecionar texto</string>
+   <string name="copy_all">Copiar tudo</string>
+   <string name="paste">Colar</string>
+
+   <string name="window_title">Janela %1$d</string>
+
+   <string name="service_notify_text">Sessão terminal esta em execução</string>
+
+   <string name="process_exit_message">Sessão terminal terminou</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">Ecrã</string>
+
+   <string name="title_statusbar_preference">Barra de estado</string>
+   <string name="summary_statusbar_preference">Mostar/Ocultar barra de estado.</string>
+   <string name="dialog_title_statusbar_preference">Barra de estado</string>
+
+   <string name="title_actionbar_preference">Barra de ação</string>
+   <string name="summary_actionbar_preference">Escolha o comportamento da barra de ação (a partir de Android 3.0).</string>
+   <string name="dialog_title_actionbar_preference">Comportamento da barra de Ação</string>
+   
+   <string name="title_cursorstyle_preference">Estilo de cursor</string>
+   <string name="summary_cursorstyle_preference">Escolha o estilo de cursor.</string>
+   <string name="dialog_title_cursorstyle_preference">Estilo de cursor</string>
+
+   <string name="title_cursorblink_preference">Intermitência do cursor</string>
+   <string name="summary_cursorblink_preference">Escolha a intermitência do cursor.</string>
+   <string name="dialog_title_cursorblink_preference">Intermitência do cursor</string>
+
+   <string name="text_preferences">Texto</string>
+
+   <string name="title_utf8_by_default_preference">Mudar padrão para UTF-8</string>
+   <string name="summary_utf8_by_default_preference">Se UTF-8 é ativado por padrão.</string>
+
+   <string name="title_fontsize_preference">Tamanho dos caracteres</string>
+   <string name="summary_fontsize_preference">Escolha altura dos caracteres em pontos.</string>
+   <string name="dialog_title_fontsize_preference">Tamanho dos caracteres</string>
+
+   <string name="title_color_preference">Cores</string>
+   <string name="summary_color_preference">Escolha a cor do texto.</string>
+   <string name="dialog_title_color_preference">Cor do texto</string>
+
+   <string name="keyboard_preferences">Teclado</string>
+
+   <string name="title_backaction_preference">Botão voltar</string>
+   <string name="summary_backaction_preference">Escolha o que pressionar o botão de voltar faz.</string>
+   <string name="dialog_title_backaction_preference">Comportamento do botão voltar</string>
+
+   <string name="title_controlkey_preference">Tecla Control</string>
+   <string name="summary_controlkey_preference">Escolha tecla de controle.</string>
+   <string name="dialog_title_controlkey_preference">Tecla Control</string>
+
+   <string name="title_fnkey_preference">Tecla Fn</string>
+   <string name="summary_fnkey_preference">Escolha a tecla Fn.</string>
+   <string name="dialog_title_fnkey_preference">Tecla Fn</string>
+
+   <string name="title_ime_preference">Método de entrada</string>
+   <string name="summary_ime_preference">Escolha método de entrada para teclado virtual.</string>
+   <string name="dialog_title_ime_preference">Método de entrada</string>
+
+   <string name="shell_preferences">Shell</string>
+   <string name="title_shell_preference">Linha de comando</string>
+   <string name="summary_shell_preference">Especifique a linha de comando shell.</string>
+   <string name="dialog_title_shell_preference">Shell</string>
+
+   <string name="title_initialcommand_preference">Comando inicial</string>
+   <string name="summary_initialcommand_preference">Enviado para o shell quando é iniciado.</string>
+   <string name="dialog_title_initialcommand_preference">Comando inicial</string>
+
+   <string name="title_termtype_preference">Tipo de terminal</string>
+   <string name="summary_termtype_preference">Que tipo de terminal para informar o shell.</string>
+   <string name="dialog_title_termtype_preference">Tipo de terminal</string>
+
+   <string name="title_close_window_on_process_exit_preference">Fechar janela ao sair</string>
+   <string name="summary_close_window_on_process_exit_preference">Se uma janela deve se fechar quando sai do shell.</string>
+
+   <string name="control_key_dialog_title">Chaves de controle e função</string>
+   <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
+actual control key key name. -->
+   <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+  <string name="control_key_dialog_control_disabled_text">Nenhuma tecla de controlo definida.</string>
+  <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
+actual function key key name. -->
+  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
+  <string name="control_key_dialog_fn_disabled_text">Nenhuma tecla de função definida.</string>
+
+  <string name="confirm_window_close_message">Fechar esta janela?</string>
+</resources>
