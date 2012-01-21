@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm.model;
+package jackpal.androidterm.emulatorview;
 
 /**
  * An abstract screen interface. A terminal screen stores lines of text. (The

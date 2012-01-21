@@ -14,22 +14,39 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm;
+package jackpal.androidterm.emulatorview;
 
 /**
  * Debug settings.
  */
 
-public class TermDebug {
+public class EmulatorDebug {
     /**
      * Set to true to add debugging code and logging.
      */
     public static final boolean DEBUG = false;
 
     /**
+     * Set to true to log IME calls.
+     */
+    public static final boolean LOG_IME = DEBUG && false;
+
+    /**
+     * Set to true to log each character received from the remote process to the
+     * android log, which makes it easier to debug some kinds of problems with
+     * emulating escape sequences and control codes.
+     */
+    public static final boolean LOG_CHARACTERS_FLAG = DEBUG && false;
+
+    /**
+     * Set to true to log unknown escape sequences.
+     */
+    public static final boolean LOG_UNKNOWN_ESCAPE_SEQUENCES = DEBUG && false;
+
+    /**
      * The tag we use when logging, so that our messages can be distinguished
      * from other messages in the log. Public because it's used by several
      * classes.
      */
-    public static final String LOG_TAG = "Term";
+    public static final String LOG_TAG = "EmulatorView";
 }

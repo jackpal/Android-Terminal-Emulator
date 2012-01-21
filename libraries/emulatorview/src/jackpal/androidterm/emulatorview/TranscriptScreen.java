@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm.session;
+package jackpal.androidterm.emulatorview;
 
 import java.util.Arrays;
 
 import android.graphics.Canvas;
 import android.util.Log;
-
-import jackpal.androidterm.model.Screen;
-import jackpal.androidterm.model.TextRenderer;
-import jackpal.androidterm.util.UnicodeTranscript;
 
 /**
  * A TranscriptScreen is a screen that remembers data that's been scrolled. The
@@ -62,20 +58,21 @@ public class TranscriptScreen implements Screen {
      *        screen.
      */
     public TranscriptScreen(int columns, int totalRows, int screenRows,
-            int foreColor, int backColor) {
-        init(columns, totalRows, screenRows, foreColor, backColor);
+            ColorScheme scheme) {
+        init(columns, totalRows, screenRows, scheme.getForeColorIndex(), scheme.getBackColorIndex());
     }
 
     private void init(int columns, int totalRows, int screenRows, int foreColor, int backColor) {
         mColumns = columns;
         mTotalRows = totalRows;
         mScreenRows = screenRows;
+
         mData = new UnicodeTranscript(columns, totalRows, screenRows, foreColor, backColor);
         mData.blockSet(0, 0, mColumns, mScreenRows, ' ', foreColor, backColor);
-   }
+    }
 
-    public void setDefaultColors(int foreColor, int backColor) {
-        mData.setDefaultColors(foreColor, backColor);
+    public void setColorScheme(ColorScheme scheme) {
+        mData.setDefaultColors(scheme.getForeColorIndex(), scheme.getBackColorIndex());
     }
 
     public void finish() {

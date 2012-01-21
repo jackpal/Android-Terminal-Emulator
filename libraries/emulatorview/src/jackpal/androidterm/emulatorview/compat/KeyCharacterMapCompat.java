@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm.compat;
+package jackpal.androidterm.emulatorview.compat;
 
 import android.view.KeyCharacterMap;
 

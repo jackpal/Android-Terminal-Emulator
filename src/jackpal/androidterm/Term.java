@@ -54,12 +54,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import jackpal.androidterm.emulatorview.ColorScheme;
+import jackpal.androidterm.emulatorview.EmulatorView;
+import jackpal.androidterm.emulatorview.TermSession;
+import jackpal.androidterm.emulatorview.UpdateCallback;
+
 import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.compat.MenuItemCompat;
-import jackpal.androidterm.model.UpdateCallback;
-import jackpal.androidterm.session.TermSession;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
@@ -329,15 +332,25 @@ public class Term extends Activity implements UpdateCallback {
         finish();
     }
 
-    private TermSession createTermSession() {
-        String initialCommand = mSettings.getInitialCommand();
-        return new TermSession(mSettings, mTermService, initialCommand);
+    protected static TermSession createTermSession(Context context, TermSettings settings, String initialCommand) {
+        ShellTermSession session = new ShellTermSession(settings, initialCommand);
+        // XXX We should really be able to fetch this from within TermSession
+        session.setProcessExitMessage(context.getString(R.string.process_exit_message));
+
+        return session;
     }
 
-    private EmulatorView createEmulatorView(TermSession session) {
+    private TermSession createTermSession() {
+        TermSettings settings = mSettings;
+        TermSession session = createTermSession(this, settings, settings.getInitialCommand());
+        session.setFinishCallback(mTermService);
+        return session;
+    }
+
+    private TermView createEmulatorView(TermSession session) {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        EmulatorView emulatorView = new EmulatorView(this, session, metrics);
+        TermView emulatorView = new TermView(this, session, metrics);
 
         emulatorView.setExtGestureListener(new EmulatorViewGestureListener(emulatorView));
         emulatorView.setOnKeyListener(mBackKeyListener);
@@ -357,17 +370,21 @@ public class Term extends Activity implements UpdateCallback {
     private void updatePrefs() {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        ColorScheme colorScheme = new ColorScheme(mSettings.getColorScheme());
 
         mViewFlipper.updatePrefs(mSettings);
+
         for (View v : mViewFlipper) {
             ((EmulatorView) v).setDensity(metrics);
-            ((EmulatorView) v).updatePrefs(mSettings);
+            ((TermView) v).updatePrefs(mSettings);
         }
+
         if (mTermSessions != null) {
             for (TermSession session : mTermSessions) {
-                session.updatePrefs(mSettings);
+                ((ShellTermSession) session).updatePrefs(mSettings);
             }
         }
+
         {
             Window win = getWindow();
             WindowManager.LayoutParams params = win.getAttributes();
@@ -527,7 +544,7 @@ public class Term extends Activity implements UpdateCallback {
         TermSession session = createTermSession();
         mTermSessions.add(session);
 
-        EmulatorView view = createEmulatorView(session);
+        TermView view = createEmulatorView(session);
         view.updatePrefs(mSettings);
 
         mViewFlipper.addView(view);

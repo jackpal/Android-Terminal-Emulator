@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm.model;
+package jackpal.androidterm.emulatorview;
 
 /**
  * Generic callback to be invoked to notify of updates.

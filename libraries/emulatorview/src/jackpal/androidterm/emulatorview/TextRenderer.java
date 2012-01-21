@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm.model;
+package jackpal.androidterm.emulatorview;
 
 import android.graphics.Canvas;
 
