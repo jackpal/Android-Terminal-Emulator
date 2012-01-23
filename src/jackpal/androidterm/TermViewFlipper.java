@@ -27,6 +27,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import jackpal.androidterm.model.UpdateCallback;
+import jackpal.androidterm.util.TermSettings;
 
 public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     private Context context;
@@ -59,6 +60,11 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         super(context, attrs);
         this.context = context;
         callbacks = new LinkedList<UpdateCallback>();
+    }
+
+    public void updatePrefs(TermSettings settings) {
+        int[] colorScheme = settings.getColorScheme();
+        setBackgroundColor(colorScheme[3]);
     }
 
     public Iterator<View> iterator() {

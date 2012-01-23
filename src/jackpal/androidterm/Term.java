@@ -388,6 +388,7 @@ public class Term extends Activity implements UpdateCallback {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
+        mViewFlipper.updatePrefs(mSettings);
         for (View v : mViewFlipper) {
             ((EmulatorView) v).setDensity(metrics);
             ((EmulatorView) v).updatePrefs(mSettings);
