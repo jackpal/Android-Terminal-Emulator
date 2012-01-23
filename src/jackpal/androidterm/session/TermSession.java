@@ -51,6 +51,8 @@ public class TermSession {
     private FileDescriptor mTermFd;
     private FileOutputStream mTermOut;
     private FileInputStream mTermIn;
+    private String mInitialCommand;
+    private Thread mWatcherThread;
 
     private TranscriptScreen mTranscriptScreen;
     private TerminalEmulator mEmulator;
@@ -64,9 +66,6 @@ public class TermSession {
     private CharsetEncoder mUTF8Encoder;
 
     private String mProcessExitMessage;
-
-    private static final int DEFAULT_COLUMNS = 80;
-    private static final int DEFAULT_ROWS = 24;
 
     // Number of rows in the transcript
     private static final int TRANSCRIPT_ROWS = 10000;
@@ -107,14 +106,9 @@ public class TermSession {
         mProcId = processId[0];
         mTermOut = new FileOutputStream(mTermFd);
         mTermIn = new FileInputStream(mTermFd);
+        mInitialCommand = initialCommand;
 
-        int[] colorScheme = settings.getColorScheme();
-        mTranscriptScreen = new TranscriptScreen(DEFAULT_COLUMNS, TRANSCRIPT_ROWS, DEFAULT_ROWS, colorScheme[0], colorScheme[2]);
-        mEmulator = new TerminalEmulator(settings, mTranscriptScreen, DEFAULT_COLUMNS, DEFAULT_ROWS, mTermOut);
-
-        mIsRunning = true;
-
-        Thread watcher = new Thread() {
+        mWatcherThread = new Thread() {
              @Override
              public void run() {
                 Log.i(TermDebug.LOG_TAG, "waiting for: " + mProcId);
@@ -123,8 +117,7 @@ public class TermSession {
                 mMsgHandler.sendMessage(mMsgHandler.obtainMessage(PROCESS_EXITED, result));
              }
         };
-        watcher.setName("Process watcher");
-        watcher.start();
+        mWatcherThread.setName("Process watcher");
 
         mWriteCharBuffer = CharBuffer.allocate(2);
         mWriteByteBuffer = ByteBuffer.allocate(4);
@@ -157,9 +150,19 @@ public class TermSession {
             }
         };
         mPollingThread.setName("Input reader");
+    }
+
+    private void initializeEmulator(int columns, int rows) {
+        TermSettings settings = mSettings;
+        int[] colorScheme = settings.getColorScheme();
+        mTranscriptScreen = new TranscriptScreen(columns, TRANSCRIPT_ROWS, rows, colorScheme[0], colorScheme[2]);
+        mEmulator = new TerminalEmulator(settings, mTranscriptScreen, columns, rows, mTermOut);
+
+        mIsRunning = true;
+        mWatcherThread.start();
         mPollingThread.start();
 
-        sendInitialCommand(initialCommand);
+        sendInitialCommand(mInitialCommand);
     }
 
     private void sendInitialCommand(String initialCommand) {
@@ -277,7 +280,12 @@ public class TermSession {
     public void updateSize(int columns, int rows) {
         // Inform the attached pty of our new size:
         Exec.setPtyWindowSize(mTermFd, rows, columns, 0, 0);
-        mEmulator.updateSize(columns, rows);
+
+        if (mEmulator == null) {
+            initializeEmulator(columns, rows);
+        } else {
+            mEmulator.updateSize(columns, rows);
+        }
     }
 
     public String getTranscriptText() {
@@ -303,6 +311,11 @@ public class TermSession {
 
     public void updatePrefs(TermSettings settings) {
         mSettings = settings;
+        if (mEmulator == null) {
+            // Not initialized yet, we'll pick up the settings then
+            return;
+        }
+
         mEmulator.updatePrefs(settings);
 
         int[] colorScheme = settings.getColorScheme();

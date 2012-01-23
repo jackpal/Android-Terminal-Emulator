@@ -105,7 +105,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     /**
      * Text size. Zero means 4 x 8 font.
      */
-    private int mTextSize;
+    private int mTextSize = 10;
 
     private int mCursorStyle;
     private int mCursorBlink;
@@ -113,13 +113,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     /**
      * Foreground color.
      */
-    private int mForeground;
+    private int mForeground = TermSettings.WHITE;
     private int mForegroundIndex;
 
     /**
      * Background color.
      */
-    private int mBackground;
+    private int mBackground = TermSettings.BLACK;
     private int mBackgroundIndex;
 
     /**
@@ -619,10 +619,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         setFocusable(true);
         setFocusableInTouchMode(true);
 
-        initialize(session);
-        session.setUpdateCallback(mUpdateNotify);
+        mTermSession = session;
         // XXX We should really be able to fetch this from within TermSession
         session.setProcessExitMessage(context.getString(R.string.process_exit_message));
+
+        mKeyListener = new TermKeyListener(session);
     }
 
     public void setWindowSizeCallback(WindowSizeCallback callback) {
@@ -650,19 +651,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     /**
      * Call this to initialize the view.
-     *
-     * @param session The terminal session this view will be displaying
      */
-    private void initialize(TermSession session) {
-        mTermSession = session;
+    private void initialize() {
+        TermSession session = mTermSession;
+
+        updateText();
+
         mTranscriptScreen = session.getTranscriptScreen();
         mEmulator = session.getEmulator();
-
-        mKeyListener = new TermKeyListener(session);
-        mTextSize = 10;
-        mForeground = TermSettings.WHITE;
-        mBackground = TermSettings.BLACK;
-        updateText();
+        session.setUpdateCallback(mUpdateNotify);
 
         requestFocus();
     }
@@ -966,8 +963,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         if (!mKnownSize) {
             mKnownSize = true;
+            initialize();
+        } else {
+            updateSize(false);
         }
-        updateSize(false);
     }
 
     private void updateSize(int w, int h) {
@@ -1034,6 +1033,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             requestLayout();
             mRedoLayout = false;
         }
+
+        if (mEmulator == null) {
+            // Not ready yet
+            return;
+        }
+
         int w = getWidth();
         int h = getHeight();
 
