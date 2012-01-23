@@ -38,6 +38,7 @@ import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.CorrectionInfo;
 import android.view.inputmethod.EditorInfo;
@@ -211,6 +212,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             invalidate();
         }
     };
+
+    private boolean mRedoLayout = false;
 
     private GestureDetector mGestureDetector;
     private GestureDetector.OnGestureListener mExtGestureListener;
@@ -985,11 +988,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public void updateSize(boolean force) {
         if (mKnownSize) {
             getWindowVisibleDisplayFrame(mVisibleRect);
-            // Work around bug in getWindowVisibleDisplayFrame
-            if (AndroidCompat.SDK < 10) {
-                if (!mSettings.showStatusBar()) {
-                    mVisibleRect.top = 0;
-                }
+            /* Work around bug in getWindowVisibleDisplayFrame, and avoid
+               distracting visual glitch otherwise */
+            if (!mSettings.showStatusBar()) {
+                mVisibleRect.top = 0;
             }
             if (mSizeCallback != null) {
                 // Let activity adjust our size
@@ -1001,6 +1003,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             if (force || w != mVisibleWidth || h != mVisibleHeight) {
                 mVisibleWidth = w;
                 mVisibleHeight = h;
+
+                LayoutParams params = getLayoutParams();
+                params.width = w;
+                params.height = h;
+                setLayoutParams(params);
+                mRedoLayout = true;
+
                 updateSize(mVisibleWidth, mVisibleHeight);
             }
         }
@@ -1021,6 +1030,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     @Override
     protected void onDraw(Canvas canvas) {
         updateSize(false);
+        if (mRedoLayout) {
+            requestLayout();
+            mRedoLayout = false;
+        }
         int w = getWidth();
         int h = getHeight();
 
