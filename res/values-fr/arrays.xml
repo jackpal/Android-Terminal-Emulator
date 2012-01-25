@@ -21,6 +21,12 @@
         <item>Masquer la barre de statut</item>
     </string-array>
     
+    <string-array name="entries_actionbar_preference">
+        <!-- <item>Désactiver la barre d\'actions</item> -->
+        <item>Toujours afficher la barre d\'actions</item>
+        <item>Cacher la barre d\'actions (Touche Haut de l\'écran ou la touche Menu de l\'appareil pour afficher)</item>
+    </string-array>
+    
     <string-array name="entries_cursorblink_preference">
         <item>Curseur non clignotant</item>
         <item>Curseur clignotant</item>
