@@ -17,6 +17,11 @@
 <resources>
   <string name="application_terminal">Emulace terminálu</string>
   <string name="preferences">Nastavení</string>
+  <string name="new_window">Nové okno</string>
+  <string name="close_window">Zavřít okno</string>
+  <string name="window_list">Okna</string>
+  <string name="prev_window">Další okno</string>
+  <string name="next_window">Předchozí okno</string>
   <string name="reset">Obnovit term.</string>
   <string name="send_email">Poslat e-mailem</string>
   <string name="special_keys">Spec. klávesy</string>
@@ -80,4 +85,10 @@
   <string name="title_initialcommand_preference">Inicializace</string>
   <string name="summary_initialcommand_preference">Provést po spuštění shellu.</string>
   <string name="dialog_title_initialcommand_preference">Inicializace</string>
+
+  <string name="control_key_dialog_title">Ctrl a funkční klávesy</string>
+  <string name="control_key_dialog_control_text">CTRLKEY mezera : Ctrl-@ (NUL)\nCTRLKEY A..Z : Ctrl-A..Z\nCTRLKEY 5 : Ctrl-]\nCTRLKEY 6 : Ctrl-^\nCTRLKEY 7 : Ctrl-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+  <string name="control_key_dialog_control_disabled_text">Ctrl klávesy nenastaveny.</string>
+  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : nahoru\nFNKEY A : doleva\nFNKEY S : dolů\nFNKEY D : dopravat\nFNKEY P : stránka nahoru\nFNKEY N : stránka dolů\nFNKEY T : tabulátor\nFNKEY L : | (pipe)\nFNKEY U : _ (podtržítko)\nFNKEY E : Ctrl-[ (ESC)\nFNKEY X : smazat\nFNKEY I : vložit\nFNKEY H : domů\nFNKEY F : konec\nFNKEY . : Ctrl-\\\n</string>
+  <string name="control_key_dialog_fn_disabled_text">Funkční klávesy nenastaveny.</string>
 </resources>
