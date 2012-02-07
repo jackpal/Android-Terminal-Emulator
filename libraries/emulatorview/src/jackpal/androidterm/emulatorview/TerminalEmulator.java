@@ -326,6 +326,7 @@ class TerminalEmulator {
     private ByteBuffer mUTF8ByteBuffer;
     private CharBuffer mInputCharBuffer;
     private CharsetDecoder mUTF8Decoder;
+    private UpdateCallback mUTF8ModeNotify;
 
     /**
      * Construct a terminal emulator that uses the supplied screen
@@ -715,11 +716,11 @@ class TerminalEmulator {
     private void doEscPercent(byte b) {
         switch (b) {
         case '@': // Esc % @ -- return to ISO 2022 mode
-           mUTF8Mode = false;
+           setUTF8Mode(false);
            mUTF8EscapeUsed = true;
            break;
         case 'G': // Esc % G -- UTF-8 mode
-           mUTF8Mode = true;
+           setUTF8Mode(true);
            mUTF8EscapeUsed = true;
            break;
         default: // unimplemented character set
@@ -1548,7 +1549,7 @@ class TerminalEmulator {
         setDefaultTabStops();
         blockClear(0, 0, mColumns, mRows);
 
-        mUTF8Mode = mDefaultUTF8Mode;
+        setUTF8Mode(mDefaultUTF8Mode);
         mUTF8EscapeUsed = false;
         mUTF8ToFollow = 0;
         mUTF8ByteBuffer.clear();
@@ -1558,13 +1559,28 @@ class TerminalEmulator {
     public void setDefaultUTF8Mode(boolean defaultToUTF8Mode) {
         mDefaultUTF8Mode = defaultToUTF8Mode;
         if (!mUTF8EscapeUsed) {
-            if (mUTF8Mode && !defaultToUTF8Mode) {
-                mUTF8ToFollow = 0;
-                mUTF8ByteBuffer.clear();
-                mInputCharBuffer.clear();
-            }
-            mUTF8Mode = defaultToUTF8Mode;
+            setUTF8Mode(defaultToUTF8Mode);
         }
+    }
+
+    public void setUTF8Mode(boolean utf8Mode) {
+        if (utf8Mode && !mUTF8Mode) {
+            mUTF8ToFollow = 0;
+            mUTF8ByteBuffer.clear();
+            mInputCharBuffer.clear();
+        }
+        mUTF8Mode = utf8Mode;
+        if (mUTF8ModeNotify != null) {
+            mUTF8ModeNotify.onUpdate();
+        }
+    }
+
+    public boolean getUTF8Mode() {
+        return mUTF8Mode;
+    }
+
+    public void setUTF8ModeUpdateCallback(UpdateCallback utf8ModeNotify) {
+        mUTF8ModeNotify = utf8ModeNotify;
     }
 
     public void setColorScheme(ColorScheme scheme) {

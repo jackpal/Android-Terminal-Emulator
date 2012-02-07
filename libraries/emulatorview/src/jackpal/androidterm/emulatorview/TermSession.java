@@ -350,6 +350,31 @@ public class TermSession {
     }
 
     /**
+     * Get whether the terminal emulator is currently in UTF-8 mode.
+     *
+     * @return Whether the emulator is currently in UTF-8 mode.
+     */
+    public boolean getUTF8Mode() {
+        if (mEmulator == null) {
+            return mDefaultUTF8Mode;
+        } else {
+            return mEmulator.getUTF8Mode();
+        }
+    }
+
+    /**
+     * Set an {@link UpdateCallback} to be invoked when the terminal emulator
+     * goes into or out of UTF-8 mode.
+     *
+     * @param utf8ModeNotify The {@link UpdateCallback} to be invoked.
+     */
+    public void setUTF8ModeUpdateCallback(UpdateCallback utf8ModeNotify) {
+        if (mEmulator != null) {
+            mEmulator.setUTF8ModeUpdateCallback(utf8ModeNotify);
+        }
+    }
+
+    /**
      * Reset the terminal emulator's state.
      */
     public void reset() {

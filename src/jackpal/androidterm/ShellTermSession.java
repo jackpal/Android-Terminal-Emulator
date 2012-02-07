@@ -30,6 +30,7 @@ import android.util.Log;
 
 import jackpal.androidterm.emulatorview.ColorScheme;
 import jackpal.androidterm.emulatorview.TermSession;
+import jackpal.androidterm.emulatorview.UpdateCallback;
 
 import jackpal.androidterm.compat.FileCompat;
 import jackpal.androidterm.util.TermSettings;
@@ -65,6 +66,12 @@ public class ShellTermSession extends TermSession {
             if (msg.what == PROCESS_EXITED) {
                 onProcessExit((Integer) msg.obj);
             }
+        }
+    };
+
+    private UpdateCallback mUTF8ModeNotify = new UpdateCallback() {
+        public void onUpdate() {
+            Exec.setPtyUTF8Mode(mTermFd, getUTF8Mode());
         }
     };
 
@@ -130,6 +137,10 @@ public class ShellTermSession extends TermSession {
     @Override
     public void initializeEmulator(int columns, int rows) {
         super.initializeEmulator(columns, rows);
+
+        Exec.setPtyUTF8Mode(mTermFd, getUTF8Mode());
+        setUTF8ModeUpdateCallback(mUTF8ModeNotify);
+
         mWatcherThread.start();
         sendInitialCommand(mInitialCommand);
     }
