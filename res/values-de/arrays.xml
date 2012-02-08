@@ -46,9 +46,9 @@
   </string-array>
 
   <string-array name="entries_color_preference">
-    <item>Schwarzer Text auf weiss</item>
-    <item>Weisser Text auf schwarz</item>
-    <item>Weisser Text auf blau</item>
+    <item>Schwarzer Text auf weiß</item>
+    <item>Weißer Text auf schwarz</item>
+    <item>Weißer Text auf blau</item>
     <item>Grüner Text auf schwarz</item>
     <item>Oranger Text auf schwarz</item>
     <item>Roter Text auf schwarz</item>
@@ -77,5 +77,27 @@
   <string-array name="entries_ime_preference">
     <item>Zeichen-basiert</item>
     <item>Wort-basiert</item>
+  </string-array>
+
+  <string-array name="control_keys_short_names">
+    <item>Ball</item>
+    <item>\@</item>
+    <item>Alt-L</item>
+    <item>Alt-R</item>
+    <item>Lauter</item>
+    <item>Leiser</item>
+    <item>Kamera</item>
+    <item>Kein</item>
+  </string-array>
+
+  <string-array name="fn_keys_short_names">
+    <item>Ball</item>
+    <item>\@</item>
+    <item>Alt-L</item>
+    <item>Alt-R</item>
+    <item>Lauter</item>
+    <item>Leiser</item>
+    <item>Camera</item>
+    <item>Kein</item>
   </string-array>
 </resources>

@@ -17,6 +17,11 @@
 <resources>
   <string name="application_terminal">Terminal Emulator</string>
   <string name="preferences">Einstellungen</string>
+  <string name="new_window">Neues Fenster</string>
+  <string name="close_window">Fenster schließen</string>
+  <string name="window_list">Fenster</string>
+  <string name="prev_window">Vorheriges Fenster</string>
+  <string name="next_window">Nächstes Fenster</string>
   <string name="reset">Zurücksetzen</string>
   <string name="send_email">E-Mail an</string>
   <string name="special_keys">Spezialtasten</string>
@@ -81,4 +86,14 @@
   <string name="title_initialcommand_preference">Startkommando</string>
   <string name="summary_initialcommand_preference">Kommando eingeben, dass beim Start an die Shell gesendet wird.</string>
   <string name="dialog_title_initialcommand_preference">Startkommando</string>
+
+  <string name="control_key_dialog_title">Steuer- und Funktionstasten</string>
+  <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
+        actual control key key name. -->
+  <string name="control_key_dialog_control_text">CTRLKEY Leertaste : Strg-@ (NUL)\nCTRLKEY A..Z : Strg-A..Z\nCTRLKEY 5 : Strg-]\nCTRLKEY 6 : Strg-^\nCTRLKEY 7 : Strg-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+  <string name="control_key_dialog_control_disabled_text">Keine Steuertasten gesetzt.</string>
+  <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
+       actual function key key name. -->
+  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Oben\nFNKEY A : Links\nFNKEY S : Unten\nFNKEY D : Rechts\nFNKEY P : Seite nach oben\nFNKEY N : Seite nach unten\nFNKEY T : Tab\nFNKEY L : | (Pipe)\nFNKEY U : _ (Unterstrich)\nFNKEY E : Escape\nFNKEY X : Entfernen\nFNKEY I : Einfügen\nFNKEY H : Home\nFNKEY F : Ende\nFNKEY . : Strg-\\\n</string>
+  <string name="control_key_dialog_fn_disabled_text">Keine Funktionstasten gesetzt.</string>
 </resources>
