@@ -17,28 +17,30 @@
 <resources>
    <!-- == Interface == -->
    <string name="application_terminal">Terminal Emulator</string>
-   <string name="preferences">Préférences</string>
+   <string name="preferences">Paramètres</string>
    <string name="new_window">Nouvelle fenêtre</string>
    <string name="close_window">Fermer fenêtre</string>
    <string name="window_list">Fenêtre</string>
-   <string name="prev_window">Fenêtre Prec.</string>
+   <string name="prev_window">Fenêtre Préc.</string>
    <string name="next_window">Fenêtre Suiv.</string>
    <string name="reset">Terminal par défaut</string>
    <string name="send_email">Envoyer par e-mail</string>
    <string name="special_keys">Touches spéciales</string>
    <string name="toggle_soft_keyboard">Afficher/Masquer Clavier</string>
    
-   <string name="reset_toast_notification">Etat de cette fenêtre par défaut.</string>
+   <string name="reset_toast_notification">État de cette fenêtre par défaut.</string>
    
-   <string name="enable_wakelock">Activer WakeLock</string>
-   <string name="disable_wakelock">Désactiver WakeLock</string>
-   <string name="enable_wifilock">Activer WifiLock</string>
-   <string name="disable_wifilock">Désactiver WifiLock</string>
+   <string name="enable_wakelock">Bloquer la mise en veille</string>
+   <string name="disable_wakelock">Débloquer la mise en veille</string>
+   <string name="enable_wifilock">Bloquer le Wifi</string>
+   <string name="disable_wifilock">Débloquer le Wifi</string>
    
    <string name="edit_text">Modifier le texte</string>
    <string name="select_text">Selectionner le texte</string>
    <string name="copy_all">Tout copier</string>
    <string name="paste">Coller</string>
+   <string name="send_control_key">Touche Control</string>
+   <string name="send_fn_key">Touche Fonction</string>
    
    <string name="window_title">Fenêtre %1$d</string>
    
@@ -54,7 +56,7 @@
    <string name="dialog_title_statusbar_preference">Barre de statut</string>
    
    <string name="title_actionbar_preference">Barre d\'actions</string>
-   <string name="summary_actionbar_preference">Choisir le comportement de la barre d\'actions (A partir d\'Android 3.0)</string>
+   <string name="summary_actionbar_preference">Choisir le comportement de la barre d\'actions (À partir d\'Android 3.0)</string>
    <string name="dialog_title_actionbar_preference">Barre d\'actions</string>
    
    <string name="title_cursorstyle_preference">Style du curseur</string>
@@ -113,6 +115,12 @@
    <string name="summary_close_window_on_process_exit_preference">Quitter le terminal en exécutant la commande exit</string>
    
    <string name="control_key_dialog_title">Touches Control et Fonction</string>
+   <!-- Le mot CTRLKEY ne doit pas être traduit. Il sera remplacé par la touche CTRL renseignée dans les paramètres -->
+   <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+   <string name="control_key_dialog_control_disabled_text">Touche Control non paramètrées.</string>
+   <!-- Le mot FNKEY ne doit pas être traduit. Il sera remplacé par la touche Fn renseignée dans les paramètres -->
+   <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Haut\nFNKEY A : Gauche\nFNKEY S : Bas\nFNKEY D : Droite\nFNKEY P : PageHaut\nFNKEY N : PageBas\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Suppr.\nFNKEY I : Inser.\nFNKEY H : Début\nFNKEY F : Fin\nFNKEY . : Control-\\\n</string>
+   <string name="control_key_dialog_fn_disabled_text">Touche fonction non paramètrées.</string>
    
    <string name="confirm_window_close_message">Fermer cette fenêtre ?</string>
 </resources>
