@@ -44,13 +44,14 @@
     </string-array>
 
     <string-array name="entries_controlkey_preference">
-        <item>Jog ball</item>
+        <item>Трекбол</item>
         <item>Клавиша \@</item>
         <item>Левый Alt</item>
         <item>Правый Alt</item>
         <item>Громкость вверх</item>
         <item>Громкость вниз</item>
         <item>Кнопка камеры</item>
+        <item>Нет</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
@@ -70,13 +71,38 @@
     </string-array>
 
     <string-array name="entries_fnkey_preference">
-        <item>Jog ball</item>
+        <item>Трекбол</item>
         <item>Клавиша \@</item>
         <item>Левый Alt</item>
         <item>Правый Alt</item>
         <item>Громкость вверх</item>
         <item>Громкость вниз</item>
         <item>Кнопка камеры</item>
+        <item>Нет</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
+    <string-array name="control_keys_short_names">
+        <item>Трекбол</item>
+        <item>Клавиша \@</item>
+        <item>Левый Alt</item>
+        <item>Правый Alt</item>
+        <item>Громкость вверх</item>
+        <item>Громкость вниз</item>
+        <item>Кнопка камеры</item>
+        <item>Нет</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
+    <string-array name="fn_keys_short_names">
+        <item>Трекбол</item>
+        <item>Клавиша \@</item>
+        <item>Левый Alt</item>
+        <item>Правый Alt</item>
+        <item>Громкость вверх</item>
+        <item>Громкость вниз</item>
+        <item>Кнопка камеры</item>
+        <item>Нет</item>
     </string-array>
 
 </resources>
