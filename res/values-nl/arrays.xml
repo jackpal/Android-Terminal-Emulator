@@ -17,7 +17,7 @@
 
 <resources>
     <string-array name="entries_statusbar_preference">
-        <item>Geef statusbalk weer</item>
+        <item>Toon statusbalk</item>
         <item>Verberg statusbalk</item>
     </string-array>
 
@@ -34,15 +34,15 @@
 
     <string-array name="entries_fontsize_preference">
         <item>4 x 8 pixels</item>
-        <item>6 pt</item>
-        <item>7 pt</item>
-        <item>8 pt</item>
-        <item>9 pt</item>
-        <item>10 pt</item>
-        <item>12 pt</item>
-        <item>14 pt</item>
-        <item>16 pt</item>
-        <item>20 pt</item>
+        <item>6 pt.</item>
+        <item>7 pt.</item>
+        <item>8 pt.</item>
+        <item>9 pt.</item>
+        <item>10 pt.</item>
+        <item>12 pt.</item>
+        <item>14 pt.</item>
+        <item>16 pt.</item>
+        <item>20 pt.</item>
     </string-array>
 
     <string-array name="entries_color_preference">
@@ -56,16 +56,50 @@
 
     <string-array name="entries_controlkey_preference">
         <item>Trackball</item>
-        <item>\@ knop</item>
-        <item>Linker Alt knop</item>
-        <item>Rechter Alt knop</item>
-        <item>Volume omhoog knop</item>
-        <item>Volume omlaag knop</item>
-        <item>Camera knop</item>
+        <item>\@-knop</item>
+        <item>Linker Alt-knop</item>
+        <item>Rechter Alt-knop</item>
+        <item>Volume omhoog-knop</item>
+        <item>Volume omlaag-knop</item>
+        <item>Cameraknop</item>
+        <item>Geen</item>
+    </string-array>
+
+    <string-array name="entries_fnkey_preference">
+        <item>Trackball</item>
+        <item>\@-knop</item>
+        <item>Linker Alt-knop</item>
+        <item>Rechter Alt-knop</item>
+        <item>Volume omhoog-knop</item>
+        <item>Volume omlaag-knop</item>
+        <item>Cameraknop</item>
+        <item>Geen</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
-        <item>Karakter gebasseerd</item>
-        <item>Woord gebasseerd</item>
+        <item>Karaktergebaseerd</item>
+        <item>Woordgebaseerd</item>
+    </string-array>
+
+    <string-array name="control_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Alt-links</item>
+        <item>Alt-rechts</item>
+        <item>Volume+</item>
+        <item>Volume-</item>
+        <item>Camera</item>
+        <item>Geen</item>
+    </string-array>
+
+    <string-array name="fn_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Alt-links</item>
+        <item>Alt-rechts</item>
+        <item>Volume+</item>
+        <item>Volume-</item>
+        <item>Camera</item>
+        <item>Geen</item>
     </string-array>
 </resources>
