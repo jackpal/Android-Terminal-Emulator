@@ -17,6 +17,11 @@
 <resources>
    <string name="application_terminal">Эмулятор Терминала</string>
    <string name="preferences">Настройки</string>
+   <string name="new_window">Новое окно</string>
+   <string name="close_window">Закрыть окно</string>
+   <string name="window_list">Окна</string>
+   <string name="prev_window">Пред. окно</string>
+   <string name="next_window">След. окно</string>
    <string name="reset">Сбросить терм.</string>
    <string name="send_email">Отправит Email</string>
    <string name="special_keys">Специальные клавиши</string>
@@ -64,4 +69,9 @@
    <string name="title_initialcommand_preference">Команды запуска</string>
    <string name="summary_initialcommand_preference">Передаются облочке при запуске терминала.</string>
    <string name="dialog_title_initialcommand_preference">Команды запуска</string>
+
+   <string name="control_key_dialog_title">Клавиши Control и Fn</string>
+  <string name="control_key_dialog_control_disabled_text">Клавиша Control не установлена.</string>
+  <string name="control_key_dialog_fn_disabled_text">Клавиша Fn не установлена.</string>
+
 </resources>
