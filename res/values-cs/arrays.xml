@@ -61,7 +61,8 @@
     <item>Klávesa pravý Alt</item>
     <item>Klávesa Hlas+</item>
     <item>Klávesa Hlas-</item>
-    <item>Klávesa kamery</item>
+    <item>Klávesa fotoaparátu</item>
+    <item>Žádná</item>
   </string-array>
 
   <string-array name="entries_fnkey_preference">
@@ -71,11 +72,34 @@
     <item>Klávesa pravý Alt</item>
     <item>Klávesa Hlas+</item>
     <item>Klávesa Hlas-</item>
-    <item>Klávesa kamery</item>
+    <item>Klávesa fotoaparátu</item>
+    <item>Žádná</item>
   </string-array>
 
   <string-array name="entries_ime_preference">
     <item>Po znacích</item>
     <item>Po slovech</item>
+  </string-array>
+
+  <string-array name="control_keys_short_names">
+    <item>Kulička</item>
+    <item>\@</item>
+    <item>Levý Alt</item>
+    <item>Pravý Alt</item>
+    <item>Hlas+</item>
+    <item>Hlas-</item>
+    <item>Fotoaparát</item>
+    <item>Žádná</item>
+  </string-array>
+
+  <string-array name="fn_keys_short_names">
+    <item>Kulička</item>
+    <item>\@</item>
+    <item>Levý Alt</item>
+    <item>Pravý Alt</item>
+    <item>Hlas+</item>
+    <item>Hlas-</item>
+    <item>Fotoaparát</item>
+    <item>Žádná</item>
   </string-array>
 </resources>
