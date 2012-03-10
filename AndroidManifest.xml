@@ -5,6 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <permission android:name="jackpal.androidterm.permission.RUN_SCRIPT"
+                android:label="@string/perm_run_script"
+                android:description="@string/permdesc_run_script"
+                android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
+                android:protectionLevel="dangerous" />
     <application android:icon="@drawable/app_terminal"
                 android:label="@string/application_terminal">
         <activity android:name="Term"
@@ -17,6 +22,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="RemoteInterface"
+                android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="jackpal.androidterm.OPEN_NEW_WINDOW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity-alias android:name="RunScript"
+                android:targetActivity="RemoteInterface"
+                android:permission="jackpal.androidterm.permission.RUN_SCRIPT">
+            <intent-filter>
+                <action android:name="jackpal.androidterm.RUN_SCRIPT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity-alias>
         <activity android:name="TermPreferences"
                 android:label="@string/preferences" />
         <activity android:name="WindowList"

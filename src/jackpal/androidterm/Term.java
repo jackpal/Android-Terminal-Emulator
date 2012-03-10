@@ -340,19 +340,7 @@ public class Term extends Activity implements UpdateCallback {
     }
 
     private TermSession createTermSession() {
-        /* Check whether we've received an initial command from the
-         * launching application
-         */
         String initialCommand = mSettings.getInitialCommand();
-        String iInitialCommand = getIntent().getStringExtra("jackpal.androidterm.iInitialCommand");
-        if (iInitialCommand != null) {
-            if (initialCommand != null) {
-                initialCommand += "\r" + iInitialCommand;
-            } else {
-                initialCommand = iInitialCommand;
-            }
-        }
-
         return new TermSession(mSettings, mTermService, initialCommand);
     }
 
@@ -625,6 +613,21 @@ public class Term extends Activity implements UpdateCallback {
                 }
             }
             break;
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (intent.getBooleanExtra(RemoteInterface.EXTRA_REMOTE_OPEN_WINDOW, false)) {
+            // New session was created, add an EmulatorView to match
+            SessionList sessions = mTermSessions;
+            int position = sessions.size() - 1;
+
+            TermSession session = sessions.get(position);
+            EmulatorView view = createEmulatorView(session);
+
+            mViewFlipper.addView(view);
+            onResumeSelectWindow = position;
         }
     }
 

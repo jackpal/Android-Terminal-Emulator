@@ -26,7 +26,7 @@
    <string name="send_email">Email to</string>
    <string name="special_keys">Special keys</string>
    <string name="toggle_soft_keyboard">Toggle soft keyboard</string>
-   
+
    <string name="reset_toast_notification">This window\'s terminal state has been reset.</string>
 
    <string name="enable_wakelock">Take WakeLock</string>
@@ -124,4 +124,7 @@
   <string name="control_key_dialog_fn_disabled_text">No function key set.</string>
 
   <string name="confirm_window_close_message">Close this window?</string>
+
+  <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>
+  <string name="permdesc_run_script">Allows application to open new windows in Android Terminal Emulator and run commands in those windows with all of Android Terminal Emulator\'s permissions, including access to the Internert and your SD Card.</string>
 </resources>
