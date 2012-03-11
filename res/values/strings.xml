@@ -126,5 +126,5 @@
   <string name="confirm_window_close_message">Close this window?</string>
 
   <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>
-  <string name="permdesc_run_script">Allows application to open new windows in Android Terminal Emulator and run commands in those windows with all of Android Terminal Emulator\'s permissions, including access to the Internert and your SD Card.</string>
+  <string name="permdesc_run_script">Allows application to open new windows in Android Terminal Emulator and run commands in those windows with all of Android Terminal Emulator\'s permissions, including access to the Internet and your SD Card.</string>
 </resources>
