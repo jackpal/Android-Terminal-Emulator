@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">Terminal Emulator</string>
+   <string name="preferences">Nastavení</string>
+   <string name="new_window">Nové okno</string>
+   <string name="close_window">Zavřít okno</string>
+   <string name="window_list">Okna</string>
+   <string name="prev_window">Predešlé okno</string>
+   <string name="next_window">Další okno</string>
+   <string name="reset">Reset terminálu</string>
+   <string name="send_email">Napiš email</string>
+   <string name="special_keys">Speciální znaky</string>
+   <string name="toggle_soft_keyboard">Přepnout soft. klávesnici</string>
+   
+   <string name="reset_toast_notification">Toto terminálové okno bylo restartováno.</string>
+
+   <string name="enable_wakelock">Zabránit uspání</string>
+   <string name="disable_wakelock">Povolit uspání</string>
+   <string name="enable_wifilock">Zabránit odpojení wifi</string>
+   <string name="disable_wifilock">Povolit odpojení wifi</string>
+
+   <string name="edit_text">Práce s textem</string>
+   <string name="select_text">Vybrat text</string>
+   <string name="copy_all">Kopírovat vše</string>
+   <string name="paste">Vložit</string>
+   <string name="send_control_key">Pošli klávesu control</string>
+   <string name="send_fn_key">Pošli klávesu fn</string>
+
+   <string name="window_title">Okno %1$d</string>
+
+   <string name="service_notify_text">Terminál je spuštěný</string>
+
+   <string name="process_exit_message">Terminál je ukončen</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">Obrazovka</string>
+
+   <string name="title_statusbar_preference">Stavový řádek</string>
+   <string name="summary_statusbar_preference">Zobrazit/skrýt stavový řádek.</string>
+   <string name="dialog_title_statusbar_preference">Stavový řádek</string>
+
+   <string name="title_actionbar_preference">Panel akcí</string>
+   <string name="summary_actionbar_preference">Vyberte chování panelu akcí (Android 3.0 a novější).</string>
+   <string name="dialog_title_actionbar_preference">Chování panelu akcí</string>
+
+   <string name="title_cursorstyle_preference">Styl kurzoru</string>
+   <string name="summary_cursorstyle_preference">Vyberte styl kurzoru.</string>
+   <string name="dialog_title_cursorstyle_preference">Styl kurzoru</string>
+
+   <string name="title_cursorblink_preference">Blikání kurzoru</string>
+   <string name="summary_cursorblink_preference">Vyberte chování kurzoru.</string>
+   <string name="dialog_title_cursorblink_preference">Blikání kurzoru</string>
+
+   <string name="text_preferences">Text</string>
+
+   <string name="title_utf8_by_default_preference">Výchozí formát UTF-8</string>
+   <string name="summary_utf8_by_default_preference">Nastavte formátování UTF-8 jako výchozí.</string>
+
+   <string name="title_fontsize_preference">Velikost písma</string>
+   <string name="summary_fontsize_preference">Vyberte velikost písma.</string>
+   <string name="dialog_title_fontsize_preference">Velikost písma</string>
+
+   <string name="title_color_preference">Barvy</string>
+   <string name="summary_color_preference">Vyberte barevné schéma terminálu.</string>
+   <string name="dialog_title_color_preference">Barva textu</string>
+
+   <string name="keyboard_preferences">Klávesnice</string>
+
+   <string name="title_backaction_preference">Chování tlačítka zpět</string>
+   <string name="summary_backaction_preference">Vyberte chování tlačítka zpět.</string>
+   <string name="dialog_title_backaction_preference">Chování tlačítka zpět</string>
+
+   <string name="title_controlkey_preference">Klávesa control</string>
+   <string name="summary_controlkey_preference">Vyberte tlačítko pro klávesu control.</string>
+   <string name="dialog_title_controlkey_preference">Klávesa control</string>
+
+   <string name="title_fnkey_preference">Klávesa Fn</string>
+   <string name="summary_fnkey_preference">Vyberte tlačítko pro klávesu Fn.</string>
+   <string name="dialog_title_fnkey_preference">Klávesa Fn</string>
+
+   <string name="title_ime_preference">Vstupní metoda</string>
+   <string name="summary_ime_preference">Vyberte vstupní metodu pro soft. klávesnici.</string>
+   <string name="dialog_title_ime_preference">Vstupní metoda</string>
+
+   <string name="shell_preferences">Shell</string>
+   <string name="title_shell_preference">Příkazový řádek</string>
+   <string name="summary_shell_preference">Nastavte příkazový řádek.</string>
+   <string name="dialog_title_shell_preference">Shell</string>
+
+   <string name="title_initialcommand_preference">Počáteční příkaz</string>
+   <string name="summary_initialcommand_preference">Nastavte počáteční příkaz po spuštění terminálu.</string>
+   <string name="dialog_title_initialcommand_preference">Počáteční příkaz</string>
+
+   <string name="title_termtype_preference">Typ terminálu</string>
+   <string name="summary_termtype_preference">Vyberte typ terminálu pro interpretaci příkazů.</string>
+   <string name="dialog_title_termtype_preference">Typ terminálu</string>
+
+   <string name="title_close_window_on_process_exit_preference">Zavřít okno při ukončení</string>
+   <string name="summary_close_window_on_process_exit_preference">Nastavte, zda má být okno zavřeno po ukončení shellu.</string>
+
+   <string name="control_key_dialog_title">Funkční klávesy a klávesa control</string>
+   <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
+        actual control key key name. -->
+   <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+  <string name="control_key_dialog_control_disabled_text">Není nastaveno žádné tlačitko pro control.</string>
+  <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
+       actual function key key name. -->
+  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
+  <string name="control_key_dialog_fn_disabled_text">Není nastaveno žádné tlačitko pro funkční klávesu.</string>
+
+  <string name="confirm_window_close_message">Zavřít okno?</string>
+</resources>
