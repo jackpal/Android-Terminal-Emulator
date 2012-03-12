@@ -19,6 +19,7 @@ package jackpal.androidterm.emulatorview;
 import android.util.Log;
 
 import jackpal.androidterm.emulatorview.compat.AndroidCharacterCompat;
+import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 
 /**
  * A backing store for a TranscriptScreen.
@@ -481,6 +482,16 @@ class UnicodeTranscript {
     }
 
     /**
+     * Minimum API version for which we're willing to let Android try
+     * rendering conjoining Hangul jamo as composed syllable blocks.
+     *
+     * This appears to work on Android 4.1.2, 4.3, and 4.4 (real devices only;
+     * the emulator's broken for some reason), but not on 4.0.4 -- hence the
+     * choice of API 16 as the minimum.
+     */
+    static final int HANGUL_CONJOINING_MIN_SDK = 16;
+
+    /**
      * Gives the display width of the code point in a monospace font.
      *
      * Nonspacing combining marks, format characters, and control characters
@@ -489,12 +500,12 @@ class UnicodeTranscript {
      *
      * Known issues:
      * - Proper support for East Asian wide characters requires API >= 8.
-     * - Results are incorrect for individual Hangul jamo (a syllable block
-     *   of jamo should be one unit with width 2).  This does not affect
-     *   precomposed Hangul syllables.
      * - Assigning all East Asian "ambiguous" characters a width of 1 may not
      *   be correct if Android renders those characters as wide in East Asian
      *   context (as the Unicode standard permits).
+     * - Isolated Hangul conjoining medial vowels and final consonants are
+     *   treated as combining characters (they should only be combining when
+     *   part of a Korean syllable block).
      *
      * @param codePoint A Unicode code point.
      * @return The display width of the Unicode code point.
@@ -519,6 +530,27 @@ class UnicodeTranscript {
             return 0;
         }
 
+        if ((codePoint >= 0x1160 && codePoint <= 0x11FF) ||
+            (codePoint >= 0xD7B0 && codePoint <= 0xD7FF)) {
+            if (AndroidCompat.SDK >= HANGUL_CONJOINING_MIN_SDK) {
+                /* Treat Hangul jamo medial vowels and final consonants as
+                 * combining characters with width 0 to make jamo composition
+                 * work correctly.
+                 *
+                 * XXX: This is wrong for medials/finals outside a Korean
+                 * syllable block, but there's no easy solution to that
+                 * problem, and we may as well at least get the common case
+                 * right. */
+                return 0;
+            } else {
+                /* Older versions of Android didn't compose Hangul jamo, but
+                 * instead rendered them as individual East Asian wide
+                 * characters (despite Unicode defining medial vowels and final
+                 * consonants as East Asian neutral/narrow).  Treat them as
+                 * width 2 characters to match the rendering. */
+                return 2;
+            }
+        }
         if (Character.charCount(codePoint) == 1) {
             // Android's getEastAsianWidth() only works for BMP characters
             switch (AndroidCharacterCompat.getEastAsianWidth((char) codePoint)) {
