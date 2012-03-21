@@ -203,14 +203,6 @@ public class Term extends Activity implements UpdateCallback {
         }
     }
 
-    private EmulatorView.WindowSizeCallback mSizeCallback = new EmulatorView.WindowSizeCallback() {
-        public void onGetSize(Rect rect) {
-            if (mActionBarMode == TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE) {
-                // Fixed action bar takes space away from the EmulatorView
-                rect.top += mActionBar.getHeight();
-            }
-        }
-    };
     private View.OnKeyListener mBackKeyListener = new View.OnKeyListener() {
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             if (keyCode == KeyEvent.KEYCODE_BACK && mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES && mActionBar.isShowing()) {
@@ -349,15 +341,7 @@ public class Term extends Activity implements UpdateCallback {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         EmulatorView emulatorView = new EmulatorView(this, session, metrics);
 
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.WRAP_CONTENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT,
-            Gravity.LEFT
-        );
-        emulatorView.setLayoutParams(params);
-
         emulatorView.setExtGestureListener(new EmulatorViewGestureListener(emulatorView));
-        emulatorView.setWindowSizeCallback(mSizeCallback);
         emulatorView.setOnKeyListener(mBackKeyListener);
         registerForContextMenu(emulatorView);
 
@@ -435,16 +419,15 @@ public class Term extends Activity implements UpdateCallback {
         if (onResumeSelectWindow >= 0) {
             mViewFlipper.setDisplayedChild(onResumeSelectWindow);
             onResumeSelectWindow = -1;
-        } else {
-            mViewFlipper.resumeCurrentView();
         }
+        mViewFlipper.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        mViewFlipper.pauseCurrentView();
+        mViewFlipper.onPause();
         if (mTermSessions != null) {
             mTermSessions.removeCallback(this);
             if (mWinListAdapter != null) {
@@ -486,7 +469,7 @@ public class Term extends Activity implements UpdateCallback {
 
         EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
         if (v != null) {
-            v.updateSize(true);
+            v.updateSize(false);
         }
 
         if (mWinListAdapter != null) {
