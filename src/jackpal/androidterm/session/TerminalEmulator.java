@@ -520,6 +520,15 @@ public class TerminalEmulator {
             return;
         }
 
+        // Handle C1 control characters
+        if ((b & 0x80) == 0x80 && (b & 0x7f) <= 0x1f) {
+            /* ESC ((code & 0x7f) + 0x40) is the two-byte escape sequence
+               corresponding to a particular C1 code */
+            startEscapeSequence(ESC);
+            process((byte) ((b & 0x7f) + 0x40), false);
+            return;
+        }
+
         switch (b) {
         case 0: // NUL
             // Do nothing
@@ -568,10 +577,6 @@ public class TerminalEmulator {
         case 27: // ESC
             // Always starts an escape sequence
             startEscapeSequence(ESC);
-            break;
-
-        case (byte) 0x9b: // CSI
-            startEscapeSequence(ESC_LEFT_SQUARE_BRACKET);
             break;
 
         default:
