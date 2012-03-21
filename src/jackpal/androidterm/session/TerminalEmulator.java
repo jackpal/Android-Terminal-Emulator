@@ -234,6 +234,12 @@ public class TerminalEmulator {
     private boolean mAboutToAutoWrap;
 
     /**
+     * The width of the last emitted spacing character.  Used to place
+     * combining characters into the correct column.
+     */
+    private int mLastEmittedCharWidth = 0;
+
+    /**
      * True if we just auto-wrapped and no character has been emitted on this
      * line yet.  Used to ensure combining characters following a character
      * at the edge of the screen are stored in the proper place.
@@ -1430,9 +1436,9 @@ public class TerminalEmulator {
         if (width == 0) {
             // Combining character -- store along with character it modifies
             if (mJustWrapped) {
-                mScreen.set(mColumns - 1, mCursorRow - 1, c, foreColor, backColor);
+                mScreen.set(mColumns - mLastEmittedCharWidth, mCursorRow - 1, c, foreColor, backColor);
             } else {
-                mScreen.set(mCursorCol - 1, mCursorRow, c, foreColor, backColor);
+                mScreen.set(mCursorCol - mLastEmittedCharWidth, mCursorRow, c, foreColor, backColor);
             }
         } else {
             mScreen.set(mCursorCol, mCursorRow, c, foreColor, backColor);
@@ -1444,6 +1450,9 @@ public class TerminalEmulator {
         }
 
         mCursorCol = Math.min(mCursorCol + width, mColumns - 1);
+        if (width > 0) {
+            mLastEmittedCharWidth = width;
+        }
     }
 
     private void emit(int c) {
