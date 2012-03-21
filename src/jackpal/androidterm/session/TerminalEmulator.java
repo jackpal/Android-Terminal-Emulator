@@ -515,8 +515,12 @@ public class TerminalEmulator {
     }
 
     private void process(byte b) {
+        process(b, true);
+    }
+
+    private void process(byte b, boolean doUTF8) {
         // Let the UTF-8 decoder try to handle it if we're in UTF-8 mode
-        if (mUTF8Mode && handleUTF8Sequence(b)) {
+        if (doUTF8 && mUTF8Mode && handleUTF8Sequence(b)) {
             return;
         }
 
@@ -654,7 +658,15 @@ public class TerminalEmulator {
                 decoder.reset();
                 decoder.decode(byteBuf, charBuf, true);
                 decoder.flush(charBuf);
-                emit(charBuf.array());
+
+                char[] chars = charBuf.array();
+                if (chars[0] >= 0x80 && chars[0] <= 0x9f) {
+                    /* Sequence decoded to a C1 control character which needs
+                       to be sent through process() again */
+                    process((byte) chars[0], false);
+                } else {
+                    emit(chars);
+                }
 
                 byteBuf.clear();
                 charBuf.clear();
