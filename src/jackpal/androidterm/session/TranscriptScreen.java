@@ -371,13 +371,21 @@ public class TranscriptScreen implements Screen {
             builder.append(line, 0, lastPrintingChar + 1);
             if (colors != null) {
                 int column = 0;
-                for (int j = 0; j < lastPrintingChar + 1; ++j) {
-                    colors.append((char) rowColorBuffer[column]);
-                    if (Character.isHighSurrogate(line[j])) {
-                        column += UnicodeTranscript.charWidth(Character.toCodePoint(line[j], line[j+1]));
-                        ++j;
-                    } else {
-                        column += UnicodeTranscript.charWidth(line[j]);
+                if (rowColorBuffer != null) {
+                    for (int j = 0; j < lastPrintingChar + 1; ++j) {
+                        colors.append((char) rowColorBuffer[column]);
+                        if (Character.isHighSurrogate(line[j])) {
+                            column += UnicodeTranscript.charWidth(
+                                Character.toCodePoint(line[j], line[j+1]));
+                            ++j;
+                        } else {
+                            column += UnicodeTranscript.charWidth(line[j]);
+                        }
+                    }
+                } else {
+                    char defaultColor = (char) mData.getDefaultColorsEncoded();
+                    for (int j = 0; j < lastPrintingChar + 1; ++j) {
+                        colors.append(defaultColor);
                     }
                 }
             }

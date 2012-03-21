@@ -88,6 +88,10 @@ public class UnicodeTranscript {
         return mDefaultBackColor;
     }
 
+    public byte getDefaultColorsEncoded() {
+        return encodeColor(mDefaultForeColor, mDefaultBackColor);
+    }
+
     public int getActiveTranscriptRows() {
         return mActiveTranscriptRows;
     }
