@@ -691,19 +691,7 @@ public class UnicodeTranscript {
         }
 
         FullUnicodeLine line = (FullUnicodeLine) mLines[row];
-        char[] rawLine = line.getLine();
-        int pos = line.findStartOfColumn(column);
-        int length;
-        if (column + 1 < mColumns) {
-            length = line.findStartOfColumn(column + 1) - pos;
-        } else {
-            length = line.getSpaceUsed() - pos;
-        }
-        if (charIndex >= length) {
-            throw new IllegalArgumentException();
-        }
-        out[offset] = rawLine[pos + charIndex];
-        return (charIndex + 1 < length);
+        return line.getChar(column, charIndex, out, offset);
     }
 
     public int getForeColor(int row, int column) {
@@ -896,6 +884,21 @@ class FullUnicodeLine {
         } else {
             return column + mOffset[column];
         }
+    }
+
+    public boolean getChar(int column, int charIndex, char[] out, int offset) {
+        int pos = findStartOfColumn(column);
+        int length;
+        if (column + 1 < mColumns) {
+            length = findStartOfColumn(column + 1) - pos;
+        } else {
+            length = getSpaceUsed() - pos;
+        }
+        if (charIndex >= length) {
+            throw new IllegalArgumentException();
+        }
+        out[offset] = mText[pos + charIndex];
+        return (charIndex + 1 < length);
     }
 
     public void setChar(int column, int codePoint) {
