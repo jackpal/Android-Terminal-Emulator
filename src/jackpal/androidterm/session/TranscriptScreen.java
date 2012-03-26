@@ -400,6 +400,10 @@ public class TranscriptScreen implements Screen {
     }
 
     public boolean fastResize(int columns, int rows, int[] cursor) {
+        if (mData == null) {
+            // XXX Trying to resize a finished TranscriptScreen?
+            return true;
+        }
         if (mData.resize(columns, rows, cursor)) {
             mColumns = columns;
             mScreenRows = rows;
