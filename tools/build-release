@@ -7,4 +7,4 @@
 cd ~/code/Android-Terminal-Emulator
 rm -rf bin obj
 cd jni
-~/code/android-ndk-r6b/ndk-build && cd .. && ant release && mv bin/Term-release.apk bin/Term.apk
+~/code/android-ndk-r7b/ndk-build && cd .. && ant release && mv bin/Term-release.apk bin/Term.apk
