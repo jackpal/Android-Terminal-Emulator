@@ -459,6 +459,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
 
             private void clearComposingText() {
+                int len = mImeBuffer.length();
+                if (mComposingTextStart > len || mComposingTextEnd > len) {
+                    mComposingTextEnd = mComposingTextStart = 0;
+                    return;
+                }
                 setImeBuffer(mImeBuffer.substring(0, mComposingTextStart) +
                     mImeBuffer.substring(mComposingTextEnd));
                 if (mCursor < mComposingTextStart) {
@@ -517,6 +522,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (TermDebug.LOG_IME) {
                     Log.w(TAG, "setComposingText(\"" + text + "\", " + newCursorPosition + ")");
                 }
+                int len = mImeBuffer.length();
+                if (mComposingTextStart > len || mComposingTextEnd > len) {
+                    return false;
+                }
                 setImeBuffer(mImeBuffer.substring(0, mComposingTextStart) +
                     text + mImeBuffer.substring(mComposingTextEnd));
                 mComposingTextEnd = mComposingTextStart + text.length();
@@ -556,6 +565,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             public CharSequence getSelectedText(int flags) {
                 if (TermDebug.LOG_IME) {
                     Log.w(TAG, "getSelectedText " + flags);
+                }
+                int len = mImeBuffer.length();
+                if (mSelectedTextEnd >= len || mSelectedTextStart > mSelectedTextEnd) {
+                    return "";
                 }
                 return mImeBuffer.substring(mSelectedTextStart, mSelectedTextEnd+1);
             }
