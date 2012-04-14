@@ -17,7 +17,7 @@
 
 <resources>
     <string-array name="entries_statusbar_preference">
-        <item>Bistaratu egoera-barra</item>
+        <item>Erakutsi egoera-barra</item>
         <item>Ezkutatu egoera-barra</item>
     </string-array>
 
@@ -27,6 +27,19 @@
         <item>0</item>
     </string-array>
 
+    <string-array name="entries_actionbar_preference">
+        <!-- <item>Action bar disabled</item> -->
+        <item>Beti erakutsi ekintza-barra</item>
+        <item>Ezkutatu ekintza-barra (erakusteko ukitu pantailaren goialdea edo Menu tekla)</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <string-array name="entryvalues_actionbar_preference">
+        <!-- <item>0</item> -->
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    
     <string-array name="entries_cursorblink_preference">
         <item>Kurtsore ez-keinukaria</item>
         <item>Kurtsore keinukaria</item>
@@ -95,6 +108,23 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+    </string-array>
+
+    <string-array name="entries_backaction_preference">
+        <item>Terminal leiho guztiak ixten ditu</item>
+        <item>Soilik terminal leiho hau ixten du</item>
+        <item>Jarduera ixten du, saioak martxan utziz</item>
+        <item>ESC bidaltzen du terminalera</item>
+        <item>TAB bidaltzen du terminalera</item>
+    </string-array>
+
+    <!-- Do not localize entryvalues -->
+    <string-array name="entryvalues_backaction_preference">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
@@ -177,4 +207,12 @@
         <item>Kamera</item>
         <item>Bat ere ez</item>
     </string-array>
+
+    <!-- These are values of TERM - do not localize -->
+    <string-array name="entries_termtype_preference">
+        <item>vt100</item>
+        <item>screen</item>
+        <item>linux</item>
+    </string-array>    
 </resources>
+
