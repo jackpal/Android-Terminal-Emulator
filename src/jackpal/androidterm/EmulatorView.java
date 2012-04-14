@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.ClipboardManager;
 import android.util.DisplayMetrics;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyCharacterMap;
@@ -1189,8 +1190,8 @@ class PaintRenderer extends BaseTextRenderer {
         mTextPaint.setAntiAlias(true);
         mTextPaint.setTextSize(fontSize);
 
-        mCharHeight = (int) Math.ceil(mTextPaint.getFontSpacing());
-        mCharAscent = (int) Math.ceil(mTextPaint.ascent());
+        mCharHeight = (int) FloatMath.ceil(mTextPaint.getFontSpacing());
+        mCharAscent = (int) FloatMath.ceil(mTextPaint.ascent());
         mCharDescent = mCharHeight + mCharAscent;
         mCharWidth = mTextPaint.measureText(EXAMPLE_CHAR, 0, 1);
     }
