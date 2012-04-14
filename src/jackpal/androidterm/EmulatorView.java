@@ -1110,8 +1110,9 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
             int forePaintIndex, int forePaintColor,
             int backPaintIndex, int backPaintColor) {
         super(forePaintIndex, forePaintColor, backPaintIndex, backPaintColor);
-        mFont = BitmapFactory.decodeResource(resources,
-                R.drawable.atari_small);
+        int fontResource = AndroidCompat.SDK <= 3 ? R.drawable.atari_small
+                : R.drawable.atari_small_nodpi;
+        mFont = BitmapFactory.decodeResource(resources,fontResource);
         mPaint = new Paint();
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
     }
