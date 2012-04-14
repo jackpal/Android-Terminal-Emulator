@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jackpal.androidterm"
-      android:versionName="1.0.41" android:versionCode="42"
+      android:versionName="1.0.42" android:versionCode="43"
       android:installLocation="auto">
     <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="11" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
