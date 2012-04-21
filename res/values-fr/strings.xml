@@ -20,11 +20,11 @@
    <string name="preferences">Paramètres</string>
    <string name="new_window">Nouvelle fenêtre</string>
    <string name="close_window">Fermer fenêtre</string>
-   <string name="window_list">Fenêtre</string>
+   <string name="window_list">Fenêtres</string>
    <string name="prev_window">Fenêtre Préc.</string>
    <string name="next_window">Fenêtre Suiv.</string>
    <string name="reset">Terminal par défaut</string>
-   <string name="send_email">Envoyer par e-mail</string>
+   <string name="send_email">Envoyer un e-mail</string>
    <string name="special_keys">Touches spéciales</string>
    <string name="toggle_soft_keyboard">Afficher/Masquer Clavier</string>
    
