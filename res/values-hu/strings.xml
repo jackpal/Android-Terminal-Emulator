@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">Terminál Emulátor</string>
+   <string name="preferences">Beállítások</string>
+   <string name="new_window">Új ablak</string>
+   <string name="close_window">Ablak bezárása</string>
+   <string name="window_list">Ablakok</string>
+   <string name="prev_window">Előző ablak</string>
+   <string name="next_window">Következő ablak</string>
+   <string name="reset">Alaphelyzet</string>
+   <string name="send_email">Küldés emailben</string>
+   <string name="special_keys">Speciális billentyűk</string>
+   <string name="toggle_soft_keyboard">Billentyűzet ki/bekapcsolása</string>
+
+   <string name="reset_toast_notification">Az terminál ablak alaphelyzetbe állítva.</string>
+
+   <string name="enable_wakelock">Alvás megakadályozása</string>
+   <string name="disable_wakelock">Alvás engedélyezése</string>
+   <string name="enable_wifilock">WiFi-alvás megakadályozása</string>
+   <string name="disable_wifilock">WiFi-alvás engedélyezése</string>
+
+   <string name="edit_text">Szöveg szerkesztése</string>
+   <string name="select_text">Szöveg kijelölése</string>
+   <string name="copy_all">Az összes másolása</string>
+   <string name="paste">Beillesztés</string>
+   <string name="send_control_key">Control billentyű küldése</string>
+   <string name="send_fn_key">Fn billentyű küldése</string>
+
+   <string name="window_title">Ablak %1$d</string>
+
+   <string name="service_notify_text">Aktív munkamenet</string>
+
+   <string name="process_exit_message">A munkamenet befejeződött</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">Képernyő</string>
+
+   <string name="title_statusbar_preference">Értesítési sáv</string>
+   <string name="summary_statusbar_preference">Értesítési sáv megjelenítése/elrejtése.</string>
+   <string name="dialog_title_statusbar_preference">Értesítési sáv</string>
+
+   <string name="title_actionbar_preference">Akciósáv</string>
+   <string name="summary_actionbar_preference">Válaszd ki az akciósáv viselkedési módját (csak Android 3.0 és afölött).</string>
+   <string name="dialog_title_actionbar_preference">Akciósáv viselkedése</string>
+
+   <string name="title_cursorstyle_preference">Kurzor stílusa</string>
+   <string name="summary_cursorstyle_preference">Válaszd ki a kurzor stílusát.</string>
+   <string name="dialog_title_cursorstyle_preference">Kurzor stílusa</string>
+
+   <string name="title_cursorblink_preference">Kurzor villogás</string>
+   <string name="summary_cursorblink_preference">Állítsd be a kurzor villogását.</string>
+   <string name="dialog_title_cursorblink_preference">Kurzor villogás</string>
+
+   <string name="text_preferences">Szöveg</string>
+
+   <string name="title_utf8_by_default_preference">UTF-8 alapértelmezett</string>
+   <string name="summary_utf8_by_default_preference">UTF-8 mód engedélyezése alapértelmezésként.</string>
+
+   <string name="title_fontsize_preference">Betűméret</string>
+   <string name="summary_fontsize_preference">Karakterek magasságának megadása pontban.</string>
+   <string name="dialog_title_fontsize_preference">Betűméret</string>
+
+   <string name="title_color_preference">Színek</string>
+   <string name="summary_color_preference">Válaszd ki a szöveg és a háttér színét.</string>
+   <string name="dialog_title_color_preference">Színek</string>
+
+   <string name="keyboard_preferences">Billentyűzet</string>
+
+   <string name="title_backaction_preference">Vissza gomb viselkedése</string>
+   <string name="summary_backaction_preference">Válaszd ki, mi történjen a Vissza gomb megnyomásakor.</string>
+   <string name="dialog_title_backaction_preference">Vissza gomb viselkedése</string>
+
+   <string name="title_controlkey_preference">Control billentyű</string>
+   <string name="summary_controlkey_preference">Válaszd ki a Control billentyűleütést kiváltó gombot.</string>
+   <string name="dialog_title_controlkey_preference">Control billentyű</string>
+
+   <string name="title_fnkey_preference">Funkció billentyű</string>
+   <string name="summary_fnkey_preference">Válaszd ki a funkció billentyűket kiváltó gombot.</string>
+   <string name="dialog_title_fnkey_preference">Funkció billentyű</string>
+
+   <string name="title_ime_preference">Beviteli mód</string>
+   <string name="summary_ime_preference">Beviteli mód kiválasztása a szoftveres billentyűzethez.</string>
+   <string name="dialog_title_ime_preference">Beviteli mód</string>
+
+   <string name="shell_preferences">Konzol</string>
+   <string name="title_shell_preference">Parancssor</string>
+   <string name="summary_shell_preference">Add meg a konzolt elindító parancsot.</string>
+   <string name="dialog_title_shell_preference">Konzol</string>
+
+   <string name="title_initialcommand_preference">Indító parancs</string>
+   <string name="summary_initialcommand_preference">Induláskor lefuttatja a konzol.</string>
+   <string name="dialog_title_initialcommand_preference">Indító parancs</string>
+
+   <string name="title_termtype_preference">Terminál típusa</string>
+   <string name="summary_termtype_preference">Milyen terminál típust jelentsen a konzolnak.</string>
+   <string name="dialog_title_termtype_preference">Terminál típusa</string>
+
+   <string name="title_close_window_on_process_exit_preference">Ablak bezárása kilépéskor</string>
+   <string name="summary_close_window_on_process_exit_preference">Terminál ablak bezárása, ha a konzol is bezáródik.</string>
+
+   <string name="control_key_dialog_title">Control és funkció billentyűk</string>
+   <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
+        actual control key key name. -->
+   <string name="control_key_dialog_control_text">CTRLKEY Szóköz : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+  <string name="control_key_dialog_control_disabled_text">Nincs beállítva Control billentyű.</string>
+  <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
+       actual function key key name. -->
+  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Fel\nFNKEY A : Balra\nFNKEY S : Le\nFNKEY D : Jobbra\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (aláhúzás)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
+  <string name="control_key_dialog_fn_disabled_text">Nincs beállítva funkció billentyű.</string>
+
+  <string name="confirm_window_close_message">Bezárja ezt az ablakot?</string>
+
+  <string name="perm_run_script">Tetszőleges parancsok futtatása a Terminál Emulátorban</string>
+  <string name="permdesc_run_script">Lehetővé teszi az alkalmazások számára új ablakok megnyitását az Android Terminál Emulátorban és a megnyitott ablakokban tetszőleges parancsokat futtathatnak az Android Terminál Emulátor összes jogosultságával, beleértve a teljes hozzáférést az Internethez és az SD-kártyához.</string>
+</resources>
