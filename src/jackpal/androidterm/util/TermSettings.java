@@ -40,6 +40,7 @@ public class TermSettings {
     private int mFnKeyId;
     private int mUseCookedIME;
     private String mShell;
+    private String mFailsafeShell;
     private String mInitialCommand;
     private String mTermType;
     private boolean mCloseOnExit;
@@ -125,7 +126,8 @@ public class TermSettings {
         mControlKeyId = Integer.parseInt(res.getString(R.string.pref_controlkey_default));
         mFnKeyId = Integer.parseInt(res.getString(R.string.pref_fnkey_default));
         mUseCookedIME = Integer.parseInt(res.getString(R.string.pref_ime_default));
-        mShell = res.getString(R.string.pref_shell_default);
+        mFailsafeShell = res.getString(R.string.pref_shell_default);
+        mShell = mFailsafeShell;
         mInitialCommand = res.getString(R.string.pref_initialcommand_default);
         mTermType = res.getString(R.string.pref_termtype_default);
         mCloseOnExit = res.getBoolean(R.bool.pref_close_window_on_process_exit_default);
@@ -239,6 +241,10 @@ public class TermSettings {
 
     public String getShell() {
         return mShell;
+    }
+
+    public String getFailsafeShell() {
+        return mFailsafeShell;
     }
 
     public String getInitialCommand() {

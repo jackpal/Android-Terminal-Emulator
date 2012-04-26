@@ -16,8 +16,10 @@
 
 package jackpal.androidterm.session;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -203,8 +205,20 @@ public class TermSession {
     private void createSubprocess(int[] processId) {
         String shell = mSettings.getShell();
         ArrayList<String> argList = parse(shell);
-        String arg0 = argList.get(0);
-        String[] args = argList.toArray(new String[1]);
+
+        String arg0;
+        String[] args;
+        try {
+            arg0 = argList.get(0);
+            if (!(new File(arg0)).exists()) {
+                throw new FileNotFoundException(arg0);
+            }
+            args = argList.toArray(new String[1]);
+        } catch (Exception e) {
+            argList = parse(mSettings.getFailsafeShell());
+            arg0 = argList.get(0);
+            args = argList.toArray(new String[1]);
+        }
 
         String termType = mSettings.getTermType();
         String[] env = new String[1];
