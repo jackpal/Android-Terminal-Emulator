@@ -211,6 +211,7 @@ public class TermSession {
         try {
             arg0 = argList.get(0);
             if (!(new File(arg0)).exists()) {
+                Log.e(TermDebug.LOG_TAG, "Shell " + arg0 + " not found!");
                 throw new FileNotFoundException(arg0);
             }
             args = argList.toArray(new String[1]);
