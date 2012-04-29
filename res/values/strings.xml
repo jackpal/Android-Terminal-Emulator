@@ -113,6 +113,9 @@
    <string name="title_close_window_on_process_exit_preference">Close window on exit</string>
    <string name="summary_close_window_on_process_exit_preference">Whether a window should close when its shell exits.</string>
 
+   <string name="title_verify_path_preference">Verify PATH entries</string>
+   <string name="summary_verify_path_preference">Whether inaccessible directories should be removed from the PATH.</string>
+
    <string name="control_key_dialog_title">Control and Function Keys</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
         actual control key key name. -->

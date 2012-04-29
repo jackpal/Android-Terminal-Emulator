@@ -204,7 +204,8 @@ public class TermSession {
     }
 
     private void createSubprocess(int[] processId) {
-        String shell = mSettings.getShell();
+        TermSettings settings = mSettings;
+        String shell = settings.getShell();
         ArrayList<String> argList = parse(shell);
 
         String arg0;
@@ -221,14 +222,19 @@ public class TermSession {
             }
             args = argList.toArray(new String[1]);
         } catch (Exception e) {
-            argList = parse(mSettings.getFailsafeShell());
+            argList = parse(settings.getFailsafeShell());
             arg0 = argList.get(0);
             args = argList.toArray(new String[1]);
         }
 
-        String termType = mSettings.getTermType();
-        String[] env = new String[1];
+        String termType = settings.getTermType();
+        String path = System.getenv("PATH");
+        if (settings.verifyPath()) {
+            path = checkPath(path);
+        }
+        String[] env = new String[2];
         env[0] = "TERM=" + termType;
+        env[1] = "PATH=" + path;
 
         mTermFd = Exec.createSubprocess(arg0, args, env, processId);
     }
@@ -279,6 +285,19 @@ public class TermSession {
             result.add(builder.toString());
         }
         return result;
+    }
+
+    private String checkPath(String path) {
+        String[] dirs = path.split(":");
+        StringBuilder checkedPath = new StringBuilder(path.length());
+        for (String dirname : dirs) {
+            File dir = new File(dirname);
+            if (dir.isDirectory() && FileCompat.canExecute(dir)) {
+                checkedPath.append(dirname);
+                checkedPath.append(":");
+            }
+        }
+        return checkedPath.substring(0, checkedPath.length()-1);
     }
 
     public FileOutputStream getTermOut() {
