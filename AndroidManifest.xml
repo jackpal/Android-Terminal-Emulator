@@ -13,6 +13,11 @@
                 android:description="@string/permdesc_run_script"
                 android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
                 android:protectionLevel="dangerous" />
+    <permission android:name="jackpal.androidterm.permission.PREPEND_TO_PATH"
+                android:label="@string/perm_prepend_to_path"
+                android:description="@string/permdesc_prepend_to_path"
+                android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
+                android:protectionLevel="dangerous" />
     <application android:icon="@drawable/app_terminal"
                 android:label="@string/application_terminal">
         <activity android:name="Term"

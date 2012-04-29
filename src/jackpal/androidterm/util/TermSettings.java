@@ -45,6 +45,11 @@ public class TermSettings {
     private String mTermType;
     private boolean mCloseOnExit;
     private boolean mVerifyPath;
+    private boolean mDoPathExtensions;
+    private boolean mAllowPathPrepend;
+
+    private String mPrependPath = null;
+    private String mAppendPath = null;
 
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String ACTIONBAR_KEY = "actionbar";
@@ -62,6 +67,8 @@ public class TermSettings {
     private static final String TERMTYPE_KEY = "termtype";
     private static final String CLOSEONEXIT_KEY = "close_window_on_process_exit";
     private static final String VERIFYPATH_KEY = "verify_path";
+    private static final String PATHEXTENSIONS_KEY = "do_path_extensions";
+    private static final String PATHPREPEND_KEY = "allow_prepend_path";
 
     public static final int WHITE = 0xffffffff;
     public static final int BLACK = 0xff000000;
@@ -134,6 +141,8 @@ public class TermSettings {
         mTermType = res.getString(R.string.pref_termtype_default);
         mCloseOnExit = res.getBoolean(R.bool.pref_close_window_on_process_exit_default);
         mVerifyPath = res.getBoolean(R.bool.pref_verify_path_default);
+        mDoPathExtensions = res.getBoolean(R.bool.pref_do_path_extensions_default);
+        mAllowPathPrepend = res.getBoolean(R.bool.pref_allow_prepend_path_default);
     }
 
     public void readPrefs(SharedPreferences prefs) {
@@ -156,6 +165,8 @@ public class TermSettings {
         mTermType = readStringPref(TERMTYPE_KEY, mTermType);
         mCloseOnExit = readBooleanPref(CLOSEONEXIT_KEY, mCloseOnExit);
         mVerifyPath = readBooleanPref(VERIFYPATH_KEY, mVerifyPath);
+        mDoPathExtensions = readBooleanPref(PATHEXTENSIONS_KEY, mDoPathExtensions);
+        mAllowPathPrepend = readBooleanPref(PATHPREPEND_KEY, mAllowPathPrepend);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 
@@ -265,5 +276,29 @@ public class TermSettings {
 
     public boolean verifyPath() {
         return mVerifyPath;
+    }
+
+    public boolean doPathExtensions() {
+        return mDoPathExtensions;
+    }
+
+    public boolean allowPathPrepend() {
+        return mAllowPathPrepend;
+    }
+
+    public void setPrependPath(String prependPath) {
+        mPrependPath = prependPath;
+    }
+
+    public String getPrependPath() {
+        return mPrependPath;
+    }
+
+    public void setAppendPath(String appendPath) {
+        mAppendPath = appendPath;
+    }
+
+    public String getAppendPath() {
+        return mAppendPath;
     }
 }

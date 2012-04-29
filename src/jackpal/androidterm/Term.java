@@ -17,9 +17,13 @@
 package jackpal.androidterm;
 
 import java.io.UnsupportedEncodingException;
+import java.text.Collator;
+import java.util.Arrays;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -108,14 +112,39 @@ public class Term extends Activity implements UpdateCallback {
 
     private boolean mBackKeyPressed;
 
+    private static final String ACTION_PATH_BROADCAST = "jackpal.androidterm.broadcast.APPEND_TO_PATH";
+    private static final String ACTION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.broadcast.PREPEND_TO_PATH";
+    private static final String PERMISSION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.permission.PREPEND_TO_PATH";
+    private int mPendingPathBroadcasts = 0;
+    private BroadcastReceiver mPathReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String path = makePathFromBundle(getResultExtras(false));
+            if (intent.getAction().equals(ACTION_PATH_PREPEND_BROADCAST)) {
+                mSettings.setPrependPath(path);
+            } else {
+                mSettings.setAppendPath(path);
+            }
+            mPendingPathBroadcasts--;
+
+            if (mPendingPathBroadcasts <= 0 && mTermService != null) {
+                populateViewFlipper();
+                populateWindowList();
+            }
+        }
+    };
+    // Available on API 12 and later
+    private static final int FLAG_INCLUDE_STOPPED_PACKAGES = 0x20;
+
     private TermService mTermService;
     private ServiceConnection mTSConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             Log.i(TermDebug.LOG_TAG, "Bound to TermService");
             TermService.TSBinder binder = (TermService.TSBinder) service;
             mTermService = binder.getService();
-            populateViewFlipper();
-            populateWindowList();
+            if (mPendingPathBroadcasts <= 0) {
+                populateViewFlipper();
+                populateWindowList();
+            }
         }
 
         public void onServiceDisconnected(ComponentName arg0) {
@@ -226,6 +255,18 @@ public class Term extends Activity implements UpdateCallback {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mSettings = new TermSettings(getResources(), mPrefs);
 
+        Intent broadcast = new Intent(ACTION_PATH_BROADCAST);
+        if (AndroidCompat.SDK >= 12) {
+            broadcast.addFlags(FLAG_INCLUDE_STOPPED_PACKAGES);
+        }
+        mPendingPathBroadcasts++;
+        sendOrderedBroadcast(broadcast, null, mPathReceiver, null, RESULT_OK, null, null);
+
+        broadcast = new Intent(broadcast);
+        broadcast.setAction(ACTION_PATH_PREPEND_BROADCAST);
+        mPendingPathBroadcasts++;
+        sendOrderedBroadcast(broadcast, PERMISSION_PATH_PREPEND_BROADCAST, mPathReceiver, null, RESULT_OK, null, null);
+
         TSIntent = new Intent(this, TermService.class);
         startService(TSIntent);
 
@@ -269,6 +310,28 @@ public class Term extends Activity implements UpdateCallback {
 
         updatePrefs();
         mAlreadyStarted = true;
+    }
+
+    private String makePathFromBundle(Bundle extras) {
+        if (extras == null || extras.size() == 0) {
+            return "";
+        }
+
+        String[] keys = new String[extras.size()];
+        keys = extras.keySet().toArray(keys);
+        Collator collator = Collator.getInstance(Locale.US);
+        Arrays.sort(keys, collator);
+
+        StringBuilder path = new StringBuilder();
+        for (String key : keys) {
+            String dir = extras.getString(key);
+            if (dir != null && !dir.equals("")) {
+                path.append(dir);
+                path.append(":");
+            }
+        }
+
+        return path.substring(0, path.length()-1);
     }
 
     private void populateViewFlipper() {

@@ -116,6 +116,12 @@
    <string name="title_verify_path_preference">Verify PATH entries</string>
    <string name="summary_verify_path_preference">Whether inaccessible directories should be removed from the PATH.</string>
 
+   <string name="title_do_path_extensions_preference">Allow PATH extensions</string>
+   <string name="summary_do_path_extensions_preference">Whether other apps should be allowed to provide additional commands (add to PATH).</string>
+
+   <string name="title_allow_prepend_path_preference">Allow PATH prepend</string>
+   <string name="summary_allow_prepend_path_preference">Whether other apps should be allowed to override existing commands (add to the beginning of PATH).</string>
+
    <string name="control_key_dialog_title">Control and Function Keys</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
         actual control key key name. -->
@@ -130,4 +136,6 @@
 
   <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>
   <string name="permdesc_run_script">Allows application to open new windows in Android Terminal Emulator and run commands in those windows with all of Android Terminal Emulator\'s permissions, including access to the Internet and your SD Card.</string>
+  <string name="perm_prepend_to_path">Override commands in Terminal Emulator</string>
+  <string name="permdesc_prepend_to_path">Allows application to override existing commands with its own versions (prepend directories to the PATH) in Android Terminal Emulator.</string>
 </resources>

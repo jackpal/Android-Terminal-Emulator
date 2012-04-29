@@ -107,6 +107,19 @@ public class ShellTermSession extends TermSession {
         int[] processId = new int[1];
 
         String path = System.getenv("PATH");
+        if (settings.doPathExtensions()) {
+            String appendPath = settings.getAppendPath();
+            if (appendPath != null && appendPath.length() > 0) {
+                path = path + ":" + appendPath;
+            }
+
+            if (settings.allowPathPrepend()) {
+                String prependPath = settings.getPrependPath();
+                if (prependPath != null && prependPath.length() > 0) {
+                    path = prependPath + ":" + path;
+                }
+            }
+        }
         if (settings.verifyPath()) {
             path = checkPath(path);
         }
