@@ -30,7 +30,7 @@ import java.io.FileDescriptor;
 public class Exec
 {
     static {
-        System.loadLibrary("jackpal-androidterm3");
+        System.loadLibrary("jackpal-androidterm4");
     }
 
     /**

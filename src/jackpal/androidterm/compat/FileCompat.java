@@ -30,7 +30,7 @@ public class FileCompat {
 
     private static class Api8OrEarlier {
         static {
-            System.loadLibrary("jackpal-androidterm3");
+            System.loadLibrary("jackpal-androidterm4");
         }
 
         public static boolean canExecute(File file) {
