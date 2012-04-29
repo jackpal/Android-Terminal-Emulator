@@ -36,6 +36,7 @@ import android.util.Log;
 
 import jackpal.androidterm.Exec;
 import jackpal.androidterm.TermDebug;
+import jackpal.androidterm.compat.FileCompat;
 import jackpal.androidterm.model.UpdateCallback;
 import jackpal.androidterm.util.ByteQueue;
 import jackpal.androidterm.util.TermSettings;
@@ -210,8 +211,12 @@ public class TermSession {
         String[] args;
         try {
             arg0 = argList.get(0);
-            if (!(new File(arg0)).exists()) {
+            File file = new File(arg0);
+            if (!file.exists()) {
                 Log.e(TermDebug.LOG_TAG, "Shell " + arg0 + " not found!");
+                throw new FileNotFoundException(arg0);
+            } else if (!FileCompat.canExecute(file)) {
+                Log.e(TermDebug.LOG_TAG, "Shell " + arg0 + " not executable!");
                 throw new FileNotFoundException(arg0);
             }
             args = argList.toArray(new String[1]);
