@@ -267,6 +267,27 @@ static void android_os_Exec_setPtyWindowSize(JNIEnv *env, jobject clazz,
     ioctl(fd, TIOCSWINSZ, &sz);
 }
 
+static void android_os_Exec_setPtyUTF8Mode(JNIEnv *env, jobject clazz,
+    jobject fileDescriptor, jboolean utf8Mode)
+{
+    int fd;
+    struct termios tios;
+
+    fd = env->GetIntField(fileDescriptor, field_fileDescriptor_descriptor);
+
+    if (env->ExceptionOccurred() != NULL) {
+        return;
+    }
+
+    tcgetattr(fd, &tios);
+    if (utf8Mode) {
+        tios.c_iflag |= IUTF8;
+    } else {
+        tios.c_iflag &= ~IUTF8;
+    }
+    tcsetattr(fd, TCSANOW, &tios);
+}
+
 static int android_os_Exec_waitFor(JNIEnv *env, jobject clazz,
     jint procId) {
     int status;
@@ -336,6 +357,8 @@ static JNINativeMethod method_table[] = {
         (void*) android_os_Exec_createSubProcess },
     { "setPtyWindowSize", "(Ljava/io/FileDescriptor;IIII)V",
         (void*) android_os_Exec_setPtyWindowSize},
+    { "setPtyUTF8Mode", "(Ljava/io/FileDescriptor;Z)V",
+        (void*) android_os_Exec_setPtyUTF8Mode},
     { "waitFor", "(I)I",
         (void*) android_os_Exec_waitFor},
     { "close", "(Ljava/io/FileDescriptor;)V",

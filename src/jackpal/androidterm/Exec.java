@@ -60,6 +60,13 @@ public class Exec
        int row, int col, int xpixel, int ypixel);
 
     /**
+     * Set or clear UTF-8 mode for a given pty.  Used by the terminal driver
+     * to implement correct erase behavior in cooked mode (Linux >= 2.6.4).
+     */
+    public static native void setPtyUTF8Mode(FileDescriptor fd,
+       boolean utf8Mode);
+
+    /**
      * Causes the calling thread to wait for the process associated with the
      * receiver to finish executing.
      *
