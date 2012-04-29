@@ -28,10 +28,23 @@ public class FileCompat {
         }
     }
 
+    private static class Api8OrEarlier {
+        static {
+            System.loadLibrary("jackpal-androidterm3");
+        }
+
+        public static boolean canExecute(File file) {
+            return testExecute(file.getAbsolutePath());
+        }
+
+        private static native boolean testExecute(String pathname);
+    }
+
     public static boolean canExecute(File file) {
         if (AndroidCompat.SDK < 9) {
-            return true;
+            return Api8OrEarlier.canExecute(file);
+        } else {
+            return Api9OrLater.canExecute(file);
         }
-        return Api9OrLater.canExecute(file);
     }
 }
