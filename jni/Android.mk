@@ -25,6 +25,7 @@ LOCAL_MODULE:= libjackpal-androidterm3
 
 # All of the source files that we will compile.
 LOCAL_SRC_FILES:= \
+  common.cpp \
   termExec.cpp
 
 LOCAL_LDLIBS := -ldl -llog
