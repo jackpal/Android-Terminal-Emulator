@@ -765,7 +765,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     // End GestureDetector.OnGestureListener methods
 
-    @Override public boolean onTouchEvent(MotionEvent ev) {
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
         if (mIsSelectingText) {
             return onTouchEventWhileSelectingText(ev);
         } else {
