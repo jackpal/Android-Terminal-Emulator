@@ -17,7 +17,28 @@
 package jackpal.androidterm.emulatorview;
 
 /**
- * A color scheme for a 16-color VT100 terminal.
+ * A class describing a color scheme for a 16-color VT100 terminal.
+ * <p>
+ * A 16-color VT100 has two separate color maps, one for foreground colors and
+ * one for background colors.  Each one contains eight colors, which are
+ * traditionally found in the following order:
+ * <p>
+ * <code>{ black, red, green, yellow, blue, magenta, cyan, white }</code>
+ * <p>
+ * In addition, each of the foreground colors has a corresponding "bright"
+ * version.  Traditionally, the "dim" white is actually a light gray, while
+ * the "bright" black is a dark gray color.
+ * <p>
+ * {@link EmulatorView} supports limited changes to the default color maps
+ * via the color scheme mechanism.  Passing a <code>ColorScheme</code> to
+ * {@link EmulatorView#setColorScheme setColorScheme} will cause the
+ * foreground color with map index <code>foreColorIndex</code> to be replaced
+ * with the provided <code>foreColor</code>, and the background color with map
+ * index <code>backColorIndex</code> to be replaced with the provided
+ * <code>backColor</code>.  The provided colors will then become the default
+ * foreground and background colors for the <code>EmulatorView</code>.
+ *
+ * @see EmulatorView#setColorScheme
  */
 
 public class ColorScheme {
@@ -26,6 +47,16 @@ public class ColorScheme {
     private int backColorIndex;
     private int backColor;
 
+    /**
+     * Creates a <code>ColorScheme</code> object.
+     *
+     * @param foreColorIndex The VT100 color map index the foreground color
+     *                       should map to.
+     * @param foreColor The foreground color as an ARGB hex value.
+     * @param backColorIndex The VT100 color map index the background color
+     *                       should map to.
+     * @param backColor The background color as an ARGB hex value.
+     */
     public ColorScheme(int foreColorIndex, int foreColor, int backColorIndex, int backColor) {
         this.foreColorIndex = foreColorIndex;
         this.foreColor = foreColor;
@@ -33,6 +64,12 @@ public class ColorScheme {
         this.backColor = backColor;
     }
 
+    /**
+     * Creates a <code>ColorScheme</code> object from an array.
+     *
+     * @param scheme An integer array <code>{ foreColorIndex, foreColor,
+     *               backColorIndex, backColor }</code>.
+     */
     public ColorScheme(int[] scheme) {
         if (scheme.length != 4) {
             throw new IllegalArgumentException();
@@ -44,18 +81,34 @@ public class ColorScheme {
         this.backColor = scheme[3];
     }
 
+    /**
+     * @return This <code>ColorScheme</code>'s foreground color as an ARGB
+     *         hex value.
+     */
     public int getForeColor() {
         return foreColor;
     }
 
+    /**
+     * @return This <code>ColorScheme</code>'s background color as an ARGB
+     *         hex value.
+     */
     public int getBackColor() {
         return backColor;
     }
 
+    /**
+     * @return This <code>ColorScheme</code>'s foreground color's VT100 color
+     *         map index.
+     */
     public int getForeColorIndex() {
         return foreColorIndex;
     }
 
+    /**
+     * @return This <code>ColorScheme</code>'s background color's VT100 color
+     *         map index.
+     */
     public int getBackColorIndex() {
         return backColorIndex;
     }

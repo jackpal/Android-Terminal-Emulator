@@ -52,8 +52,15 @@ import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.compat.KeyCharacterMapCompat;
 
 /**
- * A view on a transcript and a terminal emulator. Displays the text of the
- * transcript and the current cursor position of the terminal emulator.
+ * A view on a {@link TermSession}.  Displays the terminal emulator's screen,
+ * provides access to its scrollback buffer, and passes input through to the
+ * terminal emulator.
+ * <p>
+ * If this view is inflated from an XML layout, you need to call {@link
+ * #attachSession attachSession} and {@link #setDensity setDensity} before using
+ * the view.  If creating this view from code, use the {@link
+ * #EmulatorView(Context, TermSession, DisplayMetrics)} constructor, which will
+ * take care of this for you.
  */
 public class EmulatorView extends View implements GestureDetector.OnGestureListener {
     private final String TAG = "EmulatorView";
@@ -221,20 +228,48 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     };
 
+    /**
+     * Create an <code>EmulatorView</code> for a {@link TermSession}.
+     *
+     * @param context The {@link Context} for the view.
+     * @param session The {@link TermSession} this view will be displaying.
+     * @param metrics The {@link DisplayMetrics} of the screen on which the view
+     *                will be displayed.
+     */
     public EmulatorView(Context context, TermSession session, DisplayMetrics metrics) {
         super(context);
         attachSession(session);
         setDensity(metrics);
     }
 
+    /**
+     * Constructor called when inflating this view from XML.
+     * <p>
+     * You should call {@link #attachSession attachSession} and {@link
+     * #setDensity setDensity} before using an <code>EmulatorView</code> created
+     * using this constructor.
+     */
     public EmulatorView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+    /**
+     * Constructor called when inflating this view from XML with a
+     * default style set.
+     * <p>
+     * You should call {@link #attachSession attachSession} and {@link
+     * #setDensity setDensity} before using an <code>EmulatorView</code> created
+     * using this constructor.
+     */
     public EmulatorView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
+    /**
+     * Attach a {@link TermSession} to this view.
+     *
+     * @param session The {@link TermSession} this view will be displaying.
+     */
     public void attachSession(TermSession session) {
         mTextRenderer = null;
         mCursorPaint = new Paint();
@@ -253,11 +288,19 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mKeyListener = new TermKeyListener(session);
     }
 
+    /**
+     * Update the screen density for the screen on which the view is displayed.
+     *
+     * @param metrics The {@link DisplayMetrics} of the screen.
+     */
     public void setDensity(DisplayMetrics metrics) {
         mDensity = metrics.density;
         mScaledDensity = metrics.scaledDensity;
     }
 
+    /**
+     * Inform the view that it is now visible on screen.
+     */
     public void onResume() {
         mIsActive = true;
         updateSize(false);
@@ -266,6 +309,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     }
 
+    /**
+     * Inform the view that it is no longer visible on the screen.
+     */
     public void onPause() {
         if (mCursorBlink != 0) {
             mHandler.removeCallbacks(mBlinkCursor);
@@ -273,6 +319,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mIsActive = false;
     }
 
+    /**
+     * Set this <code>EmulatorView</code>'s color scheme.
+     *
+     * @param scheme The {@link ColorScheme} to use.
+     * @see TermSession#setColorScheme
+     * @see ColorScheme
+     */
     public void setColorScheme(ColorScheme scheme) {
         mForegroundIndex = scheme.getForeColorIndex();
         mForeground = scheme.getForeColor();
@@ -591,24 +644,51 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mImeBuffer = buffer;
     }
 
+    /**
+     * Get the terminal emulator's keypad application mode.
+     */
     public boolean getKeypadApplicationMode() {
         return mEmulator.getKeypadApplicationMode();
     }
 
+    /**
+     * Set a {@link android.view.GestureDetector.OnGestureListener
+     * GestureDetector.OnGestureListener} to receive gestures performed on this
+     * view.  Can be used to implement additional
+     * functionality via touch gestures or override built-in gestures.
+     *
+     * @param listener The {@link
+     *                 android.view.GestureDetector.OnGestureListener
+     *                 GestureDetector.OnGestureListener} which will receive
+     *                 gestures.
+     */
     public void setExtGestureListener(GestureDetector.OnGestureListener listener) {
         mExtGestureListener = listener;
     }
 
+    /**
+     * Compute the vertical range that the vertical scrollbar represents.
+     */
     @Override
     protected int computeVerticalScrollRange() {
         return mTranscriptScreen.getActiveRows();
     }
 
+    /**
+     * Compute the vertical extent of the horizontal scrollbar's thumb within
+     * the vertical range. This value is used to compute the length of the thumb
+     * within the scrollbar's track.
+     */
     @Override
     protected int computeVerticalScrollExtent() {
         return mRows;
     }
 
+    /**
+     * Compute the vertical offset of the vertical scrollbar's thumb within the
+     * horizontal range. This value is used to compute the position of the thumb
+     * within the scrollbar's track.
+     */
     @Override
     protected int computeVerticalScrollOffset() {
         return mTranscriptScreen.getActiveRows() + mTopRow - mRows;
@@ -629,22 +709,38 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         requestFocus();
     }
 
+    /**
+     * Get the {@link TermSession} corresponding to this view.
+     *
+     * @return The {@link TermSession} object for this view.
+     */
     public TermSession getTermSession() {
         return mTermSession;
     }
 
+    /**
+     * Get the width of the visible portion of this view.
+     *
+     * @return The width of the visible portion of this view, in pixels.
+     */
     public int getVisibleWidth() {
         return mVisibleWidth;
     }
 
+    /**
+     * Get the height of the visible portion of this view.
+     *
+     * @return The height of the visible portion of this view, in pixels.
+     */
     public int getVisibleHeight() {
         return mVisibleHeight;
     }
 
     /**
-     * Page the terminal view (scroll it up or down by delta screenfulls.)
+     * Page the terminal view (scroll it up or down by <code>delta</code>
+     * screenfuls).
      *
-     * @param delta the number of screens to scroll. Positive means scroll down,
+     * @param delta The number of screens to scroll. Positive means scroll down,
      *        negative means scroll up.
      */
     public void page(int delta) {
@@ -668,15 +764,21 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     /**
-     * Sets the text size, which in turn sets the number of rows and columns
+     * Sets the text size, which in turn sets the number of rows and columns.
      *
-     * @param fontSize the new font size, in pixels.
+     * @param fontSize the new font size, in density-independent pixels.
      */
     public void setTextSize(int fontSize) {
         mTextSize = (int) (fontSize * mDensity);
         updateText();
     }
 
+    /**
+     * Sets style information about the cursor.
+     *
+     * @param style The style of the cursor.
+     * @param blink Whether the cursor should blink.
+     */
     public void setCursorStyle(int style, int blink) {
         mCursorStyle = style;
         if (blink != 0 && mCursorBlink == 0) {
@@ -687,6 +789,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mCursorBlink = blink;
     }
 
+    /**
+     * Sets the IME mode ("cooked" or "raw").
+     *
+     * @param useCookedIME Whether the IME should be used in cooked mode.
+     */
     public void setUseCookedIME(boolean useCookedIME) {
         mUseCookedIme = useCookedIME;
     }
@@ -817,6 +924,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return true;
     }
 
+    /**
+     * Called when a key is pressed in the view.
+     *
+     * @param keyCode The keycode of the key which was pressed.
+     * @param event A {@link KeyEvent} describing the event.
+     * @return Whether the event was handled.
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (LOG_KEY_EVENTS) {
@@ -848,6 +962,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return keyCode == KeyEvent.KEYCODE_BACK && mBackKeySendsCharacter;
     }
 
+    /**
+     * Called when a key is released in the view.
+     *
+     * @param keyCode The keycode of the key which was released.
+     * @param event A {@link KeyEvent} describing the event.
+     * @return Whether the event was handled.
+     */
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (LOG_KEY_EVENTS) {
@@ -925,6 +1046,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         updateSize(true);
     }
 
+    /**
+     * This is called during layout when the size of this view has changed. If
+     * you were just added to the view hierarchy, you're called with the old
+     * values of 0.
+     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         if (!mKnownSize) {
@@ -950,6 +1076,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         invalidate();
     }
 
+    /**
+     * Update the view's idea of its size.
+     *
+     * @param force Whether a size adjustment should be performed even if the
+     *              view's size has not changed.
+     */
     public void updateSize(boolean force) {
         if (mKnownSize) {
             int w = getWidth();
@@ -963,6 +1095,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     }
 
+    /**
+     * Draw the view to the provided {@link Canvas}.
+     *
+     * @param canvas The {@link Canvas} to draw the view to.
+     */
     @Override
     protected void onDraw(Canvas canvas) {
         updateSize(false);
@@ -1016,6 +1153,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     }
 
+    /**
+     * Toggle text selection mode in the view.
+     */
     public void toggleSelectingText() {
         mIsSelectingText = ! mIsSelectingText;
         setVerticalScrollBarEnabled( ! mIsSelectingText );
@@ -1027,33 +1167,57 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     }
 
+    /**
+     * Whether the view is currently in text selection mode.
+     */
     public boolean getSelectingText() {
         return mIsSelectingText;
     }
 
+    /**
+     * Get selected text.
+     *
+     * @return A {@link String} with the selected text.
+     */
     public String getSelectedText() {
         return mEmulator.getSelectedText(mSelX1, mSelY1, mSelX2, mSelY2);
     }
 
+    /**
+     * Send a Ctrl key event to the terminal.
+     */
     public void sendControlKey() {
         mIsControlKeySent = true;
         mKeyListener.handleControlKey(true);
     }
 
+    /**
+     * Send an Fn key event to the terminal.  The Fn modifier key can be used to
+     * generate various special characters and escape codes.
+     */
     public void sendFnKey() {
         mIsFnKeySent = true;
         mKeyListener.handleFnKey(true);
     }
 
+    /**
+     * Set the key code to be sent when the Back key is pressed.
+     */
     public void setBackKeyCharacter(int keyCode) {
         mKeyListener.setBackKeyCharacter(keyCode);
         mBackKeySendsCharacter = (keyCode != 0);
     }
 
+    /**
+     * Set the keycode corresponding to the Ctrl key.
+     */
     public void setControlKeyCode(int keyCode) {
         mControlKeyCode = keyCode;
     }
 
+    /**
+     * Set the keycode corresponding to the Fn key.
+     */
     public void setFnKeyCode(int keyCode) {
         mFnKeyCode = keyCode;
     }

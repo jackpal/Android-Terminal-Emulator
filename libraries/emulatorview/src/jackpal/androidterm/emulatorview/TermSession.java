@@ -30,9 +30,20 @@ import android.os.Message;
 import android.util.Log;
 
 /**
- * A terminal session, consisting of a TerminalEmulator, a TranscriptScreen,
- * the PID of the process attached to the session, and the I/O streams used to
- * talk to the process.
+ * A terminal session, consisting of a VT100 terminal emulator and its
+ * input and output streams.
+ * <p>
+ * You need to supply an {@link InputStream} and {@link OutputStream} to
+ * provide input and output to the terminal.  For a locally running
+ * program, these would typically point to a tty; for a telnet program
+ * they might point to a network socket.
+ * <p>
+ * Call {@link #setTermIn} and {@link #setTermOut} to connect the input and
+ * output streams to the emulator.  When all of your initialization is
+ * complete, your initial screen size is known, and you're ready to
+ * start VT100 emulation, call {@link #initializeEmulator} or {@link
+ * #updateSize} with the number of rows and columns the terminal should
+ * initially have.
  */
 public class TermSession {
     private ColorScheme mColorScheme;
@@ -60,9 +71,16 @@ public class TermSession {
     private static final int NEW_INPUT = 1;
 
     /**
-     * Callback to be invoked when a TermSession finishes.
+     * Callback to be invoked when a {@link TermSession} finishes.
+     *
+     * @see TermSession#setUpdateCallback
      */
     public interface FinishCallback {
+        /**
+         * Callback function to be invoked when a {@link TermSession} finishes.
+         *
+         * @param session The <code>TermSession</code> which has finished.
+         */
         void onSessionFinish(TermSession session);
     }
     private FinishCallback mFinishCallback;
@@ -114,6 +132,12 @@ public class TermSession {
         mPollingThread.setName("Input reader");
     }
 
+    /**
+     * Set the terminal emulator's window size and start terminal emulation.
+     *
+     * @param columns The number of columns in the terminal window.
+     * @param rows The number of rows in the terminal window.
+     */
     public void initializeEmulator(int columns, int rows) {
         mTranscriptScreen = new TranscriptScreen(columns, TRANSCRIPT_ROWS, rows, mColorScheme);
         mEmulator = new TerminalEmulator(mTranscriptScreen, columns, rows, mTermOut, mColorScheme);
@@ -123,6 +147,12 @@ public class TermSession {
         mPollingThread.start();
     }
 
+    /**
+     * Write data to the terminal output.  The written data will be consumed by
+     * the emulation client as input.
+     *
+     * @param data The data to write to the terminal.
+     */
     public void write(String data) {
         try {
             mTermOut.write(data.getBytes("UTF-8"));
@@ -134,6 +164,12 @@ public class TermSession {
         }
     }
 
+    /**
+     * Write a single Unicode code point to the terminal output.  The written
+     * data will be consumed by the emulation client as input.
+     *
+     * @param codePoint The Unicode code point to write to the terminal.
+     */
     public void write(int codePoint) {
         CharBuffer charBuf = mWriteCharBuffer;
         ByteBuffer byteBuf = mWriteByteBuffer;
@@ -152,22 +188,45 @@ public class TermSession {
         }
     }
 
+    /**
+     * Get the {@link OutputStream} associated with this session.
+     *
+     * @return This session's {@link OutputStream}.
+     */
     public OutputStream getTermOut() {
         return mTermOut;
     }
 
+    /**
+     * Set the {@link OutputStream} associated with this session.
+     *
+     * @param termOut This session's {@link OutputStream}.
+     */
     public void setTermOut(OutputStream termOut) {
         mTermOut = termOut;
     }
 
+    /**
+     * Get the {@link InputStream} associated with this session.
+     *
+     * @return This session's {@link InputStream}.
+     */
     public InputStream getTermIn() {
         return mTermIn;
     }
 
+    /**
+     * Set the {@link InputStream} associated with this session.
+     *
+     * @param termIn This session's {@link InputStream}.
+     */
     public void setTermIn(InputStream termIn) {
         mTermIn = termIn;
     }
 
+    /**
+     * @return Whether the terminal emulation is currently running.
+     */
     public boolean isRunning() {
         return mIsRunning;
     }
@@ -180,18 +239,39 @@ public class TermSession {
         return mEmulator;
     }
 
+    /**
+     * Set an {@link UpdateCallback} to be invoked when the terminal emulator's
+     * screen is changed.
+     *
+     * @param notify The {@link UpdateCallback} to be invoked on changes.
+     */
     public void setUpdateCallback(UpdateCallback notify) {
         mNotify = notify;
     }
 
+    /**
+     * Notify the {@link UpdateCallback} registered by {@link
+     * #setUpdateCallback setUpdateCallback} that the screen has changed.
+     */
     protected void notifyUpdate() {
         if (mNotify != null) {
             mNotify.onUpdate();
         }
     }
 
-    /* Override this method if you support terminal size setting, but do
-       call through to the superclass method */
+    /**
+     * Change the terminal's window size.  Will call {@link #initializeEmulator}
+     * if the emulator is not yet running.
+     * <p>
+     * You should override this method if your application needs to be notified
+     * when the screen size changes (for example, if you need to issue
+     * <code>TIOCSWINSZ</code> to a tty to adjust the window size).  <em>If you
+     * do override this method, you must call through to the superclass
+     * implementation.</em>
+     *
+     * @param columns The number of columns in the terminal window.
+     * @param rows The number of rows in the terminal window.
+     */
     public void updateSize(int columns, int rows) {
         if (mEmulator == null) {
             initializeEmulator(columns, rows);
@@ -200,6 +280,12 @@ public class TermSession {
         }
     }
 
+    /**
+     * Retrieve the terminal's screen and scrollback buffer.
+     *
+     * @return A {@link String} containing the contents of the screen and
+     *         scrollback buffer.
+     */
     public String getTranscriptText() {
         return mTranscriptScreen.getTranscriptText();
     }
@@ -219,12 +305,22 @@ public class TermSession {
     }
 
     /**
-     * Write something directly to the terminal emulator.
+     * Write something directly to the terminal input, bypassing the
+     * emulation client and the session's {@link InputStream}.
+     *
+     * @param buffer The data to be written to the terminal.
+     * @param base The starting offset into the buffer of the data.
+     * @param length The length of the data to be written.
      */
     protected void appendToEmulator(byte[] buffer, int base, int length) {
         mEmulator.append(buffer, base, length);
     }
 
+    /**
+     * Set the terminal emulator's color scheme (default colors).
+     *
+     * @param scheme The {@link ColorScheme} to be used.
+     */
     public void setColorScheme(ColorScheme scheme) {
         mColorScheme = scheme;
         if (mEmulator == null) {
@@ -234,6 +330,17 @@ public class TermSession {
         mTranscriptScreen.setColorScheme(scheme);
     }
 
+    /**
+     * Set whether the terminal emulator should be in UTF-8 mode by default.
+     * <p>
+     * In UTF-8 mode, the terminal will handle UTF-8 sequences, allowing the
+     * display of text in most of the world's languages, but applications must
+     * encode C1 control characters and graphics drawing characters as the
+     * corresponding UTF-8 sequences.
+     *
+     * @param utf8ByDefault Whether the terminal emulator should be in UTF-8
+     *                      mode by default.
+     */
     public void setDefaultUTF8Mode(boolean utf8ByDefault) {
         mDefaultUTF8Mode = utf8ByDefault;
         if (mEmulator == null) {
@@ -242,15 +349,28 @@ public class TermSession {
         mEmulator.setDefaultUTF8Mode(utf8ByDefault);
     }
 
+    /**
+     * Reset the terminal emulator's state.
+     */
     public void reset() {
         mEmulator.reset();
         notifyUpdate();
     }
 
+    /**
+     * Set a {@link FinishCallback} to be invoked once this terminal session is
+     * finished.
+     *
+     * @param callback The {@link FinishCallback} to be invoked on finish.
+     */
     public void setFinishCallback(FinishCallback callback) {
         mFinishCallback = callback;
     }
 
+    /**
+     * Finish this terminal session.  Frees resources used by the terminal
+     * emulator.
+     */
     public void finish() {
         mIsRunning = false;
         mTranscriptScreen.finish();
