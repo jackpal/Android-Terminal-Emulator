@@ -281,11 +281,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         updateText();
     }
 
-    public void resetTerminal() {
-        mEmulator.reset();
-        invalidate();
-    }
-
     @Override
     public boolean onCheckIsTextEditor() {
         return true;
