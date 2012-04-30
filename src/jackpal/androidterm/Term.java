@@ -585,6 +585,7 @@ public class Term extends Activity implements UpdateCallback {
                     onResumeSelectWindow = position;
                 } else if (position == -1) {
                     doCreateNewWindow();
+                    onResumeSelectWindow = mTermSessions.size() - 1;
                 }
             } else {
                 // Close the activity if user closed all sessions
