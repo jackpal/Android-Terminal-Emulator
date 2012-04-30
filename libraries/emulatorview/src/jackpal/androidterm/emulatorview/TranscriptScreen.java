@@ -27,7 +27,7 @@ import android.util.Log;
  * needs to be done. The transcript does its own drawing, to avoid having to
  * expose its internal data structures.
  */
-public class TranscriptScreen implements Screen {
+class TranscriptScreen implements Screen {
     private static final String TAG = "TranscriptScreen";
 
     /**

@@ -232,7 +232,7 @@ public class ShellTermSession extends TermSession {
         } else if (mProcessExitMessage != null) {
             try {
                 byte[] msg = ("\r\n[" + mProcessExitMessage + "]").getBytes("UTF-8");
-                getEmulator().append(msg, 0, msg.length);
+                appendToEmulator(msg, 0, msg.length);
                 notifyUpdate();
             } catch (UnsupportedEncodingException e) {
                 // Never happens

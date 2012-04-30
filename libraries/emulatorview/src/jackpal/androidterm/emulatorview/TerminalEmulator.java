@@ -33,7 +33,7 @@ import android.util.Log;
  * terminal. Missing functionality: text attributes (bold, underline, reverse
  * video, color) alternate screen cursor key and keypad escape sequences.
  */
-public class TerminalEmulator {
+class TerminalEmulator {
     /**
      * The cursor row. Numbered 0..mRows-1.
      */

@@ -22,7 +22,7 @@ import android.graphics.Canvas;
  * Text renderer interface
  */
 
-public interface TextRenderer {
+interface TextRenderer {
     float getCharacterWidth();
     int getCharacterHeight();
     /** @return pixels above top row of text to avoid looking cramped. */

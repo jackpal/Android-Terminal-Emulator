@@ -172,11 +172,11 @@ public class TermSession {
         return mIsRunning;
     }
 
-    public TranscriptScreen getTranscriptScreen() {
+    TranscriptScreen getTranscriptScreen() {
         return mTranscriptScreen;
     }
 
-    public TerminalEmulator getEmulator() {
+    TerminalEmulator getEmulator() {
         return mEmulator;
     }
 
@@ -216,6 +216,13 @@ public class TermSession {
         } catch (InterruptedException e) {
         }
         notifyUpdate();
+    }
+
+    /**
+     * Write something directly to the terminal emulator.
+     */
+    protected void appendToEmulator(byte[] buffer, int base, int length) {
+        mEmulator.append(buffer, base, length);
     }
 
     public void setColorScheme(ColorScheme scheme) {

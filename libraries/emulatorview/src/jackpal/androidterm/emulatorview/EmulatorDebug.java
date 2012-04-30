@@ -20,7 +20,7 @@ package jackpal.androidterm.emulatorview;
  * Debug settings.
  */
 
-public class EmulatorDebug {
+class EmulatorDebug {
     /**
      * Set to true to add debugging code and logging.
      */

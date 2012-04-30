@@ -43,7 +43,7 @@ import jackpal.androidterm.emulatorview.compat.AndroidCharacterCompat;
  * needed.  There is no conversion in the other direction -- a "full" row
  * stays that way even if it contains only regular-width BMP characters.
  */
-public class UnicodeTranscript {
+class UnicodeTranscript {
     private static final String TAG = "UnicodeTranscript";
 
     private Object[] mLines;

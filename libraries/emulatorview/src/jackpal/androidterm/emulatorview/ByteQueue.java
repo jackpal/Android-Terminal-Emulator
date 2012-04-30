@@ -21,7 +21,7 @@ package jackpal.androidterm.emulatorview;
  * Only allows one producer and one consumer.
  */
 
-public class ByteQueue {
+class ByteQueue {
     public ByteQueue(int size) {
         mBuffer = new byte[size];
     }

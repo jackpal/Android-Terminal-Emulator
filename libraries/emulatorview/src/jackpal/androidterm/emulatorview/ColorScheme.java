@@ -21,10 +21,10 @@ package jackpal.androidterm.emulatorview;
  */
 
 public class ColorScheme {
-    int foreColorIndex;
-    int foreColor;
-    int backColorIndex;
-    int backColor;
+    private int foreColorIndex;
+    private int foreColor;
+    private int backColorIndex;
+    private int backColor;
 
     public ColorScheme(int foreColorIndex, int foreColor, int backColorIndex, int backColor) {
         this.foreColorIndex = foreColorIndex;
