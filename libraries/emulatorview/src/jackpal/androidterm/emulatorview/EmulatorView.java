@@ -32,6 +32,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.ClipboardManager;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.FloatMath;
 import android.util.Log;
@@ -222,8 +223,34 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public EmulatorView(Context context, TermSession session, DisplayMetrics metrics) {
         super(context);
-        commonConstructor(context, session);
+        attachSession(session);
         setDensity(metrics);
+    }
+
+    public EmulatorView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public EmulatorView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    public void attachSession(TermSession session) {
+        mTextRenderer = null;
+        mCursorPaint = new Paint();
+        mCursorPaint.setARGB(255,128,128,128);
+        mBackgroundPaint = new Paint();
+        mTopRow = 0;
+        mLeftColumn = 0;
+        mGestureDetector = new GestureDetector(this);
+        // mGestureDetector.setIsLongpressEnabled(false);
+        setVerticalScrollBarEnabled(true);
+        setFocusable(true);
+        setFocusableInTouchMode(true);
+
+        mTermSession = session;
+
+        mKeyListener = new TermKeyListener(session);
     }
 
     public void setDensity(DisplayMetrics metrics) {
@@ -571,24 +598,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public boolean getKeypadApplicationMode() {
         return mEmulator.getKeypadApplicationMode();
-    }
-
-    private void commonConstructor(Context context, TermSession session) {
-        mTextRenderer = null;
-        mCursorPaint = new Paint();
-        mCursorPaint.setARGB(255,128,128,128);
-        mBackgroundPaint = new Paint();
-        mTopRow = 0;
-        mLeftColumn = 0;
-        mGestureDetector = new GestureDetector(this);
-        // mGestureDetector.setIsLongpressEnabled(false);
-        setVerticalScrollBarEnabled(true);
-        setFocusable(true);
-        setFocusableInTouchMode(true);
-
-        mTermSession = session;
-
-        mKeyListener = new TermKeyListener(session);
     }
 
     public void setExtGestureListener(GestureDetector.OnGestureListener listener) {
