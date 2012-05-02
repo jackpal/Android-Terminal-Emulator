@@ -26,6 +26,12 @@
     <item>Blinkender Cursor</item>
   </string-array>
 
+    <string-array name="entries_actionbar_preference">
+        <!-- <item>Action bar disabled</item> -->
+        <item>Aktionsleiste immer anzeigen</item>
+        <item>Aktionsleiste verstecken (zum Anzeigen Bildschirm oben berühren oder Menü-Taste drücken)</item>
+    </string-array>
+
   <string-array name="entries_cursorstyle_preference">
     <item>Rechteck</item>
     <item>Unterstrichen</item>
@@ -46,18 +52,18 @@
   </string-array>
 
   <string-array name="entries_color_preference">
-    <item>Schwarzer Text auf weiss</item>
-    <item>Weisser Text auf schwarz</item>
-    <item>Weisser Text auf blau</item>
+    <item>Schwarzer Text auf weiß</item>
+    <item>Weißer Text auf schwarz</item>
+    <item>Weißer Text auf blau</item>
     <item>Grüner Text auf schwarz</item>
     <item>Oranger Text auf schwarz</item>
     <item>Roter Text auf schwarz</item>
   </string-array>
 
   <string-array name="entries_backaction_preference">
-    <item>Schliesst alle Terminal Fenster</item>
-    <item>Schliesst nur dieses Terminal Fenster</item>
-    <item>Aktivität schliessen, Sessions erhalten lassen</item>
+    <item>Schließt alle Terminalfenster</item>
+    <item>Schließt das aktuelle Terminalfenster</item>
+    <item>Aktivität schließen, Sessions erhalten lassen</item>
     <item>Sendet ESC zum Terminal</item>
     <item>Sendet TAB zum Terminal</item>
   </string-array>
@@ -69,7 +75,7 @@
     <item>Rechte Alt-Taste</item>
     <item>Lauter</item>
     <item>Leiser</item>
-    <item>Kamera Taste</item>
+    <item>Kamera-Taste</item>
     <item>Keine</item>    
   </string-array>
   
@@ -80,7 +86,7 @@
     <item>Rechte Alt-Taste</item>
     <item>Lauter</item>
     <item>Leiser</item>
-    <item>Kamera Taste</item>
+    <item>Kamera-Taste</item>
     <item>Keine</item>
   </string-array>
     
@@ -97,7 +103,7 @@
        <item>Rechte Alt-Taste</item>
        <item>Lauter</item>
        <item>Leiser</item>
-       <item>Kamera Taste</item>
+       <item>Kamera-Taste</item>
        <item>Keine</item>
     </string-array>
 
@@ -109,7 +115,7 @@
        <item>Rechte Alt-Taste</item>
        <item>Lauter</item>
        <item>Leiser</item>
-       <item>Kamera Taste</item>
+       <item>Kamera-Taste</item>
        <item>Keine</item>
     </string-array>
 </resources>
