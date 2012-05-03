@@ -114,6 +114,9 @@
    <string name="title_close_window_on_process_exit_preference">Quitter avec exit</string>
    <string name="summary_close_window_on_process_exit_preference">Quitter le terminal en exécutant la commande exit</string>
    
+   <string name="title_verify_path_preference">Vérifier les entrées de PATH</string>
+   <string name="summary_verify_path_preference">Les répertoires inaccessibles seront retirés de PATH</string>
+
    <string name="control_key_dialog_title">Touches Control et Fonction</string>
    <!-- Le mot CTRLKEY ne doit pas être traduit. Il sera remplacé par la touche CTRL renseignée dans les paramètres -->
    <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
