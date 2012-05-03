@@ -44,6 +44,7 @@ public class TermSettings {
     private String mInitialCommand;
     private String mTermType;
     private boolean mCloseOnExit;
+    private boolean mVerifyPath;
 
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String ACTIONBAR_KEY = "actionbar";
@@ -60,6 +61,7 @@ public class TermSettings {
     private static final String INITIALCOMMAND_KEY = "initialcommand";
     private static final String TERMTYPE_KEY = "termtype";
     private static final String CLOSEONEXIT_KEY = "close_window_on_process_exit";
+    private static final String VERIFYPATH_KEY = "verify_path";
 
     public static final int WHITE = 0xffffffff;
     public static final int BLACK = 0xff000000;
@@ -131,6 +133,7 @@ public class TermSettings {
         mInitialCommand = res.getString(R.string.pref_initialcommand_default);
         mTermType = res.getString(R.string.pref_termtype_default);
         mCloseOnExit = res.getBoolean(R.bool.pref_close_window_on_process_exit_default);
+        mVerifyPath = res.getBoolean(R.bool.pref_verify_path_default);
     }
 
     public void readPrefs(SharedPreferences prefs) {
@@ -152,6 +155,7 @@ public class TermSettings {
         mInitialCommand = readStringPref(INITIALCOMMAND_KEY, mInitialCommand);
         mTermType = readStringPref(TERMTYPE_KEY, mTermType);
         mCloseOnExit = readBooleanPref(CLOSEONEXIT_KEY, mCloseOnExit);
+        mVerifyPath = readBooleanPref(VERIFYPATH_KEY, mVerifyPath);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 
@@ -257,5 +261,9 @@ public class TermSettings {
 
     public boolean closeWindowOnProcessExit() {
         return mCloseOnExit;
+    }
+
+    public boolean verifyPath() {
+        return mVerifyPath;
     }
 }
