@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm.model;
-
-import android.graphics.Canvas;
+package jackpal.androidterm.emulatorview;
 
 /**
- * Text renderer interface
+ * Generic callback to be invoked to notify of updates.
  */
-
-public interface TextRenderer {
-    float getCharacterWidth();
-    int getCharacterHeight();
-    /** @return pixels above top row of text to avoid looking cramped. */
-    int getTopMargin();
-    void drawTextRun(Canvas canvas, float x, float y,
-            int lineOffset, int runWidth, char[] text,
-            int index, int count, boolean cursor, int foreColor, int backColor);
+public interface UpdateCallback {
+    /**
+     * Callback function to be invoked when an update happens.
+     */
+    void onUpdate();
 }

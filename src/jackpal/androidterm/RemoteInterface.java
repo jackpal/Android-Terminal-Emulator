@@ -26,7 +26,8 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import jackpal.androidterm.session.TermSession;
+import jackpal.androidterm.emulatorview.TermSession;
+
 import jackpal.androidterm.util.TermSettings;
 
 public class RemoteInterface extends Activity {
@@ -96,7 +97,8 @@ public class RemoteInterface extends Activity {
             }
         }
 
-        TermSession session = new TermSession(mSettings, service, initialCommand);
+        TermSession session = Term.createTermSession(this, mSettings, initialCommand);
+        session.setFinishCallback(service);
         service.getSessions().add(session);
 
         Intent intent = new Intent(Intent.ACTION_MAIN);
