@@ -16,4 +16,5 @@
    <string name="pref_initialcommand_default">export PATH=/data/local/bin:$PATH</string>
    <string name="pref_termtype_default">screen</string>
    <bool name="pref_close_window_on_process_exit_default">true</bool>
+   <bool name="pref_verify_path_default">true</bool>
 </resources>
