@@ -1,0 +1,7 @@
+#!/bin/bash
+# command line build script for building the debug version
+
+cd ~/code/Android-Terminal-Emulator
+rm -rf bin obj
+cd jni
+$ANDROID_NDK_ROOT/ndk-build && cd .. && ant debug && mv bin/Term-debug.apk bin/Term.apk
