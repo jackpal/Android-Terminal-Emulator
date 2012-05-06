@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm.model;
+package jackpal.androidterm.emulatorview;
 
 /**
  * An abstract screen interface. A terminal screen stores lines of text. (The
  * reason to abstract it is to allow different implementations, and to hide
  * implementation details from clients.)
  */
-public interface Screen {
+interface Screen {
 
     /**
      * Set line wrap flag for a given row. Affects how lines are logically

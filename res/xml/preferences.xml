@@ -164,5 +164,16 @@
             android:defaultValue="@bool/pref_verify_path_default"
             android:title="@string/title_verify_path_preference"
             android:summary="@string/summary_verify_path_preference" />
+    <CheckBoxPreference
+            android:key="do_path_extensions"
+            android:defaultValue="@bool/pref_do_path_extensions_default"
+            android:title="@string/title_do_path_extensions_preference"
+            android:summary="@string/summary_do_path_extensions_preference" />
+    <CheckBoxPreference
+            android:key="allow_prepend_path"
+            android:dependency="do_path_extensions"
+            android:defaultValue="@bool/pref_allow_prepend_path_default"
+            android:title="@string/title_allow_prepend_path_preference"
+            android:summary="@string/summary_allow_prepend_path_preference" />
     </PreferenceCategory>
 </PreferenceScreen>

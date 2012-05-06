@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm.util;
+package jackpal.androidterm.emulatorview;
 
 import android.util.Log;
 
-import jackpal.androidterm.compat.AndroidCharacterCompat;
+import jackpal.androidterm.emulatorview.compat.AndroidCharacterCompat;
 
 /**
  * A backing store for a TranscriptScreen.
@@ -43,7 +43,7 @@ import jackpal.androidterm.compat.AndroidCharacterCompat;
  * needed.  There is no conversion in the other direction -- a "full" row
  * stays that way even if it contains only regular-width BMP characters.
  */
-public class UnicodeTranscript {
+class UnicodeTranscript {
     private static final String TAG = "UnicodeTranscript";
 
     private Object[] mLines;

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm.util;
+package jackpal.androidterm.emulatorview;
 
 /**
  * A multi-thread-safe produce-consumer byte array.
  * Only allows one producer and one consumer.
  */
 
-public class ByteQueue {
+class ByteQueue {
     public ByteQueue(int size) {
         mBuffer = new byte[size];
     }

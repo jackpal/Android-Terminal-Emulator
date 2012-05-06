@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package jackpal.androidterm.session;
+package jackpal.androidterm.emulatorview;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -26,11 +26,6 @@ import java.nio.charset.CodingErrorAction;
 
 import android.util.Log;
 
-import jackpal.androidterm.TermDebug;
-import jackpal.androidterm.model.Screen;
-import jackpal.androidterm.util.TermSettings;
-import jackpal.androidterm.util.UnicodeTranscript;
-
 /**
  * Renders text into a screen. Contains all the terminal-specific knowlege and
  * state. Emulates a subset of the X Window System xterm terminal, which in turn
@@ -38,9 +33,7 @@ import jackpal.androidterm.util.UnicodeTranscript;
  * terminal. Missing functionality: text attributes (bold, underline, reverse
  * video, color) alternate screen cursor key and keypad escape sequences.
  */
-public class TerminalEmulator {
-    private TermSettings mTermSettings;
-
+class TerminalEmulator {
     /**
      * The cursor row. Numbered 0..mRows-1.
      */
@@ -65,7 +58,7 @@ public class TerminalEmulator {
      * Used to send data to the remote process. Needed to implement the various
      * "report" escape sequences.
      */
-    private FileOutputStream mTermOut;
+    private OutputStream mTermOut;
 
     /**
      * Stores the characters that appear on the screen of the emulated terminal.
@@ -326,12 +319,14 @@ public class TerminalEmulator {
      * UTF-8 support
      */
     private static final int UNICODE_REPLACEMENT_CHAR = 0xfffd;
+    private boolean mDefaultUTF8Mode = false;
     private boolean mUTF8Mode = false;
     private boolean mUTF8EscapeUsed = false;
     private int mUTF8ToFollow = 0;
     private ByteBuffer mUTF8ByteBuffer;
     private CharBuffer mInputCharBuffer;
     private CharsetDecoder mUTF8Decoder;
+    private UpdateCallback mUTF8ModeNotify;
 
     /**
      * Construct a terminal emulator that uses the supplied screen
@@ -341,14 +336,14 @@ public class TerminalEmulator {
      * @param rows the number of rows to emulate
      * @param termOut the output file descriptor that talks to the pseudo-tty.
      */
-    public TerminalEmulator(TermSettings termSettings,
-            Screen screen, int columns, int rows, FileOutputStream termOut) {
-        mTermSettings = termSettings;
+    public TerminalEmulator(Screen screen, int columns, int rows, OutputStream termOut, ColorScheme scheme) {
         mScreen = screen;
         mRows = rows;
         mColumns = columns;
         mTabStop = new boolean[mColumns];
         mTermOut = termOut;
+
+        setColorScheme(scheme);
 
         mUTF8ByteBuffer = ByteBuffer.allocate(4);
         mInputCharBuffer = CharBuffer.allocate(2);
@@ -502,18 +497,18 @@ public class TerminalEmulator {
         for (int i = 0; i < length; i++) {
             byte b = buffer[base + i];
             try {
-                if (TermDebug.LOG_CHARACTERS_FLAG) {
+                if (EmulatorDebug.LOG_CHARACTERS_FLAG) {
                     char printableB = (char) b;
                     if (b < 32 || b > 126) {
                         printableB = ' ';
                     }
-                    Log.w(TermDebug.LOG_TAG, "'" + Character.toString(printableB)
+                    Log.w(EmulatorDebug.LOG_TAG, "'" + Character.toString(printableB)
                             + "' (" + Integer.toString(b) + ")");
                 }
                 process(b);
                 mProcessedCharCount++;
             } catch (Exception e) {
-                Log.e(TermDebug.LOG_TAG, "Exception while processing character "
+                Log.e(EmulatorDebug.LOG_TAG, "Exception while processing character "
                         + Integer.toString(mProcessedCharCount) + " code "
                         + Integer.toString(b), e);
             }
@@ -721,11 +716,11 @@ public class TerminalEmulator {
     private void doEscPercent(byte b) {
         switch (b) {
         case '@': // Esc % @ -- return to ISO 2022 mode
-           mUTF8Mode = false;
+           setUTF8Mode(false);
            mUTF8EscapeUsed = true;
            break;
         case 'G': // Esc % G -- UTF-8 mode
-           mUTF8Mode = true;
+           setUTF8Mode(true);
            mUTF8EscapeUsed = true;
            break;
         default: // unimplemented character set
@@ -1179,8 +1174,8 @@ public class TerminalEmulator {
             } else if (code == 49) { // set default background color
                 mBackColor = mDefaultBackColor | (mBackColor & 0x8); // preserve underscore.
             } else {
-                if (TermDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
-                    Log.w(TermDebug.LOG_TAG, String.format("SGR unknown code %d", code));
+                if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
+                    Log.w(EmulatorDebug.LOG_TAG, String.format("SGR unknown code %d", code));
                 }
             }
         }
@@ -1335,21 +1330,21 @@ public class TerminalEmulator {
     }
 
     private void unimplementedSequence(byte b) {
-        if (TermDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
+        if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
             logError("unimplemented", b);
         }
         finishSequence();
     }
 
     private void unknownSequence(byte b) {
-        if (TermDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
+        if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
             logError("unknown", b);
         }
         finishSequence();
     }
 
     private void unknownParameter(int parameter) {
-        if (TermDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
+        if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
             StringBuilder buf = new StringBuilder();
             buf.append("Unknown parameter");
             buf.append(parameter);
@@ -1358,7 +1353,7 @@ public class TerminalEmulator {
     }
 
     private void logError(String errorType, byte b) {
-        if (TermDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
+        if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
             StringBuilder buf = new StringBuilder();
             buf.append(errorType);
             buf.append(" sequence ");
@@ -1385,8 +1380,8 @@ public class TerminalEmulator {
     }
 
     private void logError(String error) {
-        if (TermDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
-            Log.e(TermDebug.LOG_TAG, error);
+        if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
+            Log.e(EmulatorDebug.LOG_TAG, error);
         }
         finishSequence();
     }
@@ -1545,11 +1540,8 @@ public class TerminalEmulator {
         mTopMargin = 0;
         mBottomMargin = mRows;
         mAboutToAutoWrap = false;
-        int[] colorScheme = mTermSettings.getColorScheme();
-        mDefaultForeColor = colorScheme[0];
-        mDefaultBackColor = colorScheme[2];
-        mForeColor = colorScheme[0];
-        mBackColor = colorScheme[2];
+        mForeColor = mDefaultForeColor;
+        mBackColor = mDefaultBackColor;
         mInverseColors = false;
         mbKeypadApplicationMode = false;
         mAlternateCharSet = false;
@@ -1557,27 +1549,43 @@ public class TerminalEmulator {
         setDefaultTabStops();
         blockClear(0, 0, mColumns, mRows);
 
-        mUTF8Mode = mTermSettings.defaultToUTF8Mode();
+        setUTF8Mode(mDefaultUTF8Mode);
         mUTF8EscapeUsed = false;
         mUTF8ToFollow = 0;
         mUTF8ByteBuffer.clear();
         mInputCharBuffer.clear();
     }
 
-    public void updatePrefs(TermSettings settings) {
-        mTermSettings = settings;
+    public void setDefaultUTF8Mode(boolean defaultToUTF8Mode) {
+        mDefaultUTF8Mode = defaultToUTF8Mode;
         if (!mUTF8EscapeUsed) {
-            boolean newUTF8Mode = settings.defaultToUTF8Mode();
-            if (mUTF8Mode && !newUTF8Mode) {
-                mUTF8ToFollow = 0;
-                mUTF8ByteBuffer.clear();
-                mInputCharBuffer.clear();
-            }
-            mUTF8Mode = newUTF8Mode;
+            setUTF8Mode(defaultToUTF8Mode);
         }
-        int[] colorScheme = mTermSettings.getColorScheme();
-        mDefaultForeColor = colorScheme[0];
-        mDefaultBackColor = colorScheme[2];
+    }
+
+    public void setUTF8Mode(boolean utf8Mode) {
+        if (utf8Mode && !mUTF8Mode) {
+            mUTF8ToFollow = 0;
+            mUTF8ByteBuffer.clear();
+            mInputCharBuffer.clear();
+        }
+        mUTF8Mode = utf8Mode;
+        if (mUTF8ModeNotify != null) {
+            mUTF8ModeNotify.onUpdate();
+        }
+    }
+
+    public boolean getUTF8Mode() {
+        return mUTF8Mode;
+    }
+
+    public void setUTF8ModeUpdateCallback(UpdateCallback utf8ModeNotify) {
+        mUTF8ModeNotify = utf8ModeNotify;
+    }
+
+    public void setColorScheme(ColorScheme scheme) {
+        mDefaultForeColor = scheme.getForeColorIndex();
+        mDefaultBackColor = scheme.getBackColorIndex();
     }
 
     public String getSelectedText(int x1, int y1, int x2, int y2) {

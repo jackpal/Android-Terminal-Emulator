@@ -17,4 +17,6 @@
    <string name="pref_termtype_default">screen</string>
    <bool name="pref_close_window_on_process_exit_default">true</bool>
    <bool name="pref_verify_path_default">true</bool>
+   <bool name="pref_do_path_extensions_default">true</bool>
+   <bool name="pref_allow_prepend_path_default">true</bool>
 </resources>
