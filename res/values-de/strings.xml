@@ -18,32 +18,32 @@
    <string name="application_terminal">Terminal Emulator</string>
    <string name="preferences">Einstellungen</string>
    <string name="new_window">Neues Fenster</string>
-   <string name="close_window">Fenster schliessen</string>
+   <string name="close_window">Fenster schließen</string>
    <string name="window_list">Fenster</string>
    <string name="prev_window">Vorh. Fenster</string>
    <string name="next_window">Nächst. Fenster</string>
    <string name="reset">Zurücksetzen</string>
-   <string name="send_email">Email an</string>
+   <string name="send_email">Email schreiben</string>
    <string name="special_keys">Spezialtasten</string>
    <string name="toggle_soft_keyboard">Tastatur an/aus</string>
 	
    <string name="reset_toast_notification">Der Status dieses Terminalfensters wurde zurückgesetzt.</string>
 
-   <string name="enable_wakelock">Take WakeLock</string>
-   <string name="disable_wakelock">Drop WakeLock</string>
-   <string name="enable_wifilock">Take WifiLock</string>
-   <string name="disable_wifilock">Drop WifiLock</string>
+   <string name="enable_wakelock">Bildschirm immer anlassen</string>
+   <string name="disable_wakelock">Bildschirm ist immer an</string>
+   <string name="enable_wifilock">WLAN immer anlassen</string>
+   <string name="disable_wifilock">WLAN ist immer an</string>
    
    <string name="edit_text">Text bearbeiten</string>
    <string name="select_text">Text auswählen</string>
    <string name="copy_all">Alles kopieren</string>
    <string name="paste">Einfügen</string> 
    
-   <string name="service_notify_text">Terminal Sitzung wird ausgeführt</string>
+   <string name="service_notify_text">Terminalsitzung wird ausgeführt</string>
 
    <string name="window_title">Fenster %1$d</string>  
 
-   <string name="process_exit_message">Terminal Sitzung beendet</string>
+   <string name="process_exit_message">Terminalsitzung beendet</string>
    <!-- Preference dialog -->
    <string name="screen_preferences">Bildschirm</string>
 
@@ -66,59 +66,62 @@
    <string name="text_preferences">Text</string>
 
    <string name="title_utf8_by_default_preference">UTF-8 als Standard definieren</string>
-   <string name="summary_utf8_by_default_preference">Ab der UTF-8 Modus standartmässig eingeschaltet werden soll.</string>
+   <string name="summary_utf8_by_default_preference">Ist der UTF-8 Modus standartmäßig aktiv?</string>
 
    <string name="title_fontsize_preference">Schriftgröße</string>
-   <string name="summary_fontsize_preference">Die Zeichengröße in Punkten auswählen.</string>
+   <string name="summary_fontsize_preference">Die Schriftgröße in Punkten auswählen.</string>
    <string name="dialog_title_fontsize_preference">Schriftgröße</string>
 
    <string name="title_color_preference">Farben</string>
-   <string name="summary_color_preference">Die Textfarben auswählen.</string>
+   <string name="summary_color_preference">Die Text- und Hintergrundfarbe auswählen.</string>
    <string name="dialog_title_color_preference">Textfarbe</string>
 
    <string name="keyboard_preferences">Tastatur</string>
 
-   <string name="title_backaction_preference">Zurück-Knopf Verhalten</string>
-   <string name="summary_backaction_preference">Festlegen der Aktion bei drücken des Zurück-Knopfes.</string>
-   <string name="dialog_title_backaction_preference">Zurück-Knopf Verhalten</string>
+   <string name="title_backaction_preference">Zurück-Knopf</string>
+   <string name="summary_backaction_preference">Festlegen der Aktion bei Drücken des Zurück-Knopfes.</string>
+   <string name="dialog_title_backaction_preference">Zurück-Knopf</string>
 
-   <string name="title_controlkey_preference">Steuerungstaste</string>
+   <string name="title_controlkey_preference">Steuerungstaste (Strg)</string>
    <string name="summary_controlkey_preference">Die Steuerungstaste auswählen.</string>
-   <string name="dialog_title_controlkey_preference">Steuerungstaste</string>
+   <string name="dialog_title_controlkey_preference">Steuerungstaste (Strg)</string>
 
-   <string name="title_fnkey_preference">Fn Taste</string>
-   <string name="summary_fnkey_preference">Wähle Fn Taste.</string>
-   <string name="dialog_title_fnkey_preference">Fn Taste</string>
+   <string name="title_fnkey_preference">Funktionstaste (Fn)</string>
+   <string name="summary_fnkey_preference">Die Funktionstaste auswählen.</string>
+   <string name="dialog_title_fnkey_preference">Funktionstaste (Fn)</string>
 
    <string name="title_ime_preference">Eingabemethode</string>
-   <string name="summary_ime_preference">Die Eingabemethode für die Soft-Tastatur auswählen.</string>
+   <string name="summary_ime_preference">Die Eingabemethode für die Bildschirmtastatur auswählen.</string>
    <string name="dialog_title_ime_preference">Eingabemethode</string>
 
    <string name="shell_preferences">Shell</string>
    <string name="title_shell_preference">Shell</string>
-   <string name="summary_shell_preference">Die zu verwendene Shell auswählen.</string>
+   <string name="summary_shell_preference">Die zu verwendene Shell festlegen.</string>
    <string name="dialog_title_shell_preference">Shell</string>
 
-   <string name="title_initialcommand_preference">Startkommando</string>
-   <string name="summary_initialcommand_preference">Kommando eingeben, dass beim Start an die Shell gesendet wird.</string>
-   <string name="dialog_title_initialcommand_preference">Startkommando</string>
+   <string name="title_initialcommand_preference">Startbefehl</string>
+   <string name="summary_initialcommand_preference">Befehl eingeben, der beim Start an die Shell gesendet wird.</string>
+   <string name="dialog_title_initialcommand_preference">Startbefehl</string>
    <!-- BOYA -->
-   <string name="title_termtype_preference">Terminal Typ</string>
-   <string name="summary_termtype_preference">Was für einen Terminal Typ soll die Shell Ausführen.</string>
-   <string name="dialog_title_termtype_preference">Terminal Typ</string>
+   <string name="title_termtype_preference">Terminal-Typ</string>
+   <string name="summary_termtype_preference">Welchen Terminal-Typ soll die Shell ausführen?</string>
+   <string name="dialog_title_termtype_preference">Terminal-Typ</string>
 
-   <string name="title_close_window_on_process_exit_preference">Bei Programmbeendigung Fenster schliessen</string>
-   <string name="summary_close_window_on_process_exit_preference">Ob das Fenster geschlossen werden soll wenn die Shell geschlossen wird.</string>
+   <string name="title_close_window_on_process_exit_preference">Fenster mit Shell beenden</string>
+   <string name="summary_close_window_on_process_exit_preference">Soll das Fenster geschlossen werden, wenn die Shell beendet wird?</string>
 
-   <string name="control_key_dialog_title">Kontrol- and Funktionstasten</string>
+   <string name="control_key_dialog_title">Steuerungs- und Funktionstasten</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
         actual control key key name. -->
-   <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
-  <string name="control_key_dialog_control_disabled_text">Keine Kontroltaste festgelegt.</string>
+   <string name="control_key_dialog_control_text">CTRLKEY + Leertaste: Strg-@ (NUL)\nCTRLKEY + A..Z: Strg-A..Z\nCTRLKEY + 5: Strg-]\nCTRLKEY + 6: Strg-^\nCTRLKEY + 7: Strg-_\nCTRLKEY + 9: F11\nCTRLKEY + 0: F12</string>
+  <string name="control_key_dialog_control_disabled_text">Keine Steuerungstaste festgelegt.</string>
   <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
        actual function key key name. -->
-  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
+  <string name="control_key_dialog_fn_text">FNKEY + 1..9: F1-F9\nFNKEY + 0: F10\nFNKEY + W: ↑\nFNKEY + A: ←\nFNKEY + S: ↓\nFNKEY + D: →\nFNKEY + P: Bild↑\nFNKEY + N: Bild↓\nFNKEY + T: Tab\nFNKEY + L : | (pipe)\nFNKEY + U: _ (Unterstrich)\nFNKEY + E: Strg-[ (ESC)\nFNKEY + X: Entfernen\nFNKEY + I: Einfügen\nFNKEY + H: Pos1\nFNKEY + F: Ende\nFNKEY + .: Strg-\\\n</string>
   <string name="control_key_dialog_fn_disabled_text">Keine Funktionstaste fergelegt.</string>
 
-  <string name="confirm_window_close_message">Dieses Fenster schliessen?</string>
+  <string name="confirm_window_close_message">Dieses Fenster schließen?</string>
+
+  <string name="perm_run_script">Beliebige Scripte im Terminal Emulator ausführen</string>
+  <string name="permdesc_run_script">Erlaubt Anwendungen, neue Fenster im Android Terminal Emulator zu öffnen und in diesen Befehle auszuführen. Dies schließt alle Berechtigungen von Android Terminal Emulator ein, inklusive Internetzugang und Schreib-/Leserechte auf der SD-Karte.</string>
 </resources>
