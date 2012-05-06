@@ -45,6 +45,11 @@ public class PathReceiver extends BroadcastReceiver {
 
         String action = intent.getAction();
 
+        /**
+         * You need to declare the permission
+         * jackpal.androidterm.permission.APPEND_TO_PATH
+         * to receive this broadcast.
+         */
         if (action.equals("jackpal.androidterm.broadcast.APPEND_TO_PATH")) {
             /* The directory we want appended goes into the result extras */
             Bundle result = getResultExtras(true);

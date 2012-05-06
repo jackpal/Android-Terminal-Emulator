@@ -136,6 +136,8 @@
 
   <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>
   <string name="permdesc_run_script">Allows application to open new windows in Android Terminal Emulator and run commands in those windows with all of Android Terminal Emulator\'s permissions, including access to the Internet and your SD Card.</string>
+  <string name="perm_append_to_path">Add commands to Terminal Emulator</string>
+  <string name="permdesc_append_to_path">Allows application to provide additional commands (add directories to the PATH) for Android Terminal Emulator.</string>
   <string name="perm_prepend_to_path">Override commands in Terminal Emulator</string>
   <string name="permdesc_prepend_to_path">Allows application to override existing commands with its own versions (prepend directories to the PATH) in Android Terminal Emulator.</string>
 </resources>

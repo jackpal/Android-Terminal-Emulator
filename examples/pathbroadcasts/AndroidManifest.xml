@@ -5,6 +5,7 @@
       android:versionName="1.0">
     <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="11" />
 
+    <uses-permission android:name="jackpal.androidterm.permission.APPEND_TO_PATH" />
     <!-- Declare this if you want to receive PATH prepend broadcasts -->
     <uses-permission android:name="jackpal.androidterm.permission.PREPEND_TO_PATH" />
 
