@@ -502,7 +502,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 }
                 if (actionCode == EditorInfo.IME_ACTION_UNSPECIFIED) {
                     // The "return" key has been pressed on the IME.
-                    sendText("\n");
+                    sendText("\r");
                 }
                 return true;
             }
