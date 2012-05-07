@@ -325,12 +325,17 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     /**
      * Set this <code>EmulatorView</code>'s color scheme.
      *
-     * @param scheme The {@link ColorScheme} to use.
+     * @param scheme The {@link ColorScheme} to use (use null for the default
+     *               scheme).
      * @see TermSession#setColorScheme
      * @see ColorScheme
      */
     public void setColorScheme(ColorScheme scheme) {
-        mColorScheme = scheme;
+        if (scheme == null) {
+            mColorScheme = BaseTextRenderer.defaultColorScheme;
+        } else {
+            mColorScheme = scheme;
+        }
         updateText();
     }
 

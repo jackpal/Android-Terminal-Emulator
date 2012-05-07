@@ -319,9 +319,13 @@ public class TermSession {
     /**
      * Set the terminal emulator's color scheme (default colors).
      *
-     * @param scheme The {@link ColorScheme} to be used.
+     * @param scheme The {@link ColorScheme} to be used (use null for the
+     *               default scheme).
      */
     public void setColorScheme(ColorScheme scheme) {
+        if (scheme == null) {
+            scheme = BaseTextRenderer.defaultColorScheme;
+        }
         mColorScheme = scheme;
         if (mEmulator == null) {
             return;
