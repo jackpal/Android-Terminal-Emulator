@@ -73,6 +73,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     private boolean mKnownSize;
 
+    // Set if initialization was deferred because a TermSession wasn't attached
+    private boolean mDeferInit = false;
+
     private int mVisibleWidth;
     private int mVisibleHeight;
 
@@ -286,6 +289,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mTermSession = session;
 
         mKeyListener = new TermKeyListener(session);
+
+        // Do init now if it was deferred until a TermSession was attached
+        if (mDeferInit) {
+            mDeferInit = false;
+            mKnownSize = true;
+            initialize();
+        }
     }
 
     /**
@@ -1053,6 +1063,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        if (mTermSession == null) {
+            // Not ready, defer until TermSession is attached
+            mDeferInit = true;
+            return;
+        }
+
         if (!mKnownSize) {
             mKnownSize = true;
             initialize();
