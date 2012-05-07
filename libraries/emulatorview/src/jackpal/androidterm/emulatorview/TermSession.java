@@ -46,7 +46,7 @@ import android.util.Log;
  * initially have.
  */
 public class TermSession {
-    private ColorScheme mColorScheme;
+    private ColorScheme mColorScheme = BaseTextRenderer.defaultColorScheme;
     private UpdateCallback mNotify;
 
     private OutputStream mTermOut;
