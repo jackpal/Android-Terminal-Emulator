@@ -155,6 +155,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
             return;
         }
         view.onResume();
+        view.requestFocus();
     }
 
     private void showTitle() {
