@@ -392,15 +392,16 @@ public class TermSession {
     }
 
     /**
-     * Write something directly to the terminal input, bypassing the
-     * emulation client and the session's {@link InputStream}.
+     * Write something directly to the terminal emulator input, bypassing the
+     * emulation client, the session's {@link InputStream}, and any processing
+     * being done by {@link #processInput processInput}.
      *
-     * @param buffer The data to be written to the terminal.
-     * @param base The starting offset into the buffer of the data.
-     * @param length The length of the data to be written.
+     * @param data The data to be written to the terminal.
+     * @param offset The starting offset into the buffer of the data.
+     * @param count The length of the data to be written.
      */
-    protected void appendToEmulator(byte[] buffer, int base, int length) {
-        mEmulator.append(buffer, base, length);
+    protected final void appendToEmulator(byte[] data, int offset, int count) {
+        mEmulator.append(data, offset, count);
     }
 
     /**
