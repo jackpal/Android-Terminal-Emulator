@@ -362,12 +362,33 @@ public class TermSession {
     private void readFromProcess() {
         int bytesAvailable = mByteQueue.getBytesAvailable();
         int bytesToRead = Math.min(bytesAvailable, mReceiveBuffer.length);
+        int bytesRead = 0;
         try {
-            int bytesRead = mByteQueue.read(mReceiveBuffer, 0, bytesToRead);
-            mEmulator.append(mReceiveBuffer, 0, bytesRead);
+            bytesRead = mByteQueue.read(mReceiveBuffer, 0, bytesToRead);
         } catch (InterruptedException e) {
+            return;
         }
+
+        // Give subclasses a chance to process the read data
+        processInput(mReceiveBuffer, 0, bytesRead);
         notifyUpdate();
+    }
+
+    /**
+     * Process input from the tty and send it to the terminal emulator.  This
+     * method is invoked on the main thread whenever new data is read from the
+     * tty.
+     * <p>
+     * The default implementation sends the data straight to the terminal
+     * emulator without modifying it in any way.  Subclasses can override it to
+     * modify the data before giving it to the terminal.
+     *
+     * @param data A buffer containing the data read from the tty.
+     * @param offset The offset into the buffer where the read data begins.
+     * @param count The number of bytes read from the tty.
+     */
+    protected void processInput(byte[] data, int offset, int count) {
+        mEmulator.append(data, offset, count);
     }
 
     /**
