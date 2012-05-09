@@ -26,6 +26,7 @@ import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CodingErrorAction;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
@@ -57,9 +58,13 @@ public class TermSession {
 
     private boolean mDefaultUTF8Mode;
 
-    private Thread mPollingThread;
+    private Thread mReaderThread;
     private ByteQueue mByteQueue;
     private byte[] mReceiveBuffer;
+
+    private Thread mWriterThread;
+    private ByteQueue mWriteQueue;
+    private Handler mWriterHandler;
 
     private CharBuffer mWriteCharBuffer;
     private ByteBuffer mWriteByteBuffer;
@@ -69,6 +74,7 @@ public class TermSession {
     private static final int TRANSCRIPT_ROWS = 10000;
 
     private static final int NEW_INPUT = 1;
+    private static final int NEW_OUTPUT = 2;
 
     /**
      * Callback to be invoked when a {@link TermSession} finishes.
@@ -107,8 +113,7 @@ public class TermSession {
 
         mReceiveBuffer = new byte[4 * 1024];
         mByteQueue = new ByteQueue(4 * 1024);
-
-        mPollingThread = new Thread() {
+        mReaderThread = new Thread() {
             private byte[] mBuffer = new byte[4096];
 
             @Override
@@ -129,7 +134,56 @@ public class TermSession {
                 }
             }
         };
-        mPollingThread.setName("Input reader");
+        mReaderThread.setName("Input reader");
+
+        mWriteQueue = new ByteQueue(4096);
+        mWriterThread = new Thread() {
+            private byte[] mBuffer = new byte[4096];
+
+            @Override
+            public void run() {
+                Looper.prepare();
+
+                mWriterHandler = new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        if (msg.what == NEW_OUTPUT) {
+                            writeToOutput();
+                        }
+                    }
+                };
+
+                // Drain anything in the queue from before we started
+                writeToOutput();
+
+                Looper.loop();
+            }
+
+            private void writeToOutput() {
+                ByteQueue writeQueue = mWriteQueue;
+                byte[] buffer = mBuffer;
+                OutputStream termOut = mTermOut;
+
+                int bytesAvailable = writeQueue.getBytesAvailable();
+                int bytesToWrite = Math.min(bytesAvailable, buffer.length);
+
+                if (bytesToWrite == 0) {
+                    return;
+                }
+
+                try {
+                    writeQueue.read(buffer, 0, bytesToWrite);
+                    termOut.write(buffer, 0, bytesToWrite);
+                    termOut.flush();
+                } catch (IOException e) {
+                    // Ignore exception
+                    // We don't really care if the receiver isn't listening.
+                    // We just make a best effort to answer the query.
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+        mWriterThread.setName("Output writer");
     }
 
     /**
@@ -144,7 +198,8 @@ public class TermSession {
         mEmulator.setDefaultUTF8Mode(mDefaultUTF8Mode);
 
         mIsRunning = true;
-        mPollingThread.start();
+        mReaderThread.start();
+        mWriterThread.start();
     }
 
     /**
@@ -155,13 +210,12 @@ public class TermSession {
      */
     public void write(String data) {
         try {
-            mTermOut.write(data.getBytes("UTF-8"));
-            mTermOut.flush();
+            byte[] bytes = data.getBytes("UTF-8");
+            mWriteQueue.write(bytes, 0, bytes.length);
         } catch (IOException e) {
-            // Ignore exception
-            // We don't really care if the receiver isn't listening.
-            // We just make a best effort to answer the query.
+        } catch (InterruptedException e) {
         }
+        notifyNewOutput();
     }
 
     /**
@@ -181,11 +235,20 @@ public class TermSession {
             encoder.reset();
             encoder.encode(charBuf, byteBuf, true);
             encoder.flush(byteBuf);
-            mTermOut.write(byteBuf.array(), 0, byteBuf.position()-1);
-            mTermOut.flush();
-        } catch (IOException e) {
-            // Ignore exception
+            mWriteQueue.write(byteBuf.array(), 0, byteBuf.position()-1);
+        } catch (InterruptedException e) {
         }
+        notifyNewOutput();
+    }
+
+    /* Notify the writer thread that there's new output waiting */
+    private void notifyNewOutput() {
+        Handler writerHandler = mWriterHandler;
+        if (writerHandler == null) {
+           /* Writer thread isn't started -- will pick up data once it does */
+           return;
+        }
+        writerHandler.sendEmptyMessage(NEW_OUTPUT);
     }
 
     /**
