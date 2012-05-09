@@ -134,7 +134,7 @@ public class TermSession {
                 }
             }
         };
-        mReaderThread.setName("Input reader");
+        mReaderThread.setName("TermSession input reader");
 
         mWriteQueue = new ByteQueue(4096);
         mWriterThread = new Thread() {
@@ -183,7 +183,7 @@ public class TermSession {
                 }
             }
         };
-        mWriterThread.setName("Output writer");
+        mWriterThread.setName("TermSession output writer");
     }
 
     /**
