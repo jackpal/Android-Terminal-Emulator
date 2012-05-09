@@ -809,6 +809,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mExtGestureListener != null && mExtGestureListener.onSingleTapUp(e)) {
             return true;
         }
+        requestFocus();
         return true;
     }
 
