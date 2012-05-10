@@ -75,6 +75,7 @@ public class TermSession {
 
     private static final int NEW_INPUT = 1;
     private static final int NEW_OUTPUT = 2;
+    private static final int FINISH = 3;
 
     /**
      * Callback to be invoked when a {@link TermSession} finishes.
@@ -149,6 +150,8 @@ public class TermSession {
                     public void handleMessage(Message msg) {
                         if (msg.what == NEW_OUTPUT) {
                             writeToOutput();
+                        } else if (msg.what == FINISH) {
+                            Looper.myLooper().quit();
                         }
                     }
                 };
@@ -461,11 +464,22 @@ public class TermSession {
 
     /**
      * Finish this terminal session.  Frees resources used by the terminal
-     * emulator.
+     * emulator and closes the attached <code>InputStream</code> and
+     * <code>OutputStream</code>.
      */
     public void finish() {
         mIsRunning = false;
         mTranscriptScreen.finish();
+
+        // Stop the reader and writer threads, and close the I/O streams
+        mWriterHandler.sendEmptyMessage(FINISH);
+        try {
+            mTermIn.close();
+            mTermOut.close();
+        } catch (IOException e) {
+            // We don't care if this fails
+        }
+
         if (mFinishCallback != null) {
             mFinishCallback.onSessionFinish(this);
         }
