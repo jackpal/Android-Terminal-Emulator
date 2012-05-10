@@ -32,7 +32,10 @@ mips: $(check-ndk)
 ndk-not-found:
 	$(error Android NDK not found. Make sure ndk-build is in your PATH)
 
-_do_build: $(bin)
+_do_build: make_bindir $(bin)
+
+make_bindir:
+	mkdir -p $(bindir)
 
 $(bindir)/%-$(ARCH) : $(srcdir)/%.c
 	$(CC) --sysroot=$(SYSROOT) -o $@ $<
@@ -41,4 +44,4 @@ $(bindir)/%-$(ARCH) : $(srcdir)/%.c
 clean:
 	rm -f $(bindir)/*
 
-.PHONY: clean dobuild ndk-not-found arm x86 mips all
+.PHONY: clean make_bindir _do_build ndk-not-found arm x86 mips all
