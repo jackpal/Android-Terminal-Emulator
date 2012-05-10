@@ -44,6 +44,7 @@ import jackpal.androidterm.emulatorview.TermSession;
  */
 public class TelnetSession extends TermSession
 {
+    private static final String TAG = "TelnetSession";
     private static final boolean DEBUG = false;
 
     public static final int IAC = 255;
@@ -90,6 +91,7 @@ public class TelnetSession extends TermSession
     private int mTelnetCommand = 0;
     private int mTelnetCommandArg = 0;
     private boolean mMultipleParameters = false;
+    private int mLastInputByteProcessed = 0;
 
     /**
      * A BufferedOutputStream which refuses to flush its underlying stream
@@ -129,7 +131,7 @@ public class TelnetSession extends TermSession
 
         public void forceFlush() throws IOException {
             if (DEBUG) {
-                Log.d("TelnetSession", "flushing output buffer");
+                Log.d(TAG, "flushing output buffer");
             }
             super.flush();
         }
@@ -198,7 +200,7 @@ public class TelnetSession extends TermSession
     /* Echoes local input from the emulator back to the emulator screen. */
     private void doLocalEcho(byte[] data) {
         if (DEBUG) {
-            Log.d("TelnetSession", "echoing " +
+            Log.d(TAG, "echoing " +
                     Arrays.toString(data) + " back to terminal");
         }
         appendToEmulator(data, 0, data.length);
@@ -213,17 +215,19 @@ public class TelnetSession extends TermSession
     public void processInput(byte[] buffer, int offset, int count) {
         TelnetOutputStream output = mTelnetOut;
 
+        int lastByte = mLastInputByteProcessed;
         for (int i = offset; i < offset + count; ++i) {
             // need to interpret the byte as unsigned -- thanks Java!
-            int curByte = (buffer[i] & 0x80) | (buffer[i] & 0x7f);
+            int curByte = ((int) buffer[i]) & 0xff;
 
             if (DEBUG) {
-                Log.d("TelnetSession", "input byte " + curByte);
+                Log.d(TAG, "input byte " + curByte);
             }
 
             if (mInTelnetCommand) {
                 // Previous byte was part of a command sequence
                 doTelnetCommand(curByte);
+                lastByte = curByte;
                 continue;
             }
 
@@ -262,7 +266,7 @@ public class TelnetSession extends TermSession
                 }
                 break;
             case 0: // NUL -- should be ignored following a CR
-                if (i > 0 && buffer[i-1] == '\r') {
+                if (lastByte == '\r') {
                     if (echoInput) {
                         // We do need to echo it back to the server, though
                         doEchoInput(0);
@@ -277,18 +281,22 @@ public class TelnetSession extends TermSession
                     doEchoInput(buffer[i]);
                 }
             }
+            lastByte = curByte;
         }
+
+        // Save the last byte processed -- we may need it
+        mLastInputByteProcessed = lastByte;
     }
 
     private void doEchoInput(int input) {
         if (DEBUG) {
-            Log.d("TelnetSession", "echoing " + input + " to remote end");
+            Log.d(TAG, "echoing " + input + " to remote end");
         }
         try {
             mTelnetOut.writeUnbuffered(input);
         } catch (IOException e) {
             // handle exception here
-            Log.e("TelnetSession", e.toString());
+            Log.e(TAG, e.toString());
         }
     }
 
@@ -556,7 +564,7 @@ public class TelnetSession extends TermSession
     /* Send an option negotiation command */
     private void sendOption(int command, int opt) {
         if (DEBUG) {
-            Log.d("TelnetSession", "sending command: " + command + " " + opt);
+            Log.d(TAG, "sending command: " + command + " " + opt);
         }
         TelnetOutputStream output = mTelnetOut;
         // option negotiation needs to bypass the write buffer

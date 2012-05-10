@@ -23,6 +23,8 @@ import android.widget.EditText;
  */
 public class LaunchActivity extends Activity
 {
+    private static final String TAG = "TelnetLaunchActivity";
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -104,7 +106,7 @@ public class LaunchActivity extends Activity
     private String getArch() {
         /* Returns the value of uname -m */
         String machine = System.getProperty("os.arch");
-        Log.d("LaunchActivity", "os.arch is " + machine);
+        Log.d(TAG, "os.arch is " + machine);
 
         /* Convert machine name to our arch identifier */
         if (machine.matches("armv[0-9]+(tej?)?l")) {
