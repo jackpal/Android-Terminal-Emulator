@@ -19,6 +19,7 @@ package jackpal.androidterm.emulatorview;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -208,22 +209,55 @@ public class TermSession {
     /**
      * Write data to the terminal output.  The written data will be consumed by
      * the emulation client as input.
+     * <p>
+     * <code>write</code> itself runs on the main thread.  The default
+     * implementation writes the data into a circular buffer and signals the
+     * writer thread to copy it from there to the {@link OutputStream}.
+     * <p>
+     * Subclasses may override this method to modify the output before writing
+     * it to the stream, but implementations in derived classes should call
+     * through to this method to do the actual writing.
      *
-     * @param data The data to write to the terminal.
+     * @param data An array of bytes to write to the terminal.
+     * @param offset The offset into the array at which the data starts.
+     * @param count The number of bytes to be written.
      */
-    public void write(String data) {
+    public void write(byte[] data, int offset, int count) {
         try {
-            byte[] bytes = data.getBytes("UTF-8");
-            mWriteQueue.write(bytes, 0, bytes.length);
-        } catch (IOException e) {
+            mWriteQueue.write(data, offset, count);
         } catch (InterruptedException e) {
         }
         notifyNewOutput();
     }
 
     /**
-     * Write a single Unicode code point to the terminal output.  The written
-     * data will be consumed by the emulation client as input.
+     * Write the UTF-8 representation of a String to the terminal output.  The
+     * written data will be consumed by the emulation client as input.
+     * <p>
+     * This implementation encodes the String and then calls
+     * {@link #write(byte[], int, int)} to do the actual writing.  It should
+     * therefore usually be unnecessary to override this method; override
+     * {@link #write(byte[], int, int)} instead.
+     *
+     * @param data The String to write to the terminal.
+     */
+    public void write(String data) {
+        try {
+            byte[] bytes = data.getBytes("UTF-8");
+            write(bytes, 0, bytes.length);
+        } catch (UnsupportedEncodingException e) {
+        }
+    }
+
+    /**
+     * Write the UTF-8 representation of a single Unicode code point to the
+     * terminal output.  The written data will be consumed by the emulation
+     * client as input.
+     * <p>
+     * This implementation encodes the code point and then calls
+     * {@link #write(byte[], int, int)} to do the actual writing.  It should
+     * therefore usually be unnecessary to override this method; override
+     * {@link #write(byte[], int, int)} instead.
      *
      * @param codePoint The Unicode code point to write to the terminal.
      */
@@ -231,17 +265,14 @@ public class TermSession {
         CharBuffer charBuf = mWriteCharBuffer;
         ByteBuffer byteBuf = mWriteByteBuffer;
         CharsetEncoder encoder = mUTF8Encoder;
-        try {
-            charBuf.clear();
-            byteBuf.clear();
-            Character.toChars(codePoint, charBuf.array(), 0);
-            encoder.reset();
-            encoder.encode(charBuf, byteBuf, true);
-            encoder.flush(byteBuf);
-            mWriteQueue.write(byteBuf.array(), 0, byteBuf.position()-1);
-        } catch (InterruptedException e) {
-        }
-        notifyNewOutput();
+
+        charBuf.clear();
+        byteBuf.clear();
+        Character.toChars(codePoint, charBuf.array(), 0);
+        encoder.reset();
+        encoder.encode(charBuf, byteBuf, true);
+        encoder.flush(byteBuf);
+        write(byteBuf.array(), 0, byteBuf.position()-1);
     }
 
     /* Notify the writer thread that there's new output waiting */
