@@ -38,14 +38,23 @@ import android.util.Log;
  * You need to supply an {@link InputStream} and {@link OutputStream} to
  * provide input and output to the terminal.  For a locally running
  * program, these would typically point to a tty; for a telnet program
- * they might point to a network socket.
+ * they might point to a network socket.  Reader and writer threads will be
+ * spawned to do I/O to these streams.  All other operations, including
+ * processing of input and output in {@link #processInput processInput} and
+ * {@link #write(byte[], int, int) write}, will be performed on the main thread.
  * <p>
  * Call {@link #setTermIn} and {@link #setTermOut} to connect the input and
  * output streams to the emulator.  When all of your initialization is
  * complete, your initial screen size is known, and you're ready to
  * start VT100 emulation, call {@link #initializeEmulator} or {@link
  * #updateSize} with the number of rows and columns the terminal should
- * initially have.
+ * initially have.  (If you attach the session to an {@link EmulatorView},
+ * the view will take care of setting the screen size and initializing the
+ * emulator for you.)
+ * <p>
+ * When you're done with the session, you should call {@link #finish} on it.
+ * This frees emulator data from memory, stops the reader and writer threads,
+ * and closes the attached I/O streams.
  */
 public class TermSession {
     private ColorScheme mColorScheme = BaseTextRenderer.defaultColorScheme;
@@ -406,17 +415,17 @@ public class TermSession {
     }
 
     /**
-     * Process input from the tty and send it to the terminal emulator.  This
-     * method is invoked on the main thread whenever new data is read from the
-     * tty.
+     * Process input and send it to the terminal emulator.  This method is
+     * invoked on the main thread whenever new data is read from the
+     * InputStream.
      * <p>
      * The default implementation sends the data straight to the terminal
      * emulator without modifying it in any way.  Subclasses can override it to
      * modify the data before giving it to the terminal.
      *
-     * @param data A buffer containing the data read from the tty.
+     * @param data A byte array containing the data read.
      * @param offset The offset into the buffer where the read data begins.
-     * @param count The number of bytes read from the tty.
+     * @param count The number of bytes read.
      */
     protected void processInput(byte[] data, int offset, int count) {
         mEmulator.append(data, offset, count);
