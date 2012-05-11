@@ -198,7 +198,7 @@ public class TermSession {
      */
     public void initializeEmulator(int columns, int rows) {
         mTranscriptScreen = new TranscriptScreen(columns, TRANSCRIPT_ROWS, rows, mColorScheme);
-        mEmulator = new TerminalEmulator(mTranscriptScreen, columns, rows, mTermOut, mColorScheme);
+        mEmulator = new TerminalEmulator(this, mTranscriptScreen, columns, rows, mColorScheme);
         mEmulator.setDefaultUTF8Mode(mDefaultUTF8Mode);
 
         mIsRunning = true;
