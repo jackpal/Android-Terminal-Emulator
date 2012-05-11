@@ -1,8 +1,6 @@
 package jackpal.androidterm.sample.telnet;
 
-import java.io.BufferedOutputStream;
 import java.io.InputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
 
@@ -69,8 +67,6 @@ public class TelnetSession extends TermSession
     public static final int OPTION_SUPPRESS_GO_AHEAD = 3; // see RFC 858
     public static final int OPTION_RANDOMLY_LOSE = 256; // see RFC 748 :)
 
-    private TelnetOutputStream mTelnetOut;	// output to the network
-
     // Whether we believe the remote end implements the telnet protocol
     private boolean peerIsTelnetd = false;
 
@@ -94,64 +90,16 @@ public class TelnetSession extends TermSession
     private int mLastInputByteProcessed = 0;
 
     /**
-     * A BufferedOutputStream which refuses to flush its underlying stream
-     * unless half-duplex flow control is disabled or flow control directs
-     * it to via forceFlush().  Because the standard requires that Telnet
-     * commands bypass the buffer even in half-duplex mode, it also offers
-     * a set of writeUnbuffered() methods to write directly to the underlying
-     * stream.
-     */
-    private class TelnetOutputStream extends BufferedOutputStream {
-        OutputStream out;
-
-        public TelnetOutputStream(OutputStream stream) {
-            super(stream);
-            out = stream;
-        }
-
-        @Override
-        public void flush() throws IOException {
-            boolean flushOk;
-            if (peerSuppressedGoAhead) {
-                super.flush();
-            }
-        }
-
-        public void writeUnbuffered(byte[] buffer, int offset, int count) throws IOException {
-            OutputStream stream = out;
-            stream.write(buffer, offset, count);
-            stream.flush();
-        }
-
-        public void writeUnbuffered(int oneByte) throws IOException {
-            OutputStream stream = out;
-            stream.write(oneByte);
-            stream.flush();
-        }
-
-        public void forceFlush() throws IOException {
-            if (DEBUG) {
-                Log.d(TAG, "flushing output buffer");
-            }
-            super.flush();
-        }
-    }
-
-    /**
      * Create a TelnetSession to handle the telnet protocol and terminal
      * emulation, using an existing InputStream and OutputStream.
      */
     public TelnetSession(InputStream termIn, OutputStream termOut) {
         setTermIn(termIn);
-
-        // Wrap the OutputStream so that we control flushing
-        TelnetOutputStream telnetOut = new TelnetOutputStream(termOut);
-        setTermOut(telnetOut);
-        mTelnetOut = telnetOut;
+        setTermOut(termOut);
     }
 
     /**
-     * Send data to the server
+     * Process data before sending it to the server.
      * We replace all occurrences of \r with \r\n, as required by the
      * Telnet protocol (CR meant to be a newline should be sent as CR LF,
      * and all other CRs must be sent as CR NUL).
@@ -168,7 +116,7 @@ public class TelnetSession extends TermSession
 
         if (numCRs == 0) {
             // No CRs -- just send data as-is
-            super.write(bytes, offset, count);
+            doWrite(bytes, offset, count);
 
             if (isRunning() && !peerEchoesInput) {
                 doLocalEcho(bytes);
@@ -189,12 +137,43 @@ public class TelnetSession extends TermSession
         }
 
         // Send the data
-        super.write(translated, 0, translated.length);
+        doWrite(translated, 0, translated.length);
 
         // If server echo is off, echo the entered characters locally
         if (isRunning() && !peerEchoesInput) {
             doLocalEcho(translated);
         }
+    }
+
+    private byte[] mWriteBuf = new byte[4096];
+    private int mWriteBufLen = 0;
+
+    /* Send data to the server, buffering it first if necessary */
+    private void doWrite(byte[] data, int offset, int count) {
+        if (peerSuppressedGoAhead) {
+           // No need to buffer -- send it straight to the server
+           super.write(data, offset, count);
+           return;
+        }
+
+        /* Flush the buffer if it's full ... not strictly correct, but better
+           than the alternatives */
+        byte[] buffer = mWriteBuf;
+        int bufLen = mWriteBufLen;
+        if (bufLen + count > buffer.length) {
+            flushWriteBuf();
+            bufLen = 0;
+        }
+
+        // Queue the data to be sent at the next server GA
+        System.arraycopy(data, offset, buffer, bufLen, count);
+        mWriteBufLen += count;
+    }
+
+    /* Flush the buffer of data to be written to the server */
+    private void flushWriteBuf() {
+        super.write(mWriteBuf, 0, mWriteBufLen);
+        mWriteBufLen = 0;
     }
 
     /* Echoes local input from the emulator back to the emulator screen. */
@@ -213,8 +192,6 @@ public class TelnetSession extends TermSession
      */
     @Override
     public void processInput(byte[] buffer, int offset, int count) {
-        TelnetOutputStream output = mTelnetOut;
-
         int lastByte = mLastInputByteProcessed;
         for (int i = offset; i < offset + count; ++i) {
             // need to interpret the byte as unsigned -- thanks Java!
@@ -254,15 +231,11 @@ public class TelnetSession extends TermSession
                  * does nothing.
                  */
                 byte[] cmdGa = { (byte) IAC, (byte) CMD_GA };
-                try {
-                    if (!peerSuppressedGoAhead) {
-                        if (!suppressGoAhead) {
-                            output.write(cmdGa);
-                        }
-                        output.forceFlush();
+                if (!peerSuppressedGoAhead) {
+                    if (!suppressGoAhead) {
+                        doWrite(cmdGa, 0, cmdGa.length);
                     }
-                } catch (IOException e) {
-                    // handle exception here
+                    flushWriteBuf();
                 }
                 break;
             case 0: // NUL -- should be ignored following a CR
@@ -288,16 +261,14 @@ public class TelnetSession extends TermSession
         mLastInputByteProcessed = lastByte;
     }
 
+    byte[] mOneByte = new byte[1];
     private void doEchoInput(int input) {
         if (DEBUG) {
             Log.d(TAG, "echoing " + input + " to remote end");
         }
-        try {
-            mTelnetOut.writeUnbuffered(input);
-        } catch (IOException e) {
-            // handle exception here
-            Log.e(TAG, e.toString());
-        }
+        byte[] oneByte = mOneByte;
+        oneByte[0] = (byte) input;
+        super.write(oneByte, 0, 1);
     }
 
     /**
@@ -369,10 +340,7 @@ public class TelnetSession extends TermSession
              * anything else
              */
             byte[] msg = "yes, I'm here\r\n".getBytes();
-            try {
-                mTelnetOut.writeUnbuffered(msg, 0, msg.length);
-            } catch (IOException e) {
-            }
+            super.write(msg, 0, msg.length);
             break;
         // The following are unimplemented
         case CMD_MARK:	// data mark
@@ -465,11 +433,7 @@ public class TelnetSession extends TermSession
             peerSuppressedGoAhead = true;
             doSuppressGaRequested = false;
             // Flush unwritten data in the output buffer
-            try {
-                mTelnetOut.forceFlush();
-            } catch (IOException e) {
-                // Handle exception here
-            }
+            flushWriteBuf();
             break;
         default: // unrecognized option
             // refuse to let other end enable unknown options
@@ -566,14 +530,9 @@ public class TelnetSession extends TermSession
         if (DEBUG) {
             Log.d(TAG, "sending command: " + command + " " + opt);
         }
-        TelnetOutputStream output = mTelnetOut;
         // option negotiation needs to bypass the write buffer
-        try {
-            byte[] buffer = { (byte) IAC, (byte) command, (byte) opt };
-            output.writeUnbuffered(buffer, 0, 3);
-        } catch (IOException e) {
-            // handle exception here
-        }
+        byte[] buffer = { (byte) IAC, (byte) command, (byte) opt };
+        super.write(buffer, 0, buffer.length);
     }
 
     private void requestDoSuppressGoAhead() {
