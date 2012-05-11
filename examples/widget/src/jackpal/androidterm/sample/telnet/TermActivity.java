@@ -53,10 +53,16 @@ public class TermActivity extends Activity
                 if (ev != null && ev.getAction() == KeyEvent.ACTION_UP) {
                     return false;
                 }
+                // Don't try to send something if we're not connected yet
+                TermSession session = mSession;
+                if (mSession == null) {
+                    return true;
+                }
+
                 Editable e = (Editable) v.getText();
                 // Write to the terminal session
-                mSession.write(e.toString());
-                mSession.write('\r');
+                session.write(e.toString());
+                session.write('\r');
                 TextKeyListener.clear(e);
                 return true;
             }
@@ -67,8 +73,13 @@ public class TermActivity extends Activity
         Button sendButton = (Button) findViewById(R.id.term_entry_send);
         sendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                // Don't try to send something if we're not connected yet
+                TermSession session = mSession;
+                if (mSession == null) {
+                    return;
+                }
                 Editable e = (Editable) mEntry.getText();
-                mSession.write(e.toString());
+                session.write(e.toString());
                 TextKeyListener.clear(e);
             }
         });
