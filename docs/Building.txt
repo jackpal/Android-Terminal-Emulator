@@ -1,66 +1,93 @@
-Obtain the Software Needed to Build Android Term
-------------------------------------------------
+Obtain the Software Needed to Build Android Terminal Emulator
+-------------------------------------------------------------
 
-Android is built using the Android SDK r08 or newer and the Android NDK r5 or newer.
-You can downlaod them from:
+To keep from typing "Android Terminal Emulator" over and over again, this
+document will use the abbreviation "ATE" to stand for "Android Terminal
+Emulator".
+
+ATE is built using the Android SDK r15 or newer and the Android NDK r8 or
+newer. You can download them from:
 
 http://developer.android.com/sdk
 
-You will also need Eclipse 3.4 or newer, Java version, available from:
+If you want to build, edit, or debug with Eclipse you will also need to
+install Eclipse 3.4 or newer, Java version, available from:
 
 http://eclipse.org
 
 After you install the SDK and the NDK, please build some of the samples that
 come with the NDK in order to get a feel for using the SDK and the NDK.
 
-Building Android Term
----------------------
+Building ATE
+------------
 
-There are three parts to building Android Term:
+You can build ATE two ways
 
-    1) Build the shared library
+    1) Using the "ant" command line tool
+    2) Using the Eclipse IDE
+
+The "ant" way is convenient for automated builds. The Eclipse way is convenient
+for debugging.
+
+Building ATE using ant
+----------------------
+
+The first time you build using Ant you must run a one-time setup script
+to set up the local.properties files for all the ant projects:
+
+    tools/setup.sh
+
+After that, you can build ATE by:
+
+    tools/build-debug
+
+Then you can run ATE on your device or emulator by:
+
+    tools/pushAndRun
+
+Building ATE with Eclipse
+--------------------------
+
+There are three steps to building ATE with Eclipse:
+
+    1) Build the project from the command line using "ant"
     2) Create the Eclipse Project for the Application
     3) Build the Java apk.
 
-Build the shared library:
+Build the project from the command line using "ant":
 
-    cd <the-android-terminal-emulator-directory>
-    <path-to-the-android-ndk>/ndk-build
+You need to build the project from the commmand line in order to generate the
+shared libraries and Java JAR files used by Android Terminal Emulator.
+
+Use the instructions in "Building ATE with ant", above.
     
-  (Be sure to use the actual pathnames from your system. For example,
-   on my system I actually type the following:
-
-    cd ~/code/androidterm
-    ../android-ndk-r5/ndk-build
-
-This should chug away for a while and ultimately produce the file
-
-libs/armeabi/libandroidterm.so
-    
-Create the Eclipse project:
+Create the Eclipse projects:
 
     Start Eclipse
+
+    From the menu choose File : New Project
+    Choose Android:Android Project as a project type
+    Press Next
+    Set Project Name: jackpal_androidterm_emulatorview
+    Choose "Create project from existing source"
+    Browse to the location of the libraries/emulatorview directory.
+    Press Finish
+
     From the menu choose File : New Project
     Choose Android:Android Project as a project type
     Press Next
     Set Project Name: AndroidTerm
     Choose "Create project from existing source"
     Browse to the location of the AndroidTerm source directory.
-    Make sure the "Android 1.6" Target Name is checked.
-    Make sure the Min SDK Version is 4
     Press Finish
-    
-    NOTE: When you Press Finish you may get the following error
-    
-        Invalid project description.
-        <path-to-your-project> overlaps the location of another
-        project: '<project>'
-        
-    This seems to be due to a bug in the Android SDK, where it
-    can't import projects that are located in the Eclipse "workspace"
-    directory. The work-around is to move the androidterm project
-    directory to a different location on your file system, so
-    that it is _not_ in the Eclipse "workspace" directory.
+
+Edit the Eclipse project properties to include the emulatorview library:
+
+    1) Right-click on the "Term" project in the "Package Explorer" window.
+    2) Choose "Properties" from the drop-down menu.
+    3) Navigate to "Project References"
+    4) Check the check box "jackpal_androidterm_emulatorview"
+    5) Click OK
 
 Build the Java apk:
 
