@@ -4,7 +4,10 @@
 # requires the private key store used o sign the release version
 # of Android Terminal Emulator.
 
-cd ~/code/Android-Terminal-Emulator
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ATE_ROOT="$( cd $DIR/.. && pwd )"
+
+cd "$ATE_ROOT"
 rm -rf bin obj
 cd jni
 $ANDROID_NDK_ROOT/ndk-build && cd .. && ant release && mv bin/Term-release.apk bin/Term.apk
