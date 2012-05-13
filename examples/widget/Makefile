@@ -38,7 +38,7 @@ make_bindir:
 	mkdir -p $(bindir)
 
 $(bindir)/%-$(ARCH) : $(srcdir)/%.c
-	$(CC) --sysroot=$(SYSROOT) -o $@ $<
+	$(CC) --sysroot=$(SYSROOT) -static -o $@ $<
 	$(STRIP) $@
 
 clean:
