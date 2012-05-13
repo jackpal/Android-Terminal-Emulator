@@ -16,8 +16,6 @@
 
 package jackpal.androidterm.emulatorview;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -55,15 +53,14 @@ class TerminalEmulator {
     private int mColumns;
 
     /**
-     * Used to send data to the remote process. Needed to implement the various
-     * "report" escape sequences.
-     */
-    private OutputStream mTermOut;
-
-    /**
      * Stores the characters that appear on the screen of the emulated terminal.
      */
     private Screen mScreen;
+
+    /**
+     * The terminal session this emulator is bound to.
+     */
+    private TermSession mSession;
 
     /**
      * Keeps track of the current argument of the current escape sequence.
@@ -331,17 +328,18 @@ class TerminalEmulator {
     /**
      * Construct a terminal emulator that uses the supplied screen
      *
+     * @param session the terminal session the emulator is attached to
      * @param screen the screen to render characters into.
      * @param columns the number of columns to emulate
      * @param rows the number of rows to emulate
-     * @param termOut the output file descriptor that talks to the pseudo-tty.
+     * @param scheme the default color scheme of this emulator
      */
-    public TerminalEmulator(Screen screen, int columns, int rows, OutputStream termOut, ColorScheme scheme) {
+    public TerminalEmulator(TermSession session, Screen screen, int columns, int rows, ColorScheme scheme) {
+        mSession = session;
         mScreen = screen;
         mRows = rows;
         mColumns = columns;
         mTabStop = new boolean[mColumns];
-        mTermOut = termOut;
 
         setColorScheme(scheme);
 
@@ -1260,22 +1258,7 @@ class TerminalEmulator {
                 */
                 };
 
-        write(attributes);
-    }
-
-    /**
-     * Send data to the shell process
-     * @param data
-     */
-    private void write(byte[] data) {
-        try {
-            mTermOut.write(data);
-            mTermOut.flush();
-        } catch (IOException e) {
-            // Ignore exception
-            // We don't really care if the receiver isn't listening.
-            // We just make a best effort to answer the query.
-        }
+        mSession.write(attributes, 0, attributes.length);
     }
 
     private void scroll() {
