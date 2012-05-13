@@ -19,6 +19,7 @@ package jackpal.androidterm.emulatorview;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -26,6 +27,7 @@ import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CodingErrorAction;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
@@ -36,17 +38,26 @@ import android.util.Log;
  * You need to supply an {@link InputStream} and {@link OutputStream} to
  * provide input and output to the terminal.  For a locally running
  * program, these would typically point to a tty; for a telnet program
- * they might point to a network socket.
+ * they might point to a network socket.  Reader and writer threads will be
+ * spawned to do I/O to these streams.  All other operations, including
+ * processing of input and output in {@link #processInput processInput} and
+ * {@link #write(byte[], int, int) write}, will be performed on the main thread.
  * <p>
  * Call {@link #setTermIn} and {@link #setTermOut} to connect the input and
  * output streams to the emulator.  When all of your initialization is
  * complete, your initial screen size is known, and you're ready to
  * start VT100 emulation, call {@link #initializeEmulator} or {@link
  * #updateSize} with the number of rows and columns the terminal should
- * initially have.
+ * initially have.  (If you attach the session to an {@link EmulatorView},
+ * the view will take care of setting the screen size and initializing the
+ * emulator for you.)
+ * <p>
+ * When you're done with the session, you should call {@link #finish} on it.
+ * This frees emulator data from memory, stops the reader and writer threads,
+ * and closes the attached I/O streams.
  */
 public class TermSession {
-    private ColorScheme mColorScheme;
+    private ColorScheme mColorScheme = BaseTextRenderer.defaultColorScheme;
     private UpdateCallback mNotify;
 
     private OutputStream mTermOut;
@@ -57,9 +68,13 @@ public class TermSession {
 
     private boolean mDefaultUTF8Mode;
 
-    private Thread mPollingThread;
+    private Thread mReaderThread;
     private ByteQueue mByteQueue;
     private byte[] mReceiveBuffer;
+
+    private Thread mWriterThread;
+    private ByteQueue mWriteQueue;
+    private Handler mWriterHandler;
 
     private CharBuffer mWriteCharBuffer;
     private ByteBuffer mWriteByteBuffer;
@@ -69,6 +84,8 @@ public class TermSession {
     private static final int TRANSCRIPT_ROWS = 10000;
 
     private static final int NEW_INPUT = 1;
+    private static final int NEW_OUTPUT = 2;
+    private static final int FINISH = 3;
 
     /**
      * Callback to be invoked when a {@link TermSession} finishes.
@@ -107,8 +124,7 @@ public class TermSession {
 
         mReceiveBuffer = new byte[4 * 1024];
         mByteQueue = new ByteQueue(4 * 1024);
-
-        mPollingThread = new Thread() {
+        mReaderThread = new Thread() {
             private byte[] mBuffer = new byte[4096];
 
             @Override
@@ -129,7 +145,58 @@ public class TermSession {
                 }
             }
         };
-        mPollingThread.setName("Input reader");
+        mReaderThread.setName("TermSession input reader");
+
+        mWriteQueue = new ByteQueue(4096);
+        mWriterThread = new Thread() {
+            private byte[] mBuffer = new byte[4096];
+
+            @Override
+            public void run() {
+                Looper.prepare();
+
+                mWriterHandler = new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        if (msg.what == NEW_OUTPUT) {
+                            writeToOutput();
+                        } else if (msg.what == FINISH) {
+                            Looper.myLooper().quit();
+                        }
+                    }
+                };
+
+                // Drain anything in the queue from before we started
+                writeToOutput();
+
+                Looper.loop();
+            }
+
+            private void writeToOutput() {
+                ByteQueue writeQueue = mWriteQueue;
+                byte[] buffer = mBuffer;
+                OutputStream termOut = mTermOut;
+
+                int bytesAvailable = writeQueue.getBytesAvailable();
+                int bytesToWrite = Math.min(bytesAvailable, buffer.length);
+
+                if (bytesToWrite == 0) {
+                    return;
+                }
+
+                try {
+                    writeQueue.read(buffer, 0, bytesToWrite);
+                    termOut.write(buffer, 0, bytesToWrite);
+                    termOut.flush();
+                } catch (IOException e) {
+                    // Ignore exception
+                    // We don't really care if the receiver isn't listening.
+                    // We just make a best effort to answer the query.
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+        mWriterThread.setName("TermSession output writer");
     }
 
     /**
@@ -140,33 +207,66 @@ public class TermSession {
      */
     public void initializeEmulator(int columns, int rows) {
         mTranscriptScreen = new TranscriptScreen(columns, TRANSCRIPT_ROWS, rows, mColorScheme);
-        mEmulator = new TerminalEmulator(mTranscriptScreen, columns, rows, mTermOut, mColorScheme);
+        mEmulator = new TerminalEmulator(this, mTranscriptScreen, columns, rows, mColorScheme);
         mEmulator.setDefaultUTF8Mode(mDefaultUTF8Mode);
 
         mIsRunning = true;
-        mPollingThread.start();
+        mReaderThread.start();
+        mWriterThread.start();
     }
 
     /**
      * Write data to the terminal output.  The written data will be consumed by
      * the emulation client as input.
+     * <p>
+     * <code>write</code> itself runs on the main thread.  The default
+     * implementation writes the data into a circular buffer and signals the
+     * writer thread to copy it from there to the {@link OutputStream}.
+     * <p>
+     * Subclasses may override this method to modify the output before writing
+     * it to the stream, but implementations in derived classes should call
+     * through to this method to do the actual writing.
      *
-     * @param data The data to write to the terminal.
+     * @param data An array of bytes to write to the terminal.
+     * @param offset The offset into the array at which the data starts.
+     * @param count The number of bytes to be written.
+     */
+    public void write(byte[] data, int offset, int count) {
+        try {
+            mWriteQueue.write(data, offset, count);
+        } catch (InterruptedException e) {
+        }
+        notifyNewOutput();
+    }
+
+    /**
+     * Write the UTF-8 representation of a String to the terminal output.  The
+     * written data will be consumed by the emulation client as input.
+     * <p>
+     * This implementation encodes the String and then calls
+     * {@link #write(byte[], int, int)} to do the actual writing.  It should
+     * therefore usually be unnecessary to override this method; override
+     * {@link #write(byte[], int, int)} instead.
+     *
+     * @param data The String to write to the terminal.
      */
     public void write(String data) {
         try {
-            mTermOut.write(data.getBytes("UTF-8"));
-            mTermOut.flush();
-        } catch (IOException e) {
-            // Ignore exception
-            // We don't really care if the receiver isn't listening.
-            // We just make a best effort to answer the query.
+            byte[] bytes = data.getBytes("UTF-8");
+            write(bytes, 0, bytes.length);
+        } catch (UnsupportedEncodingException e) {
         }
     }
 
     /**
-     * Write a single Unicode code point to the terminal output.  The written
-     * data will be consumed by the emulation client as input.
+     * Write the UTF-8 representation of a single Unicode code point to the
+     * terminal output.  The written data will be consumed by the emulation
+     * client as input.
+     * <p>
+     * This implementation encodes the code point and then calls
+     * {@link #write(byte[], int, int)} to do the actual writing.  It should
+     * therefore usually be unnecessary to override this method; override
+     * {@link #write(byte[], int, int)} instead.
      *
      * @param codePoint The Unicode code point to write to the terminal.
      */
@@ -174,18 +274,24 @@ public class TermSession {
         CharBuffer charBuf = mWriteCharBuffer;
         ByteBuffer byteBuf = mWriteByteBuffer;
         CharsetEncoder encoder = mUTF8Encoder;
-        try {
-            charBuf.clear();
-            byteBuf.clear();
-            Character.toChars(codePoint, charBuf.array(), 0);
-            encoder.reset();
-            encoder.encode(charBuf, byteBuf, true);
-            encoder.flush(byteBuf);
-            mTermOut.write(byteBuf.array(), 0, byteBuf.position()-1);
-            mTermOut.flush();
-        } catch (IOException e) {
-            // Ignore exception
+
+        charBuf.clear();
+        byteBuf.clear();
+        Character.toChars(codePoint, charBuf.array(), 0);
+        encoder.reset();
+        encoder.encode(charBuf, byteBuf, true);
+        encoder.flush(byteBuf);
+        write(byteBuf.array(), 0, byteBuf.position()-1);
+    }
+
+    /* Notify the writer thread that there's new output waiting */
+    private void notifyNewOutput() {
+        Handler writerHandler = mWriterHandler;
+        if (writerHandler == null) {
+           /* Writer thread isn't started -- will pick up data once it does */
+           return;
         }
+        writerHandler.sendEmptyMessage(NEW_OUTPUT);
     }
 
     /**
@@ -296,32 +402,58 @@ public class TermSession {
     private void readFromProcess() {
         int bytesAvailable = mByteQueue.getBytesAvailable();
         int bytesToRead = Math.min(bytesAvailable, mReceiveBuffer.length);
+        int bytesRead = 0;
         try {
-            int bytesRead = mByteQueue.read(mReceiveBuffer, 0, bytesToRead);
-            mEmulator.append(mReceiveBuffer, 0, bytesRead);
+            bytesRead = mByteQueue.read(mReceiveBuffer, 0, bytesToRead);
         } catch (InterruptedException e) {
+            return;
         }
+
+        // Give subclasses a chance to process the read data
+        processInput(mReceiveBuffer, 0, bytesRead);
         notifyUpdate();
     }
 
     /**
-     * Write something directly to the terminal input, bypassing the
-     * emulation client and the session's {@link InputStream}.
+     * Process input and send it to the terminal emulator.  This method is
+     * invoked on the main thread whenever new data is read from the
+     * InputStream.
+     * <p>
+     * The default implementation sends the data straight to the terminal
+     * emulator without modifying it in any way.  Subclasses can override it to
+     * modify the data before giving it to the terminal.
      *
-     * @param buffer The data to be written to the terminal.
-     * @param base The starting offset into the buffer of the data.
-     * @param length The length of the data to be written.
+     * @param data A byte array containing the data read.
+     * @param offset The offset into the buffer where the read data begins.
+     * @param count The number of bytes read.
      */
-    protected void appendToEmulator(byte[] buffer, int base, int length) {
-        mEmulator.append(buffer, base, length);
+    protected void processInput(byte[] data, int offset, int count) {
+        mEmulator.append(data, offset, count);
+    }
+
+    /**
+     * Write something directly to the terminal emulator input, bypassing the
+     * emulation client, the session's {@link InputStream}, and any processing
+     * being done by {@link #processInput processInput}.
+     *
+     * @param data The data to be written to the terminal.
+     * @param offset The starting offset into the buffer of the data.
+     * @param count The length of the data to be written.
+     */
+    protected final void appendToEmulator(byte[] data, int offset, int count) {
+        mEmulator.append(data, offset, count);
     }
 
     /**
      * Set the terminal emulator's color scheme (default colors).
      *
-     * @param scheme The {@link ColorScheme} to be used.
+     * @param scheme The {@link ColorScheme} to be used (use null for the
+     *               default scheme).
      */
     public void setColorScheme(ColorScheme scheme) {
+        if (scheme == null) {
+            scheme = BaseTextRenderer.defaultColorScheme;
+        }
         mColorScheme = scheme;
         if (mEmulator == null) {
             return;
@@ -394,11 +526,22 @@ public class TermSession {
 
     /**
      * Finish this terminal session.  Frees resources used by the terminal
-     * emulator.
+     * emulator and closes the attached <code>InputStream</code> and
+     * <code>OutputStream</code>.
      */
     public void finish() {
         mIsRunning = false;
         mTranscriptScreen.finish();
+
+        // Stop the reader and writer threads, and close the I/O streams
+        mWriterHandler.sendEmptyMessage(FINISH);
+        try {
+            mTermIn.close();
+            mTermOut.close();
+        } catch (IOException e) {
+            // We don't care if this fails
+        }
+
         if (mFinishCallback != null) {
             mFinishCallback.onSessionFinish(this);
         }

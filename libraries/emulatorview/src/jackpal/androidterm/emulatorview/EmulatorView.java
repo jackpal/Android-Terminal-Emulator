@@ -73,6 +73,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     private boolean mKnownSize;
 
+    // Set if initialization was deferred because a TermSession wasn't attached
+    private boolean mDeferInit = false;
+
     private int mVisibleWidth;
     private int mVisibleHeight;
 
@@ -112,16 +115,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mCursorBlink;
 
     /**
-     * Foreground color.
+     * Color scheme (default foreground/background colors).
      */
-    private int mForeground = 0xffff0000;
-    private int mForegroundIndex;
-
-    /**
-     * Background color.
-     */
-    private int mBackground = 0xff000000;
-    private int mBackgroundIndex;
+    private ColorScheme mColorScheme = BaseTextRenderer.defaultColorScheme;
 
     /**
      * Used to paint the cursor
@@ -286,6 +282,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mTermSession = session;
 
         mKeyListener = new TermKeyListener(session);
+
+        // Do init now if it was deferred until a TermSession was attached
+        if (mDeferInit) {
+            mDeferInit = false;
+            mKnownSize = true;
+            initialize();
+        }
     }
 
     /**
@@ -294,6 +297,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * @param metrics The {@link DisplayMetrics} of the screen.
      */
     public void setDensity(DisplayMetrics metrics) {
+        if (mDensity == 0) {
+            // First time we've known the screen density, so update font size
+            mTextSize = (int) (mTextSize * metrics.density);
+        }
         mDensity = metrics.density;
         mScaledDensity = metrics.scaledDensity;
     }
@@ -322,15 +329,17 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     /**
      * Set this <code>EmulatorView</code>'s color scheme.
      *
-     * @param scheme The {@link ColorScheme} to use.
+     * @param scheme The {@link ColorScheme} to use (use null for the default
+     *               scheme).
      * @see TermSession#setColorScheme
      * @see ColorScheme
      */
     public void setColorScheme(ColorScheme scheme) {
-        mForegroundIndex = scheme.getForeColorIndex();
-        mForeground = scheme.getForeColor();
-        mBackgroundIndex = scheme.getBackColorIndex();
-        mBackground = scheme.getBackColor();
+        if (scheme == null) {
+            mColorScheme = BaseTextRenderer.defaultColorScheme;
+        } else {
+            mColorScheme = scheme;
+        }
         updateText();
     }
 
@@ -804,6 +813,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mExtGestureListener != null && mExtGestureListener.onSingleTapUp(e)) {
             return true;
         }
+        requestFocus();
         return true;
     }
 
@@ -1029,17 +1039,14 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private void updateText() {
+        ColorScheme scheme = mColorScheme;
         if (mTextSize > 0) {
-            mTextRenderer = new PaintRenderer(mTextSize,
-                    mForegroundIndex, mForeground,
-                    mBackgroundIndex, mBackground);
+            mTextRenderer = new PaintRenderer(mTextSize, scheme);
         }
         else {
-            mTextRenderer = new Bitmap4x8FontRenderer(getResources(),
-                    mForegroundIndex, mForeground,
-                    mBackgroundIndex, mBackground);
+            mTextRenderer = new Bitmap4x8FontRenderer(getResources(), scheme);
         }
-        mBackgroundPaint.setColor(mBackground);
+        mBackgroundPaint.setColor(scheme.getBackColor());
         mCharacterWidth = mTextRenderer.getCharacterWidth();
         mCharacterHeight = mTextRenderer.getCharacterHeight();
 
@@ -1053,6 +1060,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        if (mTermSession == null) {
+            // Not ready, defer until TermSession is attached
+            mDeferInit = true;
+            return;
+        }
+
         if (!mKnownSize) {
             mKnownSize = true;
             initialize();
@@ -1253,8 +1266,18 @@ abstract class BaseTextRenderer implements TextRenderer {
             0xffffffff  // white
     };
     protected final static int mCursorPaint = 0xff808080;
+    static final ColorScheme defaultColorScheme =
+            new ColorScheme(7, 0xffcccccc, 0, 0xff000000);
 
-    public BaseTextRenderer(int forePaintIndex, int forePaintColor,
+    public BaseTextRenderer(ColorScheme scheme) {
+        if (scheme == null) {
+            scheme = defaultColorScheme;
+        }
+        setDefaultColors(scheme.getForeColorIndex(), scheme.getForeColor(),
+                scheme.getBackColorIndex(), scheme.getBackColor());
+    }
+
+    private void setDefaultColors(int forePaintIndex, int forePaintColor,
             int backPaintIndex, int backPaintColor) {
         mForePaint[forePaintIndex] = forePaintColor;
         mBackPaint[backPaintIndex] = backPaintColor;
@@ -1271,10 +1294,8 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
     private Paint mPaint;
     private static final float BYTE_SCALE = 1.0f / 255.0f;
 
-    public Bitmap4x8FontRenderer(Resources resources,
-            int forePaintIndex, int forePaintColor,
-            int backPaintIndex, int backPaintColor) {
-        super(forePaintIndex, forePaintColor, backPaintIndex, backPaintColor);
+    public Bitmap4x8FontRenderer(Resources resources, ColorScheme scheme) {
+        super(scheme);
         int fontResource = AndroidCompat.SDK <= 3 ? R.drawable.atari_small
                 : R.drawable.atari_small_nodpi;
         mFont = BitmapFactory.decodeResource(resources,fontResource);
@@ -1347,10 +1368,8 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
 }
 
 class PaintRenderer extends BaseTextRenderer {
-    public PaintRenderer(int fontSize,
-            int forePaintIndex, int forePaintColor,
-            int backPaintIndex, int backPaintColor) {
-        super(forePaintIndex, forePaintColor, backPaintIndex, backPaintColor);
+    public PaintRenderer(int fontSize, ColorScheme scheme) {
+        super(scheme);
         mTextPaint = new Paint();
         mTextPaint.setTypeface(Typeface.MONOSPACE);
         mTextPaint.setAntiAlias(true);

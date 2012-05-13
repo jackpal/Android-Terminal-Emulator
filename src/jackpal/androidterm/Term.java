@@ -961,6 +961,7 @@ public class Term extends Activity implements UpdateCallback {
         case TermSettings.ACTION_BAR_MODE_NONE:
             if (AndroidCompat.SDK >= 11 && (mHaveFullHwKeyboard || y < height / 2)) {
                 openOptionsMenu();
+                return;
             } else {
                 doToggleSoftKeyboard();
             }
@@ -973,10 +974,12 @@ public class Term extends Activity implements UpdateCallback {
         case TermSettings.ACTION_BAR_MODE_HIDES:
             if (mHaveFullHwKeyboard || y < height / 2) {
                 doToggleActionBar();
+                return;
             } else {
                 doToggleSoftKeyboard();
             }
             break;
         }
+        getCurrentEmulatorView().requestFocus();
     }
 }
