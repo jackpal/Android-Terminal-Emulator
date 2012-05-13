@@ -297,6 +297,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * @param metrics The {@link DisplayMetrics} of the screen.
      */
     public void setDensity(DisplayMetrics metrics) {
+        if (mDensity == 0) {
+            // First time we've known the screen density, so update font size
+            mTextSize = (int) (mTextSize * metrics.density);
+        }
         mDensity = metrics.density;
         mScaledDensity = metrics.scaledDensity;
     }
