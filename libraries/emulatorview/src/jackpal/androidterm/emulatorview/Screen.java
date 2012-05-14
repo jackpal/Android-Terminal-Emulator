@@ -132,6 +132,12 @@ interface Screen {
     String getSelectedText(StringBuilder colors, int x1, int y1, int x2, int y2);
 
     /**
+     * Get the number of "active" (in-use) screen rows, including any rows in a
+     * scrollback buffer.
+     */
+    int getActiveRows();
+
+    /**
      * Try to resize the screen without losing its contents.
      *
      * @param columns

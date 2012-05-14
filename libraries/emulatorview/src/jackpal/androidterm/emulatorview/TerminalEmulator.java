@@ -403,8 +403,14 @@ class TerminalEmulator {
 
         if (fastResize) {
             // Only need to make sure the cursor is in the right spot
-            mCursorCol = cursor[0];
-            mCursorRow = cursor[1];
+            if (cursor[0] >= 0 && cursor[1] >= 0) {
+                mCursorCol = cursor[0];
+                mCursorRow = cursor[1];
+            } else {
+                // Cursor scrolled off screen, reset the cursor to top left
+                mCursorCol = 0;
+                mCursorRow = 0;
+            }
 
             return;
         }
@@ -415,6 +421,7 @@ class TerminalEmulator {
 
         int newCursorRow = -1;
         int newCursorCol = -1;
+        int newCursorTranscriptPos = -1;
         int end = transcriptText.length()-1;
         while ((end >= 0) && transcriptText.charAt(end) == '\n') {
             end--;
@@ -438,6 +445,7 @@ class TerminalEmulator {
                    is the place to restore the cursor to */
                 newCursorRow = mCursorRow;
                 newCursorCol = mCursorCol;
+                newCursorTranscriptPos = mScreen.getActiveRows();
                 if (charAtCursor != null && charAtCursor.length() > 0) {
                     // Emit the real character that was in this spot
                     foreColor = (cursorColor.charAt(0) >> 4) & 0xf;
@@ -453,6 +461,17 @@ class TerminalEmulator {
         if (newCursorRow != -1 && newCursorCol != -1) {
             mCursorRow = newCursorRow;
             mCursorCol = newCursorCol;
+
+            /* Adjust for any scrolling between the time we marked the cursor
+               location and now */
+            int scrollCount = mScreen.getActiveRows() - newCursorTranscriptPos;
+            if (scrollCount > 0 && scrollCount <= newCursorRow) {
+                mCursorRow -= scrollCount;
+            } else if (scrollCount > newCursorRow) {
+                // Cursor scrolled off screen -- reset to top left corner
+                mCursorRow = 0;
+                mCursorCol = 0;
+            }
         }
     }
 
