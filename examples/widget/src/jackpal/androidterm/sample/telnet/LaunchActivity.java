@@ -90,16 +90,19 @@ public class LaunchActivity extends Activity
             }
         }
 
+        /**
+         * NB: If you actually plan on deploying an app which ships a binary
+         * this way, you will want to implement versioning of the binary so
+         * that you aren't writing it out every time the app is run.
+         */
         File binary = new File(binDir, "execpty");
-        if (!binary.exists()) {
-            String arch = getArch();
-            try {
-                InputStream src = getAssets().open("execpty-" + arch);
-                FileOutputStream dst = new FileOutputStream(binary);
-                copyStream(dst, src);
-                chmod("755", binary.getAbsolutePath());
-            } catch (Exception e) {
-            }
+        String arch = getArch();
+        try {
+            InputStream src = getAssets().open("execpty-" + arch);
+            FileOutputStream dst = new FileOutputStream(binary);
+            copyStream(dst, src);
+            chmod("755", binary.getAbsolutePath());
+        } catch (Exception e) {
         }
     }
 
