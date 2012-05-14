@@ -25,7 +25,8 @@
     <EditText
         android:id="@+id/hostname"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/default_telnet_hostname" />
 
     <Button
         android:id="@+id/launchTelnet"
