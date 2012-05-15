@@ -47,6 +47,9 @@ public class ShellTermSession extends TermSession {
     private FileDescriptor mTermFd;
     private Thread mWatcherThread;
 
+    // A cookie which uniquely identifies this session.
+    private String mHandle;
+
     private String mInitialCommand;
 
     public static final int PROCESS_EXIT_FINISHES_SESSION = 0;
@@ -269,5 +272,16 @@ public class ShellTermSession extends TermSession {
         Exec.hangupProcessGroup(mProcId);
         Exec.close(mTermFd);
         super.finish();
+    }
+
+    public void setHandle(String handle) {
+        if (mHandle != null) {
+            throw new IllegalStateException("Cannot change handle once set");
+        }
+        mHandle = handle;
+    }
+
+    public String getHandle() {
+        return mHandle;
     }
 }

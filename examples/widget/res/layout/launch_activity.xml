@@ -11,32 +11,27 @@
         android:text="@string/help" />
 
     <Button
-        android:id="@+id/openNewWindow"
+        android:id="@+id/launchLocal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/open_new_window" />
+        android:text="@string/launch_local_session" />
 
     <TextView
-        android:id="@+id/scriptLabel"
+        android:id="@+id/hostLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/script_label" />
+        android:text="@string/host_label" />
 
     <EditText
-        android:id="@+id/script"
+        android:id="@+id/hostname"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/default_telnet_hostname" />
 
     <Button
-        android:id="@+id/runScript"
+        android:id="@+id/launchTelnet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/run_script" />
-
-    <Button
-        android:id="@+id/runScriptSaveWindow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/run_script_save_window" />
+        android:text="@string/launch_telnet_session" />
 
 </LinearLayout>
