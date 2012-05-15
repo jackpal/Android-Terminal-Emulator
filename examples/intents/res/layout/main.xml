@@ -33,4 +33,10 @@
         android:layout_height="wrap_content"
         android:text="@string/run_script" />
 
+    <Button
+        android:id="@+id/runScriptSaveWindow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/run_script_save_window" />
+
 </LinearLayout>
