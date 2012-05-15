@@ -351,6 +351,22 @@ public class Term extends Activity implements UpdateCallback {
             }
 
             updatePrefs();
+
+            Intent intent = getIntent();
+            int flags = intent.getFlags();
+            String action = intent.getAction();
+            if ((flags & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0 &&
+                    action != null) {
+                if (action.equals(RemoteInterface.PRIVACT_OPEN_NEW_WINDOW)) {
+                    mViewFlipper.setDisplayedChild(mTermSessions.size()-1);
+                } else if (action.equals(RemoteInterface.PRIVACT_SWITCH_WINDOW)) {
+                    int target = intent.getIntExtra(RemoteInterface.PRIVEXTRA_TARGET_WINDOW, -1);
+                    if (target >= 0) {
+                        mViewFlipper.setDisplayedChild(target);
+                    }
+                }
+            }
+
             mViewFlipper.resumeCurrentView();
         }
     }
@@ -362,6 +378,7 @@ public class Term extends Activity implements UpdateCallback {
         }
 
         if (mTermSessions != null) {
+            int position = mViewFlipper.getDisplayedChild();
             if (mWinListAdapter == null) {
                 WindowListAdapter adapter = new WindowListActionBarAdapter(mTermSessions);
                 mWinListAdapter = adapter;
@@ -371,6 +388,7 @@ public class Term extends Activity implements UpdateCallback {
             } else {
                 mWinListAdapter.setSessions(mTermSessions);
             }
+            mActionBar.setSelectedNavigationItem(position);
         }
     }
 
