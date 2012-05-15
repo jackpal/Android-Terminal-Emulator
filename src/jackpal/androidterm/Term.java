@@ -306,6 +306,9 @@ public class Term extends Activity implements UpdateCallback {
             mActionBar = actionBar;
             actionBar.setNavigationMode(ActionBarCompat.NAVIGATION_MODE_LIST);
             actionBar.setDisplayOptions(0, ActionBarCompat.DISPLAY_SHOW_TITLE);
+            if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {
+                actionBar.hide();
+            }
         }
 
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
