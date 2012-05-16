@@ -100,6 +100,7 @@ public class Term extends Activity implements UpdateCallback {
     private boolean mStopServiceOnFinish = false;
 
     private Intent TSIntent;
+    private Intent mLastNewIntent;
 
     public static final int REQUEST_CHOOSE_WINDOW = 1;
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
@@ -305,6 +306,9 @@ public class Term extends Activity implements UpdateCallback {
             mActionBar = actionBar;
             actionBar.setNavigationMode(ActionBarCompat.NAVIGATION_MODE_LIST);
             actionBar.setDisplayOptions(0, ActionBarCompat.DISPLAY_SHOW_TITLE);
+            if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {
+                actionBar.hide();
+            }
         }
 
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
@@ -350,6 +354,22 @@ public class Term extends Activity implements UpdateCallback {
             }
 
             updatePrefs();
+
+            Intent intent = getIntent();
+            int flags = intent.getFlags();
+            String action = intent.getAction();
+            if ((flags & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0 &&
+                    action != null) {
+                if (action.equals(RemoteInterface.PRIVACT_OPEN_NEW_WINDOW)) {
+                    mViewFlipper.setDisplayedChild(mTermSessions.size()-1);
+                } else if (action.equals(RemoteInterface.PRIVACT_SWITCH_WINDOW)) {
+                    int target = intent.getIntExtra(RemoteInterface.PRIVEXTRA_TARGET_WINDOW, -1);
+                    if (target >= 0) {
+                        mViewFlipper.setDisplayedChild(target);
+                    }
+                }
+            }
+
             mViewFlipper.resumeCurrentView();
         }
     }
@@ -361,6 +381,7 @@ public class Term extends Activity implements UpdateCallback {
         }
 
         if (mTermSessions != null) {
+            int position = mViewFlipper.getDisplayedChild();
             if (mWinListAdapter == null) {
                 WindowListAdapter adapter = new WindowListActionBarAdapter(mTermSessions);
                 mWinListAdapter = adapter;
@@ -370,6 +391,7 @@ public class Term extends Activity implements UpdateCallback {
             } else {
                 mWinListAdapter.setSessions(mTermSessions);
             }
+            mActionBar.setSelectedNavigationItem(position);
         }
     }
 
@@ -681,7 +703,17 @@ public class Term extends Activity implements UpdateCallback {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        if (intent.getBooleanExtra(RemoteInterface.EXTRA_REMOTE_OPEN_WINDOW, false)) {
+        if ((intent.getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
+            // Don't repeat action if intent comes from history
+            return;
+        }
+
+        String action = intent.getAction();
+        if (action == null) {
+            return;
+        }
+
+        if (action.equals(RemoteInterface.PRIVACT_OPEN_NEW_WINDOW)) {
             // New session was created, add an EmulatorView to match
             SessionList sessions = mTermSessions;
             int position = sessions.size() - 1;
@@ -691,6 +723,11 @@ public class Term extends Activity implements UpdateCallback {
 
             mViewFlipper.addView(view);
             onResumeSelectWindow = position;
+        } else if (action.equals(RemoteInterface.PRIVACT_SWITCH_WINDOW)) {
+            int target = intent.getIntExtra(RemoteInterface.PRIVEXTRA_TARGET_WINDOW, -1);
+            if (target >= 0) {
+                onResumeSelectWindow = target;
+            }
         }
     }
 
