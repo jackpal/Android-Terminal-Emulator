@@ -18,6 +18,10 @@
 
 # Update AndroidManifest.xml version number
 
+Update both android:versionName and android:versionCode.
+
+# Commit changes
+
 # Tag git branch with version number
 
 git tag v1.0.xx
