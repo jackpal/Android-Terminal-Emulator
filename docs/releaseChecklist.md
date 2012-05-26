@@ -31,13 +31,19 @@ git tag v1.0.xx
 git push
 git push --tags
 
-# Publish to market
+# Build release apk
 
-https://market.android.com/publish
+tools/build-release
 
-The Android Publish UI is error prone:
+(Will only work if you have the signing keys for the app.)
 
-1) Visit https://market.android.com/publish/Home#AppEditorPlace:p=jackpal.androidterm
+# Publish to the Google Play Store
+
+https://play.google.com/apps/publish
+
+The Android Developer Console Publishing UI is error prone:
+
+1) Click on the "Android Terminal Emulator" link.
 
 2) Click on the APK files tab
 
@@ -53,11 +59,14 @@ The Android Publish UI is error prone:
 
 8) Click on the "Save" button
 
-9) Visit https://market.android.com/publish/Home and verify that the new version is listed as the current version.
+9) Visit https://play.google.com/apps/publish and verify that the new version is listed as the current version.
 
-10) Verify that Market is serving the new version (check the "What's New" portion.)
+10) Verify that Google Play Store is serving the new version
+(check the "What's New" portion.)
 
-https://market.android.com/details?id=jackpal.androidterm
+https://play.google.com/store/apps/details?id=jackpal.androidterm
+
+(Note, it can take up to an hour for the app to appear in the store.)
 
 # Update the Android Terminal Emulator Wiki
 
