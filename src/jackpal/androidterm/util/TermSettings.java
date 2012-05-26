@@ -76,8 +76,18 @@ public class TermSettings {
     public static final int GREEN = 0xff00ff00;
     public static final int AMBER = 0xffffb651;
     public static final int RED =   0xffff0113;
+    public static final int HOLO_BLUE = 0xff33b5e5;
 
-    public static final int[][] COLOR_SCHEMES = {{0, BLACK, 7, WHITE}, {7, WHITE, 0, BLACK}, {7, WHITE, 4, BLUE}, {2, GREEN, 0, BLACK}, {3, AMBER, 0, BLACK}, {1, RED, 0, BLACK}};
+    // foreground index, foreground color, background index, background color
+    public static final int[][] COLOR_SCHEMES = {
+        {0, BLACK, 7, WHITE},
+        {7, WHITE, 0, BLACK},
+        {7, WHITE, 4, BLUE},
+        {2, GREEN, 0, BLACK},
+        {3, AMBER, 0, BLACK},
+        {1, RED, 0, BLACK},
+        {4, HOLO_BLUE, 0, BLACK}
+    };
 
     public static final int ACTION_BAR_MODE_NONE = 0;
     public static final int ACTION_BAR_MODE_ALWAYS_VISIBLE = 1;
