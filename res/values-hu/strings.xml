@@ -25,14 +25,14 @@
    <string name="reset">Alaphelyzet</string>
    <string name="send_email">Küldés emailben</string>
    <string name="special_keys">Speciális billentyűk</string>
-   <string name="toggle_soft_keyboard">Billentyűzet ki/bekapcsolása</string>
+   <string name="toggle_soft_keyboard">Billentyűzet ki/be</string>
 
-   <string name="reset_toast_notification">Az terminál ablak alaphelyzetbe állítva.</string>
+   <string name="reset_toast_notification">A terminál ablak alaphelyzetbe állítva.</string>
 
    <string name="enable_wakelock">Alvás megakadályozása</string>
    <string name="disable_wakelock">Alvás engedélyezése</string>
-   <string name="enable_wifilock">WiFi-alvás megakadályozása</string>
-   <string name="disable_wifilock">WiFi-alvás engedélyezése</string>
+   <string name="enable_wifilock">Wi-Fi-alvás megakadályozása</string>
+   <string name="disable_wifilock">Wi-Fi-alvás engedélyezése</string>
 
    <string name="edit_text">Szöveg szerkesztése</string>
    <string name="select_text">Szöveg kijelölése</string>
@@ -55,15 +55,15 @@
    <string name="dialog_title_statusbar_preference">Értesítési sáv</string>
 
    <string name="title_actionbar_preference">Akciósáv</string>
-   <string name="summary_actionbar_preference">Válaszd ki az akciósáv viselkedési módját (csak Android 3.0 és afölött).</string>
+   <string name="summary_actionbar_preference">Válassza ki az akciósáv viselkedési módját (csak Android 3.0-tól).</string>
    <string name="dialog_title_actionbar_preference">Akciósáv viselkedése</string>
 
    <string name="title_cursorstyle_preference">Kurzor stílusa</string>
-   <string name="summary_cursorstyle_preference">Válaszd ki a kurzor stílusát.</string>
+   <string name="summary_cursorstyle_preference">Válassza ki a kurzor stílusát.</string>
    <string name="dialog_title_cursorstyle_preference">Kurzor stílusa</string>
 
    <string name="title_cursorblink_preference">Kurzor villogás</string>
-   <string name="summary_cursorblink_preference">Állítsd be a kurzor villogását.</string>
+   <string name="summary_cursorblink_preference">Állítsa be a kurzor villogását.</string>
    <string name="dialog_title_cursorblink_preference">Kurzor villogás</string>
 
    <string name="text_preferences">Szöveg</string>
@@ -72,25 +72,25 @@
    <string name="summary_utf8_by_default_preference">UTF-8 mód engedélyezése alapértelmezésként.</string>
 
    <string name="title_fontsize_preference">Betűméret</string>
-   <string name="summary_fontsize_preference">Karakterek magasságának megadása pontban.</string>
+   <string name="summary_fontsize_preference">Karakterek magasságának megadása pontokban.</string>
    <string name="dialog_title_fontsize_preference">Betűméret</string>
 
    <string name="title_color_preference">Színek</string>
-   <string name="summary_color_preference">Válaszd ki a szöveg és a háttér színét.</string>
+   <string name="summary_color_preference">Válassza ki a szöveg és a háttér színét.</string>
    <string name="dialog_title_color_preference">Színek</string>
 
    <string name="keyboard_preferences">Billentyűzet</string>
 
    <string name="title_backaction_preference">Vissza gomb viselkedése</string>
-   <string name="summary_backaction_preference">Válaszd ki, mi történjen a Vissza gomb megnyomásakor.</string>
+   <string name="summary_backaction_preference">Válassza ki, mi történjen a Vissza gomb megnyomásakor.</string>
    <string name="dialog_title_backaction_preference">Vissza gomb viselkedése</string>
 
    <string name="title_controlkey_preference">Control billentyű</string>
-   <string name="summary_controlkey_preference">Válaszd ki a Control billentyűleütést kiváltó gombot.</string>
+   <string name="summary_controlkey_preference">Válassza ki a Control billentyűleütést kiváltó gombot.</string>
    <string name="dialog_title_controlkey_preference">Control billentyű</string>
 
    <string name="title_fnkey_preference">Funkció billentyű</string>
-   <string name="summary_fnkey_preference">Válaszd ki a funkció billentyűket kiváltó gombot.</string>
+   <string name="summary_fnkey_preference">Válassza ki a funkció billentyűket kiváltó gombot.</string>
    <string name="dialog_title_fnkey_preference">Funkció billentyű</string>
 
    <string name="title_ime_preference">Beviteli mód</string>
@@ -99,7 +99,7 @@
 
    <string name="shell_preferences">Konzol</string>
    <string name="title_shell_preference">Parancssor</string>
-   <string name="summary_shell_preference">Add meg a konzolt elindító parancsot.</string>
+   <string name="summary_shell_preference">Adja meg a konzolt elindító parancsot.</string>
    <string name="dialog_title_shell_preference">Konzol</string>
 
    <string name="title_initialcommand_preference">Indító parancs</string>
@@ -112,6 +112,15 @@
 
    <string name="title_close_window_on_process_exit_preference">Ablak bezárása kilépéskor</string>
    <string name="summary_close_window_on_process_exit_preference">Terminál ablak bezárása, ha a konzol is bezáródik.</string>
+
+   <string name="title_verify_path_preference">PATH bejegyzések ellenőrzése</string>
+   <string name="summary_verify_path_preference">A nem hozzáférhető útvonalak eltávolítása a PATH változóból.</string>
+
+   <string name="title_do_path_extensions_preference">PATH kiterjesztésének engedélyezése</string>
+   <string name="summary_do_path_extensions_preference">Az alkalmazások felvehetnek új parancsokat (hozzáfűzhetnek a PATH változóhoz).</string>
+
+   <string name="title_allow_prepend_path_preference">PATH felülírásának engedélyezése</string>
+   <string name="summary_allow_prepend_path_preference">Az alkalmazások felülírhatják a meglévő parancsokat (hozzáfűzhetnek a PATH változó elejéhez).</string>
 
    <string name="control_key_dialog_title">Control és funkció billentyűk</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
@@ -127,4 +136,8 @@
 
   <string name="perm_run_script">Tetszőleges parancsok futtatása a Terminál Emulátorban</string>
   <string name="permdesc_run_script">Lehetővé teszi az alkalmazások számára új ablakok megnyitását az Android Terminál Emulátorban és a megnyitott ablakokban tetszőleges parancsokat futtathatnak az Android Terminál Emulátor összes jogosultságával, beleértve a teljes hozzáférést az Internethez és az SD-kártyához.</string>
+  <string name="perm_append_to_path">Parancsok hozzáadása a Terminál Emulátorhoz</string>
+  <string name="permdesc_append_to_path">Az alkalmazások felvehetnek új parancsokat (hozzáfűzhetnek a PATH változóhoz) az Android Terminál Emulátorban.</string>
+  <string name="perm_prepend_to_path">Parancsok felülírása a Terminál Emulátorban</string>
+  <string name="permdesc_prepend_to_path">Az alkalmazások felülírhatják a meglévő parancsokat (hozzáfűzhetnek a PATH változó elejéhez) az Android Terminál Emulátorban.</string>
 </resources>

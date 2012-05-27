@@ -98,6 +98,7 @@
         <item>Zöld szöveg, fekete háttér</item>
         <item>Sárga szöveg, fekete háttér</item>
         <item>Piros szöveg, fekete háttér</item>
+        <item>Holo kék szöveg, fekete háttér</item>
     </string-array>
 
     <!-- Do not localize entryvalues -->
@@ -108,12 +109,13 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>6</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
         <item>Bezárja az összes terminál ablakot</item>
         <item>Bezárja az aktív terminál ablakot</item>
-        <item>Kilép a programból, de a munkamenet tovább fut a háttérben</item>
+        <item>Kilép a programból, de a munkamenetből nem</item>
         <item>ESC-et küld a terminálra</item>
         <item>TAB-ot küld a terminálra</item>
     </string-array>
@@ -190,8 +192,8 @@
         <item>\@</item>
         <item>Bal-Alt</item>
         <item>Jobb-Alt</item>
-        <item>Hang-fel</item>
-        <item>Hang-le</item>
+        <item>Hangerő-fel</item>
+        <item>Hangerő-le</item>
         <item>Kamera</item>
         <item>Nincs</item>
     </string-array>
@@ -202,8 +204,8 @@
         <item>\@</item>
         <item>Bal-Alt</item>
         <item>Jobb-Alt</item>
-        <item>Hang-fel</item>
-        <item>Hang-le</item>
+        <item>Hangerő-fel</item>
+        <item>Hangerő-le</item>
         <item>Kamera</item>
         <item>Nincs</item>
     </string-array>
