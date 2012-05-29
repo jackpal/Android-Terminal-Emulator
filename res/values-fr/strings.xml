@@ -114,16 +114,30 @@
    <string name="title_close_window_on_process_exit_preference">Quitter avec exit</string>
    <string name="summary_close_window_on_process_exit_preference">Quitter le terminal en exécutant la commande exit</string>
    
-   <string name="title_verify_path_preference">Vérifier les entrées de PATH</string>
+   <string name="title_verify_path_preference">Vérifier le PATH</string>
    <string name="summary_verify_path_preference">Les répertoires inaccessibles seront retirés de PATH</string>
+   
+   <string name="title_do_path_extensions_preference">Extensions de PATH</string>
+   <string name="summary_do_path_extensions_preference">D\'autres application sont autorisées à fournir des commandes supplémentaires (à ajouter au PATH)</string>
 
+   <string name="title_allow_prepend_path_preference">Préfixe de PATH</string>
+   <string name="summary_allow_prepend_path_preference">D'autres applications sont autorisées à remplacer les commandes existantes (à ajouter au début de PATH)</string>
+   
    <string name="control_key_dialog_title">Touches Control et Fonction</string>
    <!-- Le mot CTRLKEY ne doit pas être traduit. Il sera remplacé par la touche CTRL renseignée dans les paramètres -->
    <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
-   <string name="control_key_dialog_control_disabled_text">Touche Control non paramètrées.</string>
+   <string name="control_key_dialog_control_disabled_text">Touche Control non paramètrée.</string>
    <!-- Le mot FNKEY ne doit pas être traduit. Il sera remplacé par la touche Fn renseignée dans les paramètres -->
    <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Haut\nFNKEY A : Gauche\nFNKEY S : Bas\nFNKEY D : Droite\nFNKEY P : PageHaut\nFNKEY N : PageBas\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Suppr.\nFNKEY I : Inser.\nFNKEY H : Début\nFNKEY F : Fin\nFNKEY . : Control-\\\n</string>
-   <string name="control_key_dialog_fn_disabled_text">Touche fonction non paramètrées.</string>
+   <string name="control_key_dialog_fn_disabled_text">Touche fonction non paramètrée.</string>
    
    <string name="confirm_window_close_message">Fermer cette fenêtre ?</string>
+   
+   <!-- A traduire mais je ne vois pas où se trouvent les phrases dans l'application... -->
+   <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>
+   <string name="permdesc_run_script">Allows application to open new windows in Android Terminal Emulator and run commands in those windows with all of Android Terminal Emulator\'s permissions, including access to the Internet and your SD Card.</string>
+   <string name="perm_append_to_path">Add commands to Terminal Emulator</string>
+   <string name="permdesc_append_to_path">Allows application to provide additional commands (add directories to the PATH) for Android Terminal Emulator.</string>
+   <string name="perm_prepend_to_path">Override commands in Terminal Emulator</string>
+   <string name="permdesc_prepend_to_path">Allows application to override existing commands with its own versions (prepend directories to the PATH) in Android Terminal Emulator.</string>
 </resources>
