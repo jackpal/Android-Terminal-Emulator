@@ -17,36 +17,116 @@
 <resources>
    <string name="application_terminal">Эмулятор Терминала</string>
    <string name="preferences">Настройки</string>
+   <string name="new_window">Новое окно</string>
+   <string name="close_window">Закрыть окно</string>
+   <string name="window_list">Окна</string>
+   <string name="prev_window">Пред. окно</string>
+   <string name="next_window">След. окно</string>
    <string name="reset">Сбросить терм.</string>
    <string name="send_email">Отправит Email</string>
    <string name="special_keys">Специальные клавиши</string>
    <string name="toggle_soft_keyboard">Экранная клавиатура</string>
+
+   <string name="reset_toast_notification">Это окно терминала было сброшено.</string>
+
+   <string name="enable_wakelock">Вкл. блокировку пробуждения</string>
+   <string name="disable_wakelock">Выкл. блокировку пробуждения</string>
+   <string name="enable_wifilock">Вкл. блокировку Wi-Fi</string>
+   <string name="disable_wifilock">Выкл. блокировку Wi-Fi</string>
+
    <string name="edit_text">Изменить</string>
+   <string name="select_text">Выбрать текст</string>
    <string name="copy_all">Копировать всё</string>
    <string name="paste">Вставить</string>
+   <string name="send_control_key">Отправить клавишу Control</string>
+   <string name="send_fn_key">Отправить клавишу Fn</string>
+
+   <string name="window_title">Окно %1$d</string>
+
+   <string name="service_notify_text">Сессия терминала запущена</string>
+
+   <string name="process_exit_message">Сессия терминала завершена</string>
+
    <string name="screen_preferences">Экран</string>
+
    <string name="title_statusbar_preference">Статус бар</string>
    <string name="summary_statusbar_preference">Показать/Скрыть статус бар.</string>
    <string name="dialog_title_statusbar_preference">Статус бар</string>
+
+   <string name="title_cursorstyle_preference">Стиль курсора</string>
+   <string name="summary_cursorstyle_preference">Выберите стиль курсора.</string>
+   <string name="dialog_title_cursorstyle_preference">Стиль курсора</string>
+
+   <string name="title_cursorblink_preference">Мигание курсора</string>
+   <string name="summary_cursorblink_preference">Выберите стиль мигания курсора.</string>
+   <string name="dialog_title_cursorblink_preference">Мигание курсора</string>
+
    <string name="text_preferences">Текст</string>
+
+   <string name="title_utf8_by_default_preference">По умолчанию в UTF-8</string>
+   <string name="summary_utf8_by_default_preference">Включён ли UTF-8 по умолчанию.</string>
+
    <string name="title_fontsize_preference">Размер шрифта</string>
    <string name="summary_fontsize_preference">Выберите размер шрифта.</string>
    <string name="dialog_title_fontsize_preference">Размер шрифта</string>
+
    <string name="title_color_preference">Цвета</string>
    <string name="summary_color_preference">Выберите цвет текста.</string>
    <string name="dialog_title_color_preference">Цвет текста</string>
+
    <string name="keyboard_preferences">Клавиатура</string>
+
    <string name="title_controlkey_preference">Клавиша Control</string>
    <string name="summary_controlkey_preference">Выберите что будет клавишей Control.</string>
    <string name="dialog_title_controlkey_preference">Клавиша Control</string>
+
+   <string name="title_fnkey_preference">Клавиша Fn</string>
+   <string name="summary_fnkey_preference">Выберите, что будет клавишей Fn.</string>
+   <string name="dialog_title_fnkey_preference">Клавиша Fn</string>
+
    <string name="title_ime_preference">Способ ввода</string>
    <string name="summary_ime_preference">Выберите способ ввода для экранной клавиатуры.</string>
    <string name="dialog_title_ime_preference">Способ ввода</string>
+
    <string name="shell_preferences">Командная оболочка</string>
    <string name="title_shell_preference">Командная строка</string>
    <string name="summary_shell_preference">Укажите строку обращения к командной оболочки.</string>
+
    <string name="dialog_title_shell_preference">Оболочка</string>
    <string name="title_initialcommand_preference">Команды запуска</string>
    <string name="summary_initialcommand_preference">Передаются облочке при запуске терминала.</string>
    <string name="dialog_title_initialcommand_preference">Команды запуска</string>
+
+   <string name="title_initialcommand_preference">Начальная команда</string>
+   <string name="summary_initialcommand_preference">Отправлять в оболочку при её запуске.</string>
+   <string name="dialog_title_initialcommand_preference">Начальная команда</string>
+
+   <string name="title_termtype_preference">Тип терминала</string>
+   <string name="summary_termtype_preference">Тип терминала передаваемый оболочке.</string>
+   <string name="dialog_title_termtype_preference">Тип терминала</string>
+
+   <string name="title_close_window_on_process_exit_preference">Закрывать окно при выходе</string>
+   <string name="summary_close_window_on_process_exit_preference">Закрывать окно при выходе из оболочки.</string>
+   
+   <string name="title_verify_path_preference">Проверять записи PATH</string>
+   <string name="summary_verify_path_preference">Недоступные каталоги будут удалены из PATH.</string>
+   
+   <string name="title_do_path_extensions_preference">Разрешить расширения PATH</string>
+   <string name="summary_do_path_extensions_preference">Разрешить приложениям добавлять записи в PATH.</string>
+   
+   <string name="title_allow_prepend_path_preference">Ожидание PATH</string>
+   <string name="summary_allow_prepend_path_preference">Разрешить приложениям перезаписывать существующие команды (добавляются в начало PATH).</string>
+
+   <string name="control_key_dialog_title">Клавиши Control и Fn</string>
+
+  <string name="control_key_dialog_fn_disabled_text">Функциональные клавиши не установлены.</string>
+
+  <string name="confirm_window_close_message">Закрыть это окно?</string>
+
+  <string name="perm_run_script">Выполнение произвольных команд в Эмуляторе Терминала</string>
+  <string name="permdesc_run_script">Разрешить приложению открывать новые окна в Эмуляторе Терминала и выполнять команды в этом окне, включая доступ в Интернет и к вашей SD-карте.</string>
+  <string name="perm_append_to_path">Добавить команды в Эмулятор терминала</string>
+  <string name="permdesc_append_to_path">Позволить приложениям добавлять дополнительные команды (добавление каталогов в PATH) в Эмулятор Терминала.</string>
+  <string name="perm_prepend_to_path">Перезаписывать команды в Эмуляторе Терминала</string>
+  <string name="permdesc_prepend_to_path">Позволить приложениям перезаписывать существующие команды своими версиями (добавляются в начало PATH) в Эмуляторе Терминала.</string>
 </resources>
