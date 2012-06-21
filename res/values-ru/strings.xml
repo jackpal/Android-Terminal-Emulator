@@ -23,7 +23,7 @@
    <string name="prev_window">Пред. окно</string>
    <string name="next_window">След. окно</string>
    <string name="reset">Сбросить терм.</string>
-   <string name="send_email">Отправит Email</string>
+   <string name="send_email">Отправить Email</string>
    <string name="special_keys">Специальные клавиши</string>
    <string name="toggle_soft_keyboard">Экранная клавиатура</string>
 
