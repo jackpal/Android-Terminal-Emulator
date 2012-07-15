@@ -35,7 +35,7 @@ Building ATE using ant
 The first time you build using Ant you must run a one-time setup script
 to set up the local.properties files for all the ant projects:
 
-    tools/setup.sh
+    tools/update.sh
 
 After that, you can build ATE by:
 
