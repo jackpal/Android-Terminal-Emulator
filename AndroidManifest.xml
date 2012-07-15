@@ -23,7 +23,7 @@
                 android:description="@string/permdesc_prepend_to_path"
                 android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
                 android:protectionLevel="dangerous" />
-    <application android:icon="@drawable/app_terminal"
+    <application android:icon="@drawable/ic_launcher"
                 android:label="@string/application_terminal">
         <activity android:name="Term"
                 android:theme="@style/Theme"
