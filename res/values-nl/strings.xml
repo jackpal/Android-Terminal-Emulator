@@ -15,29 +15,29 @@
  * limitations under the License.
 -->
 <resources>
-   <string name="application_terminal">Opdrachtprompt</string>
+   <string name="application_terminal">Terminal</string>
    <string name="preferences">Instellingen</string>
    <string name="new_window">Nieuw venster</string>
-   <string name="close_window">Sluit venster</string>
+   <string name="close_window">Venster sluiten</string>
    <string name="window_list">Vensters</string>
-   <string name="prev_window">Vorige venster</string>
-   <string name="next_window">Volgende venster</string>
+   <string name="prev_window">Vorig venster</string>
+   <string name="next_window">Volgend venster</string>
    <string name="reset">Herstellen</string>
-   <string name="send_email">Email naar</string>
+   <string name="send_email">E-mail sturen naar</string>
    <string name="special_keys">Speciale knoppen</string>
-   <string name="toggle_soft_keyboard">Zet toetsenbord aan/uit</string>
+   <string name="toggle_soft_keyboard">Toetsenbord aan/uit</string>
 
    <string name="enable_wakelock">Slaapblokkering aan</string>
    <string name="disable_wakelock">Slaapblokkering uit</string>
    <string name="enable_wifilock">Wi-Fi-blokkering aan</string>
    <string name="disable_wifilock">Wi-Fi-blokkering uit</string>
 
-   <string name="edit_text">Wijzig tekst</string>
+   <string name="edit_text">Tekst wijzigen</string>
    <string name="select_text">Selecteer tekst</string>
    <string name="copy_all">Alles kopiëren</string>
    <string name="paste">Plakken</string>
 
-   <string name="service_notify_text">Terminalsessie is bezig</string>
+   <string name="service_notify_text">Terminalsessie is actief</string>
 
    <!-- Preference dialog -->
    <string name="screen_preferences">Scherm</string>
