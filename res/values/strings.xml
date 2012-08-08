@@ -140,4 +140,6 @@
   <string name="permdesc_append_to_path">Allows application to provide additional commands (add directories to the PATH) for Android Terminal Emulator.</string>
   <string name="perm_prepend_to_path">Override commands in Terminal Emulator</string>
   <string name="permdesc_prepend_to_path">Allows application to override existing commands with its own versions (prepend directories to the PATH) in Android Terminal Emulator.</string>
+  <string name="title_alt_is_escape">Alt sends Escape</string>
+  <string name="summary_alt_is_escape">Alt in combination with another key sends Escape to the terminal. Entering Unicode with the Alt key doesnt work in this case.</string>
 </resources>

@@ -42,6 +42,7 @@ public class TermView extends EmulatorView {
         setBackKeyCharacter(settings.getBackKeyCharacter());
         setControlKeyCode(settings.getControlKeyCode());
         setFnKeyCode(settings.getFnKeyCode());
+        setAltSendsEsc(settings.altSendsEscape());
     }
 
     public void updatePrefs(TermSettings settings) {

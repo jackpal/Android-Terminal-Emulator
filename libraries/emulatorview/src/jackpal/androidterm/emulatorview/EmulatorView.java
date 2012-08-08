@@ -17,7 +17,9 @@
 package jackpal.androidterm.emulatorview;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -164,10 +166,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private boolean mBackKeySendsCharacter = false;
     private int mControlKeyCode;
-    private int mFnKeyCode;
+	private int mFnKeyCode;
     private boolean mIsControlKeySent = false;
     private boolean mIsFnKeySent = false;
-
 
     private float mDensity;
 
@@ -198,7 +199,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private GestureDetector mGestureDetector;
     private GestureDetector.OnGestureListener mExtGestureListener;
     private float mScrollRemainder;
-    private TermKeyListener mKeyListener;
 
     private String mImeBuffer = "";
 
@@ -223,6 +223,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             invalidate();
         }
     };
+    private int mBackKeyCharacter = 0;
+    
+    private boolean mAltSendsEsc = false;
+	private KeyStateMachine mKeyState = new KeyStateMachine(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc);
+	
+	
 
     /**
      * Create an <code>EmulatorView</code> for a {@link TermSession}.
@@ -281,7 +287,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         mTermSession = session;
 
-        mKeyListener = new TermKeyListener(session);
 
         // Do init now if it was deferred until a TermSession was attached
         if (mDeferInit) {
@@ -354,6 +359,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 EditorInfo.TYPE_CLASS_TEXT :
                 EditorInfo.TYPE_NULL;
         return new InputConnection() {
+        	TermKeyListener mKeyListener = new TermKeyListener(mTermSession);
             private boolean mInBatchEdit;
             /**
              * Used to handle composing text requests
@@ -510,7 +516,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 return true;
             }
 
-            public boolean commitCorrection (CorrectionInfo correctionInfo) {
+            @TargetApi(11)
+			public boolean commitCorrection (CorrectionInfo correctionInfo) {
                 if (LOG_IME) {
                     Log.w(TAG, "commitCorrection");
                 }
@@ -946,31 +953,26 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (LOG_KEY_EVENTS) {
             Log.w(TAG, "onKeyDown " + keyCode);
         }
-        if (handleControlKey(keyCode, true)) {
-            return true;
-        } else if (handleFnKey(keyCode, true)) {
-            return true;
+        boolean isHandled = mKeyState.consumeKeyDownEvent(event);
+        if (isHandled) {
+        	if (mKeyState.getCharSequence() != null) {
+        		byte[] seq = mKeyState.getCharSequence();
+            	mTermSession.write(seq, 0, seq.length);
+        	}
         } else if (isSystemKey(keyCode, event)) {
             if (! isInterceptedSystemKey(keyCode) ) {
                 // Don't intercept the system keys
-                return super.onKeyDown(keyCode, event);
+                isHandled = super.onKeyDown(keyCode, event);
             }
         }
-
-        // Translate the keyCode into an ASCII character.
-
-        try {
-            mKeyListener.keyDown(keyCode, event, getKeypadApplicationMode());
-        } catch (IOException e) {
-            // Ignore I/O exceptions
-        }
-        return true;
+        return isHandled;
     }
-
+    
     /** Do we want to intercept this system key? */
     private boolean isInterceptedSystemKey(int keyCode) {
         return keyCode == KeyEvent.KEYCODE_BACK && mBackKeySendsCharacter;
     }
+
 
     /**
      * Called when a key is released in the view.
@@ -984,20 +986,17 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (LOG_KEY_EVENTS) {
             Log.w(TAG, "onKeyUp " + keyCode);
         }
-        if (handleControlKey(keyCode, false)) {
-            return true;
-        } else if (handleFnKey(keyCode, false)) {
-            return true;
+        boolean isHandled = mKeyState.consumeKeyUpEvent(event);
+        if (isHandled) {
+        	//noop;
         } else if (isSystemKey(keyCode, event)) {
-            // Don't intercept the system keys
-            if ( ! isInterceptedSystemKey(keyCode) ) {
-                return super.onKeyUp(keyCode, event);
-            }
+        	if ( ! isInterceptedSystemKey(keyCode)) {
+        		return super.onKeyUp(keyCode, event);
+        	}
         }
-
-        mKeyListener.keyUp(keyCode, event);
+        
         clearSpecialKeyStatus();
-        return true;
+        return isHandled;
     }
 
 
@@ -1006,7 +1005,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             if (LOG_KEY_EVENTS) {
                 Log.w(TAG, "handleControlKey " + keyCode);
             }
-            mKeyListener.handleControlKey(down);
+            mKeyState.handleControlKey(down);
             return true;
         }
         return false;
@@ -1017,7 +1016,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             if (LOG_KEY_EVENTS) {
                 Log.w(TAG, "handleFnKey " + keyCode);
             }
-            mKeyListener.handleFnKey(down);
+            mKeyState.handleFnKey(down);
             return true;
         }
         return false;
@@ -1030,11 +1029,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private void clearSpecialKeyStatus() {
         if (mIsControlKeySent) {
             mIsControlKeySent = false;
-            mKeyListener.handleControlKey(false);
+            mKeyState.handleControlKey(false);
         }
         if (mIsFnKeySent) {
             mIsFnKeySent = false;
-            mKeyListener.handleFnKey(false);
+            mKeyState.handleFnKey(false);
         }
     }
 
@@ -1201,7 +1200,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void sendControlKey() {
         mIsControlKeySent = true;
-        mKeyListener.handleControlKey(true);
+        mKeyState.handleControlKey(true);
     }
 
     /**
@@ -1210,29 +1209,37 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void sendFnKey() {
         mIsFnKeySent = true;
-        mKeyListener.handleFnKey(true);
+        mKeyState.handleFnKey(true);
     }
 
     /**
      * Set the key code to be sent when the Back key is pressed.
      */
     public void setBackKeyCharacter(int keyCode) {
-        mKeyListener.setBackKeyCharacter(keyCode);
+        mBackKeyCharacter = keyCode;
+        mKeyState = new KeyStateMachine(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc);
         mBackKeySendsCharacter = (keyCode != 0);
     }
 
     /**
      * Set the keycode corresponding to the Ctrl key.
      */
-    public void setControlKeyCode(int keyCode) {
+    public void setControlKeyCode(int keyCode) {    	
         mControlKeyCode = keyCode;
+        mKeyState = new KeyStateMachine(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc);
     }
 
     /**
      * Set the keycode corresponding to the Fn key.
      */
     public void setFnKeyCode(int keyCode) {
-        mFnKeyCode = keyCode;
+    	mFnKeyCode = keyCode;
+    	mKeyState = new KeyStateMachine(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc);
+    }
+
+    public void setAltSendsEsc(boolean flag) {    	
+    	mAltSendsEsc = flag;
+    	mKeyState = new KeyStateMachine(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc);
     }
 }
 
@@ -1997,97 +2004,15 @@ class TermKeyListener {
         mAppKeyCodes[KEYCODE_NUMPAD_9] = "\033Oy";
     }
 
-    /**
-     * The state engine for a modifier key. Can be pressed, released, locked,
-     * and so on.
-     *
-     */
-    private class ModifierKey {
+	private ModifierKey mAltKey = new ModifierKey(KEYCODE_ALT_LEFT);
 
-        private int mState;
+	private ModifierKey mCapKey = new ModifierKey(KEYCODE_CAPS_LOCK);
 
-        private static final int UNPRESSED = 0;
+	private ModifierKey mControlKey = new ModifierKey(KEYCODE_CTRL_LEFT);
 
-        private static final int PRESSED = 1;
-
-        private static final int RELEASED = 2;
-
-        private static final int USED = 3;
-
-        private static final int LOCKED = 4;
-
-        /**
-         * Construct a modifier key. UNPRESSED by default.
-         *
-         */
-        public ModifierKey() {
-            mState = UNPRESSED;
-        }
-
-        public void onPress() {
-            switch (mState) {
-            case PRESSED:
-                // This is a repeat before use
-                break;
-            case RELEASED:
-                mState = LOCKED;
-                break;
-            case USED:
-                // This is a repeat after use
-                break;
-            case LOCKED:
-                mState = UNPRESSED;
-                break;
-            default:
-                mState = PRESSED;
-                break;
-            }
-        }
-
-        public void onRelease() {
-            switch (mState) {
-            case USED:
-                mState = UNPRESSED;
-                break;
-            case PRESSED:
-                mState = RELEASED;
-                break;
-            default:
-                // Leave state alone
-                break;
-            }
-        }
-
-        public void adjustAfterKeypress() {
-            switch (mState) {
-            case PRESSED:
-                mState = USED;
-                break;
-            case RELEASED:
-                mState = UNPRESSED;
-                break;
-            default:
-                // Leave state alone
-                break;
-            }
-        }
-
-        public boolean isActive() {
-            return mState != UNPRESSED;
-        }
-    }
-
-    private ModifierKey mAltKey = new ModifierKey();
-
-    private ModifierKey mCapKey = new ModifierKey();
-
-    private ModifierKey mControlKey = new ModifierKey();
-
-    private ModifierKey mFnKey = new ModifierKey();
+	private ModifierKey mFnKey = null; // FIXME: determine default.
 
     private TermSession mTermSession;
-
-    private int mBackKeyCode;
 
     // Map keycodes out of (above) the Unicode code point space.
     static public final int KEYCODE_OFFSET = 0xA00000;
@@ -2099,26 +2024,6 @@ class TermKeyListener {
     public TermKeyListener(TermSession termSession) {
         mTermSession = termSession;
         initKeyCodes();
-    }
-
-    public void setBackKeyCharacter(int code) {
-        mBackKeyCode = code;
-    }
-
-    public void handleControlKey(boolean down) {
-        if (down) {
-            mControlKey.onPress();
-        } else {
-            mControlKey.onRelease();
-        }
-    }
-
-    public void handleFnKey(boolean down) {
-        if (down) {
-            mFnKey.onPress();
-        } else {
-            mFnKey.onRelease();
-        }
     }
 
     public int mapControlChar(int ch) {
@@ -2201,87 +2106,6 @@ class TermKeyListener {
         return result;
     }
 
-    /**
-     * Handle a keyDown event.
-     *
-     * @param keyCode the keycode of the keyDown event
-     *
-     */
-    public void keyDown(int keyCode, KeyEvent event, boolean appMode) throws IOException {
-        if (handleKeyCode(keyCode, appMode)) {
-            return;
-        }
-        int result = -1;
-        boolean allowToggle = isEventFromToggleDevice(event);
-        boolean chordedCtrl = false;
-        switch (keyCode) {
-        case KeyEvent.KEYCODE_ALT_RIGHT:
-        case KeyEvent.KEYCODE_ALT_LEFT:
-            if (allowToggle) {
-                mAltKey.onPress();
-            }
-            break;
-
-        case KeyEvent.KEYCODE_SHIFT_LEFT:
-        case KeyEvent.KEYCODE_SHIFT_RIGHT:
-            if (allowToggle) {
-                mCapKey.onPress();
-            }
-            break;
-
-        case KEYCODE_CTRL_LEFT:
-        case KEYCODE_CTRL_RIGHT:
-            // Ignore the control key.
-            return;
-
-        case KEYCODE_CAPS_LOCK:
-            // Ignore the capslock key.
-            return;
-
-        case KeyEvent.KEYCODE_BACK:
-            result = mBackKeyCode;
-            break;
-
-        default: {
-            int metaState = event.getMetaState();
-            chordedCtrl = ((META_CTRL_ON & metaState) != 0);
-            boolean effectiveCaps = allowToggle &&
-                    (mCapKey.isActive());
-            boolean effectiveAlt = allowToggle && mAltKey.isActive();
-            int effectiveMetaState = metaState & (~META_CTRL_MASK);
-            if (effectiveCaps) {
-                effectiveMetaState |= KeyEvent.META_SHIFT_ON;
-            }
-            if (effectiveAlt) {
-                effectiveMetaState |= KeyEvent.META_ALT_ON;
-            }
-            result = event.getUnicodeChar(effectiveMetaState);
-            break;
-            }
-        }
-
-        boolean effectiveControl = chordedCtrl || (allowToggle && mControlKey.isActive());
-        boolean effectiveFn = allowToggle && mFnKey.isActive();
-
-        result = mapControlChar(effectiveControl, effectiveFn, result);
-
-        if (result >= KEYCODE_OFFSET) {
-            handleKeyCode(result - KEYCODE_OFFSET, appMode);
-        } else if (result >= 0) {
-            mTermSession.write(result);
-        }
-    }
-
-    private boolean isEventFromToggleDevice(KeyEvent event) {
-        if (AndroidCompat.SDK < 11) {
-            return true;
-        }
-        KeyCharacterMapCompat kcm = KeyCharacterMapCompat.wrap(
-                KeyCharacterMap.load(event.getDeviceId()));
-        return kcm.getModifierBehaviour() ==
-                KeyCharacterMapCompat.MODIFIER_BEHAVIOR_CHORDED_OR_TOGGLED;
-    }
-
     public boolean handleKeyCode(int keyCode, boolean appMode) throws IOException {
         if (keyCode >= 0 && keyCode < mKeyCodes.length) {
             String code = null;
@@ -2298,36 +2122,246 @@ class TermKeyListener {
         }
         return false;
     }
+}
 
-    /**
-     * Handle a keyUp event.
-     *
-     * @param keyCode the keyCode of the keyUp event
-     */
-    public void keyUp(int keyCode, KeyEvent event) {
-        boolean allowToggle = isEventFromToggleDevice(event);
-        switch (keyCode) {
-        case KeyEvent.KEYCODE_ALT_LEFT:
-        case KeyEvent.KEYCODE_ALT_RIGHT:
-            if (allowToggle) {
-                mAltKey.onRelease();
-            }
-            break;
-        case KeyEvent.KEYCODE_SHIFT_LEFT:
-        case KeyEvent.KEYCODE_SHIFT_RIGHT:
-            if (allowToggle) {
-                mCapKey.onRelease();
-            }
-            break;
+class KeyStateMachine {
+	/**
+	 * This class is responsible for the handling of key events. It consumes
+	 * key events and when the key events generate characters, then one or more are made
+	 * available for consumption.
+	 */
 
-        case KEYCODE_CTRL_LEFT:
-        case KEYCODE_CTRL_RIGHT:
-            // ignore control keys.
-            break;
+	private final ModifierKey mControlKey;
+	private final ModifierKey mFnKey;
+	private final ModifierKey mCapsKey;
+	private final ModifierKey mAltKey;
+	private final int mBackBehavior;
+	private final boolean mAllowToggle;
+	private byte[] mCharcodes;
+	private boolean mAltSendsEscape;
+	private Integer mDeadChar;
 
-        default:
-            // Ignore other keyUps
-            break;
-        }
-    }
+	KeyStateMachine(int controlKey, int fnKey, int backBehavior, boolean altSendsEscape) {
+
+		mControlKey = new ModifierKey(controlKey);
+		mFnKey = new ModifierKey(fnKey);
+		mAltKey = new ModifierKey(KeyEvent.KEYCODE_ALT_LEFT);
+		mCapsKey = new ModifierKey(KeyEvent.KEYCODE_CAPS_LOCK);
+		mBackBehavior = backBehavior;
+		mAllowToggle = false;
+		mAltSendsEscape = altSendsEscape;
+		this.resetKeys();
+	}
+
+	public void handleControlKey(boolean down) {
+		mControlKey.handleModifierKey(down);
+	}
+
+	public void handleFnKey(boolean down) {
+		mFnKey.handleModifierKey(down);
+	}
+	/**
+	 * Resets the KeyStateMachine into its default state
+	 * 
+	 */
+	public void resetKeys() {
+		mControlKey.reset();
+		mFnKey.reset();
+		mCapsKey.reset();
+		mAltKey.reset();
+		mCharcodes = null;
+	}
+
+	/**
+	 * Returns the effective state of the metakeys as a bitvector.
+	 * 
+	 * This method does not change the state of the KeyStateMachine. It strictly
+	 * combines the stored modifier key state with the MetaState bitvector
+	 * passed in.
+	 */
+
+	public int getEffectiveMetaState(int metaState) {
+		boolean effectiveCaps = mAllowToggle && mCapsKey.isActive();
+		boolean effectiveAlt = mAllowToggle && mAltKey.isActive();
+		boolean effectiveCtrl = mAllowToggle && mControlKey.isActive();
+		boolean effectiveFn = mAllowToggle && mFnKey.isActive();
+		// this construct ors the META states together depending on the booleans
+		// for google foo the ? is called the ternary operator.
+		// I prefer it because it forces me to supply an alternative to the
+		// consequence
+		// of the condition.
+		return metaState | (effectiveCaps ? KeyEvent.META_SHIFT_ON : 0)
+				| (effectiveAlt ? KeyEvent.META_ALT_ON : 0)
+				| (effectiveCtrl ? KeyEvent.META_CTRL_ON : 0)
+				| (effectiveFn ? KeyEvent.META_FUNCTION_ON : 0);
+	}
+
+	/**
+	 * returns true when the KeyEvent e is the conclusion of a key sequence and
+	 * a character sequence can be generated. The character sequence is then
+	 * stored in mCharSequence. When a new KeyEvent sequenced has commenced then
+	 * mCharSequence is truncated.
+	 * 
+	 * @return boolean.
+	 */
+
+	private static final ByteBuffer BYTE_TO_INT = ByteBuffer.allocate(4);
+	private static final byte ESC = 0x1b;
+	
+	private boolean handleCharEvent(KeyEvent e) {
+		boolean isHandled = false;
+		int metaState = getEffectiveMetaState(e.getMetaState());
+		if (e.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+			mCharcodes = new byte[] { (byte) mBackBehavior };
+			resetKeys();
+		}
+		if (mAltSendsEscape && ((metaState & KeyEvent.META_ALT_MASK) != 0)) {
+			mCharcodes = new byte[] { ESC, (byte) e.getKeyCode() };
+			isHandled = true;
+			resetKeys();
+		} else {
+			int charCode = e.getUnicodeChar(metaState);
+			if ((charCode & KeyCharacterMap.COMBINING_ACCENT) != 0) {
+				mDeadChar = charCode;
+				mCharcodes = null;
+				isHandled = true;
+			} else if (mDeadChar != null) {				
+				mCharcodes = BYTE_TO_INT.putInt(
+						KeyEvent.getDeadChar(mDeadChar, charCode)).array();				
+				isHandled = true;
+				resetKeys();
+			} else if (charCode == 0) {
+				isHandled = false;
+			} else {
+				mCharcodes = new byte[] { (byte) charCode };
+				isHandled = true;
+			}
+		}
+		return isHandled;
+	}
+
+	public byte[] getCharSequence() {
+		return mCharcodes;
+	}
+	
+	public boolean consumeKeyDownEvent(KeyEvent e) {
+		final int keycode = e.getKeyCode();
+		return mCapsKey.handleModifierKey(keycode, true)
+				|| mAltKey.handleModifierKey(keycode, true)
+				|| mFnKey.handleModifierKey(keycode, true)
+				|| mControlKey.handleModifierKey(keycode, true)
+				|| handleCharEvent(e);
+	}
+
+	public boolean consumeKeyUpEvent(KeyEvent e) {
+		final int keycode = e.getKeyCode();
+		return mCapsKey.handleModifierKey(keycode, false)
+				|| mAltKey.handleModifierKey(keycode, false)
+				|| mFnKey.handleModifierKey(keycode, false)
+				|| mControlKey.handleModifierKey(keycode, false);
+	}
+}
+
+/**
+ * The state engine for a modifier key. Can be pressed, released, locked, and so
+ * on.
+ * 
+ */
+class ModifierKey {
+
+	private int mState;
+
+	private static final int UNPRESSED = 0;
+
+	private static final int PRESSED = 1;
+
+	private static final int RELEASED = 2;
+
+	private static final int USED = 3;
+
+	private static final int LOCKED = 4;
+
+	private final int mKeyCode;
+
+	/**
+	 * Construct a modifier key. UNPRESSED by default.
+	 * 
+	 */
+	public ModifierKey(int keyCode) {
+		mState = UNPRESSED;
+		mKeyCode = keyCode;
+	}
+
+	public boolean handleModifierKey(int incomingKeyCode, boolean down) {
+		if (incomingKeyCode == mKeyCode) {
+			if (down) {
+				this.onPress();
+			} else {
+				this.onRelease();
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void handleModifierKey(boolean down) {
+		this.handleModifierKey(mKeyCode, down);
+	}
+
+	public void onPress() {
+		switch (mState) {
+		case PRESSED:
+			// This is a repeat before use
+			break;
+		case RELEASED:
+			mState = LOCKED;
+			break;
+		case USED:
+			// This is a repeat after use
+			break;
+		case LOCKED:
+			mState = UNPRESSED;
+			break;
+		default:
+			mState = PRESSED;
+			break;
+		}
+	}
+
+	public void onRelease() {
+		switch (mState) {
+		case USED:
+			mState = UNPRESSED;
+			break;
+		case PRESSED:
+			mState = RELEASED;
+			break;
+		default:
+			// Leave state alone
+			break;
+		}
+	}
+
+	public void reset() {
+		mState = UNPRESSED;
+	}
+
+	public void adjustAfterKeypress() {
+		switch (mState) {
+		case PRESSED:
+			mState = USED;
+			break;
+		case RELEASED:
+			mState = UNPRESSED;
+			break;
+		default:
+			// Leave state alone
+			break;
+		}
+	}
+
+	public boolean isActive() {
+		return mState != UNPRESSED;
+	}
 }
