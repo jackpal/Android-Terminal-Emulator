@@ -17,7 +17,6 @@
 package jackpal.androidterm.emulatorview;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -2205,37 +2204,134 @@ class KeyStateMachine {
 	 * @return boolean.
 	 */
 
-	private static final ByteBuffer BYTE_TO_INT = ByteBuffer.allocate(4);
+//	private static final ByteBuffer BYTE_TO_INT = ByteBuffer.allocate(8);
 	private static final byte ESC = 0x1b;
 	
+	private int mapControlChar(int charCode) {
+        // Search is the control key.
+        return
+        (charCode >= 'a' && charCode <= 'z') ?
+            (char) (charCode - 'a' + '\001') :
+        (charCode >= 'A' && charCode <= 'Z') ?
+            (char) (charCode - 'A' + '\001') :
+        (charCode == ' ' || charCode == '2') ?
+            0 :
+        (charCode == '[' || charCode == '3') ?
+            27 : // ^[ (Esc)
+        (charCode == '\\' || charCode == '4') ?
+            28 :
+        (charCode == ']' || charCode == '5') ?
+            29 :
+        (charCode == '^' || charCode == '6') ?
+            30 : // control-^
+        (charCode == '_' || charCode == '7') ?
+            31 :
+        (charCode == '8') ?
+            127 : // DEL
+        (charCode == '9') ?
+            TermKeyListener.KEYCODE_OFFSET + TermKeyListener.KEYCODE_F11:
+        (charCode == '0') ?
+            TermKeyListener.KEYCODE_OFFSET + TermKeyListener.KEYCODE_F12:
+            charCode;
+	}
+
+	private int mapFnChar(int charCode) {
+		return (charCode == 'w' || charCode == 'W') ?
+            TermKeyListener.KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_UP:
+         (charCode == 'a' || charCode == 'A') ?
+            TermKeyListener.KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_LEFT:
+         (charCode == 's' || charCode == 'S') ?
+            TermKeyListener.KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_DOWN:
+         (charCode == 'd' || charCode == 'D') ?
+            TermKeyListener.KEYCODE_OFFSET + KeyEvent.KEYCODE_DPAD_RIGHT:
+         (charCode == 'p' || charCode == 'P') ?
+            TermKeyListener.KEYCODE_OFFSET + TermKeyListener.KEYCODE_PAGE_UP:
+         (charCode == 'n' || charCode == 'N') ?
+            TermKeyListener.KEYCODE_OFFSET + TermKeyListener.KEYCODE_PAGE_DOWN:
+         (charCode == 't' || charCode == 'T') ?
+            TermKeyListener.KEYCODE_OFFSET + KeyEvent.KEYCODE_TAB:
+         (charCode == 'l' || charCode == 'L') ?
+            '|':
+         (charCode == 'u' || charCode == 'U') ?
+            '_':
+         (charCode == 'e' || charCode == 'E') ?
+            27: // ^[ (Esc)
+         (charCode == '.') ?
+            28: // ^\
+         (charCode > '0' && charCode <= '9') ?
+            // F1-F9
+            (char)(charCode + TermKeyListener.KEYCODE_OFFSET + TermKeyListener.KEYCODE_F1 - 1):
+         (charCode == '0') ?
+            TermKeyListener.KEYCODE_OFFSET + TermKeyListener.KEYCODE_F10:
+         (charCode == 'i' || charCode == 'I') ?
+            TermKeyListener.KEYCODE_OFFSET + TermKeyListener.KEYCODE_INSERT:
+         (charCode == 'x' || charCode == 'X') ?
+            TermKeyListener.KEYCODE_OFFSET + TermKeyListener.KEYCODE_FORWARD_DEL:
+         (charCode == 'h' || charCode == 'H') ?
+            TermKeyListener.KEYCODE_OFFSET + TermKeyListener.KEYCODE_MOVE_HOME:
+         (charCode == 'f' || charCode == 'F') ?
+            TermKeyListener.KEYCODE_OFFSET + TermKeyListener.KEYCODE_MOVE_END:
+            charCode;
+	}
+
+	private boolean ctrlActive(int metaState) {
+		return mControlKey.isActive() || ((metaState & KeyEvent.META_CTRL_ON) != 0);
+	}
+
+	private boolean fnActive(int metaState) {
+		return mFnKey.isActive() || ((metaState & KeyEvent.META_FUNCTION_ON) != 0);
+	}
+
+	private static final int NO_CHAR = KeyCharacterMap.COMBINING_ACCENT;
+
+	private int handleDeadKey(KeyEvent e, int metaState, int masks) {
+		int charcode;
+		int charCode = e.getUnicodeChar(metaState & (~masks));
+		if ((charCode & KeyCharacterMap.COMBINING_ACCENT) != 0) {
+			mDeadChar = charCode;
+			charcode = NO_CHAR;
+		} else if (mDeadChar != null) {
+			int c = KeyEvent.getDeadChar(mDeadChar, charCode);
+			charcode = (c != 0) ? NO_CHAR : c;
+			mDeadChar = null;
+		} else if (charCode == 0) {
+			charcode = NO_CHAR;
+		} else {
+			charcode = (ctrlActive(metaState) ?
+					mapControlChar(charCode) :
+				fnActive(metaState) ? mapFnChar(charCode) :
+					charCode);
+			assert(charcode != NO_CHAR);
+		}
+		return charcode;
+	}
+
 	private boolean handleCharEvent(KeyEvent e) {
 		boolean isHandled = false;
 		int metaState = getEffectiveMetaState(e.getMetaState());
 		if (e.getKeyCode() == KeyEvent.KEYCODE_BACK) {
 			mCharcodes = new byte[] { (byte) mBackBehavior };
-			resetKeys();
 		}
 		if (mAltSendsEscape && ((metaState & KeyEvent.META_ALT_MASK) != 0)) {
-			mCharcodes = new byte[] { ESC, (byte) e.getKeyCode() };
-			isHandled = true;
-			resetKeys();
-		} else {
-			int charCode = e.getUnicodeChar(metaState);
-			if ((charCode & KeyCharacterMap.COMBINING_ACCENT) != 0) {
-				mDeadChar = charCode;
-				mCharcodes = null;
-				isHandled = true;
-			} else if (mDeadChar != null) {				
-				mCharcodes = BYTE_TO_INT.putInt(
-						KeyEvent.getDeadChar(mDeadChar, charCode)).array();				
-				isHandled = true;
-				resetKeys();
-			} else if (charCode == 0) {
-				isHandled = false;
+			//The CTRL Key must be masked when using e.getUnicodeChar() for some reason.
+			//We want to filter the Alt key. Instead of observing it when looking up unicode characters we
+			//put an ESC before the character.
+			int charCode = handleDeadKey(e, metaState , KeyEvent.META_CTRL_MASK | KeyEvent.META_ALT_MASK);
+			if (charCode != NO_CHAR) {
+				mCharcodes = new byte[] { ESC, (byte) charCode };
 			} else {
-				mCharcodes = new byte[] { (byte) charCode };
-				isHandled = true;
+				mCharcodes = null;
 			}
+			isHandled = true;
+		} else {
+			// The CTRL Key must be masked for some reason when looking up Unicode characters...
+			int charCode = handleDeadKey(e, metaState, KeyEvent.META_CTRL_MASK);
+			if (charCode != NO_CHAR) {
+				mCharcodes = new byte[] { (byte) charCode };
+			} else {
+				mCharcodes = null;
+			}
+			isHandled = true;
 		}
 		return isHandled;
 	}
