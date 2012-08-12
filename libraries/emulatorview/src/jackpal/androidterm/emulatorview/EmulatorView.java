@@ -226,7 +226,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mBackKeyCharacter = 0;
     
     private boolean mAltSendsEsc = false;
-	private TermKeyListener mTermKeyListener = new TermKeyListener(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc, getKeypadApplicationMode());
+	private TermKeyListener mTermKeyListener = null;
 	
 	
 
@@ -403,7 +403,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
 
             private void mapAndSend(int c) throws IOException {
-                int charCode = mKeyListener.mapControlChar(c);
+                int charCode = mKeyListener.mapControlChars(c);
                 byte[] charCodes = TermKeyListener.generateCharSequence(charCode, getKeypadApplicationMode(), false);
                 mTermSession.write(charCodes,0,charCodes.length);
                 clearSpecialKeyStatus();
@@ -660,8 +660,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     /**
      * Get the terminal emulator's keypad application mode.
      */
-    public boolean getKeypadApplicationMode() {
-        return mEmulator.getKeypadApplicationMode();
+    public boolean getKeypadApplicationMode() {    	
+        return (mEmulator != null) ? mEmulator.getKeypadApplicationMode() : false;
     }
 
     /**
@@ -949,6 +949,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (LOG_KEY_EVENTS) {
             Log.w(TAG, "onKeyDown " + keyCode);
+        }
+        if (mTermKeyListener == null) {
+        	mTermKeyListener = new TermKeyListener(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc, getKeypadApplicationMode());
         }
         boolean isHandled = mTermKeyListener.consumeKeyDownEvent(event);
         if (isHandled) {
@@ -1504,9 +1507,9 @@ class TermKeyListener {
 		// I prefer it because it forces me to supply an alternative to the
 		// consequence
 		// of the condition.
-		return metaState | (effectiveCaps ? KeyEvent.META_SHIFT_ON : 0)
-				| (effectiveAlt ? KeyEvent.META_ALT_ON : 0)
-				| (effectiveCtrl ? KeyEvent.META_CTRL_ON : 0)
+		return metaState | (effectiveCaps ? KeyEvent.META_SHIFT_MASK : 0)
+				| (effectiveAlt ? KeyEvent.META_ALT_MASK : 0)
+				| (effectiveCtrl ? KeyEvent.META_CTRL_MASK : 0)
 				| (effectiveFn ? KeyEvent.META_FUNCTION_ON : 0);
 	}
 
@@ -1546,6 +1549,18 @@ class TermKeyListener {
         return code;
     }
 	
+    public int mapControlChars(int c) {
+    	int effectiveChar;
+    	if (mControlKey.isActive()) {
+    		effectiveChar = mapControlChar(c);
+    	} else if (mFnKey.isActive()) {
+    		effectiveChar = mapFnChar(c);
+    	} else {
+    		effectiveChar = c;
+    	}
+    	return effectiveChar;    		
+    }
+    
 	public int mapControlChar(int charCode) {
         // Search is the control key.
         return
