@@ -404,7 +404,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
             private void mapAndSend(int c) throws IOException {
                 int charCode = mKeyListener.mapControlChars(c);
-                byte[] charCodes = TermKeyListener.generateCharSequence(charCode, getKeypadApplicationMode(), false);
+                byte[] charCodes = TermKeyListener.lookupDirectMap(charCode, getKeypadApplicationMode(), false);
                 mTermSession.write(charCodes,0,charCodes.length);
                 clearSpecialKeyStatus();
             }
@@ -1526,7 +1526,13 @@ class TermKeyListener {
 	private static final byte ESC = 0x1b;
 	
 
-
+	private static int packKeyCode(int keyCode) {
+		return keyCode + C.KEYCODE_OFFSET;
+	}
+	
+	private static int unpackCharCode(int charCode) {
+		return charCode - C.KEYCODE_OFFSET;
+	}
 	
 	private static boolean isPackedCharCode(int charCode) {
 		return (charCode >= C.KEYCODE_OFFSET);
@@ -1537,7 +1543,7 @@ class TermKeyListener {
     	//String it needs to be handled here.
     	//Depending on the app mode.
     	String code = null;
-    	int specialKeyCode = packedCharCode - C.KEYCODE_OFFSET;
+    	int specialKeyCode = unpackCharCode(packedCharCode) ;
     	if (specialKeyCode >= 0 && specialKeyCode < C.specialKeyCharSeq.length) {            
             if (appMode) {
                 code = C.appSpecialKeyCharSeq[specialKeyCode];
@@ -1667,16 +1673,19 @@ class TermKeyListener {
 		//We want to mask the Alt key because of the mAltSendsEscape flag, but only when Alt is pressed.
 		boolean prefixEscFlag = (mAltSendsEscape && ((metaState & KeyEvent.META_ALT_MASK) != 0));
 		int unicodeMask = KeyEvent.META_CTRL_MASK | (prefixEscFlag ? KeyEvent.META_ALT_MASK : 0);
-		if (e.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+		byte[] directMapping = lookupDirectMap(packKeyCode(e.getKeyCode()), mAppMode, prefixEscFlag);
+		if (directMapping != null) { // don't handle the key event any further when there is a direct map entry.
+			mCharcodes = directMapping; 
+		} else if (e.getKeyCode() == KeyEvent.KEYCODE_BACK) {
 			mCharcodes = new byte[] { (byte) mBackBehavior };
 		} else {
 			int charCode = handleDeadKey(e, metaState, unicodeMask);
-			mCharcodes = generateCharSequence(charCode, mAppMode, prefixEscFlag);
+			mCharcodes = lookupDirectMap(charCode, mAppMode, prefixEscFlag);
 		}
 		return true;
 	}
-
-	public static byte[] generateCharSequence(int charCode, boolean appMode, boolean prefixEsc) {
+	
+	public static byte[] lookupDirectMap(int charCode, boolean appMode, boolean prefixEsc) {
 		ArrayList<Byte> escSeq = new ArrayList<Byte>();
 		if (isPackedCharCode(charCode)) {
 			String data = handleSpecialKeyCode(charCode, appMode);

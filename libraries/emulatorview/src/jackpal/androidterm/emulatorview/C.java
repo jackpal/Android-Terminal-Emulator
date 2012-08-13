@@ -483,7 +483,7 @@ public final class C {
 	public static final String[] specialKeyCharSeq = new String[256];
 	public static final String[] appSpecialKeyCharSeq = new String[256];
 
-	{
+	static {
 	        specialKeyCharSeq[KEYCODE_DPAD_CENTER] = "\015";
 	        specialKeyCharSeq[KEYCODE_DPAD_UP] = "\033[A";
 	        specialKeyCharSeq[KEYCODE_DPAD_DOWN] = "\033[B";
