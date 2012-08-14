@@ -953,7 +953,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mTermKeyListener == null) {
         	mTermKeyListener = new TermKeyListener(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc, getKeypadApplicationMode());
         }
-        boolean isHandled = mTermKeyListener.consumeKeyDownEvent(event);
+        boolean isHandled = mTermKeyListener.keyDown(event);
         if (isHandled) {
         	if (mTermKeyListener.getCharSequence() != null) {
         		byte[] seq = mTermKeyListener.getCharSequence();
@@ -987,7 +987,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             Log.w(TAG, "onKeyUp " + keyCode);
         }
         //MetaKeyKeyListener.handleKeyDown(metaState, keyCode, event)
-        boolean isHandled = mTermKeyListener.consumeKeyUpEvent(event);
+        boolean isHandled = mTermKeyListener.keyUp(event);
         if (isHandled) {
         	//noop;
         } else if (isSystemKey(keyCode, event)) {
@@ -1723,7 +1723,7 @@ class TermKeyListener {
 		return mCharcodes;
 	}
 	
-	public boolean consumeKeyDownEvent(KeyEvent e) {
+	public boolean keyDown(KeyEvent e) {
 		final int keycode = e.getKeyCode();
 		return mCapsKey.handleModifierKey(keycode, true)
 				|| mAltKey.handleModifierKey(keycode, true)
@@ -1732,7 +1732,7 @@ class TermKeyListener {
 				|| handleCharEvent(e);
 	}
 
-	public boolean consumeKeyUpEvent(KeyEvent e) {
+	public boolean keyUp(KeyEvent e) {
 		final int keycode = e.getKeyCode();
 		return mCapsKey.handleModifierKey(keycode, false)
 				|| mAltKey.handleModifierKey(keycode, false)
