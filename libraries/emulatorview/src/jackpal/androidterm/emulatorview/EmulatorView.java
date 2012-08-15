@@ -967,7 +967,21 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
         return isHandled;
     }
-    
+
+    public boolean onKeyPreIme(int keycode, KeyEvent event) {
+    	//capture the metakeys.
+    	int preImeMetastate = event.getMetaState();
+        if (mAltSendsEsc && ((preImeMetastate & KeyEvent.META_ALT_ON) != 0)) {
+        	if (event.getAction() == KeyEvent.ACTION_DOWN) {
+        		return onKeyDown(keycode, event);
+        	} else {
+        		return onKeyUp(keycode, event);
+        	}
+        } else {
+        	return false;
+        }
+    }
+
     /** Do we want to intercept this system key? */
     private boolean isInterceptedSystemKey(int keyCode) {
         return keyCode == KeyEvent.KEYCODE_BACK && mBackKeySendsCharacter;
