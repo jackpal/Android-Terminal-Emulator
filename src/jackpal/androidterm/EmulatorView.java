@@ -297,7 +297,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             private int mCursor;
             private int mComposingTextStart;
             private int mComposingTextEnd;
-            private int mSelectedTextStart;
+            private int mSelectedTextStart = -1;
             private int mSelectedTextEnd;
 
             private void sendChar(int c) {
@@ -531,6 +531,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     mSelectedTextStart = start;
                     mSelectedTextEnd = end;
                     mCursor = start;
+                } else {
+                    mSelectedTextStart = -1;
                 }
                 return true;
             }
@@ -550,6 +552,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             public CharSequence getSelectedText(int flags) {
                 if (TermDebug.LOG_IME) {
                     Log.w(TAG, "getSelectedText " + flags);
+                }
+                if (mSelectedTextStart < 0) {
+                    return null;
                 }
                 return mImeBuffer.substring(mSelectedTextStart, mSelectedTextEnd+1);
             }
