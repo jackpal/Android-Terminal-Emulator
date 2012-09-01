@@ -1,23 +1,25 @@
 package jackpal.androidterm.emulatorview;
 
 
+import java.io.UnsupportedEncodingException;
+
 import android.annotation.TargetApi;
 import android.test.AndroidTestCase;
 import android.view.KeyEvent;
 
 @TargetApi(3)
 public class TermKeyListenerTest extends  AndroidTestCase {
-	KeyStateMachine tkl_AltIsEsc;
-	KeyStateMachine tkl_AltNotEsc;
+	TermKeyListener tkl_AltIsEsc;
+	TermKeyListener tkl_AltNotEsc;
 	
 	public TermKeyListenerTest() {
 		super();
 	}
 	
 	public void setUp() {
-		tkl_AltIsEsc = new KeyStateMachine(KeyEvent.KEYCODE_CTRL_LEFT, KeyEvent.KEYCODE_ALT_LEFT,
+		tkl_AltIsEsc = new TermKeyListener(KeyEvent.KEYCODE_CTRL_LEFT, KeyEvent.KEYCODE_ALT_LEFT,
 				KeyEvent.KEYCODE_ESCAPE, true, false);
-		tkl_AltNotEsc = new KeyStateMachine(KeyEvent.KEYCODE_CTRL_LEFT, KeyEvent.KEYCODE_ALT_LEFT,
+		tkl_AltNotEsc = new TermKeyListener(KeyEvent.KEYCODE_CTRL_LEFT, KeyEvent.KEYCODE_ALT_LEFT,
 				KeyEvent.KEYCODE_ESCAPE, false, false);
 	}
 	
@@ -84,7 +86,19 @@ public class TermKeyListenerTest extends  AndroidTestCase {
 			tkl_AltIsEsc.consumeKeyDownEvent(event);
 			byte[] res = tkl_AltIsEsc.getCharSequence();
 			assertNotNull(res);
-			assertEquals(0x0a, res[0]);
+			assertEquals(0x0d, res[0]);
+	}
+	
+	public void testKey_del() throws UnsupportedEncodingException {
+		KeyEvent event = new KeyEvent(1,2, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL,0 ,0);
+		tkl_AltIsEsc.consumeKeyDownEvent(event);
+		byte[] res = tkl_AltIsEsc.getCharSequence();
+		byte[] exp = "\177".getBytes("UTF-8");
+		assertNotNull(res);
+		assertEquals(exp.length, res.length);
+		for (int i = 0; i<exp.length; i++) {
+			assertEquals(exp[i],res[i]);
+		}
 	}
 	
 	public void testPreconditions() {
