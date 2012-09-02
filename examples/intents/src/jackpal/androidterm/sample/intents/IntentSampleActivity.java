@@ -20,7 +20,6 @@ public class IntentSampleActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         addClickListener(R.id.openNewWindow, new OnClickListener() {
-            @Override
             public void onClick(View v) {
                 // Intent for opening a new window without providing script
                 Intent intent =
@@ -32,7 +31,6 @@ public class IntentSampleActivity extends Activity
         final EditText script = (EditText) findViewById(R.id.script);
         script.setText(getString(R.string.default_script));
         addClickListener(R.id.runScript, new OnClickListener() {
-            @Override
             public void onClick(View v) {
                 /* Intent for opening a new window and running the provided
                    script -- you must declare the permission
@@ -46,7 +44,6 @@ public class IntentSampleActivity extends Activity
                 startActivity(intent);
             }});
         addClickListener(R.id.runScriptSaveWindow, new OnClickListener() {
-            @Override
             public void onClick(View v) {
                 /* Intent for running a script in a previously opened window,
                    if it still exists

@@ -33,7 +33,6 @@ public class LaunchActivity extends Activity
         setContentView(R.layout.launch_activity);
         final Context context = this;
         addClickListener(R.id.launchLocal, new OnClickListener() {
-            @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, TermActivity.class);
                 intent.putExtra("type", "local");
@@ -42,7 +41,6 @@ public class LaunchActivity extends Activity
 
         final EditText hostEdit = (EditText) findViewById(R.id.hostname);
         addClickListener(R.id.launchTelnet, new OnClickListener() {
-            @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, TermActivity.class);
                 intent.putExtra("type", "telnet");
