@@ -3,11 +3,38 @@
 # This will only work on my (Jack Palevich) computer, because it
 # requires the private key store used o sign the release version
 # of Android Terminal Emulator.
+set -e
+
+if [ -z "${ANDROID_NDK_ROOT+xxx}" ]; then
+	echo "Please define ANDROID_NDK_ROOT to point to the Android NDK"
+	exit 1
+fi
+
+if [ ! -d "$ANDROID_NDK_ROOT" ]; then
+    echo "The directory $ANDROID_NDK_ROOT = ${ANDROID_NDK_ROOT} does not exist."
+    exit 1
+fi
+
+if [ -z "${ANDROID_SDK_ROOT+xxx}" ]; then
+	echo "Please define ANDROID_SDK_ROOT to point to the Android SDK"
+	exit 1
+fi
+
+if [ ! -d "$ANDROID_SDK_ROOT" ]; then
+    echo "The directory $ANDROID_SDK_ROOT = ${ANDROID_NDK_ROOT} does not exist."
+    exit 1
+fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ATE_ROOT="$( cd $DIR/.. && pwd )"
 
 cd "$ATE_ROOT"
+
+if [ ! -f "local.properties" ]; then
+	echo "local.properties does not exist. Please run tools/update.sh"
+	exit 1
+fi
+
 rm -rf bin obj
 cd jni
 $ANDROID_NDK_ROOT/ndk-build && cd .. && ant release && mv bin/Term-release.apk bin/Term.apk

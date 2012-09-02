@@ -1,4 +1,18 @@
 #!/bin/bash
 # command line build script for installing and running terminal emulator.
-adb uninstall jackpal.androidterm
-adb install -r bin/Term-debug.apk && adb shell am start -n jackpal.androidterm/jackpal.androidterm.Term
+set -e
+
+if [ -z "${ANDROID_SDK_ROOT+xxx}" ]; then
+	echo "Please define ANDROID_SDK_ROOT to point to the Android SDK"
+	exit 1
+fi
+
+if [ ! -d "$ANDROID_SDK_ROOT" ]; then
+    echo "The directory $ANDROID_SDK_ROOT = ${ANDROID_NDK_ROOT} does not exist."
+    exit 1
+fi
+
+ADB="$ANDROID_SDK_ROOT/platform-tools/adb"
+
+$ADB uninstall jackpal.androidterm
+$ADB install -r bin/Term-debug.apk && $ADB shell am start -n jackpal.androidterm/jackpal.androidterm.Term
