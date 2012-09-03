@@ -112,4 +112,11 @@ public class ColorScheme {
     public int getBackColorIndex() {
         return backColorIndex;
     }
+
+    /**
+     * @return The color scheme's encoded text style used for rendering.
+     */
+    public int getStyle() {
+        return TextStyle.encode(foreColorIndex, backColorIndex, TextStyle.fxNormal);
+    }
 }

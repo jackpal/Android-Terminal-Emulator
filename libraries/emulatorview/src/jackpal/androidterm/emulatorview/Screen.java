@@ -35,10 +35,9 @@ interface Screen {
      * @param x X coordinate (also known as column)
      * @param y Y coordinate (also known as row)
      * @param codePoint Unicode code point to store
-     * @param foreColor the foreground color
-     * @param backColor the background color
+     * @param style the text style
      */
-    void set(int x, int y, int codePoint, int foreColor, int backColor, int effect);
+    void set(int x, int y, int codePoint, int style);
 
     /**
      * Store byte b into the screen at location (x, y)
@@ -46,10 +45,9 @@ interface Screen {
      * @param x X coordinate (also known as column)
      * @param y Y coordinate (also known as row)
      * @param b ASCII character to store
-     * @param foreColor the foreground color
-     * @param backColor the background color
+     * @param style the text style
      */
-    void set(int x, int y, byte b, int foreColor, int backColor, int effect);
+    void set(int x, int y, byte b, int style);
 
     /**
      * Scroll the screen down one line. To scroll the whole screen of a 24 line
@@ -86,11 +84,9 @@ interface Screen {
      * @param w width
      * @param h height
      * @param val value to set.
-     * @param foreColor the foreground color
-     * @param backColor the background color
+     * @param style the text style
      */
-    void blockSet(int sx, int sy, int w, int h, int val, int foreColor, int
-            backColor, int effect);
+    void blockSet(int sx, int sy, int w, int h, int val, int style);
 
     /**
      * Get the contents of the transcript buffer as a text string.
@@ -154,6 +150,7 @@ interface Screen {
      * Resize the screen
      * @param columns
      * @param rows
+     * @param style
      */
-    void resize(int columns, int rows, int foreColor, int backColor);
+    void resize(int columns, int rows, int style);
 }

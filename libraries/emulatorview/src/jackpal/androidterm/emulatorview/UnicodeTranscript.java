@@ -52,8 +52,7 @@ class UnicodeTranscript {
     private int mScreenRows;
     private int mColumns;
     private int mActiveTranscriptRows = 0;
-    private int mDefaultForeColor = 0;
-    private int mDefaultBackColor = 0;
+    private int mDefaultStyle = 0;
 
     private int mScreenFirstRow = 0;
 
@@ -61,7 +60,7 @@ class UnicodeTranscript {
     private char[] tmpLine;
     private int[] tmpColor;
 
-    public UnicodeTranscript(int columns, int totalRows, int screenRows, int foreColor, int backColor) {
+    public UnicodeTranscript(int columns, int totalRows, int screenRows, int defaultStyle) {
         mColumns = columns;
         mTotalRows = totalRows;
         mScreenRows = screenRows;
@@ -70,25 +69,15 @@ class UnicodeTranscript {
         mLineWrap = new boolean[totalRows];
         tmpColor = new int[columns];
 
-        mDefaultForeColor = foreColor;
-        mDefaultBackColor = backColor;
+        mDefaultStyle = defaultStyle;
     }
 
-    public void setDefaultColors(int foreColor, int backColor) {
-        mDefaultForeColor = foreColor;
-        mDefaultBackColor = backColor;
+    public void setDefaultStyle(int defaultStyle) {
+        mDefaultStyle = defaultStyle;
     }
 
-    public int getDefaultForeColor() {
-        return mDefaultForeColor;
-    }
-
-    public int getDefaultBackColor() {
-        return mDefaultBackColor;
-    }
-
-    public int getDefaultColorsEncoded() {
-        return TextStyle.encode(mDefaultForeColor, mDefaultBackColor, TextStyle.fxNormal);
+    public int getDefaultStyle() {
+        return mDefaultStyle;
     }
 
     public int getActiveTranscriptRows() {
@@ -397,7 +386,7 @@ class UnicodeTranscript {
                     char[] tmp = getLine(sy + y, sx, sx + w);
                     if (tmp == null) {
                         // Source line was blank
-                        blockSet(dx, extDstRow, w, 1, ' ', mDefaultForeColor, mDefaultBackColor, TextStyle.fxNormal);
+                        blockSet(dx, extDstRow, w, 1, ' ', mDefaultStyle);
                         continue;
                     }
                     char cHigh = 0;
@@ -423,7 +412,7 @@ class UnicodeTranscript {
                 if (color[srcRow] == null && color[dstRow] == null) {
                     continue;
                 } else if (color[srcRow] == null && color[dstRow] != null) {
-                    int defaultColor = TextStyle.encode(mDefaultForeColor, mDefaultBackColor, TextStyle.fxNormal);
+                    int defaultColor = mDefaultStyle;
                     for (int x = dx; x < dx + w; ++x) {
                         color[dstRow][x] = defaultColor;
                     }
@@ -446,7 +435,7 @@ class UnicodeTranscript {
                     char[] tmp = getLine(sy + y2, sx, sx + w);
                     if (tmp == null) {
                         // Source line was blank
-                        blockSet(dx, extDstRow, w, 1, ' ', mDefaultForeColor, mDefaultBackColor, TextStyle.fxNormal);
+                        blockSet(dx, extDstRow, w, 1, ' ', mDefaultStyle);
                         continue;
                     }
                     char cHigh = 0;
@@ -472,7 +461,7 @@ class UnicodeTranscript {
                 if (color[srcRow] == null && color[dstRow] == null) {
                     continue;
                 } else if (color[srcRow] == null && color[dstRow] != null) {
-                    int defaultColor = TextStyle.encode(mDefaultForeColor, mDefaultBackColor, TextStyle.fxNormal);
+                    int defaultColor = mDefaultStyle;
                     for (int x = dx; x < dx + w; ++x) {
                         color[dstRow][x] = defaultColor;
                     }
@@ -497,8 +486,7 @@ class UnicodeTranscript {
      * @param h height
      * @param val value to set.
      */
-    public void blockSet(int sx, int sy, int w, int h, int val,
-            int foreColor, int backColor, int effect) {
+    public void blockSet(int sx, int sy, int w, int h, int val, int style) {
         if (sx < 0 || sx + w > mColumns || sy < 0 || sy + h > mScreenRows) {
             Log.e(TAG, "illegal arguments! " + sx + " " + sy + " " + w + " " + h + " " + val + " " + mColumns + " " + mScreenRows);
             throw new IllegalArgumentException();
@@ -506,7 +494,7 @@ class UnicodeTranscript {
 
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
-                setChar(sx + x, sy + y, val, foreColor, backColor, effect);
+                setChar(sx + x, sy + y, val, style);
             }
         }
     }
@@ -692,7 +680,7 @@ class UnicodeTranscript {
         FullUnicodeLine line = (FullUnicodeLine) mLines[row];
         return line.getChar(column, charIndex, out, offset);
     }
-
+/*
     public int getForeColor(int row, int column) {
         if (row < -mActiveTranscriptRows || row > mScreenRows-1) {
             throw new IllegalArgumentException();
@@ -718,7 +706,7 @@ class UnicodeTranscript {
             return mColor[row][column] & 0xf;
         }
     }
-
+*/
     private boolean isBasicChar(int codePoint) {
         return !(charWidth(codePoint) != 1 || Character.charCount(codePoint) != 1);
     }
@@ -748,7 +736,7 @@ class UnicodeTranscript {
         int[] color = new int[columns];
 
         // Set all of the columns to the default colors
-        int defaultColor = TextStyle.encode(mDefaultForeColor, mDefaultBackColor, TextStyle.fxNormal);
+        int defaultColor = mDefaultStyle;
         for (int i = 0; i < columns; ++i) {
             color[i] = defaultColor;
         }
@@ -756,7 +744,7 @@ class UnicodeTranscript {
         return color;
     }
 
-    public boolean setChar(int column, int row, int codePoint, int foreColor, int backColor, int effect) {
+    public boolean setChar(int column, int row, int codePoint, int style) {
         if (!setChar(column, row, codePoint)) {
             return false;
         }
@@ -765,7 +753,7 @@ class UnicodeTranscript {
         if (mColor[row] == null) {
             allocateColor(row, mColumns);
         }
-        mColor[row][column] = TextStyle.encode(foreColor, backColor, effect);
+        mColor[row][column] = style;
 
         return true;
     }

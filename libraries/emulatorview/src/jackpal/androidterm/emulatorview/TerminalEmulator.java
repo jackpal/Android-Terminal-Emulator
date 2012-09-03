@@ -412,12 +412,12 @@ class TerminalEmulator {
              */
             cursorColor = new GrowableIntArray(1);
             charAtCursor = mScreen.getSelectedText(cursorColor, mCursorCol, mCursorRow, mCursorCol, mCursorRow);
-            mScreen.set(mCursorCol, mCursorRow, 27, 0, 0, TextStyle.fxNormal);
+            mScreen.set(mCursorCol, mCursorRow, 27, 0);
 
             colors = new GrowableIntArray(1024);
             transcriptText = mScreen.getTranscriptText(colors);
 
-            mScreen.resize(columns, rows, mForeColor, mBackColor);
+            mScreen.resize(columns, rows, getStyle());
         }
 
         if (mRows != rows) {
@@ -464,13 +464,10 @@ class TerminalEmulator {
         int colorOffset = 0;
         for(int i = 0; i <= end; i++) {
             c = transcriptText.charAt(i);
-            int encodedColor = colors.at(i-colorOffset);
-            foreColor = TextStyle.decodeForeColor(encodedColor);
-            backColor = TextStyle.decodeBackColor(encodedColor);
-            effect = TextStyle.decodeEffect(encodedColor);
+            int style = colors.at(i-colorOffset);
             if (Character.isHighSurrogate(c)) {
                 cLow = transcriptText.charAt(++i);
-                emit(Character.toCodePoint(c, cLow), foreColor, backColor, effect);
+                emit(Character.toCodePoint(c, cLow), style);
                 ++colorOffset;
             } else if (c == '\n') {
                 setCursorCol(0);
@@ -484,13 +481,10 @@ class TerminalEmulator {
                 if (charAtCursor != null && charAtCursor.length() > 0) {
                     // Emit the real character that was in this spot
                     int encodedCursorColor = cursorColor.at(0);
-                    foreColor = TextStyle.decodeForeColor(encodedCursorColor);
-                    backColor = TextStyle.decodeBackColor(encodedCursorColor);
-                    effect = TextStyle.decodeEffect(encodedCursorColor);
-                    emit(charAtCursor.toCharArray(), 0, charAtCursor.length(), foreColor, backColor, effect);
+                    emit(charAtCursor.toCharArray(), 0, charAtCursor.length(), encodedCursorColor);
                 }
             } else {
-                emit(c, foreColor, backColor, effect);
+                emit(c, style);
             }
         }
 
@@ -896,7 +890,7 @@ class TerminalEmulator {
         switch (b) {
         case '8': // Esc # 8 - DECALN alignment test
             mScreen.blockSet(0, 0, mColumns, mRows, 'E',
-                    getForeColor(), getBackColor(), getEffect());
+                    getStyle());
             break;
 
         default:
@@ -1323,7 +1317,7 @@ class TerminalEmulator {
     }
 
     private void blockClear(int sx, int sy, int w, int h) {
-        mScreen.blockSet(sx, sy, w, h, ' ', getForeColor(), getBackColor(), getEffect());
+        mScreen.blockSet(sx, sy, w, h, ' ', getStyle());
     }
 
     private int getForeColor() {
@@ -1338,6 +1332,10 @@ class TerminalEmulator {
 
     private int getEffect() {
         return mEffect;
+    }
+
+    private int getStyle() {
+        return TextStyle.encode(getForeColor(), getBackColor(),  getEffect());
     }
 
     private void doSetMode(boolean newValue) {
@@ -1584,7 +1582,7 @@ class TerminalEmulator {
      * @param foreColor The foreground color of the character
      * @param backColor The background color of the character
      */
-    private void emit(int c, int foreColor, int backColor, int effect) {
+    private void emit(int c, int style) {
         boolean autoWrap = autoWrapEnabled();
         int width = UnicodeTranscript.charWidth(c);
 
@@ -1612,12 +1610,12 @@ class TerminalEmulator {
         if (width == 0) {
             // Combining character -- store along with character it modifies
             if (mJustWrapped) {
-                mScreen.set(mColumns - mLastEmittedCharWidth, mCursorRow - 1, c, foreColor, backColor, effect);
+                mScreen.set(mColumns - mLastEmittedCharWidth, mCursorRow - 1, c, style);
             } else {
-                mScreen.set(mCursorCol - mLastEmittedCharWidth, mCursorRow, c, foreColor, backColor, effect);
+                mScreen.set(mCursorCol - mLastEmittedCharWidth, mCursorRow, c, style);
             }
         } else {
-            mScreen.set(mCursorCol, mCursorRow, c, foreColor, backColor, effect);
+            mScreen.set(mCursorCol, mCursorRow, c, style);
             mJustWrapped = false;
         }
 
@@ -1632,7 +1630,7 @@ class TerminalEmulator {
     }
 
     private void emit(int c) {
-        emit(c, getForeColor(), getBackColor(), getEffect());
+        emit(c, getStyle());
     }
 
     private void emit(byte b) {
@@ -1661,22 +1659,22 @@ class TerminalEmulator {
      *
      * @param c A char[] array whose contents are to be sent to the screen.
      */
-    private void emit(char[] c, int offset, int length, int foreColor, int backColor, int effect) {
+    private void emit(char[] c, int offset, int length, int style) {
         for (int i = offset; i < length; ++i) {
             if (c[i] == 0) {
                 break;
             }
             if (Character.isHighSurrogate(c[i])) {
-                emit(Character.toCodePoint(c[i], c[i+1]), foreColor, backColor, effect);
+                emit(Character.toCodePoint(c[i], c[i+1]), style);
                 ++i;
             } else {
-                emit((int) c[i], foreColor, backColor, effect);
+                emit((int) c[i], style);
             }
         }
     }
 
     private void emit(char[] c, int offset, int length) {
-        emit(c, offset, length, getForeColor(), getBackColor(), getEffect());
+        emit(c, offset, length, getStyle());
     }
 
     private void setCursorRow(int row) {

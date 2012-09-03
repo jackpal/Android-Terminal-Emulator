@@ -29,5 +29,5 @@ interface TextRenderer {
     int getTopMargin();
     void drawTextRun(Canvas canvas, float x, float y,
             int lineOffset, int runWidth, char[] text,
-            int index, int count, boolean cursor, int foreColor, int backColor, int effect);
+            int index, int count, boolean cursor, int textStyle);
 }
