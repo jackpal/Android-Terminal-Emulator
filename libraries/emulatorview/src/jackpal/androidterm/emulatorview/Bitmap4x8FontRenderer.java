@@ -65,18 +65,35 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
         int foreColor = TextStyle.decodeForeColor(textStyle);
         int backColor = TextStyle.decodeBackColor(textStyle);
         int effect = TextStyle.decodeEffect(textStyle);
-        setColorMatrix(mPalette[foreColor],
-                cursor ? mCursorPaint : mPalette[backColor]);
+
+        boolean inverse = (effect & (TextStyle.fxInverse | TextStyle.fxItalic)) != 0;
+        if (inverse) {
+            int temp = foreColor;
+            foreColor = backColor;
+            backColor = temp;
+        }
+
+        if (cursor) {
+            backColor = TextStyle.ciCursor;
+        }
+
+        boolean invisible = (effect & TextStyle.fxInvisible) != 0;
+
+        if (invisible) {
+            foreColor = backColor;
+        }
+
+        setColorMatrix(mPalette[foreColor], mPalette[backColor]);
         int destX = (int) x + kCharacterWidth * lineOffset;
         int destY = (int) y;
         Rect srcRect = new Rect();
         Rect destRect = new Rect();
         destRect.top = (destY - kCharacterHeight);
         destRect.bottom = destY;
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             // XXX No Unicode support in bitmap font
             char c = (char) (text[i + index] & 0xff);
-            if ((cursor || (c != 32)) && (c < 128)) {
+            if (c < 128) {
                 int cellX = c & 31;
                 int cellY = (c >> 5) & 3;
                 int srcX = cellX * kCharacterWidth;

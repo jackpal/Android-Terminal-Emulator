@@ -285,7 +285,7 @@ abstract class BaseTextRenderer implements TextRenderer {
             0xffeeeeee
     };
 
-    protected final static int mCursorPaint = 0xff808080;
+    private final static int sCursorPaint = 0xff808080;
     static final ColorScheme defaultColorScheme =
             new ColorScheme(0xffcccccc, 0xff000000);
 
@@ -300,6 +300,7 @@ abstract class BaseTextRenderer implements TextRenderer {
         mPalette = cloneDefaultColors();
         mPalette[TextStyle.ciForeground] = forePaintColor;
         mPalette[TextStyle.ciBackground] = backPaintColor;
+        mPalette[TextStyle.ciCursor] = sCursorPaint;
     }
 
     private static int[] cloneDefaultColors() {

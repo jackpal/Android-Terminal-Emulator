@@ -51,10 +51,11 @@ class PaintRenderer extends BaseTextRenderer {
         }
 
         if (cursor) {
-            mTextPaint.setColor(mCursorPaint);
-        } else {
-            mTextPaint.setColor(mPalette[backColor]);
+            backColor = TextStyle.ciCursor;
         }
+
+        mTextPaint.setColor(mPalette[backColor]);
+
         float left = x + lineOffset * mCharWidth;
         canvas.drawRect(left, y + mCharAscent - mCharDescent,
                 left + runWidth * mCharWidth, y,
@@ -98,4 +99,4 @@ class PaintRenderer extends BaseTextRenderer {
     private int mCharAscent;
     private int mCharDescent;
     private static final char[] EXAMPLE_CHAR = {'X'};
-    }
+}
