@@ -19,8 +19,6 @@ package jackpal.androidterm.emulatorview;
 abstract class BaseTextRenderer implements TextRenderer {
     protected int[] mForePaint;
 
-    protected int[] mBackPaint;
-
     protected static final int[] sXterm256Paint = {
             // 16 original colors
             // First 8 are dim
@@ -302,9 +300,8 @@ abstract class BaseTextRenderer implements TextRenderer {
     private void setDefaultColors(int forePaintIndex, int forePaintColor,
             int backPaintIndex, int backPaintColor) {
         mForePaint = cloneDefaultColors();
-        mBackPaint = cloneDefaultColors();
         mForePaint[forePaintIndex] = forePaintColor;
-        mBackPaint[backPaintIndex] = backPaintColor;
+        mForePaint[backPaintIndex] = backPaintColor;
     }
 
     private static int[] cloneDefaultColors() {

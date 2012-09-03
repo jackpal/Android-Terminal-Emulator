@@ -283,8 +283,6 @@ class TerminalEmulator {
      */
     private int mEffect;
 
-    private boolean mInverseColors;
-
     private boolean mbKeypadApplicationMode;
 
     private boolean mAlternateCharSet;
@@ -1206,20 +1204,19 @@ class TerminalEmulator {
             // See http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
 
             if (code == 0) { // reset
-                mInverseColors = false;
                 mForeColor = mDefaultForeColor;
                 mBackColor = mDefaultBackColor;
                 mEffect = TextStyle.fxNormal;
             } else if (code == 1) { // bold
                 mEffect |= TextStyle.fxBold;
             } else if (code == 3) { // italics, but rarely used as such; "standout" (inverse colors) with TERM=screen
-                mInverseColors = true;
+                mEffect |= TextStyle.fxItalic;
             } else if (code == 4) { // underscore
                 mEffect |= TextStyle.fxUnderline;
             } else if (code == 5) { // blink
                 mEffect |= TextStyle.fxBlink;
             } else if (code == 7) { // inverse
-                mInverseColors = true;
+                mEffect |= TextStyle.fxInverse;
             } else if (code == 8) { // invisible
                 mEffect |= TextStyle.fxInvisible;
             } else if (code == 10) { // exit alt charset (TERM=linux)
@@ -1229,13 +1226,13 @@ class TerminalEmulator {
             } else if (code == 22) { // Normal color or intensity, neither bright, bold nor faint
                 mEffect &= ~TextStyle.fxBold;
             } else if (code == 23) { // not italic, but rarely used as such; clears standout with TERM=screen
-                mInverseColors = false;
+                mEffect &= ~TextStyle.fxItalic;
             } else if (code == 24) { // underline: none
                 mEffect &= ~TextStyle.fxUnderline;
             } else if (code == 25) { // blink: none
                 mEffect &= ~TextStyle.fxBlink;
             } else if (code == 27) { // image: positive
-                mInverseColors = false;
+                mEffect &= ~TextStyle.fxInverse;
             } else if (code == 28) { // invisible
                 mEffect &= ~TextStyle.fxInvisible;
             } else if (code >= 30 && code <= 37) { // foreground color
@@ -1321,13 +1318,11 @@ class TerminalEmulator {
     }
 
     private int getForeColor() {
-        return mInverseColors ?
-                ((mBackColor & 0x7) | (mForeColor & 0x8)) : mForeColor;
+        return mForeColor;
     }
 
     private int getBackColor() {
-        return mInverseColors ?
-                ((mForeColor & 0x7) | (mBackColor & 0x8)) : mBackColor;
+        return mBackColor;
     }
 
     private int getEffect() {
@@ -1721,7 +1716,6 @@ class TerminalEmulator {
         mAboutToAutoWrap = false;
         mForeColor = mDefaultForeColor;
         mBackColor = mDefaultBackColor;
-        mInverseColors = false;
         mbKeypadApplicationMode = false;
         mAlternateCharSet = false;
         // mProcessedCharCount is preserved unchanged.

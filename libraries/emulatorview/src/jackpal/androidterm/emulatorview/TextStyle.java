@@ -4,9 +4,12 @@ public final class TextStyle {
     // Effect bitmasks:
     final static int fxNormal = 0;
     final static int fxBold = 1;
-    final static int fxUnderline = 2;
-    final static int fxBlink = 4;
-    final static int fxInvisible = 8;
+    final static int fxItalic = 2;
+    final static int fxFaint = 4;
+    final static int fxUnderline = 8;
+    final static int fxBlink = 16;
+    final static int fxInverse = 32;
+    final static int fxInvisible = 64;
 
     static int encode(int foreColor, int backColor, int effect) {
         return ((effect & 0xff) << 16) | ((foreColor & 0xff) << 8) | (backColor & 0xff);

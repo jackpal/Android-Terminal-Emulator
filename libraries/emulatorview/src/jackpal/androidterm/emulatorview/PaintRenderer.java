@@ -43,10 +43,17 @@ class PaintRenderer extends BaseTextRenderer {
         int backColor = TextStyle.decodeBackColor(textStyle);
         int effect = TextStyle.decodeEffect(textStyle);
 
+        boolean inverse = (effect & (TextStyle.fxInverse | TextStyle.fxItalic)) != 0;
+        if (inverse) {
+            int temp = foreColor;
+            foreColor = backColor;
+            backColor = temp;
+        }
+
         if (cursor) {
             mTextPaint.setColor(mCursorPaint);
         } else {
-            mTextPaint.setColor(mBackPaint[backColor]);
+            mTextPaint.setColor(mForePaint[backColor]);
         }
         float left = x + lineOffset * mCharWidth;
         canvas.drawRect(left, y + mCharAscent - mCharDescent,
