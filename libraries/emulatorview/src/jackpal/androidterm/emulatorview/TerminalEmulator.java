@@ -1285,32 +1285,6 @@ class TerminalEmulator {
         case 2: // Change window title to T
             changeTitle(ps, nextOSCString(-1));
             break;
-        case 4: // Change color number
-            while (true) {
-                int colorNumber = nextOSCInt(';');
-                if (colorNumber < 0) {
-                    break;
-                }
-                // I'm guessing they're delimited by semicolons, docs isn't clear on this point.
-                String value = nextOSCString(';');
-                changeColor(colorNumber, value);
-            }
-            break;
-        // case 5: Special colors
-        case 104: // Reset color number
-            boolean foundColor = false;
-            while (true) {
-                int colorNumber = nextOSCInt(';');
-                if (colorNumber < 0) {
-                    if (! foundColor) {
-                        resetAllColors();
-                    }
-                    break;
-                }
-                foundColor = true;
-                resetColor(colorNumber);
-            }
-            break;
         default:
             unknownParameter(ps);
             break;
@@ -1321,18 +1295,6 @@ class TerminalEmulator {
         if (parameter == 0 || parameter == 2) {
             logError("Change the window title:" + title);
         }
-    }
-
-    private void changeColor(int color, String value) {
-        logError("ChageColor " + color + " to " + value);
-    }
-
-    private void resetColor(int color) {
-        logError("Reset Color " + color);
-    }
-
-    private void resetAllColors() {
-        logError("Reset Colors");
     }
 
     private void blockClear(int sx, int sy, int w) {
