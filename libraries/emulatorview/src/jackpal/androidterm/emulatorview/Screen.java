@@ -38,7 +38,7 @@ interface Screen {
      * @param foreColor the foreground color
      * @param backColor the background color
      */
-    void set(int x, int y, int codePoint, int foreColor, int backColor);
+    void set(int x, int y, int codePoint, int foreColor, int backColor, int effect);
 
     /**
      * Store byte b into the screen at location (x, y)
@@ -49,7 +49,7 @@ interface Screen {
      * @param foreColor the foreground color
      * @param backColor the background color
      */
-    void set(int x, int y, byte b, int foreColor, int backColor);
+    void set(int x, int y, byte b, int foreColor, int backColor, int effect);
 
     /**
      * Scroll the screen down one line. To scroll the whole screen of a 24 line
@@ -90,7 +90,7 @@ interface Screen {
      * @param backColor the background color
      */
     void blockSet(int sx, int sy, int w, int h, int val, int foreColor, int
-            backColor);
+            backColor, int effect);
 
     /**
      * Get the contents of the transcript buffer as a text string.

@@ -23,13 +23,6 @@ import android.graphics.Canvas;
  */
 
 interface TextRenderer {
-    // Effect bitmasks:
-    final static int fxNormal = 0;
-    final static int fxBold = 1;
-    final static int fxUnderline = 2;
-
-    final static int x256ColorOffset = 16;
-
     float getCharacterWidth();
     int getCharacterHeight();
     /** @return pixels above top row of text to avoid looking cramped. */

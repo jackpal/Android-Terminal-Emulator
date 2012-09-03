@@ -68,7 +68,7 @@ class TranscriptScreen implements Screen {
         mScreenRows = screenRows;
 
         mData = new UnicodeTranscript(columns, totalRows, screenRows, foreColor, backColor);
-        mData.blockSet(0, 0, mColumns, mScreenRows, ' ', foreColor, backColor);
+        mData.blockSet(0, 0, mColumns, mScreenRows, ' ', foreColor, backColor, TextStyle.fxNormal);
     }
 
     public void setColorScheme(ColorScheme scheme) {
@@ -99,12 +99,12 @@ class TranscriptScreen implements Screen {
      * @param foreColor the foreground color
      * @param backColor the background color
      */
-    public void set(int x, int y, int codePoint, int foreColor, int backColor) {
-        mData.setChar(x, y, codePoint, foreColor, backColor);
+    public void set(int x, int y, int codePoint, int foreColor, int backColor, int effect) {
+        mData.setChar(x, y, codePoint, foreColor, backColor, effect);
     }
 
-    public void set(int x, int y, byte b, int foreColor, int backColor) {
-        mData.setChar(x, y, b, foreColor, backColor);
+    public void set(int x, int y, byte b, int foreColor, int backColor, int effect) {
+        mData.setChar(x, y, b, foreColor, backColor, effect);
     }
 
     /**
@@ -148,8 +148,8 @@ class TranscriptScreen implements Screen {
      * @param val value to set.
      */
     public void blockSet(int sx, int sy, int w, int h, int val,
-            int foreColor, int backColor) {
-        mData.blockSet(sx, sy, w, h, val, foreColor, backColor);
+            int foreColor, int backColor, int effect) {
+        mData.blockSet(sx, sy, w, h, val, foreColor, backColor, effect);
     }
 
     /**
@@ -191,12 +191,12 @@ class TranscriptScreen implements Screen {
                 Arrays.fill(blank, ' ');
                 renderer.drawTextRun(canvas, x, y, selx1, selx2-selx1,
                                 blank, 0, 1, true,
-                                defaultForeColor, defaultBackColor, TextRenderer.fxNormal);
+                                defaultForeColor, defaultBackColor, TextStyle.fxNormal);
             } else if (cx != -1) {
                 // We need to draw the cursor
                 renderer.drawTextRun(canvas, x, y, cx, 1,
                                 " ".toCharArray(), 0, 1, true,
-                                defaultForeColor, defaultBackColor, TextRenderer.fxNormal);
+                                defaultForeColor, defaultBackColor, TextStyle.fxNormal);
             }
 
             return;
@@ -224,7 +224,7 @@ class TranscriptScreen implements Screen {
             } else {
                 foreColor = defaultForeColor;
                 backColor = defaultBackColor;
-                effect = TextRenderer.fxNormal;
+                effect = TextStyle.fxNormal;
             }
             int width;
             if (Character.isHighSurrogate(line[index])) {
@@ -282,7 +282,7 @@ class TranscriptScreen implements Screen {
             int imeOffset = imeText.length() - imeLength;
             int imePosition = Math.min(cx, columns - imeLength);
             renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
-                    imeOffset, imeLength, true, 0x0f, 0x00, TextRenderer.fxNormal);
+                    imeOffset, imeLength, true, 0x0f, 0x00, TextStyle.fxNormal);
         }
      }
 

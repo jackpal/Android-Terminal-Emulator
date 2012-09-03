@@ -34,8 +34,7 @@ import jackpal.androidterm.emulatorview.compat.AndroidCharacterCompat;
  *   if column 20 starts at index 23 in the array, then mOffset[20] = 3.
  *
  * Color/formatting information is stored in a separate circular buffer of
- * byte[].  The high four bits encode foreground color, while the low four
- * bits encode background color.
+ * int[].  See TextStyle for how to encode/decode the text style.
  *
  * Rows are allocated on demand, when a character is first stored into them.
  * A "basic" row is allocated unless the store which triggers the allocation
@@ -89,7 +88,7 @@ class UnicodeTranscript {
     }
 
     public int getDefaultColorsEncoded() {
-        return encodeColor(mDefaultForeColor, mDefaultBackColor);
+        return TextStyle.encode(mDefaultForeColor, mDefaultBackColor, TextStyle.fxNormal);
     }
 
     public int getActiveTranscriptRows() {
@@ -398,7 +397,7 @@ class UnicodeTranscript {
                     char[] tmp = getLine(sy + y, sx, sx + w);
                     if (tmp == null) {
                         // Source line was blank
-                        blockSet(dx, extDstRow, w, 1, ' ', mDefaultForeColor, mDefaultBackColor);
+                        blockSet(dx, extDstRow, w, 1, ' ', mDefaultForeColor, mDefaultBackColor, TextStyle.fxNormal);
                         continue;
                     }
                     char cHigh = 0;
@@ -424,7 +423,7 @@ class UnicodeTranscript {
                 if (color[srcRow] == null && color[dstRow] == null) {
                     continue;
                 } else if (color[srcRow] == null && color[dstRow] != null) {
-                    int defaultColor = encodeColor(mDefaultForeColor, mDefaultBackColor);
+                    int defaultColor = TextStyle.encode(mDefaultForeColor, mDefaultBackColor, TextStyle.fxNormal);
                     for (int x = dx; x < dx + w; ++x) {
                         color[dstRow][x] = defaultColor;
                     }
@@ -447,7 +446,7 @@ class UnicodeTranscript {
                     char[] tmp = getLine(sy + y2, sx, sx + w);
                     if (tmp == null) {
                         // Source line was blank
-                        blockSet(dx, extDstRow, w, 1, ' ', mDefaultForeColor, mDefaultBackColor);
+                        blockSet(dx, extDstRow, w, 1, ' ', mDefaultForeColor, mDefaultBackColor, TextStyle.fxNormal);
                         continue;
                     }
                     char cHigh = 0;
@@ -473,7 +472,7 @@ class UnicodeTranscript {
                 if (color[srcRow] == null && color[dstRow] == null) {
                     continue;
                 } else if (color[srcRow] == null && color[dstRow] != null) {
-                    int defaultColor = encodeColor(mDefaultForeColor, mDefaultBackColor);
+                    int defaultColor = TextStyle.encode(mDefaultForeColor, mDefaultBackColor, TextStyle.fxNormal);
                     for (int x = dx; x < dx + w; ++x) {
                         color[dstRow][x] = defaultColor;
                     }
@@ -499,7 +498,7 @@ class UnicodeTranscript {
      * @param val value to set.
      */
     public void blockSet(int sx, int sy, int w, int h, int val,
-            int foreColor, int backColor) {
+            int foreColor, int backColor, int effect) {
         if (sx < 0 || sx + w > mColumns || sy < 0 || sy + h > mScreenRows) {
             Log.e(TAG, "illegal arguments! " + sx + " " + sy + " " + w + " " + h + " " + val + " " + mColumns + " " + mScreenRows);
             throw new IllegalArgumentException();
@@ -507,7 +506,7 @@ class UnicodeTranscript {
 
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
-                setChar(sx + x, sy + y, val, foreColor, backColor);
+                setChar(sx + x, sy + y, val, foreColor, backColor, effect);
             }
         }
     }
@@ -749,7 +748,7 @@ class UnicodeTranscript {
         int[] color = new int[columns];
 
         // Set all of the columns to the default colors
-        int defaultColor = encodeColor(mDefaultForeColor, mDefaultBackColor);
+        int defaultColor = TextStyle.encode(mDefaultForeColor, mDefaultBackColor, TextStyle.fxNormal);
         for (int i = 0; i < columns; ++i) {
             color[i] = defaultColor;
         }
@@ -757,19 +756,7 @@ class UnicodeTranscript {
         return color;
     }
 
-    private int encodeColor(int foreColor, int backColor) {
-        return((foreColor & 0xff) << 8) | (backColor & 0xff);
-    }
-
-    public static int decodeForeColor(int encodedColor) {
-        return (encodedColor >> 8) & 0xff;
-    }
-
-    public static int decodeBackColor(int encodedColor) {
-        return encodedColor & 0xff;
-    }
-
-    public boolean setChar(int column, int row, int codePoint, int foreColor, int backColor) {
+    public boolean setChar(int column, int row, int codePoint, int foreColor, int backColor, int effect) {
         if (!setChar(column, row, codePoint)) {
             return false;
         }
@@ -778,7 +765,7 @@ class UnicodeTranscript {
         if (mColor[row] == null) {
             allocateColor(row, mColumns);
         }
-        mColor[row][column] = encodeColor(foreColor, backColor);
+        mColor[row][column] = TextStyle.encode(foreColor, backColor, effect);
 
         return true;
     }

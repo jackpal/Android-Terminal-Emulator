@@ -267,16 +267,21 @@ class TerminalEmulator {
     private int mProcessedCharCount;
 
     /**
-     * Foreground color, 0..255, mask with 256 for bold
+     * Foreground color, 0..255
      */
     private int mForeColor;
     private int mDefaultForeColor;
 
     /**
-     * Background color, 0..255, mask with 256 for underline
+     * Background color, 0..255
      */
     private int mBackColor;
     private int mDefaultBackColor;
+
+    /**
+     * Current TextStyle effect
+     */
+    private int mEffect;
 
     private boolean mInverseColors;
 
@@ -407,7 +412,7 @@ class TerminalEmulator {
              */
             cursorColor = new GrowableIntArray(1);
             charAtCursor = mScreen.getSelectedText(cursorColor, mCursorCol, mCursorRow, mCursorCol, mCursorRow);
-            mScreen.set(mCursorCol, mCursorRow, 27, 0, 0);
+            mScreen.set(mCursorCol, mCursorRow, 27, 0, 0, TextStyle.fxNormal);
 
             colors = new GrowableIntArray(1024);
             transcriptText = mScreen.getTranscriptText(colors);
@@ -455,16 +460,17 @@ class TerminalEmulator {
             end--;
         }
         char c, cLow;
-        int foreColor, backColor;
+        int foreColor, backColor, effect;
         int colorOffset = 0;
         for(int i = 0; i <= end; i++) {
             c = transcriptText.charAt(i);
             int encodedColor = colors.at(i-colorOffset);
-            foreColor = UnicodeTranscript.decodeForeColor(encodedColor);
-            backColor = UnicodeTranscript.decodeBackColor(encodedColor);
+            foreColor = TextStyle.decodeForeColor(encodedColor);
+            backColor = TextStyle.decodeBackColor(encodedColor);
+            effect = TextStyle.decodeEffect(encodedColor);
             if (Character.isHighSurrogate(c)) {
                 cLow = transcriptText.charAt(++i);
-                emit(Character.toCodePoint(c, cLow), foreColor, backColor);
+                emit(Character.toCodePoint(c, cLow), foreColor, backColor, effect);
                 ++colorOffset;
             } else if (c == '\n') {
                 setCursorCol(0);
@@ -478,12 +484,13 @@ class TerminalEmulator {
                 if (charAtCursor != null && charAtCursor.length() > 0) {
                     // Emit the real character that was in this spot
                     int encodedCursorColor = cursorColor.at(0);
-                    foreColor = UnicodeTranscript.decodeForeColor(encodedCursorColor);
-                    backColor = UnicodeTranscript.decodeBackColor(encodedCursorColor);
-                    emit(charAtCursor.toCharArray(), 0, charAtCursor.length(), foreColor, backColor);
+                    foreColor = TextStyle.decodeForeColor(encodedCursorColor);
+                    backColor = TextStyle.decodeBackColor(encodedCursorColor);
+                    effect = TextStyle.decodeEffect(encodedCursorColor);
+                    emit(charAtCursor.toCharArray(), 0, charAtCursor.length(), foreColor, backColor, effect);
                 }
             } else {
-                emit(c, foreColor, backColor);
+                emit(c, foreColor, backColor, effect);
             }
         }
 
@@ -889,7 +896,7 @@ class TerminalEmulator {
         switch (b) {
         case '8': // Esc # 8 - DECALN alignment test
             mScreen.blockSet(0, 0, mColumns, mRows, 'E',
-                    getForeColor(), getBackColor());
+                    getForeColor(), getBackColor(), getEffect());
             break;
 
         default:
@@ -1208,41 +1215,50 @@ class TerminalEmulator {
                 mInverseColors = false;
                 mForeColor = mDefaultForeColor;
                 mBackColor = mDefaultBackColor;
+                mEffect = TextStyle.fxNormal;
             } else if (code == 1) { // bold
-                mForeColor |= 0x8;
+                mEffect |= TextStyle.fxBold;
             } else if (code == 3) { // italics, but rarely used as such; "standout" (inverse colors) with TERM=screen
                 mInverseColors = true;
             } else if (code == 4) { // underscore
-                mBackColor |= 0x8;
+                mEffect |= TextStyle.fxUnderline;
+            } else if (code == 5) { // blink
+                mEffect |= TextStyle.fxBlink;
             } else if (code == 7) { // inverse
                 mInverseColors = true;
+            } else if (code == 8) { // invisible
+                mEffect |= TextStyle.fxInvisible;
             } else if (code == 10) { // exit alt charset (TERM=linux)
                 setAltCharSet(false);
             } else if (code == 11) { // enter alt charset (TERM=linux)
                 setAltCharSet(true);
             } else if (code == 22) { // Normal color or intensity, neither bright, bold nor faint
-                mForeColor &= 0x7;
+                mEffect &= ~TextStyle.fxBold;
             } else if (code == 23) { // not italic, but rarely used as such; clears standout with TERM=screen
                 mInverseColors = false;
             } else if (code == 24) { // underline: none
-                mBackColor &= 0x7;
+                mEffect &= ~TextStyle.fxUnderline;
+            } else if (code == 25) { // blink: none
+                mEffect &= ~TextStyle.fxBlink;
             } else if (code == 27) { // image: positive
                 mInverseColors = false;
+            } else if (code == 28) { // invisible
+                mEffect &= ~TextStyle.fxInvisible;
             } else if (code >= 30 && code <= 37) { // foreground color
-                mForeColor = (mForeColor & 0x8) | (code - 30);
+                mForeColor = code - 30;
             } else if (code == 38 && i+2 <= mArgIndex && mArgs[i+1] == 5) { // foreground 256 color
                  mForeColor = mArgs[i+2];
                 i += 2;
             } else if (code == 39) { // set default text color
-                mForeColor = mDefaultForeColor | (mForeColor & 0x8); // preserve bold
-                mBackColor = mBackColor & 0x7; // no underline
+                mForeColor = mDefaultForeColor;
+                mEffect &= ~TextStyle.fxUnderline; // no underline
             } else if (code >= 40 && code <= 47) { // background color
                 mBackColor = (mBackColor & 0x8) | (code - 40);
             } else if (code == 48 && i+2 <= mArgIndex && mArgs[i+1] == 5) { // background 256 color
                 mBackColor = mArgs[i+2];
                 i += 2;
             } else if (code == 49) { // set default background color
-                mBackColor = mDefaultBackColor | (mBackColor & 0x8); // preserve underscore.
+                mBackColor = mDefaultBackColor;
             } else {
                 if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
                     Log.w(EmulatorDebug.LOG_TAG, String.format("SGR unknown code %d", code));
@@ -1307,7 +1323,7 @@ class TerminalEmulator {
     }
 
     private void blockClear(int sx, int sy, int w, int h) {
-        mScreen.blockSet(sx, sy, w, h, ' ', getForeColor(), getBackColor());
+        mScreen.blockSet(sx, sy, w, h, ' ', getForeColor(), getBackColor(), getEffect());
     }
 
     private int getForeColor() {
@@ -1318,6 +1334,10 @@ class TerminalEmulator {
     private int getBackColor() {
         return mInverseColors ?
                 ((mForeColor & 0x7) | (mBackColor & 0x8)) : mBackColor;
+    }
+
+    private int getEffect() {
+        return mEffect;
     }
 
     private void doSetMode(boolean newValue) {
@@ -1564,7 +1584,7 @@ class TerminalEmulator {
      * @param foreColor The foreground color of the character
      * @param backColor The background color of the character
      */
-    private void emit(int c, int foreColor, int backColor) {
+    private void emit(int c, int foreColor, int backColor, int effect) {
         boolean autoWrap = autoWrapEnabled();
         int width = UnicodeTranscript.charWidth(c);
 
@@ -1592,12 +1612,12 @@ class TerminalEmulator {
         if (width == 0) {
             // Combining character -- store along with character it modifies
             if (mJustWrapped) {
-                mScreen.set(mColumns - mLastEmittedCharWidth, mCursorRow - 1, c, foreColor, backColor);
+                mScreen.set(mColumns - mLastEmittedCharWidth, mCursorRow - 1, c, foreColor, backColor, effect);
             } else {
-                mScreen.set(mCursorCol - mLastEmittedCharWidth, mCursorRow, c, foreColor, backColor);
+                mScreen.set(mCursorCol - mLastEmittedCharWidth, mCursorRow, c, foreColor, backColor, effect);
             }
         } else {
-            mScreen.set(mCursorCol, mCursorRow, c, foreColor, backColor);
+            mScreen.set(mCursorCol, mCursorRow, c, foreColor, backColor, effect);
             mJustWrapped = false;
         }
 
@@ -1612,7 +1632,7 @@ class TerminalEmulator {
     }
 
     private void emit(int c) {
-        emit(c, getForeColor(), getBackColor());
+        emit(c, getForeColor(), getBackColor(), getEffect());
     }
 
     private void emit(byte b) {
@@ -1641,22 +1661,22 @@ class TerminalEmulator {
      *
      * @param c A char[] array whose contents are to be sent to the screen.
      */
-    private void emit(char[] c, int offset, int length, int foreColor, int backColor) {
+    private void emit(char[] c, int offset, int length, int foreColor, int backColor, int effect) {
         for (int i = offset; i < length; ++i) {
             if (c[i] == 0) {
                 break;
             }
             if (Character.isHighSurrogate(c[i])) {
-                emit(Character.toCodePoint(c[i], c[i+1]), foreColor, backColor);
+                emit(Character.toCodePoint(c[i], c[i+1]), foreColor, backColor, effect);
                 ++i;
             } else {
-                emit((int) c[i], foreColor, backColor);
+                emit((int) c[i], foreColor, backColor, effect);
             }
         }
     }
 
     private void emit(char[] c, int offset, int length) {
-        emit(c, offset, length, getForeColor(), getBackColor());
+        emit(c, offset, length, getForeColor(), getBackColor(), getEffect());
     }
 
     private void setCursorRow(int row) {

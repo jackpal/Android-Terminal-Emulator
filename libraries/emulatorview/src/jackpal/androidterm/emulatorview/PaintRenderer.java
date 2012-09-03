@@ -48,21 +48,24 @@ class PaintRenderer extends BaseTextRenderer {
         canvas.drawRect(left, y + mCharAscent - mCharDescent,
                 left + runWidth * mCharWidth, y,
                 mTextPaint);
-        boolean bold = (effect & fxBold) != 0;
-        boolean underline = (effect & fxUnderline) != 0;
-        if (bold) {
-            mTextPaint.setFakeBoldText(true);
-        }
-        if (underline) {
-            mTextPaint.setUnderlineText(true);
-        }
-        mTextPaint.setColor(mForePaint[foreColor]);
-        canvas.drawText(text, index, count, left, y - mCharDescent, mTextPaint);
-        if (bold) {
-            mTextPaint.setFakeBoldText(false);
-        }
-        if (underline) {
-            mTextPaint.setUnderlineText(false);
+        boolean invisible = (effect & TextStyle.fxInvisible) != 0;
+        if (!invisible) {
+            boolean bold = (effect & (TextStyle.fxBold | TextStyle.fxBlink)) != 0;
+            boolean underline = (effect & TextStyle.fxUnderline) != 0;
+            if (bold) {
+                mTextPaint.setFakeBoldText(true);
+            }
+            if (underline) {
+                mTextPaint.setUnderlineText(true);
+            }
+            mTextPaint.setColor(mForePaint[foreColor]);
+            canvas.drawText(text, index, count, left, y - mCharDescent, mTextPaint);
+            if (bold) {
+                mTextPaint.setFakeBoldText(false);
+            }
+            if (underline) {
+                mTextPaint.setUnderlineText(false);
+            }
         }
     }
 
