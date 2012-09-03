@@ -53,7 +53,7 @@ class PaintRenderer extends BaseTextRenderer {
         if (cursor) {
             mTextPaint.setColor(mCursorPaint);
         } else {
-            mTextPaint.setColor(mForePaint[backColor]);
+            mTextPaint.setColor(mPalette[backColor]);
         }
         float left = x + lineOffset * mCharWidth;
         canvas.drawRect(left, y + mCharAscent - mCharDescent,
@@ -69,7 +69,7 @@ class PaintRenderer extends BaseTextRenderer {
             if (underline) {
                 mTextPaint.setUnderlineText(true);
             }
-            mTextPaint.setColor(mForePaint[foreColor]);
+            mTextPaint.setColor(mPalette[foreColor]);
             canvas.drawText(text, index, count, left, y - mCharDescent, mTextPaint);
             if (bold) {
                 mTextPaint.setFakeBoldText(false);

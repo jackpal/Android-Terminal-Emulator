@@ -17,7 +17,7 @@
 package jackpal.androidterm.emulatorview;
 
 abstract class BaseTextRenderer implements TextRenderer {
-    protected int[] mForePaint;
+    protected int[] mPalette;
 
     protected static final int[] sXterm256Paint = {
             // 16 original colors
@@ -287,26 +287,24 @@ abstract class BaseTextRenderer implements TextRenderer {
 
     protected final static int mCursorPaint = 0xff808080;
     static final ColorScheme defaultColorScheme =
-            new ColorScheme(7, 0xffcccccc, 0, 0xff000000);
+            new ColorScheme(0xffcccccc, 0xff000000);
 
     public BaseTextRenderer(ColorScheme scheme) {
         if (scheme == null) {
             scheme = defaultColorScheme;
         }
-        setDefaultColors(scheme.getForeColorIndex(), scheme.getForeColor(),
-                scheme.getBackColorIndex(), scheme.getBackColor());
+        setDefaultColors(scheme.getForeColor(), scheme.getBackColor());
     }
 
-    private void setDefaultColors(int forePaintIndex, int forePaintColor,
-            int backPaintIndex, int backPaintColor) {
-        mForePaint = cloneDefaultColors();
-        mForePaint[forePaintIndex] = forePaintColor;
-        mForePaint[backPaintIndex] = backPaintColor;
+    private void setDefaultColors(int forePaintColor, int backPaintColor) {
+        mPalette = cloneDefaultColors();
+        mPalette[TextStyle.ciForeground] = forePaintColor;
+        mPalette[TextStyle.ciBackground] = backPaintColor;
     }
 
     private static int[] cloneDefaultColors() {
         int length = sXterm256Paint.length;
-        int[] clone = new int[length];
+        int[] clone = new int[TextStyle.ciColorLength];
         System.arraycopy(sXterm256Paint, 0, clone, 0, length);
         return clone;
     }

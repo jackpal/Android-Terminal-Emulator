@@ -59,7 +59,7 @@ class TranscriptScreen implements Screen {
      */
     public TranscriptScreen(int columns, int totalRows, int screenRows,
             ColorScheme scheme) {
-        init(columns, totalRows, screenRows, scheme.getStyle());
+        init(columns, totalRows, screenRows, TextStyle.kNormalTextStyle);
     }
 
     private void init(int columns, int totalRows, int screenRows, int style) {
@@ -72,7 +72,7 @@ class TranscriptScreen implements Screen {
     }
 
     public void setColorScheme(ColorScheme scheme) {
-        mData.setDefaultStyle(scheme.getStyle());
+        mData.setDefaultStyle(TextStyle.kNormalTextStyle);
     }
 
     public void finish() {

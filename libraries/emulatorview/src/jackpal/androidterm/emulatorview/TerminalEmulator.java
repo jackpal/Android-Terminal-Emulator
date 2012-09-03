@@ -1757,8 +1757,8 @@ class TerminalEmulator {
     }
 
     public void setColorScheme(ColorScheme scheme) {
-        mDefaultForeColor = scheme.getForeColorIndex();
-        mDefaultBackColor = scheme.getBackColorIndex();
+        mDefaultForeColor = TextStyle.ciForeground;
+        mDefaultBackColor = TextStyle.ciBackground;
     }
 
     public String getSelectedText(int x1, int y1, int x2, int y2) {

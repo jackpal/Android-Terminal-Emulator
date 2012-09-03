@@ -102,7 +102,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     public void updatePrefs(TermSettings settings) {
         mStatusBarVisible = settings.showStatusBar();
         int[] colorScheme = settings.getColorScheme();
-        setBackgroundColor(colorScheme[3]);
+        setBackgroundColor(colorScheme[1]);
 
         if (AndroidCompat.SDK < 8) {
             mbPollForWindowSizeChange = !mStatusBarVisible;

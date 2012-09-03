@@ -65,8 +65,8 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
         int foreColor = TextStyle.decodeForeColor(textStyle);
         int backColor = TextStyle.decodeBackColor(textStyle);
         int effect = TextStyle.decodeEffect(textStyle);
-        setColorMatrix(mForePaint[foreColor],
-                cursor ? mCursorPaint : mForePaint[backColor]);
+        setColorMatrix(mPalette[foreColor],
+                cursor ? mCursorPaint : mPalette[backColor]);
         int destX = (int) x + kCharacterWidth * lineOffset;
         int destY = (int) y;
         Rect srcRect = new Rect();

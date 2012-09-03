@@ -50,17 +50,11 @@ public class ColorScheme {
     /**
      * Creates a <code>ColorScheme</code> object.
      *
-     * @param foreColorIndex The VT100 color map index the foreground color
-     *                       should map to.
      * @param foreColor The foreground color as an ARGB hex value.
-     * @param backColorIndex The VT100 color map index the background color
-     *                       should map to.
      * @param backColor The background color as an ARGB hex value.
      */
-    public ColorScheme(int foreColorIndex, int foreColor, int backColorIndex, int backColor) {
-        this.foreColorIndex = foreColorIndex;
+    public ColorScheme(int foreColor, int backColor) {
         this.foreColor = foreColor;
-        this.backColorIndex = backColorIndex;
         this.backColor = backColor;
     }
 
@@ -71,14 +65,12 @@ public class ColorScheme {
      *               backColorIndex, backColor }</code>.
      */
     public ColorScheme(int[] scheme) {
-        if (scheme.length != 4) {
+        if (scheme.length != 2) {
             throw new IllegalArgumentException();
         }
 
-        this.foreColorIndex = scheme[0];
-        this.foreColor = scheme[1];
-        this.backColorIndex = scheme[2];
-        this.backColor = scheme[3];
+        this.foreColor = scheme[0];
+        this.backColor = scheme[1];
     }
 
     /**
@@ -95,28 +87,5 @@ public class ColorScheme {
      */
     public int getBackColor() {
         return backColor;
-    }
-
-    /**
-     * @return This <code>ColorScheme</code>'s foreground color's VT100 color
-     *         map index.
-     */
-    public int getForeColorIndex() {
-        return foreColorIndex;
-    }
-
-    /**
-     * @return This <code>ColorScheme</code>'s background color's VT100 color
-     *         map index.
-     */
-    public int getBackColorIndex() {
-        return backColorIndex;
-    }
-
-    /**
-     * @return The color scheme's encoded text style used for rendering.
-     */
-    public int getStyle() {
-        return TextStyle.encode(foreColorIndex, backColorIndex, TextStyle.fxNormal);
     }
 }
