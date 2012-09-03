@@ -103,10 +103,10 @@ interface Screen {
      * Get the contents of the transcript buffer as a text string with color
      * information.
      *
-     * @param colors A StringBuilder which will hold the colors.
+     * @param colors A GrowableIntArray which will hold the colors.
      * @return the contents of the transcript buffer.
      */
-    String getTranscriptText(StringBuilder colors);
+    String getTranscriptText(GrowableIntArray colors);
 
     /**
      * Get the selected text inside transcript buffer as a text string.
@@ -129,7 +129,7 @@ interface Screen {
      * @param y2 Selection end
      * @return the contents of the transcript buffer.
      */
-    String getSelectedText(StringBuilder colors, int x1, int y1, int x2, int y2);
+    String getSelectedText(GrowableIntArray colors, int x1, int y1, int x2, int y2);
 
     /**
      * Get the number of "active" (in-use) screen rows, including any rows in a

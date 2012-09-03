@@ -761,6 +761,14 @@ class UnicodeTranscript {
         return((foreColor & 0xff) << 8) | (backColor & 0xff);
     }
 
+    public static int decodeForeColor(int encodedColor) {
+        return (encodedColor >> 8) & 0xff;
+    }
+
+    public static int decodeBackColor(int encodedColor) {
+        return encodedColor & 0xff;
+    }
+
     public boolean setChar(int column, int row, int codePoint, int foreColor, int backColor) {
         if (!setChar(column, row, codePoint)) {
             return false;

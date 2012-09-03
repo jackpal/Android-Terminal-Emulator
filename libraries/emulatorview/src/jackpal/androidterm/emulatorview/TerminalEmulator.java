@@ -393,20 +393,20 @@ class TerminalEmulator {
         int[] cursor = { mCursorCol, mCursorRow };
         boolean fastResize = mScreen.fastResize(columns, rows, cursor);
 
-        StringBuilder cursorColor = null;
+        GrowableIntArray cursorColor = null;
         String charAtCursor = null;
-        StringBuilder colors = null;
+        GrowableIntArray colors = null;
         String transcriptText = null;
         if (!fastResize) {
             /* Save the character at the cursor (if one exists) and store an
              * ASCII ESC character at the cursor's location
              * This is an epic hack that lets us restore the cursor later...
              */
-            cursorColor = new StringBuilder(1);
+            cursorColor = new GrowableIntArray(1);
             charAtCursor = mScreen.getSelectedText(cursorColor, mCursorCol, mCursorRow, mCursorCol, mCursorRow);
             mScreen.set(mCursorCol, mCursorRow, 27, 0, 0);
 
-            colors = new StringBuilder();
+            colors = new GrowableIntArray(1024);
             transcriptText = mScreen.getTranscriptText(colors);
 
             mScreen.resize(columns, rows, mForeColor, mBackColor);
@@ -456,8 +456,9 @@ class TerminalEmulator {
         int colorOffset = 0;
         for(int i = 0; i <= end; i++) {
             c = transcriptText.charAt(i);
-            foreColor = (colors.charAt(i-colorOffset) >> 4) & 0xf;
-            backColor = colors.charAt(i-colorOffset) & 0xf;
+            int encodedColor = colors.at(i-colorOffset);
+            foreColor = UnicodeTranscript.decodeForeColor(encodedColor);
+            backColor = UnicodeTranscript.decodeBackColor(encodedColor);
             if (Character.isHighSurrogate(c)) {
                 cLow = transcriptText.charAt(++i);
                 emit(Character.toCodePoint(c, cLow), foreColor, backColor);
@@ -473,8 +474,9 @@ class TerminalEmulator {
                 newCursorTranscriptPos = mScreen.getActiveRows();
                 if (charAtCursor != null && charAtCursor.length() > 0) {
                     // Emit the real character that was in this spot
-                    foreColor = (cursorColor.charAt(0) >> 4) & 0xf;
-                    backColor = cursorColor.charAt(0) & 0xf;
+                    int encodedCursorColor = cursorColor.at(0);
+                    foreColor = UnicodeTranscript.decodeForeColor(encodedCursorColor);
+                    backColor = UnicodeTranscript.decodeBackColor(encodedCursorColor);
                     emit(charAtCursor.toCharArray(), 0, charAtCursor.length(), foreColor, backColor);
                 }
             } else {

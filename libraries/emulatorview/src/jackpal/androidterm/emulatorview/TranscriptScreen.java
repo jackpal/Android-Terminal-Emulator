@@ -308,7 +308,7 @@ class TranscriptScreen implements Screen {
         return internalGetTranscriptText(null, 0, -mData.getActiveTranscriptRows(), mColumns, mScreenRows);
     }
 
-    public String getTranscriptText(StringBuilder colors) {
+    public String getTranscriptText(GrowableIntArray colors) {
         return internalGetTranscriptText(colors, 0, -mData.getActiveTranscriptRows(), mColumns, mScreenRows);
     }
 
@@ -316,11 +316,11 @@ class TranscriptScreen implements Screen {
         return internalGetTranscriptText(null, selX1, selY1, selX2, selY2);
     }
 
-    public String getSelectedText(StringBuilder colors, int selX1, int selY1, int selX2, int selY2) {
+    public String getSelectedText(GrowableIntArray colors, int selX1, int selY1, int selX2, int selY2) {
         return internalGetTranscriptText(colors, selX1, selY1, selX2, selY2);
     }
 
-    private String internalGetTranscriptText(StringBuilder colors, int selX1, int selY1, int selX2, int selY2) {
+    private String internalGetTranscriptText(GrowableIntArray colors, int selX1, int selY1, int selX2, int selY2) {
         StringBuilder builder = new StringBuilder();
         UnicodeTranscript data = mData;
         int columns = mColumns;
@@ -354,18 +354,19 @@ class TranscriptScreen implements Screen {
                 if (!data.getLineWrap(row) && row < selY2 && row < mScreenRows - 1) {
                     builder.append('\n');
                     if (colors != null) {
-                        colors.append((char) 0);
+                        colors.append(0);
                     }
                 }
                 continue;
             }
+            int defaultColor = mData.getDefaultColorsEncoded();
             int lastPrintingChar = -1;
             int length = line.length;
             int i;
             for (i = 0; i < length; i++) {
                 if (line[i] == 0) {
                     break;
-                } else if (line[i] != ' ') {
+                } else if (line[i] != ' ' || (rowColorBuffer != null && rowColorBuffer[i] != defaultColor)) {
                     lastPrintingChar = i;
                 }
             }
@@ -378,7 +379,7 @@ class TranscriptScreen implements Screen {
                 int column = 0;
                 if (rowColorBuffer != null) {
                     for (int j = 0; j < lastPrintingChar + 1; ++j) {
-                        colors.append((char) rowColorBuffer[column]);
+                        colors.append(rowColorBuffer[column]);
                         if (Character.isHighSurrogate(line[j])) {
                             column += UnicodeTranscript.charWidth(
                                 Character.toCodePoint(line[j], line[j+1]));
@@ -388,7 +389,6 @@ class TranscriptScreen implements Screen {
                         }
                     }
                 } else {
-                    char defaultColor = (char) mData.getDefaultColorsEncoded();
                     for (int j = 0; j < lastPrintingChar + 1; ++j) {
                         colors.append(defaultColor);
                     }
