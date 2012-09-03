@@ -16,7 +16,7 @@
 -->
 <resources>
    <string name="application_terminal">Emulador de Terminal</string>
-   <string name="preferences">PreferÍncias</string>
+   <string name="preferences">Prefer√™ncias</string>
    <string name="new_window">Nova janela</string>
    <string name="close_window">Fechar janela</string>
    <string name="window_list">Janelas</string>
@@ -43,33 +43,33 @@
 
    <string name="window_title">Janela %1$d</string>
 
-   <string name="service_notify_text">A sess„o do Terminal est· em execuÁ„o</string>
+   <string name="service_notify_text">A sess√£o do Terminal est√° em execu√ß√£o</string>
 
-   <string name="process_exit_message">A sess„o do Terminal terminou</string>
+   <string name="process_exit_message">A sess√£o do Terminal terminou</string>
 
    <!-- Preference dialog -->
-   <string name="screen_preferences">Ecr„</string>
+   <string name="screen_preferences">Ecr√£</string>
 
    <string name="title_statusbar_preference">Barra de estado</string>
    <string name="summary_statusbar_preference">Mostrar/ocultar barra de estado.</string>
    <string name="dialog_title_statusbar_preference">Barra de estado</string>
 
-   <string name="title_actionbar_preference">Barra de aÁ„o</string>
-   <string name="summary_actionbar_preference">Escolha o comportamento da barra de aÁ„o (Android 3.0 ou superior).</string>
-   <string name="dialog_title_actionbar_preference">Comportamento da barra de aÁ„o</string>
+   <string name="title_actionbar_preference">Barra de a√ß√£o</string>
+   <string name="summary_actionbar_preference">Escolha o comportamento da barra de a√ß√£o (Android 3.0 ou superior).</string>
+   <string name="dialog_title_actionbar_preference">Comportamento da barra de a√ß√£o</string>
 
    <string name="title_cursorstyle_preference">Estilo do cursor</string>
    <string name="summary_cursorstyle_preference">Escolha o estilo do cursor.</string>
    <string name="dialog_title_cursorstyle_preference">Estilo do cursor</string>
 
-   <string name="title_cursorblink_preference">IntermitÍncia</string>
-   <string name="summary_cursorblink_preference">Escolha a intermitÍncia do cursor.</string>
-   <string name="dialog_title_cursorblink_preference">IntermitÍncia</string>
+   <string name="title_cursorblink_preference">Intermit√™ncia</string>
+   <string name="summary_cursorblink_preference">Escolha a intermit√™ncia do cursor.</string>
+   <string name="dialog_title_cursorblink_preference">Intermit√™ncia</string>
 
    <string name="text_preferences">Texto</string>
 
-   <string name="title_utf8_by_default_preference">UTF-8 por definiÁ„o</string>
-   <string name="summary_utf8_by_default_preference">Se o modo UTF-8 est· ativo por definiÁ„o.</string>
+   <string name="title_utf8_by_default_preference">UTF-8 por defini√ß√£o</string>
+   <string name="summary_utf8_by_default_preference">Se o modo UTF-8 est√° ativo por defini√ß√£o.</string>
 
    <string name="title_fontsize_preference">Tamanho da letra</string>
    <string name="summary_fontsize_preference">Escolha a altura das letras (em pontos).</string>
@@ -81,9 +81,9 @@
 
    <string name="keyboard_preferences">Teclado</string>
 
-   <string name="title_backaction_preference">Comportamento do bot„o Voltar</string>
-   <string name="summary_backaction_preference">Escolha a aÁ„o do bot„o Voltar.</string>
-   <string name="dialog_title_backaction_preference">Comportamento do bot„o Voltar</string>
+   <string name="title_backaction_preference">Comportamento do bot√£o Voltar</string>
+   <string name="summary_backaction_preference">Escolha a a√ß√£o do bot√£o Voltar.</string>
+   <string name="dialog_title_backaction_preference">Comportamento do bot√£o Voltar</string>
 
    <string name="title_controlkey_preference">Tecla Control</string>
    <string name="summary_controlkey_preference">Escolha a tecla control.</string>
@@ -93,9 +93,9 @@
    <string name="summary_fnkey_preference">Escolha a tecla Fn.</string>
    <string name="dialog_title_fnkey_preference">Tecla Fn</string>
 
-   <string name="title_ime_preference">MÈtodo de inserÁ„o</string>
-   <string name="summary_ime_preference">Escolha o mÈtodo de inserÁ„o do teclado.</string>
-   <string name="dialog_title_ime_preference">MÈtodo de inserÁ„o</string>
+   <string name="title_ime_preference">M√©todo de inser√ß√£o</string>
+   <string name="summary_ime_preference">Escolha o m√©todo de inser√ß√£o do teclado.</string>
+   <string name="dialog_title_ime_preference">M√©todo de inser√ß√£o</string>
 
    <string name="shell_preferences">Consola</string>
    <string name="title_shell_preference">Linha de comandos</string>
@@ -107,25 +107,25 @@
    <string name="dialog_title_initialcommand_preference">Comando inicial</string>
 
    <string name="title_termtype_preference">Tipo de Terminal</string>
-   <string name="summary_termtype_preference">O tipo de terminal a reportar ‡ consola.</string>
+   <string name="summary_termtype_preference">O tipo de terminal a reportar √† consola.</string>
    <string name="dialog_title_termtype_preference">Tipo de Terminal</string>
 
    <string name="title_close_window_on_process_exit_preference">Fechar janela ao sair</string>
    <string name="summary_close_window_on_process_exit_preference">Se a janela deve ser fechada ao fechar a consola.</string>
 
    <string name="title_verify_path_preference">Verificar as entradas PATH</string>
-   <string name="summary_verify_path_preference">Se os diretÛrios inacessÌveis devem ser removidos do PATH.</string>
+   <string name="summary_verify_path_preference">Se os diret√≥rios inacess√≠veis devem ser removidos do PATH.</string>
 
-   <string name="title_do_path_extensions_preference">Permitir extensıes PATH</string>
-   <string name="summary_do_path_extensions_preference">Se outras aplicaÁıes podem enviar comandos adicionais (adicionar a PATH).</string>
+   <string name="title_do_path_extensions_preference">Permitir extens√µes PATH</string>
+   <string name="summary_do_path_extensions_preference">Se outras aplica√ß√µes podem enviar comandos adicionais (adicionar a PATH).</string>
 
    <string name="title_allow_prepend_path_preference">Permitir preceder PATH</string>
-   <string name="summary_allow_prepend_path_preference">Se outras aplicaÁıes podem substituir os comandos existentes (anteceder a PATH).</string>
+   <string name="summary_allow_prepend_path_preference">Se outras aplica√ß√µes podem substituir os comandos existentes (anteceder a PATH).</string>
 
    <string name="control_key_dialog_title">Teclas Control e Fn</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
         actual control key key name. -->
-   <string name="control_key_dialog_control_text">CTRLKEY espaÁo : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+   <string name="control_key_dialog_control_text">CTRLKEY espa√ßo : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
   <string name="control_key_dialog_control_disabled_text">Nenhuma tecla definida.</string>
   <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
        actual function key key name. -->
@@ -134,10 +134,10 @@
 
   <string name="confirm_window_close_message">Fechar janela?</string>
 
-  <string name="perm_run_script">Executar comandos aleatÛrios no emulador de terminal</string>
-  <string name="permdesc_run_script">Permite que a aplicaÁ„o abra janelas no emulador de terminal e executar comandos nessas janelas com todas as permissıes, incluido o acesso ‡ Internet e aos cart„o SD.</string>
+  <string name="perm_run_script">Executar comandos aleat√≥rios no emulador de terminal</string>
+  <string name="permdesc_run_script">Permite que a aplica√ß√£o abra janelas no emulador de terminal e executar comandos nessas janelas com todas as permiss√µes, incluido o acesso √† Internet e aos cart√£o SD.</string>
   <string name="perm_append_to_path">Adicionar comandos ao emulador de terminal</string>
-  <string name="permdesc_append_to_path">Permite a disponibilizaÁ„o de comandos adicionais (adicionar diretÛrios em PATH) no emulador de terminal Android.</string>
+  <string name="permdesc_append_to_path">Permite a disponibiliza√ß√£o de comandos adicionais (adicionar diret√≥rios em PATH) no emulador de terminal Android.</string>
   <string name="perm_prepend_to_path">Substituir comandos do emulador de terminal</string>
-  <string name="permdesc_prepend_to_path">Permite que a aplicaÁ„o substitua os comandos existentes pelos seus (anteceder diretÛrios em PATH) no emulador de terminal Android.</string>
+  <string name="permdesc_prepend_to_path">Permite que a aplica√ß√£o substitua os comandos existentes pelos seus (anteceder diret√≥rios em PATH) no emulador de terminal Android.</string>
 </resources>

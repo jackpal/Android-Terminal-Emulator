@@ -28,9 +28,9 @@
     </string-array>
 
     <string-array name="entries_actionbar_preference">
-        <!-- <item>Barra de aÁ„o</item> -->
-        <item>Mostrar barra de aÁ„o</item>
-        <item>Ocultar barra de aÁ„o (tocar no topo de ecr„ ou na tecla Menu para mostrar)</item>
+        <!-- <item>Barra de a√ß√£o</item> -->
+        <item>Mostrar barra de a√ß√£o</item>
+        <item>Ocultar barra de a√ß√£o (tocar no topo de ecr√£ ou na tecla Menu para mostrar)</item>
     </string-array>
 
     <!-- Do not localize entryvalues -->
@@ -41,7 +41,7 @@
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
-        <item>Cursor n„o intermitente</item>
+        <item>Cursor n√£o intermitente</item>
         <item>Cursor intermitente</item>
     </string-array>
 
@@ -52,7 +52,7 @@
     </string-array>
 
     <string-array name="entries_cursorstyle_preference">
-        <item>Ret‚ngulo</item>
+        <item>Ret√¢ngulo</item>
         <item>Sublinhado</item>
         <item>Barra vertical</item>
     </string-array>
@@ -96,7 +96,7 @@
         <item>Texto branco em preto</item>
         <item>Texto branco em azul</item>
         <item>Texto verde em preto</item>
-        <item>Texto ‚mbar em preto</item>
+        <item>Texto √¢mbar em preto</item>
         <item>Texto vermelho em preto</item>
         <item>Texto azul em preto</item>
     </string-array>
@@ -115,7 +115,7 @@
     <string-array name="entries_backaction_preference">
         <item>Fechar todas as janelas</item>
         <item>Fechar esta janela</item>
-        <item>Fechar atividades e manter sess„o</item>
+        <item>Fechar atividades e manter sess√£o</item>
         <item>Envia ESC ao terminal</item>
         <item>Envia TAB ao terminal</item>
     </string-array>
@@ -136,7 +136,7 @@
         <item>Tecla Alt direita</item>
         <item>Aum. volume</item>
         <item>Dim. volume</item>
-        <item>Tecla da c‚mara</item>
+        <item>Tecla da c√¢mara</item>
         <item>Nenhuma</item>
     </string-array>
 
@@ -159,7 +159,7 @@
         <item>Tecla Alt direita</item>
         <item>Aum. volume</item>
         <item>Dim. volume</item>
-        <item>Tecla da c‚mara</item>
+        <item>Tecla da c√¢mara</item>
         <item>Nenhuma</item>
     </string-array>
 
@@ -194,7 +194,7 @@
         <item>Alt dir.</item>
         <item>Aum. vol.</item>
         <item>Dim vol.</item>
-        <item>C‚mara</item>
+        <item>C√¢mara</item>
         <item>Nenhuma</item>
     </string-array>
 
@@ -206,7 +206,7 @@
         <item>Alt dir.</item>
         <item>Aum. vol.</item>
         <item>Dim. vol.</item>
-        <item>C‚mara</item>
+        <item>C√¢mara</item>
         <item>Nenhuma</item>
     </string-array>
 
