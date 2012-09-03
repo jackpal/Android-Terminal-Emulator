@@ -47,7 +47,7 @@ class UnicodeTranscript {
     private static final String TAG = "UnicodeTranscript";
 
     private Object[] mLines;
-    private byte[][] mColor;
+    private int[][] mColor;
     private boolean[] mLineWrap;
     private int mTotalRows;
     private int mScreenRows;
@@ -60,16 +60,16 @@ class UnicodeTranscript {
 
     private char[] tmpChar = new char[2];
     private char[] tmpLine;
-    private byte[] tmpColor;
+    private int[] tmpColor;
 
     public UnicodeTranscript(int columns, int totalRows, int screenRows, int foreColor, int backColor) {
         mColumns = columns;
         mTotalRows = totalRows;
         mScreenRows = screenRows;
         mLines = new Object[totalRows];
-        mColor = new byte[totalRows][];
+        mColor = new int[totalRows][];
         mLineWrap = new boolean[totalRows];
-        tmpColor = new byte[columns];
+        tmpColor = new int[columns];
 
         mDefaultForeColor = foreColor;
         mDefaultBackColor = backColor;
@@ -88,7 +88,7 @@ class UnicodeTranscript {
         return mDefaultBackColor;
     }
 
-    public byte getDefaultColorsEncoded() {
+    public int getDefaultColorsEncoded() {
         return encodeColor(mDefaultForeColor, mDefaultBackColor);
     }
 
@@ -164,7 +164,7 @@ class UnicodeTranscript {
         if (shift < -activeTranscriptRows) {
             // We want to add blank lines at the bottom instead of at the top
             Object[] lines = mLines;
-            byte[][] color = mColor;
+            int[][] color = mColor;
             boolean[] lineWrap = mLineWrap;
             int screenFirstRow = mScreenFirstRow;
             int totalRows = mTotalRows;
@@ -338,10 +338,10 @@ class UnicodeTranscript {
            one line, move the lines on screen below the bottom margin down
            one line, then insert the scrolled line into the transcript */
         Object[] lines = mLines;
-        byte[][] color = mColor;
+        int[][] color = mColor;
         boolean[] lineWrap = mLineWrap;
         Object scrollLine = lines[topMarginInt];
-        byte[] scrollColor = color[topMarginInt];
+        int[] scrollColor = color[topMarginInt];
         boolean scrollLineWrap = lineWrap[topMarginInt];
         blockCopyLines(screenFirstRow, topMargin, 1);
         blockCopyLines(bottomMarginInt, screenRows - bottomMargin, 1);
@@ -384,7 +384,7 @@ class UnicodeTranscript {
             throw new IllegalArgumentException();
         }
         Object[] lines = mLines;
-        byte[][] color = mColor;
+        int[][] color = mColor;
         if (sy > dy) {
             // Move in increasing order
             for (int y = 0; y < h; y++) {
@@ -424,7 +424,7 @@ class UnicodeTranscript {
                 if (color[srcRow] == null && color[dstRow] == null) {
                     continue;
                 } else if (color[srcRow] == null && color[dstRow] != null) {
-                    byte defaultColor = encodeColor(mDefaultForeColor, mDefaultBackColor);
+                    int defaultColor = encodeColor(mDefaultForeColor, mDefaultBackColor);
                     for (int x = dx; x < dx + w; ++x) {
                         color[dstRow][x] = defaultColor;
                     }
@@ -473,7 +473,7 @@ class UnicodeTranscript {
                 if (color[srcRow] == null && color[dstRow] == null) {
                     continue;
                 } else if (color[srcRow] == null && color[dstRow] != null) {
-                    byte defaultColor = encodeColor(mDefaultForeColor, mDefaultBackColor);
+                    int defaultColor = encodeColor(mDefaultForeColor, mDefaultBackColor);
                     for (int x = dx; x < dx + w; ++x) {
                         color[dstRow][x] = defaultColor;
                     }
@@ -637,7 +637,7 @@ class UnicodeTranscript {
         return getLine(row, 0, mColumns);
     }
 
-    public byte[] getLineColor(int row, int x1, int x2) {
+    public int[] getLineColor(int row, int x1, int x2) {
         if (row < -mActiveTranscriptRows || row > mScreenRows-1) {
             throw new IllegalArgumentException();
         }
@@ -655,7 +655,7 @@ class UnicodeTranscript {
         }
     }
 
-    public byte[] getLineColor(int row) {
+    public int[] getLineColor(int row) {
         return getLineColor(row, 0, mColumns);
     }
 
@@ -745,11 +745,11 @@ class UnicodeTranscript {
         return line;
     }
 
-    private byte[] allocateColor(int row, int columns) {
-        byte[] color = new byte[columns];
+    private int[] allocateColor(int row, int columns) {
+        int[] color = new int[columns];
 
         // Set all of the columns to the default colors
-        byte defaultColor = encodeColor(mDefaultForeColor, mDefaultBackColor);
+        int defaultColor = encodeColor(mDefaultForeColor, mDefaultBackColor);
         for (int i = 0; i < columns; ++i) {
             color[i] = defaultColor;
         }
@@ -757,8 +757,8 @@ class UnicodeTranscript {
         return color;
     }
 
-    private byte encodeColor(int foreColor, int backColor) {
-        return (byte) (((foreColor & 0xf) << 4) | (backColor & 0xf));
+    private int encodeColor(int foreColor, int backColor) {
+        return((foreColor & 0xff) << 8) | (backColor & 0xff);
     }
 
     public boolean setChar(int column, int row, int codePoint, int foreColor, int backColor) {

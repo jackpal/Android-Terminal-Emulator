@@ -23,11 +23,19 @@ import android.graphics.Canvas;
  */
 
 interface TextRenderer {
+	// Effect bitmasks:
+	final static int fxNormal = 0;
+	final static int fxBold = 1;
+	final static int fxUnderline = 2;
+
     float getCharacterWidth();
     int getCharacterHeight();
     /** @return pixels above top row of text to avoid looking cramped. */
     int getTopMargin();
     void drawTextRun(Canvas canvas, float x, float y,
             int lineOffset, int runWidth, char[] text,
-            int index, int count, boolean cursor, int foreColor, int backColor);
+            int index, int count, boolean cursor, int foreColor, int backColor, int effect);
+    void setColor(int index, int argb);
+    void resetAllColors();
+    void resetColor(int index);
 }

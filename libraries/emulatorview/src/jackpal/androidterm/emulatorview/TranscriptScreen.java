@@ -168,7 +168,7 @@ class TranscriptScreen implements Screen {
     public final void drawText(int row, Canvas canvas, float x, float y,
             TextRenderer renderer, int cx, int selx1, int selx2, String imeText) {
         char[] line;
-        byte[] color;
+        int[] color;
         try {
             line = mData.getLine(row);
             color = mData.getLineColor(row);
@@ -191,12 +191,12 @@ class TranscriptScreen implements Screen {
                 Arrays.fill(blank, ' ');
                 renderer.drawTextRun(canvas, x, y, selx1, selx2-selx1,
                                 blank, 0, 1, true,
-                                defaultForeColor, defaultBackColor);
+                                defaultForeColor, defaultBackColor, TextRenderer.fxNormal);
             } else if (cx != -1) {
                 // We need to draw the cursor
                 renderer.drawTextRun(canvas, x, y, cx, 1,
                                 " ".toCharArray(), 0, 1, true,
-                                defaultForeColor, defaultBackColor);
+                                defaultForeColor, defaultBackColor, TextRenderer.fxNormal);
             }
 
             return;
@@ -205,6 +205,7 @@ class TranscriptScreen implements Screen {
         int columns = mColumns;
         int lastForeColor = 0;
         int lastBackColor = 0;
+        int lastEffect = 0;
         int runWidth = 0;
         int lastRunStart = -1;
         int lastRunStartIndex = -1;
@@ -214,13 +215,16 @@ class TranscriptScreen implements Screen {
         int column = 0;
         int index = 0;
         while (column < columns) {
-            int foreColor, backColor;
+            int foreColor, backColor, effect;
             if (color != null) {
-                foreColor = (color[column] >> 4) & 0xf;
-                backColor = color[column] & 0xf;
+                int c = color[column];
+                foreColor = (c >> 8) & 0xff;
+                backColor = c & 0xff;
+                effect = (c >> 16);
             } else {
                 foreColor = defaultForeColor;
                 backColor = defaultBackColor;
+                effect = TextRenderer.fxNormal;
             }
             int width;
             if (Character.isHighSurrogate(line[index])) {
@@ -235,16 +239,20 @@ class TranscriptScreen implements Screen {
                 // Set cursor background color:
                 backColor |= CURSOR_MASK;
             }
-            if (foreColor != lastForeColor || backColor != lastBackColor || (width > 0 && forceFlushRun)) {
+            if (foreColor != lastForeColor
+                    || backColor != lastBackColor
+                    || effect != lastEffect
+                    || (width > 0 && forceFlushRun)) {
                 if (lastRunStart >= 0) {
                     renderer.drawTextRun(canvas, x, y, lastRunStart, runWidth,
                             line,
                             lastRunStartIndex, index - lastRunStartIndex,
                             (lastBackColor & CURSOR_MASK) != 0,
-                            lastForeColor, lastBackColor);
+                            lastForeColor, lastBackColor, lastEffect);
                 }
                 lastForeColor = foreColor;
                 lastBackColor = backColor;
+                lastEffect = effect;
                 runWidth = 0;
                 lastRunStart = column;
                 lastRunStartIndex = index;
@@ -266,7 +274,7 @@ class TranscriptScreen implements Screen {
                     line,
                     lastRunStartIndex, index - lastRunStartIndex,
                     (lastBackColor & CURSOR_MASK) != 0,
-                    lastForeColor, lastBackColor);
+                    lastForeColor, lastBackColor, lastEffect);
         }
 
         if (cx >= 0 && imeText.length() > 0) {
@@ -274,7 +282,7 @@ class TranscriptScreen implements Screen {
             int imeOffset = imeText.length() - imeLength;
             int imePosition = Math.min(cx, columns - imeLength);
             renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
-                    imeOffset, imeLength, true, 0x0f, 0x00);
+                    imeOffset, imeLength, true, 0x0f, 0x00, TextRenderer.fxNormal);
         }
      }
 
@@ -317,7 +325,7 @@ class TranscriptScreen implements Screen {
         UnicodeTranscript data = mData;
         int columns = mColumns;
         char[] line;
-        byte[] rowColorBuffer = null;
+        int[] rowColorBuffer = null;
         if (selY1 < -data.getActiveTranscriptRows()) {
             selY1 = -data.getActiveTranscriptRows();
         }

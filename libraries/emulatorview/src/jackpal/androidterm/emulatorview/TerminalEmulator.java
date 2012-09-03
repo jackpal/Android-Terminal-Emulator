@@ -16,6 +16,7 @@
 
 package jackpal.androidterm.emulatorview;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -79,6 +80,20 @@ class TerminalEmulator {
      */
     private int[] mArgs = new int[MAX_ESCAPE_PARAMETERS];
 
+    /**
+     * Holds OSC arguments, which can be strings.
+     */
+    private byte[] mOSCArg = new byte[MAX_OSC_STRING_LENGTH];
+
+    private int mOSCArgLength;
+
+    private int mOSCArgTokenizerIndex;
+
+    /**
+     * Don't know what the actual limit is, this seems OK for now.
+     */
+    private static final int MAX_OSC_STRING_LENGTH = 512;
+
     // Escape processing states:
 
     /**
@@ -120,6 +135,16 @@ class TerminalEmulator {
      * Escape processing state: ESC %
      */
     private static final int ESC_PERCENT = 7;
+
+    /**
+     * Escape processing state: ESC ] (AKA OSC - Operating System Controls)
+     */
+    private static final int ESC_RIGHT_SQUARE_BRACKET = 8;
+
+    /**
+     * Escape processing state: ESC ] (AKA OSC - Operating System Controls)
+     */
+    private static final int ESC_RIGHT_SQUARE_BRACKET_ESC = 9;
 
     /**
      * True if the current escape sequence should continue, false if the current
@@ -242,13 +267,13 @@ class TerminalEmulator {
     private int mProcessedCharCount;
 
     /**
-     * Foreground color, 0..7, mask with 8 for bold
+     * Foreground color, 0..255, mask with 256 for bold
      */
     private int mForeColor;
     private int mDefaultForeColor;
 
     /**
-     * Background color, 0..7, mask with 8 for underline
+     * Background color, 0..255, mask with 256 for underline
      */
     private int mBackColor;
     private int mDefaultBackColor;
@@ -597,8 +622,12 @@ class TerminalEmulator {
             break;
 
         case 27: // ESC
-            // Always starts an escape sequence
-            startEscapeSequence(ESC);
+            // Starts an escape sequence unless we're parsing a string
+            if (mEscapeState != ESC_RIGHT_SQUARE_BRACKET) {
+                startEscapeSequence(ESC);
+            } else {
+                doEscRightSquareBracket(b);
+            }
             break;
 
         default:
@@ -636,6 +665,14 @@ class TerminalEmulator {
 
             case ESC_PERCENT:
                 doEscPercent(b);
+                break;
+
+            case ESC_RIGHT_SQUARE_BRACKET:
+                doEscRightSquareBracket(b);
+                break;
+
+            case ESC_RIGHT_SQUARE_BRACKET_ESC:
+                doEscRightSquareBracketEsc(b);
                 break;
 
             default:
@@ -931,6 +968,11 @@ class TerminalEmulator {
             mbKeypadApplicationMode = true;
             break;
 
+        case ']': // OSC
+            startCollectingOSCArgs();
+            continueSequence(ESC_RIGHT_SQUARE_BRACKET);
+            break;
+
         case '>' : // DECKPNM
             mbKeypadApplicationMode = false;
             break;
@@ -1108,7 +1150,7 @@ class TerminalEmulator {
             doSetMode(false);
             break;
 
-        case 'm': // Esc [ Pn m - character attributes.
+        case 'm': // Esc [ Pn m - character attributes. (can have up to 3 numerical arguments)
             selectGraphicRendition();
             break;
 
@@ -1183,11 +1225,17 @@ class TerminalEmulator {
                 mInverseColors = false;
             } else if (code >= 30 && code <= 37) { // foreground color
                 mForeColor = (mForeColor & 0x8) | (code - 30);
+            } else if (code == 38 && i+2 <= mArgIndex && mArgs[i+1] == 5) { // foreground 256 color
+                 mForeColor = mArgs[i+2];
+                i += 2;
             } else if (code == 39) { // set default text color
                 mForeColor = mDefaultForeColor | (mForeColor & 0x8); // preserve bold
                 mBackColor = mBackColor & 0x7; // no underline
             } else if (code >= 40 && code <= 47) { // background color
                 mBackColor = (mBackColor & 0x8) | (code - 40);
+            } else if (code == 48 && i+2 <= mArgIndex && mArgs[i+1] == 5) { // background 256 color
+                mBackColor = mArgs[i+2];
+                i += 2;
             } else if (code == 49) { // set default background color
                 mBackColor = mDefaultBackColor | (mBackColor & 0x8); // preserve underscore.
             } else {
@@ -1196,6 +1244,95 @@ class TerminalEmulator {
                 }
             }
         }
+    }
+
+    private void doEscRightSquareBracket(byte b) {
+        switch (b) {
+        case 0x7:
+            doOSC();
+            break;
+        case 0x1b: // Esc, probably start of Esc \ sequence
+            continueSequence(ESC_RIGHT_SQUARE_BRACKET_ESC);
+            break;
+        default:
+            collectOSCArgs(b);
+            break;
+        }
+    }
+
+    private void doEscRightSquareBracketEsc(byte b) {
+        switch (b) {
+        case '\\':
+            doOSC();
+            break;
+
+        default:
+            // The ESC character was not followed by a \, so insert the ESC and
+            // the current character in arg buffer.
+            collectOSCArgs((byte) 0x1b);
+            collectOSCArgs(b);
+            continueSequence(ESC_RIGHT_SQUARE_BRACKET);
+            break;
+        }
+    }
+
+    private void doOSC() { // Operating System Controls
+        startTokenizingOSC();
+        int ps = nextOSCInt(';');
+        switch (ps) {
+        case 0: // Change icon name and window title to T
+        case 1: // Change icon name to T
+        case 2: // Change window title to T
+            changeTitle(ps, nextOSCString(-1));
+            break;
+        case 4: // Change color number
+            while (true) {
+                int colorNumber = nextOSCInt(';');
+                if (colorNumber < 0) {
+                    break;
+                }
+                // I'm guessing they're delimited by semicolons, docs isn't clear on this point.
+                String value = nextOSCString(';');
+                changeColor(colorNumber, value);
+            }
+            break;
+        // case 5: Special colors
+        case 104: // Reset color number
+            boolean foundColor = false;
+            while (true) {
+                int colorNumber = nextOSCInt(';');
+                if (colorNumber < 0) {
+                    if (! foundColor) {
+                        resetAllColors();
+                    }
+                    break;
+                }
+                foundColor = true;
+                resetColor(colorNumber);
+            }
+            break;
+        default:
+            unknownParameter(ps);
+            break;
+        }
+    }
+
+    private void changeTitle(int parameter, String title) {
+        if (parameter == 0 || parameter == 2) {
+            logError("Change the window title:" + title);
+        }
+    }
+
+    private void changeColor(int color, String value) {
+        logError("ChageColor " + color + " to " + value);
+    }
+
+    private void resetColor(int color) {
+        logError("Reset Color " + color);
+    }
+
+    private void resetAllColors() {
+        logError("Reset Colors");
     }
 
     private void blockClear(int sx, int sy, int w) {
@@ -1329,6 +1466,61 @@ class TerminalEmulator {
             result = defaultValue;
         }
         return result;
+    }
+
+    private void startCollectingOSCArgs() {
+        mOSCArgLength = 0;
+    }
+
+    private void collectOSCArgs(byte b) {
+        if (mOSCArgLength < MAX_OSC_STRING_LENGTH) {
+            mOSCArg[mOSCArgLength++] = b;
+            continueSequence();
+        } else {
+            unknownSequence(b);
+        }
+    }
+
+    private void startTokenizingOSC() {
+        mOSCArgTokenizerIndex = 0;
+    }
+
+    private String nextOSCString(int delimiter) {
+        int start = mOSCArgTokenizerIndex;
+        int end = start;
+        while (mOSCArgTokenizerIndex < mOSCArgLength) {
+            byte b = mOSCArg[mOSCArgTokenizerIndex++];
+            if ((int) b == delimiter) {
+                break;
+            }
+            end++;
+        }
+        if (start == end) {
+            return "";
+        }
+        try {
+            return new String(mOSCArg, start, end-start, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return new String(mOSCArg, start, end-start);
+        }
+    }
+
+    private int nextOSCInt(int delimiter) {
+        int value = -1;
+        while (mOSCArgTokenizerIndex < mOSCArgLength) {
+            byte b = mOSCArg[mOSCArgTokenizerIndex++];
+            if ((int) b == delimiter) {
+                break;
+            } else if (b >= '0' && b <= '9') {
+                if (value < 0) {
+                    value = 0;
+                }
+                value = value * 10 + b - '0';
+            } else {
+                unknownSequence(b);
+            }
+        }
+        return value;
     }
 
     private void unimplementedSequence(byte b) {
