@@ -23,10 +23,12 @@ import android.graphics.Canvas;
  */
 
 interface TextRenderer {
-	// Effect bitmasks:
-	final static int fxNormal = 0;
-	final static int fxBold = 1;
-	final static int fxUnderline = 2;
+    // Effect bitmasks:
+    final static int fxNormal = 0;
+    final static int fxBold = 1;
+    final static int fxUnderline = 2;
+
+    final static int x256ColorOffset = 16;
 
     float getCharacterWidth();
     int getCharacterHeight();
@@ -35,7 +37,4 @@ interface TextRenderer {
     void drawTextRun(Canvas canvas, float x, float y,
             int lineOffset, int runWidth, char[] text,
             int index, int count, boolean cursor, int foreColor, int backColor, int effect);
-    void setColor(int index, int argb);
-    void resetAllColors();
-    void resetColor(int index);
 }
