@@ -1,0 +1,1 @@
+]0;I am a title\Window title should now be 'I am a title'.

@@ -115,6 +115,8 @@ public class TermSession {
         }
     };
 
+    private TitleChangedListener mTitleChangedListener;
+
     public TermSession() {
         mWriteCharBuffer = CharBuffer.allocate(2);
         mWriteByteBuffer = ByteBuffer.allocate(4);
@@ -209,6 +211,7 @@ public class TermSession {
         mTranscriptScreen = new TranscriptScreen(columns, TRANSCRIPT_ROWS, rows, mColorScheme);
         mEmulator = new TerminalEmulator(this, mTranscriptScreen, columns, rows, mColorScheme);
         mEmulator.setDefaultUTF8Mode(mDefaultUTF8Mode);
+        mEmulator.setTitleChangedListener(mTitleChangedListener);
 
         mIsRunning = true;
         mReaderThread.start();
@@ -362,6 +365,19 @@ public class TermSession {
     protected void notifyUpdate() {
         if (mNotify != null) {
             mNotify.onUpdate();
+        }
+    }
+
+    /**
+     * Set a {@link TitleChangedListener} to be invoked when the terminal emulator's
+     * title is changed.
+     *
+     * @param listener The {@link TitleChangedListener} to be invoked on changes.
+     */
+    public void setTitleChangedListener(TitleChangedListener listener) {
+        mTitleChangedListener = listener;
+        if (mEmulator != null) {
+            mEmulator.setTitleChangedListener(listener);
         }
     }
 

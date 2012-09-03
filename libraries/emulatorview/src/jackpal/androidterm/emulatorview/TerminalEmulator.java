@@ -350,6 +350,9 @@ class TerminalEmulator {
     private CharsetDecoder mUTF8Decoder;
     private UpdateCallback mUTF8ModeNotify;
 
+
+    private TitleChangedListener mTitleChangedListener;
+
     /**
      * Construct a terminal emulator that uses the supplied screen
      *
@@ -1295,7 +1298,7 @@ class TerminalEmulator {
 
     private void changeTitle(int parameter, String title) {
         if (parameter == 0 || parameter == 2) {
-            logError("Change the window title:" + title);
+            notifyTitleChanged(title);
         }
     }
 
@@ -1748,5 +1751,25 @@ class TerminalEmulator {
 
     public String getSelectedText(int x1, int y1, int x2, int y2) {
         return mScreen.getSelectedText(x1, y1, x2, y2);
+    }
+
+    /**
+     * Set a {@link TitleChangedListener} to be invoked when the terminal emulator's
+     * title is changed.
+     *
+     * @param listener The {@link TitleChangedListener} to be invoked on changes.
+     */
+    public void setTitleChangedListener(TitleChangedListener listener) {
+        mTitleChangedListener = listener;
+    }
+
+    /**
+     * Notify the {@link TitleChangedListener} registered by {@link
+     * #setUpdateCallback setTitleChangedListener} that the title has changed.
+     */
+    private void notifyTitleChanged(String newTitle) {
+        if (mTitleChangedListener != null) {
+            mTitleChangedListener.onTitleChanged(newTitle);
+        }
     }
 }

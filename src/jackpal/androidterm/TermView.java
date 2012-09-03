@@ -18,16 +18,26 @@ package jackpal.androidterm;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import jackpal.androidterm.emulatorview.ColorScheme;
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.TermSession;
+import jackpal.androidterm.emulatorview.TitleChangedListener;
 
 import jackpal.androidterm.util.TermSettings;
 
 public class TermView extends EmulatorView {
+    private static final String TAG = "TermView";
+
     public TermView(Context context, TermSession session, DisplayMetrics metrics) {
         super(context, session, metrics);
+        setTitleChangedListener(
+                new TitleChangedListener(){
+                    public void onTitleChanged(String newTitle) {
+                        Log.w(TAG, "Title changed: " + newTitle);
+                    }
+                });
     }
 
     public void updatePrefs(TermSettings settings, ColorScheme scheme) {
