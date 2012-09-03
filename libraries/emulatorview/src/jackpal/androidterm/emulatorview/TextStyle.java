@@ -3,9 +3,9 @@ package jackpal.androidterm.emulatorview;
 public final class TextStyle {
     // Effect bitmasks:
     final static int fxNormal = 0;
-    final static int fxBold = 1;
-    final static int fxItalic = 2;
-    final static int fxFaint = 4;
+    final static int fxBold = 1; // Originally Bright
+    final static int fxFaint = 2;
+    final static int fxItalic = 4;
     final static int fxUnderline = 8;
     final static int fxBlink = 16;
     final static int fxInverse = 32;

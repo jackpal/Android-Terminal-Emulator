@@ -458,7 +458,6 @@ class TerminalEmulator {
             end--;
         }
         char c, cLow;
-        int foreColor, backColor, effect;
         int colorOffset = 0;
         for(int i = 0; i <= end; i++) {
             c = transcriptText.charAt(i);
@@ -1224,7 +1223,7 @@ class TerminalEmulator {
             } else if (code == 11) { // enter alt charset (TERM=linux)
                 setAltCharSet(true);
             } else if (code == 22) { // Normal color or intensity, neither bright, bold nor faint
-                mEffect &= ~TextStyle.fxBold;
+                mEffect &= ~(TextStyle.fxBold | TextStyle.fxFaint);
             } else if (code == 23) { // not italic, but rarely used as such; clears standout with TERM=screen
                 mEffect &= ~TextStyle.fxItalic;
             } else if (code == 24) { // underline: none
@@ -1242,14 +1241,17 @@ class TerminalEmulator {
                 i += 2;
             } else if (code == 39) { // set default text color
                 mForeColor = mDefaultForeColor;
-                mEffect &= ~TextStyle.fxUnderline; // no underline
             } else if (code >= 40 && code <= 47) { // background color
-                mBackColor = (mBackColor & 0x8) | (code - 40);
+                mBackColor = code - 40;
             } else if (code == 48 && i+2 <= mArgIndex && mArgs[i+1] == 5) { // background 256 color
                 mBackColor = mArgs[i+2];
                 i += 2;
             } else if (code == 49) { // set default background color
                 mBackColor = mDefaultBackColor;
+            } else if (code >= 90 && code <= 97) { // bright foreground color
+                mForeColor = code - 90 + 8;
+            } else if (code >= 100 && code <= 107) { // bright background color
+                mBackColor = code - 100 + 8;
             } else {
                 if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
                     Log.w(EmulatorDebug.LOG_TAG, String.format("SGR unknown code %d", code));

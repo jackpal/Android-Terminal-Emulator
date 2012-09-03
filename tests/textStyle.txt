@@ -2,14 +2,19 @@ Text style test
 normal:              [0mtext[0m
 bold:                [1mtext[0m
 faint:               [2mtext[0m
-italics:             [3mtext[0m (may show as inverse)
-underlined:          [4mtext[0m
+italic:              [3mtext[0m (may show as inverse)
+underline:           [4mtext[0m
 blink:               [5mtext[0m (may show as bold)
 6:                   [6mtext[0m
 inverse:             [7mtext[0m
 invisible:           [8mtext[0m
-bold-underlined:     [1;4mtext[0m
+bold-underline:      [1;4mtext[0m
 bold-ul-inverse:     [1;4;7mtext[0m
 invis-bold-ul:       [1;4;8mtext[0m
 invis-bold-ul-invrs: [1;4;7;8mtext[0m
 everything:          [1;2;3;4;5;6;7;8mtext[0m
+Reset bold/faint:    [1;2;3;4;5;6;7mtext[22mtext[23;24;25;27mtext[0m
+Reset bold/faint:    [1mtext[22mtext[0m
+Reset bold/faint:    [2mtext[22mtext[0m
+dim colors:          [31;42mred on green[0m
+bright colors:       [91;102mred on green[0m
