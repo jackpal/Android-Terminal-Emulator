@@ -169,7 +169,8 @@ public class Term extends Activity implements UpdateCallback {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView label = new TextView(Term.this);
-            label.setText(getString(R.string.window_title, position + 1));
+            String title = getSessionTitle(position, getString(R.string.window_title, position + 1));
+            label.setText(title);
             if (AndroidCompat.SDK >= 13) {
                 label.setTextAppearance(Term.this, TextAppearance_Holo_Widget_ActionBar_Title);
             } else {
@@ -384,14 +385,18 @@ public class Term extends Activity implements UpdateCallback {
 
         if (mTermSessions != null) {
             int position = mViewFlipper.getDisplayedChild();
-            if (mWinListAdapter == null) {
-                WindowListAdapter adapter = new WindowListActionBarAdapter(mTermSessions);
+            WindowListAdapter adapter = mWinListAdapter;
+            if (adapter == null) {
+                adapter = new WindowListActionBarAdapter(mTermSessions);
                 mWinListAdapter = adapter;
-                mTermSessions.addCallback(adapter);
+
+                SessionList sessions = mTermSessions;
+                sessions.addCallback(adapter);
+                sessions.addTitleChangedListener(adapter);
                 mViewFlipper.addCallback(adapter);
-                mActionBar.setListNavigationCallbacks(mWinListAdapter, mWinListItemSelected);
+                mActionBar.setListNavigationCallbacks(adapter, mWinListItemSelected);
             } else {
-                mWinListAdapter.setSessions(mTermSessions);
+                adapter.setSessions(mTermSessions);
             }
             mActionBar.setSelectedNavigationItem(position);
         }
@@ -497,19 +502,23 @@ public class Term extends Activity implements UpdateCallback {
     public void onResume() {
         super.onResume();
 
-        if (mTermSessions != null) {
-            mTermSessions.addCallback(this);
-            if (mWinListAdapter != null) {
-                mTermSessions.addCallback(mWinListAdapter);
-                mViewFlipper.addCallback(mWinListAdapter);
+        SessionList sessions = mTermSessions;
+        TermViewFlipper viewFlipper = mViewFlipper;
+        if (sessions != null) {
+            sessions.addCallback(this);
+            WindowListAdapter adapter = mWinListAdapter;
+            if (adapter != null) {
+                sessions.addCallback(adapter);
+                sessions.addTitleChangedListener(adapter);
+                viewFlipper.addCallback(adapter);
             }
         }
-        if (mTermSessions != null && mTermSessions.size() < mViewFlipper.getChildCount()) {
-            for (int i = 0; i < mViewFlipper.getChildCount(); ++i) {
-                EmulatorView v = (EmulatorView) mViewFlipper.getChildAt(i);
-                if (!mTermSessions.contains(v.getTermSession())) {
+        if (sessions != null && sessions.size() < viewFlipper.getChildCount()) {
+            for (int i = 0; i < viewFlipper.getChildCount(); ++i) {
+                EmulatorView v = (EmulatorView) viewFlipper.getChildAt(i);
+                if (!sessions.contains(v.getTermSession())) {
                     v.onPause();
-                    mViewFlipper.removeView(v);
+                    viewFlipper.removeView(v);
                     --i;
                 }
             }
@@ -520,22 +529,27 @@ public class Term extends Activity implements UpdateCallback {
         updatePrefs();
 
         if (onResumeSelectWindow >= 0) {
-            mViewFlipper.setDisplayedChild(onResumeSelectWindow);
+            viewFlipper.setDisplayedChild(onResumeSelectWindow);
             onResumeSelectWindow = -1;
         }
-        mViewFlipper.onResume();
+        viewFlipper.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        mViewFlipper.onPause();
-        if (mTermSessions != null) {
-            mTermSessions.removeCallback(this);
-            if (mWinListAdapter != null) {
-                mTermSessions.removeCallback(mWinListAdapter);
-                mViewFlipper.removeCallback(mWinListAdapter);
+        SessionList sessions = mTermSessions;
+        TermViewFlipper viewFlipper = mViewFlipper;
+
+        viewFlipper.onPause();
+        if (sessions != null) {
+            sessions.removeCallback(this);
+            WindowListAdapter adapter = mWinListAdapter;
+            if (adapter != null) {
+                sessions.removeCallback(adapter);
+                sessions.removeTitleChangedListener(adapter);
+                viewFlipper.removeCallback(adapter);
             }
         }
 
@@ -549,7 +563,7 @@ public class Term extends Activity implements UpdateCallback {
         /* Explicitly close the input method
            Otherwise, the soft keyboard could cover up whatever activity takes
            our place */
-        final IBinder token = mViewFlipper.getWindowToken();
+        final IBinder token = viewFlipper.getWindowToken();
         new Thread() {
             @Override
             public void run() {

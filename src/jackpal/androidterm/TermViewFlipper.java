@@ -30,6 +30,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import jackpal.androidterm.emulatorview.EmulatorView;
+import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.UpdateCallback;
 
 import jackpal.androidterm.compat.AndroidCompat;
@@ -53,7 +54,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
      * This is the only known way to detect the view changing size due to
      * the IME being shown or hidden in API level <= 7.
      */
-    private boolean mbPollForWindowSizeChange = false;
+    private final boolean mbPollForWindowSizeChange = (AndroidCompat.SDK < 8);
     private static final int SCREEN_CHECK_PERIOD = 1000;
     private final Handler mHandler = new Handler();
     private Runnable mCheckSize = new Runnable() {
@@ -100,13 +101,10 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     }
 
     public void updatePrefs(TermSettings settings) {
-        mStatusBarVisible = settings.showStatusBar();
+        boolean statusBarVisible = settings.showStatusBar();
         int[] colorScheme = settings.getColorScheme();
         setBackgroundColor(colorScheme[1]);
-
-        if (AndroidCompat.SDK < 8) {
-            mbPollForWindowSizeChange = !mStatusBarVisible;
-        }
+        mStatusBarVisible = statusBarVisible;
     }
 
     public Iterator<View> iterator() {
@@ -162,7 +160,21 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         if (getChildCount() == 0) {
             return;
         }
-        String title = context.getString(R.string.window_title, getDisplayedChild()+1);
+
+        EmulatorView view = (EmulatorView) getCurrentView();
+        if (view == null) {
+            return;
+        }
+        TermSession session = view.getTermSession();
+        if (session == null) {
+            return;
+        }
+
+        String title = context.getString(R.string.window_title,getDisplayedChild()+1);
+        if (session instanceof ShellTermSession) {
+            title = ((ShellTermSession) session).getTitle(title);
+        }
+
         if (mToast == null) {
             mToast = Toast.makeText(context, title, Toast.LENGTH_SHORT);
             mToast.setGravity(Gravity.CENTER, 0, 0);

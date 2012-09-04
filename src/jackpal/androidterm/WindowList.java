@@ -113,26 +113,30 @@ public class WindowList extends ListActivity {
     protected void onPause() {
         super.onPause();
 
+        WindowListAdapter adapter = mWindowListAdapter;
         if (sessions != null) {
-            sessions.removeCallback(mWindowListAdapter);
+            sessions.removeCallback(adapter);
+            sessions.removeTitleChangedListener(adapter);
         }
-        if (mWindowListAdapter != null) {
-            mWindowListAdapter.setSessions(null);
+        if (adapter != null) {
+            adapter.setSessions(null);
         }
         unbindService(mTSConnection);
     }
 
     private void populateList() {
         sessions = mTermService.getSessions();
+        WindowListAdapter adapter = mWindowListAdapter;
 
-        if (mWindowListAdapter == null) {
-            WindowListAdapter adapter = new WindowListAdapter(sessions);
+        if (adapter == null) {
+            adapter = new WindowListAdapter(sessions);
             setListAdapter(adapter);
             mWindowListAdapter = adapter;
         } else {
-            mWindowListAdapter.setSessions(sessions);
+            adapter.setSessions(sessions);
         }
-        sessions.addCallback(mWindowListAdapter);
+        sessions.addCallback(adapter);
+        sessions.addTitleChangedListener(adapter);
     }
 
     @Override

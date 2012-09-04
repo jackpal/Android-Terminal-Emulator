@@ -63,6 +63,8 @@ public class TermSession {
     private OutputStream mTermOut;
     private InputStream mTermIn;
 
+    private String mTitle;
+
     private TranscriptScreen mTranscriptScreen;
     private TerminalEmulator mEmulator;
 
@@ -115,7 +117,7 @@ public class TermSession {
         }
     };
 
-    private TitleChangedListener mTitleChangedListener;
+    private UpdateCallback mTitleChangedListener;
 
     public TermSession() {
         mWriteCharBuffer = CharBuffer.allocate(2);
@@ -211,7 +213,6 @@ public class TermSession {
         mTranscriptScreen = new TranscriptScreen(columns, TRANSCRIPT_ROWS, rows, mColorScheme);
         mEmulator = new TerminalEmulator(this, mTranscriptScreen, columns, rows, mColorScheme);
         mEmulator.setDefaultUTF8Mode(mDefaultUTF8Mode);
-        mEmulator.setTitleChangedListener(mTitleChangedListener);
 
         mIsRunning = true;
         mReaderThread.start();
@@ -369,15 +370,40 @@ public class TermSession {
     }
 
     /**
-     * Set a {@link TitleChangedListener} to be invoked when the terminal emulator's
+     * Get the terminal session's title (may be null).
+     */
+    public String getTitle() {
+        return mTitle;
+    }
+
+    /**
+     * Change the terminal session's title.
+     */
+    public void setTitle(String title) {
+        mTitle = title;
+        notifyTitleChanged();
+    }
+
+    /**
+     * Set an {@link UpdateCallback} to be invoked when the terminal emulator's
      * title is changed.
      *
-     * @param listener The {@link TitleChangedListener} to be invoked on changes.
+     * @param listener The {@link UpdateCallback} to be invoked on changes.
      */
-    public void setTitleChangedListener(TitleChangedListener listener) {
+    public void setTitleChangedListener(UpdateCallback listener) {
         mTitleChangedListener = listener;
-        if (mEmulator != null) {
-            mEmulator.setTitleChangedListener(listener);
+    }
+
+    /**
+     * Notify the UpdateCallback registered for title changes, if any, that the
+     * terminal session's title has changed.
+     *
+     * @param title The terminal's new title.
+     */
+    protected void notifyTitleChanged() {
+        UpdateCallback listener = mTitleChangedListener;
+        if (listener != null) {
+            listener.onUpdate();
         }
     }
 
