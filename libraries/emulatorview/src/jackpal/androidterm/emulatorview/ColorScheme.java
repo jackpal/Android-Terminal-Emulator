@@ -42,9 +42,7 @@ package jackpal.androidterm.emulatorview;
  */
 
 public class ColorScheme {
-    private int foreColorIndex;
     private int foreColor;
-    private int backColorIndex;
     private int backColor;
 
     /**

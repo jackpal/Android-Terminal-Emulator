@@ -156,7 +156,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private boolean mIsControlKeySent = false;
     private boolean mIsFnKeySent = false;
 
-
     private float mDensity;
 
     private float mScaledDensity;
@@ -186,6 +185,25 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private GestureDetector mGestureDetector;
     private GestureDetector.OnGestureListener mExtGestureListener;
     private Scroller mScroller;
+    private Runnable mFlingRunner = new Runnable() {
+        public void run() {
+            if (mScroller.isFinished()) {
+                return;
+            }
+
+            boolean more = mScroller.computeScrollOffset();
+            int newTopRow = mScroller.getCurrY();
+            if (newTopRow != mTopRow) {
+                mTopRow = newTopRow;
+                invalidate();
+            }
+
+            if (more) {
+                post(this);
+            }
+
+        }
+    };
     private float mScrollRemainder;
     private TermKeyListener mKeyListener;
 
@@ -864,24 +882,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 -mTranscriptScreen.getActiveTranscriptRows(), 0);
         mScrollRemainder = 0.0f;
         // onScroll(e1, e2, 0.1f * velocityX, -0.1f * velocityY);
-        post(new Runnable() {
-            public void run() {
-                if (mScroller.isFinished()) {
-                    return;
-                }
-
-                boolean more = mScroller.computeScrollOffset();
-                int newTopRow = mScroller.getCurrY();
-                if (newTopRow != mTopRow) {
-                    mTopRow = newTopRow;
-                    invalidate();
-                }
-
-                if (more) {
-                    post(this);
-                }
-
-            }});
+        post(mFlingRunner);
         return true;
     }
 
