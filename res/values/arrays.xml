@@ -215,6 +215,6 @@
         <item>vt100</item>
         <item>screen</item>
         <item>linux</item>
-        <item>xterm-256color</item>
+        <item>screen-256color</item>
     </string-array>
 </resources>
