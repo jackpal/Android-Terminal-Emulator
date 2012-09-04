@@ -572,7 +572,7 @@ class TerminalEmulator {
         if ((b & 0x80) == 0x80 && (b & 0x7f) <= 0x1f) {
             /* ESC ((code & 0x7f) + 0x40) is the two-byte escape sequence
                corresponding to a particular C1 code */
-            startEscapeSequence(ESC);
+            process((byte) 27, false);
             process((byte) ((b & 0x7f) + 0x40), false);
             return;
         }
@@ -583,7 +583,11 @@ class TerminalEmulator {
             break;
 
         case 7: // BEL
-            // Do nothing
+            /* If in an OSC sequence, BEL may terminate a string; otherwise do
+             * nothing */
+            if (mEscapeState == ESC_RIGHT_SQUARE_BRACKET) {
+                doEscRightSquareBracket(b);
+            }
             break;
 
         case 8: // BS
@@ -1301,6 +1305,7 @@ class TerminalEmulator {
             unknownParameter(ps);
             break;
         }
+        finishSequence();
     }
 
     private void changeTitle(int parameter, String title) {
