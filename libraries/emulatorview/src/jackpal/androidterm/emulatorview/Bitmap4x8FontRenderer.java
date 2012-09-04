@@ -90,10 +90,11 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
         Rect destRect = new Rect();
         destRect.top = (destY - kCharacterHeight);
         destRect.bottom = destY;
+        boolean drawSpaces = mPalette[backColor] != mPalette[TextStyle.ciBackground];
         for (int i = 0; i < count; i++) {
             // XXX No Unicode support in bitmap font
-            char c = (char) (text[i + index] & 0xff);
-            if (c < 128) {
+            char c = text[i + index];
+            if ((c < 128) && ((c != 32) || drawSpaces)) {
                 int cellX = c & 31;
                 int cellY = (c >> 5) & 3;
                 int srcX = cellX * kCharacterWidth;
