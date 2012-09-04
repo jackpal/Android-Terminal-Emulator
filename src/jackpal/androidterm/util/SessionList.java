@@ -31,6 +31,12 @@ import jackpal.androidterm.emulatorview.UpdateCallback;
 public class SessionList extends ArrayList<TermSession>
 {
     LinkedList<UpdateCallback> callbacks = new LinkedList<UpdateCallback>();
+    LinkedList<UpdateCallback> titleChangedListeners = new LinkedList<UpdateCallback>();
+    UpdateCallback mTitleChangedListener = new UpdateCallback() {
+        public void onUpdate() {
+            notifyTitleChanged();
+        }
+    };
 
     public SessionList() {
         super();
@@ -54,9 +60,24 @@ public class SessionList extends ArrayList<TermSession>
         }
     }
 
+    public void addTitleChangedListener(UpdateCallback listener) {
+        titleChangedListeners.add(listener);
+    }
+
+    public boolean removeTitleChangedListener(UpdateCallback listener) {
+        return titleChangedListeners.remove(listener);
+    }
+
+    private void notifyTitleChanged() {
+        for (UpdateCallback listener : titleChangedListeners) {
+            listener.onUpdate();
+        }
+    }
+
     @Override
     public boolean add(TermSession object) {
         boolean result = super.add(object);
+        object.setTitleChangedListener(mTitleChangedListener);
         notifyChange();
         return result;
     }
@@ -64,12 +85,16 @@ public class SessionList extends ArrayList<TermSession>
     @Override
     public void add(int index, TermSession object) {
         super.add(index, object);
+        object.setTitleChangedListener(mTitleChangedListener);
         notifyChange();
     }
 
     @Override
     public boolean addAll(Collection <? extends TermSession> collection) {
         boolean result = super.addAll(collection);
+        for (TermSession session : collection) {
+            session.setTitleChangedListener(mTitleChangedListener);
+        }
         notifyChange();
         return result;
     }
@@ -77,12 +102,18 @@ public class SessionList extends ArrayList<TermSession>
     @Override
     public boolean addAll(int index, Collection <? extends TermSession> collection) {
         boolean result = super.addAll(index, collection);
+        for (TermSession session : collection) {
+            session.setTitleChangedListener(mTitleChangedListener);
+        }
         notifyChange();
         return result;
     }
 
     @Override
     public void clear() {
+        for (TermSession session : this) {
+            session.setTitleChangedListener(null);
+        }
         super.clear();
         notifyChange();
     }
@@ -91,6 +122,7 @@ public class SessionList extends ArrayList<TermSession>
     public TermSession remove(int index) {
         TermSession object = super.remove(index);
         if (object != null) {
+            object.setTitleChangedListener(null);
             notifyChange();
         }
         return object;
@@ -99,7 +131,8 @@ public class SessionList extends ArrayList<TermSession>
     @Override
     public boolean remove(Object object) {
         boolean result = super.remove(object);
-        if (result) {
+        if (result && object instanceof TermSession) {
+            ((TermSession) object).setTitleChangedListener(null);
             notifyChange();
         }
         return result;
@@ -108,6 +141,10 @@ public class SessionList extends ArrayList<TermSession>
     @Override
     public TermSession set(int index, TermSession object) {
         TermSession old = super.set(index, object);
+        object.setTitleChangedListener(mTitleChangedListener);
+        if (old != null) {
+            old.setTitleChangedListener(null);
+        }
         notifyChange();
         return old;
     }

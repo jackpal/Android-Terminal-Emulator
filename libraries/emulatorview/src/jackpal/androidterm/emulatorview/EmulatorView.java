@@ -213,8 +213,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     };
 
-    private TitleChangedListener mTitleChangedListener;
-
     /**
      * Create an <code>EmulatorView</code> for a {@link TermSession}.
      *
@@ -279,10 +277,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         setFocusableInTouchMode(true);
 
         mTermSession = session;
-
-        if (mTitleChangedListener != null) {
-            mTermSession.setTitleChangedListener(mTitleChangedListener);
-        }
 
         mKeyListener = new TermKeyListener(session);
 
@@ -1258,18 +1252,5 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void setFnKeyCode(int keyCode) {
         mFnKeyCode = keyCode;
-    }
-
-    /**
-     * Set a {@link TitleChangedListener} to be invoked when the terminal emulator's
-     * title is changed.
-     *
-     * @param listener The {@link TitleChangedListener} to be invoked on changes.
-     */
-    public void setTitleChangedListener(TitleChangedListener listener) {
-        mTitleChangedListener = listener;
-        if (mTermSession != null) {
-            mTermSession.setTitleChangedListener(listener);
-        }
     }
 }

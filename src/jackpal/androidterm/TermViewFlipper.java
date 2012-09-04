@@ -30,6 +30,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import jackpal.androidterm.emulatorview.EmulatorView;
+import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.UpdateCallback;
 
 import jackpal.androidterm.compat.AndroidCompat;
@@ -159,7 +160,21 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         if (getChildCount() == 0) {
             return;
         }
-        String title = context.getString(R.string.window_title, getDisplayedChild()+1);
+
+        EmulatorView view = (EmulatorView) getCurrentView();
+        if (view == null) {
+            return;
+        }
+        TermSession session = view.getTermSession();
+        if (session == null) {
+            return;
+        }
+
+        String title = context.getString(R.string.window_title,getDisplayedChild()+1);
+        if (session instanceof ShellTermSession) {
+            title = ((ShellTermSession) session).getTitle(title);
+        }
+
         if (mToast == null) {
             mToast = Toast.makeText(context, title, Toast.LENGTH_SHORT);
             mToast.setGravity(Gravity.CENTER, 0, 0);

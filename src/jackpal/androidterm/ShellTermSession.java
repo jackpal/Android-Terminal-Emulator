@@ -274,6 +274,23 @@ public class ShellTermSession extends TermSession {
         super.finish();
     }
 
+    /**
+     * Gets the terminal session's title.  Unlike the superclass's getTitle(),
+     * if the title is null or an empty string, the provided default title will
+     * be returned instead.
+     *
+     * @param defaultTitle The default title to use if this session's title is
+     *     unset or an empty string.
+     */
+    public String getTitle(String defaultTitle) {
+        String title = super.getTitle();
+        if (title != null && title.length() > 0) {
+            return title;
+        } else {
+            return defaultTitle;
+        }
+    }
+
     public void setHandle(String handle) {
         if (mHandle != null) {
             throw new IllegalStateException("Cannot change handle once set");
