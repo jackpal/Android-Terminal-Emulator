@@ -70,7 +70,12 @@ class PaintRenderer extends BaseTextRenderer {
             if (underline) {
                 mTextPaint.setUnderlineText(true);
             }
-            mTextPaint.setColor(mPalette[foreColor]);
+            if (foreColor < 8 && bold) {
+                // In 16-color mode, bold also implies bright foreground colors
+                mTextPaint.setColor(mPalette[foreColor+8]);
+            } else {
+                mTextPaint.setColor(mPalette[foreColor]);
+            }
             canvas.drawText(text, index, count, left, y - mCharDescent, mTextPaint);
             if (bold) {
                 mTextPaint.setFakeBoldText(false);
