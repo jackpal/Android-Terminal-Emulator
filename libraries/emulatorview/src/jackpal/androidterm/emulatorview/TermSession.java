@@ -29,7 +29,6 @@ import java.nio.charset.CodingErrorAction;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 
 /**
  * A terminal session, consisting of a VT100 terminal emulator and its

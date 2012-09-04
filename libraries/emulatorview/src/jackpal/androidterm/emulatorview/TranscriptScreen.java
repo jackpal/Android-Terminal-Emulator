@@ -19,7 +19,6 @@ package jackpal.androidterm.emulatorview;
 import java.util.Arrays;
 
 import android.graphics.Canvas;
-import android.util.Log;
 
 /**
  * A TranscriptScreen is a screen that remembers data that's been scrolled. The
@@ -28,8 +27,6 @@ import android.util.Log;
  * expose its internal data structures.
  */
 class TranscriptScreen implements Screen {
-    private static final String TAG = "TranscriptScreen";
-
     /**
      * The width of the transcript, in characters. Fixed at initialization.
      */

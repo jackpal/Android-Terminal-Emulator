@@ -1673,10 +1673,6 @@ class TerminalEmulator {
         }
     }
 
-    private void emit(char[] c, int offset, int length) {
-        emit(c, offset, length, getStyle());
-    }
-
     private void setCursorRow(int row) {
         mCursorRow = row;
         mAboutToAutoWrap = false;
