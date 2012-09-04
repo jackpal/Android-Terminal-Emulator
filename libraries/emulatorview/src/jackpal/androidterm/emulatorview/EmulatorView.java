@@ -37,6 +37,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
+import android.widget.Scroller;
 
 /**
  * A view on a {@link TermSession}.  Displays the terminal emulator's screen,
@@ -184,6 +185,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private GestureDetector mGestureDetector;
     private GestureDetector.OnGestureListener mExtGestureListener;
+    private Scroller mScroller;
     private float mScrollRemainder;
     private TermKeyListener mKeyListener;
 
@@ -225,6 +227,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         super(context);
         attachSession(session);
         setDensity(metrics);
+        commonConstructor(context);
     }
 
     /**
@@ -236,6 +239,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public EmulatorView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        commonConstructor(context);
     }
 
     /**
@@ -248,6 +252,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public EmulatorView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        commonConstructor(context);
+    }
+
+    private void commonConstructor(Context context) {
+        // TODO: See if we want to use the API level 11 constructor to get new flywheel feature.
+        mScroller = new Scroller(context);
     }
 
     /**
@@ -853,9 +863,31 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mExtGestureListener != null && mExtGestureListener.onFling(e1, e2, velocityX, velocityY)) {
             return true;
         }
-        // TODO: add animation man's (non animated) fling
+        float SCALE = 0.25f;
+        mScroller.fling(0, mTopRow,
+                -(int) (velocityX * SCALE), -(int) (velocityY * SCALE),
+                0, 0,
+                -mTranscriptScreen.getActiveTranscriptRows(), 0);
         mScrollRemainder = 0.0f;
-        onScroll(e1, e2, 0.1f * velocityX, -0.1f * velocityY);
+        // onScroll(e1, e2, 0.1f * velocityX, -0.1f * velocityY);
+        post(new Runnable() {
+            public void run() {
+                if (mScroller.isFinished()) {
+                    return;
+                }
+
+                boolean more = mScroller.computeScrollOffset();
+                int newTopRow = mScroller.getCurrY();
+                if (newTopRow != mTopRow) {
+                    mTopRow = newTopRow;
+                    invalidate();
+                }
+
+                if (more) {
+                    post(this);
+                }
+
+            }});
         return true;
     }
 
