@@ -46,7 +46,7 @@ class UnicodeTranscript {
     private static final String TAG = "UnicodeTranscript";
 
     private Object[] mLines;
-    private int[][] mColor;
+    private byte[][] mColor;
     private boolean[] mLineWrap;
     private int mTotalRows;
     private int mScreenRows;
@@ -57,16 +57,16 @@ class UnicodeTranscript {
     private int mScreenFirstRow = 0;
 
     private char[] tmpLine;
-    private int[] tmpColor;
+    private byte[] tmpColor;
 
     public UnicodeTranscript(int columns, int totalRows, int screenRows, int defaultStyle) {
         mColumns = columns;
         mTotalRows = totalRows;
         mScreenRows = screenRows;
         mLines = new Object[totalRows];
-        mColor = new int[totalRows][];
+        mColor = new byte[totalRows][];
         mLineWrap = new boolean[totalRows];
-        tmpColor = new int[columns];
+        tmpColor = TextStyleLine.allocate(columns);
 
         mDefaultStyle = defaultStyle;
     }
@@ -151,7 +151,7 @@ class UnicodeTranscript {
         if (shift < -activeTranscriptRows) {
             // We want to add blank lines at the bottom instead of at the top
             Object[] lines = mLines;
-            int[][] color = mColor;
+            byte[][] color = mColor;
             boolean[] lineWrap = mLineWrap;
             int screenFirstRow = mScreenFirstRow;
             int totalRows = mTotalRows;
@@ -324,10 +324,10 @@ class UnicodeTranscript {
            one line, move the lines on screen below the bottom margin down
            one line, then insert the scrolled line into the transcript */
         Object[] lines = mLines;
-        int[][] color = mColor;
+        byte[][] color = mColor;
         boolean[] lineWrap = mLineWrap;
         Object scrollLine = lines[topMarginInt];
-        int[] scrollColor = color[topMarginInt];
+        byte[] scrollColor = color[topMarginInt];
         boolean scrollLineWrap = lineWrap[topMarginInt];
         blockCopyLines(screenFirstRow, topMargin, 1);
         blockCopyLines(bottomMarginInt, screenRows - bottomMargin, 1);
@@ -370,7 +370,7 @@ class UnicodeTranscript {
             throw new IllegalArgumentException();
         }
         Object[] lines = mLines;
-        int[][] color = mColor;
+        byte[][] color = mColor;
         if (sy > dy) {
             // Move in increasing order
             for (int y = 0; y < h; y++) {
@@ -412,13 +412,13 @@ class UnicodeTranscript {
                 } else if (color[srcRow] == null && color[dstRow] != null) {
                     int defaultColor = mDefaultStyle;
                     for (int x = dx; x < dx + w; ++x) {
-                        color[dstRow][x] = defaultColor;
+                        TextStyleLine.setStyle(color[dstRow], x, defaultColor);
                     }
                     continue;
                 } else if (color[srcRow] != null && color[dstRow] == null) {
                     allocateColor(dstRow, mColumns);
                 }
-                System.arraycopy(color[srcRow], sx, color[dstRow], dx, w);
+                TextStyleLine.copy(color[srcRow], sx, color[dstRow], dx, w);
             }
         } else {
             // Move in decreasing order
@@ -461,13 +461,13 @@ class UnicodeTranscript {
                 } else if (color[srcRow] == null && color[dstRow] != null) {
                     int defaultColor = mDefaultStyle;
                     for (int x = dx; x < dx + w; ++x) {
-                        color[dstRow][x] = defaultColor;
+                        TextStyleLine.setStyle(color[dstRow], x, defaultColor);
                     }
                     continue;
                 } else if (color[srcRow] != null && color[dstRow] == null) {
                     allocateColor(dstRow, mColumns);
                 }
-                System.arraycopy(color[srcRow], sx, color[dstRow], dx, w);
+                TextStyleLine.copy(color[srcRow], sx, color[dstRow], dx, w);
             }
         }
     }
@@ -622,25 +622,30 @@ class UnicodeTranscript {
         return getLine(row, 0, mColumns);
     }
 
-    public int[] getLineColor(int row, int x1, int x2) {
+    /**
+     * Get color/formatting information for a particular line.  Use the
+     * methods in TextStyleLine to access the values.
+     */
+    public byte[] getLineColor(int row, int x1, int x2) {
         if (row < -mActiveTranscriptRows || row > mScreenRows-1) {
             throw new IllegalArgumentException();
         }
 
         row = externalToInternalRow(row);
-        if (mColor[row] != null) {
+        byte[] color = mColor[row];
+        byte[] tmp = tmpColor;
+        if (color != null) {
             if (x1 == 0 && x2 == mColumns) {
-                return mColor[row];
+                return color;
             }
-
-            System.arraycopy(mColor[row], x1, tmpColor, 0, x2-x1);
-            return tmpColor;
+            TextStyleLine.copy(color, x1, tmp, 0, x2-x1);
+            return tmp;
         } else {
             return null;
         }
     }
 
-    public int[] getLineColor(int row) {
+    public byte[] getLineColor(int row) {
         return getLineColor(row, 0, mColumns);
     }
 
@@ -730,13 +735,13 @@ class UnicodeTranscript {
         return line;
     }
 
-    private int[] allocateColor(int row, int columns) {
-        int[] color = new int[columns];
+    private byte[] allocateColor(int row, int columns) {
+        byte[] color = TextStyleLine.allocate(columns);
 
         // Set all of the columns to the default colors
         int defaultColor = mDefaultStyle;
         for (int i = 0; i < columns; ++i) {
-            color[i] = defaultColor;
+            TextStyleLine.setStyle(color, i, defaultColor);
         }
         mColor[row] = color;
         return color;
@@ -751,7 +756,7 @@ class UnicodeTranscript {
         if (mColor[row] == null) {
             allocateColor(row, mColumns);
         }
-        mColor[row][column] = style;
+        TextStyleLine.setStyle(mColor[row], column, style);
 
         return true;
     }
@@ -1047,5 +1052,41 @@ class FullUnicodeLine {
                 offset[i] += shift;
             }
         }
+    }
+}
+
+/**
+ * Utility methods for dealing with text style lines.
+ *
+ * We pack color and formatting information for a particular character into an
+ * int -- see the TextStyle class for details.  The simplest way of storing
+ * that information for a screen row would be to use an array of int -- but
+ * given that we only use the lower three bytes of the int to store information,
+ * that effectively wastes one byte per character -- nearly 8 KB per 100 lines
+ * with an 80-column transcript.
+ *
+ * Instead, we use an array of bytes and store the bytes of each int
+ * consecutively in big-endian order.
+ */
+final class TextStyleLine {
+    public static byte[] allocate(int columns) {
+        return new byte[3*columns];
+    }
+
+    public static int getStyle(byte[] line, int column) {
+        int index = 3 * column;
+        return line[index] & 0xff | (line[index+1] & 0xff) << 8 | (line[index+2] & 0xff) << 16;
+    }
+
+    public static void setStyle(byte[] line, int column, int value) {
+        int index = 3 * column;
+        line[index] = (byte) (value & 0xff);
+        line[index+1] = (byte) ((value >> 8) & 0xff);
+        line[index+2] = (byte) ((value >> 16) & 0xff);
+    }
+
+    public static void copy(byte[] src, int start,
+            byte[] dst, int offset, int len) {
+        System.arraycopy(src, 3*start, dst, 3*offset, 3*len);
     }
 }

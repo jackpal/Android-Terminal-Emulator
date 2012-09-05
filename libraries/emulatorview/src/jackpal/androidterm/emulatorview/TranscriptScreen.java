@@ -165,7 +165,7 @@ class TranscriptScreen implements Screen {
     public final void drawText(int row, Canvas canvas, float x, float y,
             TextRenderer renderer, int cx, int selx1, int selx2, String imeText) {
         char[] line;
-        int[] color;
+        byte[] color;
         try {
             line = mData.getLine(row);
             color = mData.getLineColor(row);
@@ -210,7 +210,7 @@ class TranscriptScreen implements Screen {
             int style;
             boolean cursorStyle = false;
             if (color != null) {
-                style = color[column];
+                style = TextStyleLine.getStyle(color, column);
             } else {
                 style = defaultStyle;
             }
@@ -309,7 +309,7 @@ class TranscriptScreen implements Screen {
         UnicodeTranscript data = mData;
         int columns = mColumns;
         char[] line;
-        int[] rowColorBuffer = null;
+        byte[] rowColorBuffer = null;
         if (selY1 < -data.getActiveTranscriptRows()) {
             selY1 = -data.getActiveTranscriptRows();
         }
@@ -350,7 +350,7 @@ class TranscriptScreen implements Screen {
             for (i = 0; i < length; i++) {
                 if (line[i] == 0) {
                     break;
-                } else if (line[i] != ' ' || (rowColorBuffer != null && rowColorBuffer[i] != defaultColor)) {
+                } else if (line[i] != ' ' ||(rowColorBuffer != null && TextStyleLine.getStyle(rowColorBuffer, i) != defaultColor)) {
                     lastPrintingChar = i;
                 }
             }
@@ -363,7 +363,7 @@ class TranscriptScreen implements Screen {
                 int column = 0;
                 if (rowColorBuffer != null) {
                     for (int j = 0; j < lastPrintingChar + 1; ++j) {
-                        colors.append(rowColorBuffer[column]);
+                        colors.append(TextStyleLine.getStyle(rowColorBuffer, column));
                         if (Character.isHighSurrogate(line[j])) {
                             column += UnicodeTranscript.charWidth(
                                 Character.toCodePoint(line[j], line[j+1]));
