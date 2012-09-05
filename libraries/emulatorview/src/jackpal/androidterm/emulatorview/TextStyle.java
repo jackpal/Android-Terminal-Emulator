@@ -4,12 +4,12 @@ public final class TextStyle {
     // Effect bitmasks:
     final static int fxNormal = 0;
     final static int fxBold = 1; // Originally Bright
-    final static int fxFaint = 2;
-    final static int fxItalic = 4;
-    final static int fxUnderline = 8;
-    final static int fxBlink = 16;
-    final static int fxInverse = 32;
-    final static int fxInvisible = 64;
+    //final static int fxFaint = 2;
+    final static int fxItalic = 1 << 1;
+    final static int fxUnderline = 1 << 2;
+    final static int fxBlink = 1 << 3;
+    final static int fxInverse = 1 << 4;
+    final static int fxInvisible = 1 << 5;
 
     // Special color indices
     final static int ciForeground = 256; // VT100 text foreground color
@@ -21,7 +21,7 @@ public final class TextStyle {
     final static int kNormalTextStyle = encode(ciForeground, ciBackground, fxNormal);
 
     static int encode(int foreColor, int backColor, int effect) {
-        return ((effect & 0x7f) << 18) | ((foreColor & 0x1ff) << 9) | (backColor & 0x1ff);
+        return ((effect & 0x3f) << 18) | ((foreColor & 0x1ff) << 9) | (backColor & 0x1ff);
     }
 
     static int decodeForeColor(int encodedColor) {
@@ -33,6 +33,6 @@ public final class TextStyle {
     }
 
     static int decodeEffect(int encodedColor) {
-        return (encodedColor >> 18) & 0x7f;
+        return (encodedColor >> 18) & 0x3f;
     }
 }
