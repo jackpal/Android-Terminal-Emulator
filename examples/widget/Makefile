@@ -13,8 +13,8 @@ ifeq ($(ARCH),mips)
 	TOOLCHAIN_DIR = $(NDK)/toolchains/mipsel-*/prebuilt/*/bin
 endif
 TOOLCHAIN_DIR ?= $(NDK)/toolchains/$(ARCH)-*/prebuilt/*/bin
-CC = $(shell echo $(TOOLCHAIN_DIR)/*-gcc)
-STRIP = $(shell echo $(TOOLCHAIN_DIR)/*-strip)
+CC = $(firstword $(shell echo $(TOOLCHAIN_DIR)/*-gcc))
+STRIP = $(firstword $(shell echo $(TOOLCHAIN_DIR)/*-strip))
 
 ifeq ($(ARCH),arm)
 	SYSROOT = $(NDK)/platforms/android-3/arch-arm

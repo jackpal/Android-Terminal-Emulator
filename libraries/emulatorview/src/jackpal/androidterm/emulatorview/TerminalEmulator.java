@@ -1225,7 +1225,8 @@ class TerminalEmulator {
             } else if (code == 11) { // enter alt charset (TERM=linux)
                 setAltCharSet(true);
             } else if (code == 22) { // Normal color or intensity, neither bright, bold nor faint
-                mEffect &= ~(TextStyle.fxBold | TextStyle.fxFaint);
+                //mEffect &= ~(TextStyle.fxBold | TextStyle.fxFaint);
+                mEffect &= ~TextStyle.fxBold;
             } else if (code == 23) { // not italic, but rarely used as such; clears standout with TERM=screen
                 mEffect &= ~TextStyle.fxItalic;
             } else if (code == 24) { // underline: none
