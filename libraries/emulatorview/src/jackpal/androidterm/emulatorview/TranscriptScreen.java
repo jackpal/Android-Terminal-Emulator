@@ -345,13 +345,19 @@ class TranscriptScreen implements Screen {
             }
             int defaultColor = mData.getDefaultStyle();
             int lastPrintingChar = -1;
-            int length = line.length;
+            int lineLen = line.length;
             int i;
-            for (i = 0; i < length; i++) {
-                if (line[i] == 0) {
+            int width = x2 - x1;
+            int column = 0;
+            for (i = 0; i < lineLen && column < width; ++i) {
+                char c = line[i];
+                if (c == 0) {
                     break;
-                } else if (line[i] != ' ' ||(rowColorBuffer != null && TextStyleLine.getStyle(rowColorBuffer, i) != defaultColor)) {
+                } else if (c != ' ' || (rowColorBuffer != null && TextStyleLine.getStyle(rowColorBuffer, column) != defaultColor)) {
                     lastPrintingChar = i;
+                }
+                if (!Character.isLowSurrogate(c)) {
+                    column += UnicodeTranscript.charWidth(line, i);
                 }
             }
             if (data.getLineWrap(row) && lastPrintingChar > -1 && x2 == columns) {
@@ -360,21 +366,22 @@ class TranscriptScreen implements Screen {
             }
             builder.append(line, 0, lastPrintingChar + 1);
             if (colors != null) {
-                int column = 0;
                 if (rowColorBuffer != null) {
-                    for (int j = 0; j < lastPrintingChar + 1; ++j) {
+                    column = 0;
+                    for (int j = 0; j <= lastPrintingChar; ++j) {
                         colors.append(TextStyleLine.getStyle(rowColorBuffer, column));
+                        column += UnicodeTranscript.charWidth(line, j);
                         if (Character.isHighSurrogate(line[j])) {
-                            column += UnicodeTranscript.charWidth(
-                                Character.toCodePoint(line[j], line[j+1]));
                             ++j;
-                        } else {
-                            column += UnicodeTranscript.charWidth(line[j]);
                         }
                     }
                 } else {
-                    for (int j = 0; j < lastPrintingChar + 1; ++j) {
+                    for (int j = 0; j <= lastPrintingChar; ++j) {
                         colors.append(defaultColor);
+                        char c = line[j];
+                        if (Character.isHighSurrogate(c)) {
+                            ++j;
+                        }
                     }
                 }
             }
