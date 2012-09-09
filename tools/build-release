@@ -35,6 +35,6 @@ if [ ! -f "local.properties" ]; then
 	exit 1
 fi
 
-rm -rf bin obj
+rm -rf `find . -name bin -o -name obj -prune`
 cd jni
 $ANDROID_NDK_ROOT/ndk-build && cd .. && ant release && mv bin/Term-release.apk bin/Term.apk
