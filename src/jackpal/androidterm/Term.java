@@ -23,6 +23,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -910,16 +911,33 @@ public class Term extends Activity implements UpdateCallback {
     }
 
     private void doEmailTranscript() {
-        // Don't really want to supply an address, but
-        // currently it's required, otherwise we get an
-        // exception.
-        String addr = "user@example.com";
-        Intent intent =
-                new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"
-                        + addr));
+        TermSession session = getCurrentTermSession();
+        if (session != null) {
+            // Don't really want to supply an address, but
+            // currently it's required, otherwise nobody
+            // wants to handle the intent.
+            String addr = "user@example.com";
+            Intent intent =
+                    new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"
+                            + addr));
 
-        intent.putExtra("body", getCurrentTermSession().getTranscriptText().trim());
-        startActivity(intent);
+            String subject = getString(R.string.email_transcript_subject);
+            String title = session.getTitle();
+            if (title != null) {
+                subject = subject + " - " + title;
+            }
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+            intent.putExtra(Intent.EXTRA_TEXT,
+                    session.getTranscriptText().trim());
+            try {
+                startActivity(Intent.createChooser(intent,
+                        getString(R.string.email_transcript_chooser_title)));
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this,
+                        R.string.email_transcript_no_email_activity_found,
+                        Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void doCopyAll() {

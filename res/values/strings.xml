@@ -140,4 +140,8 @@
   <string name="permdesc_append_to_path">Allows application to provide additional commands (add directories to the PATH) for Android Terminal Emulator.</string>
   <string name="perm_prepend_to_path">Override commands in Terminal Emulator</string>
   <string name="permdesc_prepend_to_path">Allows application to override existing commands with its own versions (prepend directories to the PATH) in Android Terminal Emulator.</string>
+
+  <string name="email_transcript_subject">Transcript from Android Terminal Emulator</string>
+  <string name="email_transcript_chooser_title">Mail transcript using:</string>
+  <string name="email_transcript_no_email_activity_found">Could not choose an email activity to send transcript.</string>
 </resources>
