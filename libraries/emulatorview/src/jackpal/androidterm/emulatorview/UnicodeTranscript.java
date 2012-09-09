@@ -560,6 +560,23 @@ class UnicodeTranscript {
     }
 
     /**
+     * Gives the display width of a code point in a char array
+     * in a monospace font.
+     *
+     * @param chars The array containing the code point in question.
+     * @param index The index into the array at which the code point starts.
+     * @return The display width of the Unicode code point.
+     */
+    public static int charWidth(char[] chars, int index) {
+        char c = chars[index];
+        if (Character.isHighSurrogate(c)) {
+            return charWidth(c, chars[index+1]);
+        } else {
+            return charWidth(c);
+        }
+    }
+
+    /**
      * Get the contents of a line (or part of a line) of the transcript.
      *
      * The char[] array returned may be part of the internal representation
@@ -900,12 +917,7 @@ class FullUnicodeLine {
         int pos = findStartOfColumn(column);
 
         int charWidth = UnicodeTranscript.charWidth(codePoint);
-        int oldCharWidth;
-        if (Character.isHighSurrogate(text[pos])) {
-            oldCharWidth = UnicodeTranscript.charWidth(Character.toCodePoint(text[pos], text[pos+1]));
-        } else {
-            oldCharWidth = UnicodeTranscript.charWidth(text[pos]);
-        }
+        int oldCharWidth = UnicodeTranscript.charWidth(text, pos);
 
         // Get the number of elements in the mText array this column uses now
         int oldLen;
@@ -1006,12 +1018,7 @@ class FullUnicodeLine {
             } else {
                 // Overwrite the contents of the next column.
                 int nextPos = pos + newLen;
-                int nextWidth;
-                if (Character.isHighSurrogate(text[nextPos])) {
-                    nextWidth = UnicodeTranscript.charWidth(Character.toCodePoint(text[nextPos], text[nextPos+1]));
-                } else {
-                    nextWidth = UnicodeTranscript.charWidth(text[nextPos]);
-                }
+                int nextWidth = UnicodeTranscript.charWidth(text, nextPos);
                 int nextLen;
                 if (column + nextWidth + 1 < columns) {
                     nextLen = findStartOfColumn(column + nextWidth + 1) - nextPos;
