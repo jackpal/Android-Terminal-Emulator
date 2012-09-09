@@ -453,7 +453,12 @@ public class Term extends Activity implements UpdateCallback {
     }
 
     private TermSession getCurrentTermSession() {
-        return mTermSessions.get(mViewFlipper.getDisplayedChild());
+        SessionList sessions = mTermSessions;
+        if (sessions == null) {
+            return null;
+        } else {
+            return sessions.get(mViewFlipper.getDisplayedChild());
+        }
     }
 
     private EmulatorView getCurrentEmulatorView() {
@@ -732,6 +737,10 @@ public class Term extends Activity implements UpdateCallback {
         if (action.equals(RemoteInterface.PRIVACT_OPEN_NEW_WINDOW)) {
             // New session was created, add an EmulatorView to match
             SessionList sessions = mTermSessions;
+            if (sessions == null) {
+                // Presumably populateViewFlipper() will do this later ...
+                return;
+            }
             int position = sessions.size() - 1;
 
             TermSession session = sessions.get(position);
