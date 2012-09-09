@@ -572,15 +572,20 @@ public class TermSession {
      */
     public void finish() {
         mIsRunning = false;
-        mTranscriptScreen.finish();
+        if (mTranscriptScreen != null) {
+            mTranscriptScreen.finish();
+        }
 
         // Stop the reader and writer threads, and close the I/O streams
-        mWriterHandler.sendEmptyMessage(FINISH);
+        if (mWriterHandler != null) {
+            mWriterHandler.sendEmptyMessage(FINISH);
+        }
         try {
             mTermIn.close();
             mTermOut.close();
         } catch (IOException e) {
             // We don't care if this fails
+        } catch (NullPointerException e) {
         }
 
         if (mFinishCallback != null) {
