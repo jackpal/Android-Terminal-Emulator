@@ -1,0 +1,4 @@
+a combining grave accent: à
+a combining grave accent combining low line: à̲
+a combining enclosing circle backslash: à̲⃠
+musical symbol g clef: 𝄞
