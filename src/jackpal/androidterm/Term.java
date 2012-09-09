@@ -708,7 +708,7 @@ public class Term extends Activity implements UpdateCallback {
                 }
             } else {
                 // Close the activity if user closed all sessions
-                if (mTermSessions.size() == 0) {
+                if (mTermSessions == null || mTermSessions.size() == 0) {
                     mStopServiceOnFinish = true;
                     finish();
                 }
