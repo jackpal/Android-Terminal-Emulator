@@ -31,6 +31,7 @@ import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.CorrectionInfo;
 import android.view.inputmethod.EditorInfo;
@@ -368,8 +369,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         outAttrs.inputType = mUseCookedIme ?
                 EditorInfo.TYPE_CLASS_TEXT :
                 EditorInfo.TYPE_NULL;
-        return new InputConnection() {
-            private boolean mInBatchEdit;
+        return new BaseInputConnection(this, true) {
             /**
              * Used to handle composing text requests
              */
@@ -378,14 +378,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             private int mComposingTextEnd;
             private int mSelectedTextStart;
             private int mSelectedTextEnd;
-
-            private void sendChar(int c) {
-                try {
-                    mapAndSend(c);
-                } catch (IOException ex) {
-
-                }
-            }
 
             private void sendText(CharSequence text) {
                 int n = text.length();
@@ -429,7 +421,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 mCursor = 0;
                 mComposingTextStart = 0;
                 mComposingTextEnd = 0;
-                mInBatchEdit = true;
                 return true;
             }
 
@@ -451,7 +442,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (LOG_IME) {
                     Log.w(TAG, "endBatchEdit");
                 }
-                mInBatchEdit = false;
                 return true;
             }
 
