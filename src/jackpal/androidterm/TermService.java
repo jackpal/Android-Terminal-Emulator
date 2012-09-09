@@ -84,6 +84,10 @@ public class TermService extends Service implements TermSession.FinishCallback
     public void onDestroy() {
         compat.stopForeground(true);
         for (TermSession session : mTermSessions) {
+            /* Don't automatically remove from list of sessions -- we clear the
+             * list below anyway and we could trigger
+             * ConcurrentModificationException if we do */
+            session.setFinishCallback(null);
             session.finish();
         }
         mTermSessions.clear();
