@@ -12,6 +12,8 @@
 
 # Test on 4.0
 
+# Test on 4.1
+
 # Test with Swype
 
 (Has to be on a real device, Swype beta won't run on an emulator.)
