@@ -17,7 +17,10 @@
 package jackpal.androidterm.emulatorview;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -39,6 +42,7 @@ import android.view.inputmethod.ExtractedText;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 import android.widget.Scroller;
+import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 
 /**
  * A view on a {@link TermSession}.  Displays the terminal emulator's screen,
@@ -206,7 +210,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     };
     private float mScrollRemainder;
-    private TermKeyListener mKeyListener;
 
     private String mImeBuffer = "";
 
@@ -231,6 +234,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             invalidate();
         }
     };
+    private int mBackKeyCharacter = 0;
+
+    private boolean mAltSendsEsc = false;
+    private TermKeyListener mTermKeyListener = null;
+
+
 
     /**
      * Create an <code>EmulatorView</code> for a {@link TermSession}.
@@ -297,7 +306,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         mTermSession = session;
 
-        mKeyListener = new TermKeyListener(session);
 
         // Do init now if it was deferred until a TermSession was attached
         if (mDeferInit) {
@@ -370,6 +378,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 EditorInfo.TYPE_CLASS_TEXT :
                 EditorInfo.TYPE_NULL;
         return new BaseInputConnection(this, true) {
+            TermKeyListener mKeyListener = new TermKeyListener(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc, getKeypadApplicationMode());
+            private boolean mInBatchEdit;
             /**
              * Used to handle composing text requests
              */
@@ -404,12 +414,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
 
             private void mapAndSend(int c) throws IOException {
-                int result = mKeyListener.mapControlChar(c);
-                if (result < TermKeyListener.KEYCODE_OFFSET) {
-                    mTermSession.write(result);
-                } else {
-                    mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, getKeypadApplicationMode());
-                }
+                int charCode = mKeyListener.mapControlChars(c);
+                byte[] charCodes = TermKeyListener.lookupDirectMap(charCode, getKeypadApplicationMode(), false);
+                mTermSession.write(charCodes,0,charCodes.length);
                 clearSpecialKeyStatus();
             }
 
@@ -515,6 +522,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 return true;
             }
 
+            @TargetApi(11)
             public boolean commitCorrection (CorrectionInfo correctionInfo) {
                 if (LOG_IME) {
                     Log.w(TAG, "commitCorrection");
@@ -662,7 +670,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * Get the terminal emulator's keypad application mode.
      */
     public boolean getKeypadApplicationMode() {
-        return mEmulator.getKeypadApplicationMode();
+        return (mEmulator != null) ? mEmulator.getKeypadApplicationMode() : false;
     }
 
     /**
@@ -956,31 +964,43 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (LOG_KEY_EVENTS) {
             Log.w(TAG, "onKeyDown " + keyCode);
         }
-        if (handleControlKey(keyCode, true)) {
-            return true;
-        } else if (handleFnKey(keyCode, true)) {
-            return true;
+        if (mTermKeyListener == null) {
+            mTermKeyListener = new TermKeyListener(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc, getKeypadApplicationMode());
+        }
+        boolean isHandled = mTermKeyListener.keyDown(event);
+        if (isHandled) {
+            if (mTermKeyListener.getCharSequence() != null) {
+                byte[] seq = mTermKeyListener.getCharSequence();
+                mTermSession.write(seq, 0, seq.length);
+            }
         } else if (isSystemKey(keyCode, event)) {
             if (! isInterceptedSystemKey(keyCode) ) {
                 // Don't intercept the system keys
-                return super.onKeyDown(keyCode, event);
+                isHandled = super.onKeyDown(keyCode, event);
             }
         }
+        return isHandled;
+    }
 
-        // Translate the keyCode into an ASCII character.
-
-        try {
-            mKeyListener.keyDown(keyCode, event, getKeypadApplicationMode());
-        } catch (IOException e) {
-            // Ignore I/O exceptions
+    public boolean onKeyPreIme(int keycode, KeyEvent event) {
+        //capture the metakeys.
+        int preImeMetastate = event.getMetaState();
+        if (mAltSendsEsc && ((preImeMetastate & KeyEvent.META_ALT_ON) != 0)) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                return onKeyDown(keycode, event);
+            } else {
+                return onKeyUp(keycode, event);
+            }
+        } else {
+            return false;
         }
-        return true;
     }
 
     /** Do we want to intercept this system key? */
     private boolean isInterceptedSystemKey(int keyCode) {
         return keyCode == KeyEvent.KEYCODE_BACK && mBackKeySendsCharacter;
     }
+
 
     /**
      * Called when a key is released in the view.
@@ -994,20 +1014,18 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (LOG_KEY_EVENTS) {
             Log.w(TAG, "onKeyUp " + keyCode);
         }
-        if (handleControlKey(keyCode, false)) {
-            return true;
-        } else if (handleFnKey(keyCode, false)) {
-            return true;
+        //MetaKeyKeyListener.handleKeyDown(metaState, keyCode, event)
+        boolean isHandled = mTermKeyListener.keyUp(event);
+        if (isHandled) {
+            //noop;
         } else if (isSystemKey(keyCode, event)) {
-            // Don't intercept the system keys
-            if ( ! isInterceptedSystemKey(keyCode) ) {
+            if ( ! isInterceptedSystemKey(keyCode)) {
                 return super.onKeyUp(keyCode, event);
             }
         }
 
-        mKeyListener.keyUp(keyCode, event);
         clearSpecialKeyStatus();
-        return true;
+        return isHandled;
     }
 
 
@@ -1016,7 +1034,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             if (LOG_KEY_EVENTS) {
                 Log.w(TAG, "handleControlKey " + keyCode);
             }
-            mKeyListener.handleControlKey(down);
+            mTermKeyListener.handleControlKey(down);
             return true;
         }
         return false;
@@ -1027,7 +1045,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             if (LOG_KEY_EVENTS) {
                 Log.w(TAG, "handleFnKey " + keyCode);
             }
-            mKeyListener.handleFnKey(down);
+            mTermKeyListener.handleFnKey(down);
             return true;
         }
         return false;
@@ -1040,11 +1058,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private void clearSpecialKeyStatus() {
         if (mIsControlKeySent) {
             mIsControlKeySent = false;
-            mKeyListener.handleControlKey(false);
+            mTermKeyListener.handleControlKey(false);
         }
         if (mIsFnKeySent) {
             mIsFnKeySent = false;
-            mKeyListener.handleFnKey(false);
+            mTermKeyListener.handleFnKey(false);
         }
     }
 
@@ -1211,7 +1229,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void sendControlKey() {
         mIsControlKeySent = true;
-        mKeyListener.handleControlKey(true);
+        mTermKeyListener.handleControlKey(true);
     }
 
     /**
@@ -1220,14 +1238,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void sendFnKey() {
         mIsFnKeySent = true;
-        mKeyListener.handleFnKey(true);
+        mTermKeyListener.handleFnKey(true);
     }
 
     /**
      * Set the key code to be sent when the Back key is pressed.
      */
     public void setBackKeyCharacter(int keyCode) {
-        mKeyListener.setBackKeyCharacter(keyCode);
+        mBackKeyCharacter = keyCode;
+        mTermKeyListener = new TermKeyListener(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc, getKeypadApplicationMode());
         mBackKeySendsCharacter = (keyCode != 0);
     }
 
@@ -1236,6 +1255,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void setControlKeyCode(int keyCode) {
         mControlKeyCode = keyCode;
+        mTermKeyListener = new TermKeyListener(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc, getKeypadApplicationMode());
     }
 
     /**
@@ -1243,5 +1263,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void setFnKeyCode(int keyCode) {
         mFnKeyCode = keyCode;
+        mTermKeyListener = new TermKeyListener(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc, getKeypadApplicationMode());
+    }
+
+    public void setAltSendsEsc(boolean flag) {
+        mAltSendsEsc = flag;
+        mTermKeyListener = new TermKeyListener(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc, getKeypadApplicationMode());
     }
 }
