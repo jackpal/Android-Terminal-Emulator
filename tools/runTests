@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+cd tests/emulatorview-test
+ant debug
+adb shell am instrument jackpal.androidterm.test/android.test.InstrumentationTestRunner
