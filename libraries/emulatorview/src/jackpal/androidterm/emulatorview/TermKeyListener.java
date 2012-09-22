@@ -26,7 +26,7 @@ class TermKeyListener {
     private final int mBackBehavior;
     private final boolean mAllowToggle;
     private final boolean mAppMode;
-    private byte[] mCharcodes;
+    private byte[] mCharSequence;
     private boolean mAltSendsEscape;
     private Integer mDeadChar;
 
@@ -58,7 +58,7 @@ class TermKeyListener {
         mFnKey.reset();
         mCapsKey.reset();
         mAltKey.reset();
-        mCharcodes = null;
+        mCharSequence = null;
     }
 
     /**
@@ -247,12 +247,12 @@ class TermKeyListener {
         int unicodeMask = KeyEvent.META_CTRL_MASK | (prefixEscFlag ? KeyEvent.META_ALT_MASK : 0);
         byte[] directMapping = lookupDirectMap(packKeyCode(e.getKeyCode()), mAppMode, prefixEscFlag);
         if (directMapping != null) { // don't handle the key event any further when there is a direct map entry.
-            mCharcodes = directMapping;
+            mCharSequence = directMapping;
         } else if (e.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            mCharcodes = new byte[] { (byte) mBackBehavior };
+            mCharSequence = new byte[] { (byte) mBackBehavior };
         } else {
             int charCode = handleDeadKey(e, metaState, unicodeMask);
-            mCharcodes = lookupDirectMap(charCode, mAppMode, prefixEscFlag);
+            mCharSequence = lookupDirectMap(charCode, mAppMode, prefixEscFlag);
         }
         return true;
     }
@@ -291,8 +291,15 @@ class TermKeyListener {
         return data;
     }
 
-    public byte[] getCharSequence() {
-        return mCharcodes;
+    /**
+     * extracts the current character sequence from the key listener.
+     * Automatically resets the character sequence to null.
+     * @return the current character sequence
+     */
+    public byte[] extractCharSequence() {
+        byte[] result = mCharSequence;
+        mCharSequence = null;
+        return result;
     }
 
     public boolean keyDown(KeyEvent e) {

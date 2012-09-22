@@ -969,8 +969,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
         boolean isHandled = mTermKeyListener.keyDown(event);
         if (isHandled) {
-            if (mTermKeyListener.getCharSequence() != null) {
-                byte[] seq = mTermKeyListener.getCharSequence();
+            byte[] seq = mTermKeyListener.extractCharSequence();
+            if (seq != null) {
                 mTermSession.write(seq, 0, seq.length);
             }
         } else if (isSystemKey(keyCode, event)) {
