@@ -1240,7 +1240,10 @@ class TerminalEmulator {
             } else if (code >= 30 && code <= 37) { // foreground color
                 mForeColor = code - 30;
             } else if (code == 38 && i+2 <= mArgIndex && mArgs[i+1] == 5) { // foreground 256 color
-                 mForeColor = mArgs[i+2];
+                int color = mArgs[i+2];
+                if (checkColor(color)) {
+                    mForeColor = color;
+                }
                 i += 2;
             } else if (code == 39) { // set default text color
                 mForeColor = mDefaultForeColor;
@@ -1248,6 +1251,10 @@ class TerminalEmulator {
                 mBackColor = code - 40;
             } else if (code == 48 && i+2 <= mArgIndex && mArgs[i+1] == 5) { // background 256 color
                 mBackColor = mArgs[i+2];
+                int color = mArgs[i+2];
+                if (checkColor(color)) {
+                    mForeColor = color;
+                }
                 i += 2;
             } else if (code == 49) { // set default background color
                 mBackColor = mDefaultBackColor;
@@ -1261,6 +1268,21 @@ class TerminalEmulator {
                 }
             }
         }
+    }
+
+    private boolean checkColor(int color) {
+        boolean result = isValidColor(color);
+        if (!result) {
+            if (EmulatorDebug.LOG_UNKNOWN_ESCAPE_SEQUENCES) {
+                Log.w(EmulatorDebug.LOG_TAG,
+                        String.format("Invalid color %d", color));
+            }
+        }
+        return result;
+    }
+
+    private boolean isValidColor(int color) {
+        return color >= 0 && color < TextStyle.ciColorLength;
     }
 
     private void doEscRightSquareBracket(byte b) {
