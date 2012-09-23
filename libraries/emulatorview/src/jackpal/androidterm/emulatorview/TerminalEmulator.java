@@ -1039,21 +1039,22 @@ class TerminalEmulator {
             setHorizontalVerticalPosition();
             break;
 
-        case 'J': // ESC [ Pn J - Erase in Display
+        case 'J': // ESC [ Pn J - ED - Erase in Display
+            // ED ignores the scrolling margins.
             switch (getArg0(0)) {
             case 0: // Clear below
                 blockClear(mCursorCol, mCursorRow, mColumns - mCursorCol);
                 blockClear(0, mCursorRow + 1, mColumns,
-                        mBottomMargin - (mCursorRow + 1));
+                        mRows - (mCursorRow + 1));
                 break;
 
             case 1: // Erase from the start of the screen to the cursor.
-                blockClear(0, mTopMargin, mColumns, mCursorRow - mTopMargin);
+                blockClear(0, 0, mColumns, mCursorRow);
                 blockClear(0, mCursorRow, mCursorCol + 1);
                 break;
 
             case 2: // Clear all
-                blockClear(0, mTopMargin, mColumns, mBottomMargin - mTopMargin);
+                blockClear(0, 0, mColumns, mRows);
                 break;
 
             default:
