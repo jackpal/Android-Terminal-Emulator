@@ -26,7 +26,7 @@ import java.nio.charset.CodingErrorAction;
 import android.util.Log;
 
 /**
- * Renders text into a screen. Contains all the terminal-specific knowlege and
+ * Renders text into a screen. Contains all the terminal-specific knowledge and
  * state. Emulates a subset of the X Window System xterm terminal, which in turn
  * is an emulator for a subset of the Digital Equipment Corporation vt100
  * terminal. Missing functionality: text attributes (bold, underline, reverse
@@ -661,7 +661,7 @@ class TerminalEmulator {
                 break;
 
             case ESC_LEFT_SQUARE_BRACKET:
-                doEscLeftSquareBracket(b);
+                doEscLeftSquareBracket(b); // CSI
                 break;
 
             case ESC_LEFT_SQUARE_BRACKET_QUESTION_MARK:
@@ -989,6 +989,7 @@ class TerminalEmulator {
     }
 
     private void doEscLeftSquareBracket(byte b) {
+        // CSI
         switch (b) {
         case '@': // ESC [ Pn @ - ICH Insert Characters
         {
@@ -1461,16 +1462,17 @@ class TerminalEmulator {
     }
 
     private int getArg0(int defaultValue) {
-        return getArg(0, defaultValue);
+        return getArg(0, defaultValue, true);
     }
 
     private int getArg1(int defaultValue) {
-        return getArg(1, defaultValue);
+        return getArg(1, defaultValue, true);
     }
 
-    private int getArg(int index, int defaultValue) {
+    private int getArg(int index, int defaultValue,
+            boolean treatZeroAsDefault) {
         int result = mArgs[index];
-        if (result < 0) {
+        if (result < 0 || (result == 0 && treatZeroAsDefault)) {
             result = defaultValue;
         }
         return result;
