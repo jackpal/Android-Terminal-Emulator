@@ -170,6 +170,11 @@ class TerminalEmulator {
      */
     private int mSavedCursorCol;
 
+    private int mSavedEffect;
+
+    private int mSavedDecFlags_DECSC_DECRC;
+
+
     // DecSet booleans
 
     /**
@@ -195,6 +200,12 @@ class TerminalEmulator {
      * stop-at-right-column mode.)
      */
     private static final int K_WRAPAROUND_MODE_MASK = 1 << 7;
+
+    /** This mask is the subset of DecSet bits that are saved / restored by
+     * the DECSC / DECRC commands
+     */
+    private static final int K_DECSC_DECRC_MASK =
+            K_ORIGIN_MODE_MASK | K_WRAPAROUND_MODE_MASK;
 
     /**
      * Holds multiple DECSET flags. The data is stored this way, rather than in
@@ -928,10 +939,15 @@ class TerminalEmulator {
         case '7': // DECSC save cursor
             mSavedCursorRow = mCursorRow;
             mSavedCursorCol = mCursorCol;
+            mSavedEffect = mEffect;
+            mSavedDecFlags_DECSC_DECRC = mDecFlags & K_DECSC_DECRC_MASK;
             break;
 
         case '8': // DECRC restore cursor
             setCursorRowCol(mSavedCursorRow, mSavedCursorCol);
+            mEffect = mSavedEffect;
+            mDecFlags = (mDecFlags & ~ K_DECSC_DECRC_MASK)
+                    | mSavedDecFlags_DECSC_DECRC;
             break;
 
         case 'D': // INDEX
@@ -1207,6 +1223,7 @@ class TerminalEmulator {
     }
 
     private void selectGraphicRendition() {
+        // SGR
         for (int i = 0; i <= mArgIndex; i++) {
             int code = mArgs[i];
             if ( code < 0) {
@@ -1745,6 +1762,8 @@ class TerminalEmulator {
         mEscapeState = ESC_NONE;
         mSavedCursorRow = 0;
         mSavedCursorCol = 0;
+        mSavedEffect = 0;
+        mSavedDecFlags_DECSC_DECRC = 0;
         mDecFlags = 0;
         if (DEFAULT_TO_AUTOWRAP_ENABLED) {
             mDecFlags |= K_WRAPAROUND_MODE_MASK;
