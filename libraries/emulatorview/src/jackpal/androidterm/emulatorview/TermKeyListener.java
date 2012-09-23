@@ -30,6 +30,12 @@ class TermKeyListener {
     private boolean mAltSendsEscape;
     private Integer mDeadChar;
 
+    /**
+     * Are any of the alt or meta keys pressed?
+     */
+    private final static int META_ALT_OR_META_MASK =
+            KeyEvent.META_ALT_MASK | KeyEvent.META_META_MASK;
+
     TermKeyListener(int controlKey, int fnKey, int backBehavior, boolean altSendsEscape, boolean appMode) {
         mAppMode = appMode;
         mControlKey = new ModifierKey(controlKey);
@@ -240,13 +246,23 @@ class TermKeyListener {
 
     private boolean handleCharEvent(KeyEvent e) {
         int metaState = getEffectiveMetaState(e.getMetaState());
-        //The CTRL Key must be masked when using e.getUnicodeChar() for some reason.
-        //FIXME Please document why CTRL must be masked.
-        //We want to mask the Alt key because of the mAltSendsEscape flag, but only when Alt is pressed.
-        boolean prefixEscFlag = (mAltSendsEscape && ((metaState & KeyEvent.META_ALT_MASK) != 0));
-        int unicodeMask = KeyEvent.META_CTRL_MASK | (prefixEscFlag ? KeyEvent.META_ALT_MASK : 0);
-        byte[] directMapping = lookupDirectMap(packKeyCode(e.getKeyCode()), mAppMode, prefixEscFlag);
-        if (directMapping != null) { // don't handle the key event any further when there is a direct map entry.
+        // The CTRL Key must be masked when using e.getUnicodeChar().
+        // FIXME Please document why CTRL must be masked.
+
+        // We want to mask the Alt key because of the mAltSendsEscape flag,
+        // but only when Alt is pressed.
+
+        // Some keyboards/IMEs (e.g. Hacker Keyboard IME) will set "Meta"
+        // key down mask bits instead of "Alt" key down mask bits.
+        boolean prefixEscFlag =
+                (mAltSendsEscape && ((metaState & META_ALT_OR_META_MASK) != 0));
+        int unicodeMask = KeyEvent.META_CTRL_MASK
+                | (prefixEscFlag ? META_ALT_OR_META_MASK : 0);
+        byte[] directMapping = lookupDirectMap(
+                packKeyCode(e.getKeyCode()), mAppMode, prefixEscFlag);
+        if (directMapping != null) {
+            // don't handle the key event any further when there is a direct map
+            // entry.
             mCharSequence = directMapping;
         } else if (e.getKeyCode() == KeyEvent.KEYCODE_BACK) {
             mCharSequence = new byte[] { (byte) mBackBehavior };
@@ -257,7 +273,8 @@ class TermKeyListener {
         return true;
     }
 
-    public static byte[] lookupDirectMap(int charCode, boolean appMode, boolean prefixEsc) {
+    public static byte[] lookupDirectMap(int charCode, boolean appMode,
+            boolean prefixEsc) {
         ArrayList<Byte> escSeq = new ArrayList<Byte>();
         if (isPackedCharCode(charCode)) {
             String data = handleSpecialKeyCode(charCode, appMode);
