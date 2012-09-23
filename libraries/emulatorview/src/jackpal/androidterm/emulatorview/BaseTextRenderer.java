@@ -17,6 +17,8 @@
 package jackpal.androidterm.emulatorview;
 
 abstract class BaseTextRenderer implements TextRenderer {
+    protected boolean mReverseVideo;
+
     protected int[] mPalette;
 
     protected static final int[] sXterm256Paint = {
@@ -294,6 +296,10 @@ abstract class BaseTextRenderer implements TextRenderer {
             scheme = defaultColorScheme;
         }
         setDefaultColors(scheme.getForeColor(), scheme.getBackColor());
+    }
+
+    public void setReverseVideo(boolean reverseVideo) {
+        mReverseVideo = reverseVideo;
     }
 
     private void setDefaultColors(int forePaintColor, int backPaintColor) {

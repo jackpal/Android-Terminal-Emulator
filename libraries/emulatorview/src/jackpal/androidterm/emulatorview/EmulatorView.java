@@ -117,6 +117,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     private Paint mCursorPaint;
 
+    private Paint mForegroundPaint;
+
     private Paint mBackgroundPaint;
 
     private boolean mUseCookedIme;
@@ -295,6 +297,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mTextRenderer = null;
         mCursorPaint = new Paint();
         mCursorPaint.setARGB(255,128,128,128);
+        mForegroundPaint = new Paint();
         mBackgroundPaint = new Paint();
         mTopRow = 0;
         mLeftColumn = 0;
@@ -1074,6 +1077,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         else {
             mTextRenderer = new Bitmap4x8FontRenderer(getResources(), scheme);
         }
+
+        mForegroundPaint.setColor(scheme.getForeColor());
         mBackgroundPaint.setColor(scheme.getBackColor());
         mCharacterWidth = mTextRenderer.getCharacterWidth();
         mCharacterHeight = mTextRenderer.getCharacterHeight();
@@ -1153,7 +1158,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         int w = getWidth();
         int h = getHeight();
 
-        canvas.drawRect(0, 0, w, h, mBackgroundPaint);
+        boolean reverseVideo = mEmulator.getReverseVideo();
+        mTextRenderer.setReverseVideo(reverseVideo);
+
+        Paint backgroundPaint =
+                reverseVideo ? mForegroundPaint : mBackgroundPaint;
+        canvas.drawRect(0, 0, w, h, backgroundPaint);
         float x = -mLeftColumn * mCharacterWidth;
         float y = mCharacterHeight + mTopOfScreenMargin;
         int endLine = mTopRow + mRows;
