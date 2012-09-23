@@ -41,6 +41,8 @@ import jackpal.androidterm.util.TermSettings;
  * talk to the process.
  */
 public class ShellTermSession extends TermSession {
+    //** Set to true to force into 80 x 24 for testing with vttest. */
+    private static final boolean VTTEST_MODE = false;
     private TermSettings mSettings;
 
     private int mProcId;
@@ -152,6 +154,10 @@ public class ShellTermSession extends TermSession {
 
     @Override
     public void initializeEmulator(int columns, int rows) {
+        if (VTTEST_MODE) {
+            columns = 80;
+            rows = 24;
+        }
         super.initializeEmulator(columns, rows);
 
         Exec.setPtyUTF8Mode(mTermFd, getUTF8Mode());
@@ -242,6 +248,10 @@ public class ShellTermSession extends TermSession {
 
     @Override
     public void updateSize(int columns, int rows) {
+        if (VTTEST_MODE) {
+            columns = 80;
+            rows = 24;
+        }
         // Inform the attached pty of our new size:
         Exec.setPtyWindowSize(mTermFd, rows, columns, 0, 0);
         super.updateSize(columns, rows);
