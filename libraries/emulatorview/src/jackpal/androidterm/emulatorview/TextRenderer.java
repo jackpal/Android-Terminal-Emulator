@@ -23,6 +23,7 @@ import android.graphics.Canvas;
  */
 
 interface TextRenderer {
+    void setReverseVideo(boolean reverseVideo);
     float getCharacterWidth();
     int getCharacterHeight();
     /** @return pixels above top row of text to avoid looking cramped. */

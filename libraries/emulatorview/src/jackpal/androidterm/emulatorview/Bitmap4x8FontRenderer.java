@@ -66,7 +66,8 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
         int backColor = TextStyle.decodeBackColor(textStyle);
         int effect = TextStyle.decodeEffect(textStyle);
 
-        boolean inverse = (effect & (TextStyle.fxInverse | TextStyle.fxItalic)) != 0;
+        boolean inverse = mReverseVideo ^
+                ((effect & (TextStyle.fxInverse | TextStyle.fxItalic)) != 0);
         if (inverse) {
             int temp = foreColor;
             foreColor = backColor;

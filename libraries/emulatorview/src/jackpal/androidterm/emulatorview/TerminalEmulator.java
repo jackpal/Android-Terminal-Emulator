@@ -179,6 +179,11 @@ class TerminalEmulator {
     private static final int K_132_COLUMN_MODE_MASK = 1 << 3;
 
     /**
+     * DECSCNM - set means reverse video (light background.)
+     */
+    private static final int K_REVERSE_VIDEO_MASK = 1 << 5;
+
+    /**
      * This mask indicates that origin mode is set. (Cursor addressing is
      * relative to the absolute screen size, rather than the currently set top
      * and bottom margins.)
@@ -353,6 +358,10 @@ class TerminalEmulator {
     private CharsetDecoder mUTF8Decoder;
     private UpdateCallback mUTF8ModeNotify;
 
+    /** This is not accurate, but it makes the terminal more useful on
+     * small screens.
+     */
+    private final static boolean DEFAULT_TO_AUTOWRAP_ENABLED = true;
 
     /**
      * Construct a terminal emulator that uses the supplied screen
@@ -519,6 +528,10 @@ class TerminalEmulator {
         return mCursorCol;
     }
 
+    public final boolean getReverseVideo() {
+        return (mDecFlags & K_REVERSE_VIDEO_MASK) != 0;
+    }
+
     public final boolean getKeypadApplicationMode() {
         return mbKeypadApplicationMode;
     }
@@ -665,7 +678,7 @@ class TerminalEmulator {
                 break;
 
             case ESC_LEFT_SQUARE_BRACKET_QUESTION_MARK:
-                doEscLSBQuest(b);
+                doEscLSBQuest(b); // CSI ?
                 break;
 
             case ESC_PERCENT:
@@ -1595,9 +1608,7 @@ class TerminalEmulator {
     }
 
     private boolean autoWrapEnabled() {
-        // Always enable auto wrap, because it's useful on a small screen
-        return true;
-        // return (mDecFlags & K_WRAPAROUND_MODE_MASK) != 0;
+        return (mDecFlags & K_WRAPAROUND_MODE_MASK) != 0;
     }
 
     /**
@@ -1734,6 +1745,9 @@ class TerminalEmulator {
         mSavedCursorRow = 0;
         mSavedCursorCol = 0;
         mDecFlags = 0;
+        if (DEFAULT_TO_AUTOWRAP_ENABLED) {
+            mDecFlags |= K_WRAPAROUND_MODE_MASK;
+        }
         mSavedDecFlags = 0;
         mInsertMode = false;
         mAutomaticNewlineMode = false;

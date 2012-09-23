@@ -1153,6 +1153,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         int w = getWidth();
         int h = getHeight();
 
+        boolean reverseVideo = mEmulator.getReverseVideo();
+        mTextRenderer.setReverseVideo(reverseVideo);
+
         canvas.drawRect(0, 0, w, h, mBackgroundPaint);
         float x = -mLeftColumn * mCharacterWidth;
         float y = mCharacterHeight + mTopOfScreenMargin;
