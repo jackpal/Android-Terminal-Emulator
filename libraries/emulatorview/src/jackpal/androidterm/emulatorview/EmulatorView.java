@@ -967,6 +967,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (LOG_KEY_EVENTS) {
             Log.w(TAG, "onKeyDown " + keyCode);
         }
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            return super.onKeyDown(keyCode,  event);
+        }
         if (mTermKeyListener == null) {
             mTermKeyListener = new TermKeyListener(mControlKeyCode, mFnKeyCode, mBackKeyCharacter, mAltSendsEsc, getKeypadApplicationMode());
         }
@@ -1016,6 +1019,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (LOG_KEY_EVENTS) {
             Log.w(TAG, "onKeyUp " + keyCode);
+        }
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            return super.onKeyUp(keyCode,  event);
         }
         //MetaKeyKeyListener.handleKeyDown(metaState, keyCode, event)
         boolean isHandled = mTermKeyListener.keyUp(event);
