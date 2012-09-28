@@ -301,7 +301,22 @@ class TerminalEmulator {
 
     private boolean mbKeypadApplicationMode;
 
+    /** false == G0, true == G1 */
     private boolean mAlternateCharSet;
+
+    private final static int CHAR_SET_UK = 0;
+    private final static int CHAR_SET_ASCII = 1;
+    private final static int CHAR_SET_SPECIAL_GRAPHICS = 2;
+    private final static int CHAR_SET_ALT_STANDARD = 3;
+    private final static int CHAR_SET_ALT_SPECIAL_GRAPICS = 4;
+
+    /** What is the current graphics character set. [0] == G0, [1] == G1 */
+    private int[] mCharSet = new int[2];
+
+    /** Derived from mAlternateCharSet and mCharSet.
+     *  True if we're supposed to be drawing the special graphics.
+     */
+    private boolean mUseAlternateCharSet;
 
     /**
      * Special graphics character set
@@ -776,6 +791,12 @@ class TerminalEmulator {
 
     private void setAltCharSet(boolean alternateCharSet) {
         mAlternateCharSet = alternateCharSet;
+        computeEffectiveCharSet();
+    }
+
+    private void computeEffectiveCharSet() {
+        int charSet = mCharSet[mAlternateCharSet ? 1 : 0];
+        mUseAlternateCharSet = charSet == CHAR_SET_SPECIAL_GRAPHICS;
     }
 
     private int nextTabStop(int cursorCol) {
@@ -885,28 +906,37 @@ class TerminalEmulator {
     }
 
     private void doEscSelectLeftParen(byte b) {
-        doSelectCharSet(true, b);
+        doSelectCharSet(0, b);
     }
 
     private void doEscSelectRightParen(byte b) {
-        doSelectCharSet(false, b);
+        doSelectCharSet(1, b);
     }
 
-    private void doSelectCharSet(boolean isG0CharSet, byte b) {
+    private void doSelectCharSet(int charSetIndex, byte b) {
+        int charSet;
         switch (b) {
         case 'A': // United Kingdom character set
+            charSet = CHAR_SET_UK;
             break;
         case 'B': // ASCII set
+            charSet = CHAR_SET_ASCII;
             break;
         case '0': // Special Graphics
+            charSet = CHAR_SET_SPECIAL_GRAPHICS;
             break;
         case '1': // Alternate character set
+            charSet = CHAR_SET_ALT_STANDARD;
             break;
         case '2':
+            charSet = CHAR_SET_ALT_SPECIAL_GRAPICS;
             break;
         default:
             unknownSequence(b);
+            return;
         }
+        mCharSet[charSetIndex] = charSet;
+        computeEffectiveCharSet();
     }
 
     private void doEscPound(byte b) {
@@ -1688,7 +1718,7 @@ class TerminalEmulator {
     }
 
     private void emit(byte b) {
-        if (mAlternateCharSet && b < 128) {
+        if (mUseAlternateCharSet && b < 128) {
             emit((int) mSpecialGraphicsCharMap[b]);
         } else {
             emit((int) b);
@@ -1778,6 +1808,9 @@ class TerminalEmulator {
         mBackColor = mDefaultBackColor;
         mbKeypadApplicationMode = false;
         mAlternateCharSet = false;
+        mCharSet[0] = CHAR_SET_ASCII;
+        mCharSet[1] = CHAR_SET_SPECIAL_GRAPHICS;
+        computeEffectiveCharSet();
         // mProcessedCharCount is preserved unchanged.
         setDefaultTabStops();
         blockClear(0, 0, mColumns, mRows);
