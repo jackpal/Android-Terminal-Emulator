@@ -19,5 +19,4 @@
    <bool name="pref_verify_path_default">true</bool>
    <bool name="pref_do_path_extensions_default">true</bool>
    <bool name="pref_allow_prepend_path_default">true</bool>
-   <bool name="pref_alt_is_escape_default">false</bool>
 </resources>

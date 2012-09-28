@@ -144,7 +144,4 @@
   <string name="email_transcript_subject">Transcript from Android Terminal Emulator</string>
   <string name="email_transcript_chooser_title">Mail transcript using:</string>
   <string name="email_transcript_no_email_activity_found">Could not choose an email activity to send transcript.</string>
-
-  <string name="title_alt_is_escape">Alt sends Escape</string>
-  <string name="summary_alt_is_escape">Alt in combination with another key sends Escape to the terminal. Entering Unicode with the Alt key doesnt work in this case.</string>
 </resources>

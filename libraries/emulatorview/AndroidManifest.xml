@@ -3,5 +3,4 @@
       package="jackpal.androidterm.emulatorview"
       android:versionCode="43"
       android:versionName="1.0.42">
-    <uses-sdk android:minSdkVersion="3"/>
 </manifest>

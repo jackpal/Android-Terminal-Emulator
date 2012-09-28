@@ -128,7 +128,6 @@
                 android:entries="@array/entries_ime_preference"
                 android:entryValues="@array/entryvalues_ime_preference"
                 android:dialogTitle="@string/dialog_title_ime_preference" />
-        <CheckBoxPreference android:key="altisescape" android:title="@string/title_alt_is_escape" android:summary="@string/summary_alt_is_escape" android:defaultValue="@bool/pref_alt_is_escape_default"/>
 
     </PreferenceCategory>
 
