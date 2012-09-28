@@ -1216,7 +1216,8 @@ class TerminalEmulator {
             doSetMode(false);
             break;
 
-        case 'm': // Esc [ Pn m - character attributes. (can have up to 3 numerical arguments)
+        case 'm': // Esc [ Pn m - character attributes.
+                  // (can have up to 16 numerical arguments)
             selectGraphicRendition();
             break;
 
@@ -1315,7 +1316,7 @@ class TerminalEmulator {
                 mBackColor = mArgs[i+2];
                 int color = mArgs[i+2];
                 if (checkColor(color)) {
-                    mForeColor = color;
+                    mBackColor = color;
                 }
                 i += 2;
             } else if (code == 49) { // set default background color
