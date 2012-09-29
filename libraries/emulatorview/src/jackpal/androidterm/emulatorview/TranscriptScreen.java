@@ -110,9 +110,10 @@ class TranscriptScreen implements Screen {
      *
      * @param topMargin First line that is scrolled.
      * @param bottomMargin One line after the last line that is scrolled.
+     * @param style the style for the newly exposed line.
      */
-    public void scroll(int topMargin, int bottomMargin) {
-        mData.scroll(topMargin, bottomMargin);
+    public void scroll(int topMargin, int bottomMargin, int style) {
+        mData.scroll(topMargin, bottomMargin, style);
     }
 
     /**
@@ -165,7 +166,7 @@ class TranscriptScreen implements Screen {
     public final void drawText(int row, Canvas canvas, float x, float y,
             TextRenderer renderer, int cx, int selx1, int selx2, String imeText) {
         char[] line;
-        byte[] color;
+        StyleRow color;
         try {
             line = mData.getLine(row);
             color = mData.getLineColor(row);
@@ -209,11 +210,7 @@ class TranscriptScreen implements Screen {
         while (column < columns) {
             int style;
             boolean cursorStyle = false;
-            if (color != null) {
-                style = TextStyleLine.getStyle(color, column);
-            } else {
-                style = defaultStyle;
-            }
+            style = color.get(column);
             int width;
             if (Character.isHighSurrogate(line[index])) {
                 cHigh = line[index++];
@@ -309,7 +306,7 @@ class TranscriptScreen implements Screen {
         UnicodeTranscript data = mData;
         int columns = mColumns;
         char[] line;
-        byte[] rowColorBuffer = null;
+        StyleRow rowColorBuffer = null;
         if (selY1 < -data.getActiveTranscriptRows()) {
             selY1 = -data.getActiveTranscriptRows();
         }
@@ -353,7 +350,7 @@ class TranscriptScreen implements Screen {
                 char c = line[i];
                 if (c == 0) {
                     break;
-                } else if (c != ' ' || (rowColorBuffer != null && TextStyleLine.getStyle(rowColorBuffer, column) != defaultColor)) {
+                } else if (c != ' ' || (rowColorBuffer.get(column) != defaultColor)) {
                     lastPrintingChar = i;
                 }
                 if (!Character.isLowSurrogate(c)) {
@@ -369,7 +366,7 @@ class TranscriptScreen implements Screen {
                 if (rowColorBuffer != null) {
                     column = 0;
                     for (int j = 0; j <= lastPrintingChar; ++j) {
-                        colors.append(TextStyleLine.getStyle(rowColorBuffer, column));
+                        colors.append(rowColorBuffer.get(column));
                         column += UnicodeTranscript.charWidth(line, j);
                         if (Character.isHighSurrogate(line[j])) {
                             ++j;

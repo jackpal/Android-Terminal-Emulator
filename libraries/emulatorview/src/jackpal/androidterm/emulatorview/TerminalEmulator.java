@@ -1491,7 +1491,7 @@ class TerminalEmulator {
     private void scroll() {
         //System.out.println("Scroll(): mTopMargin " + mTopMargin + " mBottomMargin " + mBottomMargin);
         mScrollCounter ++;
-        mScreen.scroll(mTopMargin, mBottomMargin);
+        mScreen.scroll(mTopMargin, mBottomMargin, getStyle());
     }
 
     /**

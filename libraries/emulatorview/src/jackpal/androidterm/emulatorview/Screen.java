@@ -55,8 +55,9 @@ interface Screen {
      *
      * @param topMargin First line that is scrolled.
      * @param bottomMargin One line after the last line that is scrolled.
+     * @param style the style for the newly exposed line.
      */
-    void scroll(int topMargin, int bottomMargin);
+    void scroll(int topMargin, int bottomMargin, int style);
 
     /**
      * Block copy characters from one position in the screen to another. The two
