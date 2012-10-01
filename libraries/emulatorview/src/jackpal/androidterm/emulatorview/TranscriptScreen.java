@@ -204,19 +204,16 @@ class TranscriptScreen implements Screen {
         int lastRunStart = -1;
         int lastRunStartIndex = -1;
         boolean forceFlushRun = false;
-        char cHigh = 0;
         int column = 0;
         int index = 0;
         while (column < columns) {
-            int style;
+            int style = color.get(column);
             boolean cursorStyle = false;
-            style = color.get(column);
+            int incr = 1;
             int width;
             if (Character.isHighSurrogate(line[index])) {
-                cHigh = line[index++];
-                continue;
-            } else if (Character.isLowSurrogate(line[index])) {
-                width = UnicodeTranscript.charWidth(cHigh, line[index]);
+                width = UnicodeTranscript.charWidth(line, index);
+                incr++;
             } else {
                 width = UnicodeTranscript.charWidth(line[index]);
             }
@@ -242,7 +239,7 @@ class TranscriptScreen implements Screen {
             }
             runWidth += width;
             column += width;
-            index++;
+            index += incr;
             if (width > 1) {
                 /* We cannot draw two or more East Asian wide characters in the
                    same run, because we need to make each wide character take
