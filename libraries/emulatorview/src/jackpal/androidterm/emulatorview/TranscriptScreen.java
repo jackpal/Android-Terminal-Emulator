@@ -350,7 +350,7 @@ class TranscriptScreen implements Screen {
                 char c = line[i];
                 if (c == 0) {
                     break;
-                } else if (c != ' ' || (rowColorBuffer.get(column) != defaultColor)) {
+                } else if (c != ' ' || ((rowColorBuffer != null) && (rowColorBuffer.get(column) != defaultColor))) {
                     lastPrintingChar = i;
                 }
                 if (!Character.isLowSurrogate(c)) {
