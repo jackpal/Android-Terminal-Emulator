@@ -51,6 +51,8 @@ public class TermSettings {
     private String mPrependPath = null;
     private String mAppendPath = null;
 
+	private boolean mAltSendsEsc;
+
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String CURSORSTYLE_KEY = "cursorstyle";
@@ -69,6 +71,7 @@ public class TermSettings {
     private static final String VERIFYPATH_KEY = "verify_path";
     private static final String PATHEXTENSIONS_KEY = "do_path_extensions";
     private static final String PATHPREPEND_KEY = "allow_prepend_path";
+    private static final String ALT_SENDS_ESC = "alt_key_behavior";
 
     public static final int WHITE = 0xffffffff;
     public static final int BLACK = 0xff000000;
@@ -177,6 +180,7 @@ public class TermSettings {
         mVerifyPath = readBooleanPref(VERIFYPATH_KEY, mVerifyPath);
         mDoPathExtensions = readBooleanPref(PATHEXTENSIONS_KEY, mDoPathExtensions);
         mAllowPathPrepend = readBooleanPref(PATHPREPEND_KEY, mAllowPathPrepend);
+        mAltSendsEsc = readBooleanPref(ALT_SENDS_ESC, mAltSendsEsc);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 
@@ -234,6 +238,10 @@ public class TermSettings {
 
     public boolean backKeySendsCharacter() {
         return mBackKeyAction >= BACK_KEY_SENDS_ESC;
+    }
+
+    public boolean getAltSendsEscFlag() {
+        return mAltSendsEsc;
     }
 
     public int getBackKeyCharacter() {

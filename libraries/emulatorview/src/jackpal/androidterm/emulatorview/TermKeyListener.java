@@ -665,6 +665,7 @@ class TermKeyListener {
     private TermSession mTermSession;
 
     private int mBackKeyCode;
+    private boolean mAltSendsEsc;
 
     // Map keycodes out of (above) the Unicode code point space.
     static public final int KEYCODE_OFFSET = 0xA00000;
@@ -680,6 +681,10 @@ class TermKeyListener {
 
     public void setBackKeyCharacter(int code) {
         mBackKeyCode = code;
+    }
+
+    public void setAltSendsEsc(boolean flag) {
+        mAltSendsEsc = flag;
     }
 
     public void handleControlKey(boolean down) {

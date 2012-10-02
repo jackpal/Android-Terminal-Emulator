@@ -43,6 +43,7 @@ public class TermView extends EmulatorView {
         setUseCookedIME(settings.useCookedIME());
         setColorScheme(scheme);
         setBackKeyCharacter(settings.getBackKeyCharacter());
+        setAltSendsEsc(settings.getAltSendsEscFlag());
         setControlKeyCode(settings.getControlKeyCode());
         setFnKeyCode(settings.getFnKeyCode());
     }

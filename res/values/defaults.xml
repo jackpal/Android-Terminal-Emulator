@@ -8,6 +8,7 @@
    <string name="pref_fontsize_default">10</string>
    <string name="pref_color_default">1</string>
    <bool name="pref_utf8_by_default_default">false</bool>
+   <bool name="pref_alt_sends_esc_off_default">false</bool>
    <string name="pref_backaction_default">2</string>
    <string name="pref_controlkey_default">5</string>
    <string name="pref_fnkey_default">4</string>
