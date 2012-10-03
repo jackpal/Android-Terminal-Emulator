@@ -8,7 +8,6 @@ import java.io.IOException;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 
-
 /**
  * An ASCII key listener. Supports control characters and escape. Keeps track of
  * the current state of the alt, shift, and control keys.
@@ -789,12 +788,12 @@ class TermKeyListener {
      * @param keyCode the keycode of the keyDown event
      *
      */
-    public void keyDown(int keyCode, KeyEvent event, boolean appMode) throws IOException {
+    public void keyDown(int keyCode, KeyEvent event, boolean appMode,
+            boolean allowToggle) throws IOException {
         if (handleKeyCode(keyCode, appMode)) {
             return;
         }
         int result = -1;
-        boolean allowToggle = isEventFromToggleDevice(event);
         boolean chordedCtrl = false;
         switch (keyCode) {
         case KeyEvent.KEYCODE_ALT_RIGHT:
@@ -854,7 +853,7 @@ class TermKeyListener {
         }
     }
 
-    private boolean isEventFromToggleDevice(KeyEvent event) {
+    static boolean isEventFromToggleDevice(KeyEvent event) {
         if (AndroidCompat.SDK < 11) {
             return true;
         }

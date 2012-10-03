@@ -973,7 +973,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         // Translate the keyCode into an ASCII character.
 
         try {
-            mKeyListener.keyDown(keyCode, event, getKeypadApplicationMode());
+            mKeyListener.keyDown(keyCode, event, getKeypadApplicationMode(),
+                    TermKeyListener.isEventFromToggleDevice(event));
         } catch (IOException e) {
             // Ignore I/O exceptions
         }

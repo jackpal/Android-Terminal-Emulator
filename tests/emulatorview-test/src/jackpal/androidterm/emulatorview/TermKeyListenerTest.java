@@ -17,7 +17,18 @@ class MockTermSession extends TermSession {
 
     @Override
     public void write(byte[] data, int offset, int count) {
-        charseq = data;
+        if (charseq==null) {
+            charseq = data;
+        } else {
+            byte[] tmp = new byte[data.length + charseq.length];
+            for (int i = 0; i < charseq.length; i++) {
+                tmp[i] = charseq[i];
+            }
+            for (int i = 0; i < data.length; i++) {
+                tmp[i+charseq.length] = data[i];
+            }
+            charseq = tmp;
+        }
     }
 
     public void clearQueue() {
@@ -67,6 +78,7 @@ public class TermKeyListenerTest extends  AndroidTestCase {
     public void setUp() {
         //tkl_AltIsEsc = new TermKeyListener(mckTermSessionA);
         tkl_AltNotEsc = new TermKeyListener(mckTermSessionB);
+        mckTermSessionB.clearQueue();
     }
 
     public void testKey_a()
@@ -120,7 +132,7 @@ public class TermKeyListenerTest extends  AndroidTestCase {
         throws UnsupportedEncodingException, IOException {
         KeyEvent event = new KeyEvent(1,2, KeyEvent.ACTION_DOWN,
                                       KeyEvent.KEYCODE_DEL,0 ,0);
-        tkl_AltNotEsc.keyDown(event.getKeyCode(), event, true);
+        tkl_AltNotEsc.keyDown(event.getKeyCode(), event, true, false);
         byte[] res = mckTermSessionB.getCharSequence();
         byte[] exp = "\177".getBytes("UTF-8");
         assertNotNull(res);
@@ -244,128 +256,152 @@ public class TermKeyListenerTest extends  AndroidTestCase {
 
     public void testKey_FN_w()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_W,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_W,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{27,79,65});
+                  new byte[]{27,79,65}, true);
     }
 
     public void testKey_FN_a()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_A,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_A,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{27,79,68});
+                  new byte[]{27,79,68}, true);
     }
 
     public void testKey_FN_s()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_S,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_S,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{27,79,66});
+                  new byte[]{27,79,66}, true);
     }
 
     public void testKey_FN_d()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_D,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_D,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{27,79,67});
+                  new byte[]{27,79,67}, true);
     }
 
     public void testKey_FN_p()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_P,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_P,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{27,91,53,126});
+                  new byte[]{27,91,53,126}, true);
     }
 
     public void testKey_FN_n()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_N,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_N,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{27,91,54,126});
+                  new byte[]{27,91,54,126}, true);
     }
 
     public void testKey_FN_t()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_T,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_T,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{9});
+                  new byte[]{9}, true);
     }
 
     public void testKey_FN_l()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_L,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_L,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{124,0,0,0});
+                  new byte[]{124,0,0,0}, true);
     }
 
     public void testKey_FN_u()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_U,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_U,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{95,0,0,0});
+                  new byte[]{95,0,0,0}, true);
     }
 
     public void testKey_FN_e()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_E,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_E,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{27,0,0,0});
+                  new byte[]{27,0,0,0}, true);
     }
 
     public void testKey_FN_i()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_I,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_I,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{27,91,50,126});
+                  new byte[]{27,91,50,126}, true);
     }
 
     public void testKey_FN_x()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_X,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_X,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{27,91,51,126});
+                  new byte[]{27,91,51,126}, true);
     }
 
     public void testKey_FN_h()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_H,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_H,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{27,91,49,126});
+                  new byte[]{27,91,49,126}, true);
     }
 
     public void testKey_FN_f()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_F,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_F,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{27,91,52,126});
+                  new byte[]{27,91,52,126}, true);
     }
 
     public void testKey_FN_PERIOD()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_PERIOD,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_PERIOD,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{28,0,0,0});
+                  new byte[]{28,0,0,0}, true);
     }
 
     public void testKey_FN_9()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_9,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_9,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{-62,-69,0,0});
+                  new byte[]{-62,-69,0,0}, true);
     }
 
     public void testKey_FN_0()
         throws UnsupportedEncodingException, IOException {
-        keyHelper(KeyEvent.KEYCODE_0,
+        tkl_AltNotEsc.handleFnKey(true);
+        keyHelperToggle(KeyEvent.KEYCODE_0,
                   KeyEvent.META_FUNCTION_ON,
-                  new byte[]{27,91,50,49,126});
+                  new byte[]{27,91,50,49,126}, true);
     }
 
-    private void keyHelper(int keycode, int metastate, byte[] expectedOutPut)
+    private void keyHelper(int keycode, int metastate,
+            byte[] expectedOutput)
+                       throws UnsupportedEncodingException, IOException{
+        keyHelperToggle(keycode, metastate, expectedOutput, false);
+    }
+
+    private void keyHelperToggle(int keycode, int metastate,
+               byte[] expectedOutPut, boolean toggle)
         throws UnsupportedEncodingException, IOException {
         KeyEvent event = new KeyEvent(1,2, KeyEvent.ACTION_DOWN, keycode, 0,
                                       metastate);
-        tkl_AltNotEsc.keyDown(event.getKeyCode(), event, true);
+        tkl_AltNotEsc.keyDown(event.getKeyCode(), event, true, toggle);
         byte[] res = mckTermSessionB.getCharSequence();
         assertNotNull(res);
         assertTrue(expectedOutPut.length <= res.length);
