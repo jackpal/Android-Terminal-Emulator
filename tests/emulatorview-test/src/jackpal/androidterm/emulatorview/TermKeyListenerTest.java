@@ -111,6 +111,19 @@ public class TermKeyListenerTest extends  AndroidTestCase {
                   new byte[]{0x00,0x00,0x00,0x00});
     }
 
+    public void testKey_ALT_x_esc()
+            throws UnsupportedEncodingException, IOException {
+        tkl_AltNotEsc.setAltSendsEsc(true);
+        int keycode = KeyEvent.KEYCODE_ALT_LEFT;
+        KeyEvent event = new KeyEvent(1,2, KeyEvent.ACTION_DOWN, keycode, 0,
+                0);
+        tkl_AltNotEsc.keyDown(keycode, event, false, true);
+        keyHelperToggle(KeyEvent.KEYCODE_X,
+
+                      KeyEvent.META_ALT_ON,
+                      new byte[]{0x1b,0x78}, true);
+        }
+
     public void testKey_ALT_c_no_esc()
         throws UnsupportedEncodingException, IOException {
         keyHelper(KeyEvent.KEYCODE_C,

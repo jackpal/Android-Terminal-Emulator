@@ -834,7 +834,12 @@ class TermKeyListener {
                 effectiveMetaState |= KeyEvent.META_SHIFT_ON;
             }
             if (effectiveAlt) {
-                effectiveMetaState |= KeyEvent.META_ALT_ON;
+                if (mAltSendsEsc) {
+                    mTermSession.write(new byte[]{0x1b},0,1);
+                    effectiveMetaState &= ~KeyEvent.META_ALT_ON;
+                } else {
+                    effectiveMetaState |= KeyEvent.META_ALT_ON;
+                }
             }
             result = event.getUnicodeChar(effectiveMetaState);
             break;
