@@ -1243,7 +1243,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     /**
-     * Set whether to prepend the ESC keycode to the character when when pressing 
+     * Set whether to prepend the ESC keycode to the character when when pressing
      * the ALT Key.
      * @param flag
      */

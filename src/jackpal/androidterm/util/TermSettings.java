@@ -51,7 +51,7 @@ public class TermSettings {
     private String mPrependPath = null;
     private String mAppendPath = null;
 
-	private boolean mAltSendsEsc;
+    private boolean mAltSendsEsc;
 
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String ACTIONBAR_KEY = "actionbar";
@@ -71,7 +71,7 @@ public class TermSettings {
     private static final String VERIFYPATH_KEY = "verify_path";
     private static final String PATHEXTENSIONS_KEY = "do_path_extensions";
     private static final String PATHPREPEND_KEY = "allow_prepend_path";
-    private static final String ALT_SENDS_ESC = "alt_key_behavior";
+    private static final String ALT_SENDS_ESC = "alt_sends_esc";
 
     public static final int WHITE = 0xffffffff;
     public static final int BLACK = 0xff000000;
@@ -156,6 +156,7 @@ public class TermSettings {
         mVerifyPath = res.getBoolean(R.bool.pref_verify_path_default);
         mDoPathExtensions = res.getBoolean(R.bool.pref_do_path_extensions_default);
         mAllowPathPrepend = res.getBoolean(R.bool.pref_allow_prepend_path_default);
+        mAltSendsEsc = res.getBoolean(R.bool.pref_alt_sends_esc_default);
     }
 
     public void readPrefs(SharedPreferences prefs) {

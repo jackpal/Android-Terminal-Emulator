@@ -87,7 +87,6 @@
                 android:defaultValue="@bool/pref_utf8_by_default_default"
                 android:title="@string/title_utf8_by_default_preference"
                 android:summary="@string/summary_utf8_by_default_preference" />
-        <CheckBoxPreference android:title="@string/alt_key_behavior" android:key="alt_key_behavior" android:defaultValue="@bool/pref_alt_sends_esc_off_default" android:summaryOn="@string/alt_sends_esc" android:summaryOff="@string/alt_compose_char"/>
 
     </PreferenceCategory>
 
@@ -129,6 +128,12 @@
                 android:entries="@array/entries_ime_preference"
                 android:entryValues="@array/entryvalues_ime_preference"
                 android:dialogTitle="@string/dialog_title_ime_preference" />
+
+        <CheckBoxPreference android:title="@string/alt_sends_esc"
+                android:key="alt_sends_esc"
+                android:defaultValue="@bool/pref_alt_sends_esc_default"
+                android:summaryOn="@string/alt_sends_esc_summary_on"
+                android:summaryOff="@string/alt_sends_esc_summary_off" />
 
     </PreferenceCategory>
 

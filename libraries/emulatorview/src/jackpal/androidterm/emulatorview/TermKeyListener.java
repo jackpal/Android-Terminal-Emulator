@@ -492,6 +492,8 @@ class TermKeyListener {
     private static final int META_CTRL_ON = 0x1000;
     private static final int META_SHIFT_ON = 1;
     private static final int META_CTRL_MASK = 0x7000;
+    private static final int META_META_ON   = 0x00010000;
+    private static final int META_META_MASK = 0x00070000;
 
     private String[] mKeyCodes = new String[256];
     private String[] mAppKeyCodes = new String[256];
@@ -795,6 +797,7 @@ class TermKeyListener {
         }
         int result = -1;
         boolean chordedCtrl = false;
+        boolean setHighBit = false;
         switch (keyCode) {
         case KeyEvent.KEYCODE_ALT_RIGHT:
         case KeyEvent.KEYCODE_ALT_LEFT:
@@ -833,12 +836,32 @@ class TermKeyListener {
             if (effectiveCaps) {
                 effectiveMetaState |= KeyEvent.META_SHIFT_ON;
             }
+            if (!allowToggle && (effectiveMetaState & META_ALT_ON) != 0) {
+                effectiveAlt = true;
+            }
             if (effectiveAlt) {
                 if (mAltSendsEsc) {
                     mTermSession.write(new byte[]{0x1b},0,1);
-                    effectiveMetaState &= ~KeyEvent.META_ALT_ON;
+                    effectiveMetaState &= ~KeyEvent.META_ALT_MASK;
                 } else {
-                    effectiveMetaState |= KeyEvent.META_ALT_ON;
+                    // Legacy behavior: Pass Alt through to allow composing characters.
+                    // effectiveMetaState |= KeyEvent.META_ALT_ON;
+                    setHighBit = true;
+                    effectiveMetaState &= ~KeyEvent.META_ALT_MASK;
+                }
+            }
+
+            // Note: The Hacker keyboard IME key labeled Alt actually sends Meta.
+
+            // Either send an ESC, or set the high bit of the character.
+
+            if ((metaState & KeyEvent.META_META_ON) != 0) {
+                if (mAltSendsEsc) {
+                    mTermSession.write(new byte[]{0x1b},0,1);
+                    effectiveMetaState &= ~KeyEvent.META_META_MASK;
+                } else {
+                    setHighBit = true;
+                    effectiveMetaState &= ~KeyEvent.META_META_MASK;
                 }
             }
             result = event.getUnicodeChar(effectiveMetaState);
@@ -854,6 +877,9 @@ class TermKeyListener {
         if (result >= KEYCODE_OFFSET) {
             handleKeyCode(result - KEYCODE_OFFSET, appMode);
         } else if (result >= 0) {
+            if (setHighBit) {
+                result |= 0x80;
+            }
             mTermSession.write(result);
         }
     }

@@ -144,7 +144,9 @@
   <string name="email_transcript_subject">Transcript from Android Terminal Emulator</string>
   <string name="email_transcript_chooser_title">Mail transcript using:</string>
   <string name="email_transcript_no_email_activity_found">Could not choose an email activity to send transcript.</string>
-  <string name="alt_sends_esc">Alt sends ESC</string>
-  <string name="alt_compose_char">Alt composes characters</string>
-  <string name="alt_key_behavior">Alt Key Behaviour</string>
+
+  <string name="alt_sends_esc">Alt key sends ESC</string>
+  <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
+  <string name="alt_sends_esc_summary_off">Alt key sets high bit.</string>
+
 </resources>
