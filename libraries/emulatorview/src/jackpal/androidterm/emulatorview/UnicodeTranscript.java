@@ -964,7 +964,7 @@ class FullUnicodeLine {
                 int nextWidth = UnicodeTranscript.charWidth(text, nextPos);
                 int nextLen;
                 if (column + nextWidth + 1 < columns) {
-                    nextLen = findStartOfColumn(column + nextWidth + 1) - nextPos;
+                    nextLen = findStartOfColumn(column + nextWidth + 1) + shift - nextPos;
                 } else {
                     nextLen = spaceUsed - nextPos;
                 }
@@ -983,7 +983,7 @@ class FullUnicodeLine {
                     shift -= nextLen;
 
                     // Truncate the line
-                    offset[0] = (short) findStartOfColumn(columns - 1);
+                    offset[0] -= nextLen;
                 }
 
                 // Correct the offset for the next column to reflect width change
