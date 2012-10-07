@@ -140,4 +140,8 @@
   <string name="permdesc_append_to_path">Az alkalmazások felvehetnek új parancsokat (hozzáfűzhetnek a PATH változóhoz) az Android Terminál Emulátorban.</string>
   <string name="perm_prepend_to_path">Parancsok felülírása a Terminál Emulátorban</string>
   <string name="permdesc_prepend_to_path">Az alkalmazások felülírhatják a meglévő parancsokat (hozzáfűzhetnek a PATH változó elejéhez) az Android Terminál Emulátorban.</string>
+
+  <string name="email_transcript_subject">Android Terminal Emulátor terminál másolat</string>
+  <string name="email_transcript_chooser_title">Terminál küldése:</string>
+  <string name="email_transcript_no_email_activity_found">Nem sikerült kiválasztani az email alkalmazást.</string>
 </resources>
