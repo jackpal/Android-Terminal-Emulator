@@ -144,4 +144,8 @@
   <string name="email_transcript_subject">Android Terminal Emulátor terminál másolat</string>
   <string name="email_transcript_chooser_title">Terminál küldése:</string>
   <string name="email_transcript_no_email_activity_found">Nem sikerült kiválasztani az email alkalmazást.</string>
+  
+  <string name="alt_sends_esc">Az Alt billentyű ESC-et küld</string>
+  <string name="alt_sends_esc_summary_on">Az Alt billentyű ESC-et küld.</string>
+  <string name="alt_sends_esc_summary_off">Az Alt billentyű bebillenti az előjel bitet.</string>
 </resources>
