@@ -942,4 +942,12 @@ class TermKeyListener {
             break;
         }
     }
+
+    public boolean getAltSendsEsc() {
+        return mAltSendsEsc;
+    }
+
+    public boolean isAltActive() {
+        return mAltKey.isActive();
+    }
 }

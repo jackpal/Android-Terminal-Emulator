@@ -1014,6 +1014,23 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return true;
     }
 
+    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+        boolean altEsc = mKeyListener.getAltSendsEsc();
+        boolean altOn = (event.getMetaState() & KeyEvent.META_ALT_ON) != 0;
+        boolean metaOn = (event.getMetaState() & KeyEvent.META_META_ON) != 0;
+        boolean altPressed = (keyCode == KeyEvent.KEYCODE_ALT_LEFT)
+                || (keyCode == KeyEvent.KEYCODE_ALT_RIGHT);
+        boolean altActive = mKeyListener.isAltActive();
+        if (altEsc && (altOn || altPressed || altActive || metaOn)) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                return onKeyDown(keyCode, event);
+            } else {
+                return onKeyUp(keyCode, event);
+            }
+        } else {
+            return super.onKeyPreIme(keyCode, event);
+        }
+    };
 
     private boolean handleControlKey(int keyCode, boolean down) {
         if (keyCode == mControlKeyCode) {
