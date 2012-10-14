@@ -13,6 +13,8 @@ import android.view.KeyEvent;
  * the current state of the alt, shift, and control keys.
  */
 class TermKeyListener {
+    /** Disabled for now because it interferes with ALT processing on phones with physical keyboards. */
+    private boolean SUPPORT_8_BIT_META = false;
     /**
      * Android key codes that are defined in the Android 2.3 API.
      * We want to recognize these codes, because they will be sent to our
@@ -843,25 +845,26 @@ class TermKeyListener {
                 if (mAltSendsEsc) {
                     mTermSession.write(new byte[]{0x1b},0,1);
                     effectiveMetaState &= ~KeyEvent.META_ALT_MASK;
-                } else {
-                    // Legacy behavior: Pass Alt through to allow composing characters.
-                    // effectiveMetaState |= KeyEvent.META_ALT_ON;
+                } else if (SUPPORT_8_BIT_META) {
                     setHighBit = true;
                     effectiveMetaState &= ~KeyEvent.META_ALT_MASK;
+                } else {
+                    // Legacy behavior: Pass Alt through to allow composing characters.
                 }
             }
 
             // Note: The Hacker keyboard IME key labeled Alt actually sends Meta.
 
-            // Either send an ESC, or set the high bit of the character.
 
             if ((metaState & KeyEvent.META_META_ON) != 0) {
                 if (mAltSendsEsc) {
                     mTermSession.write(new byte[]{0x1b},0,1);
                     effectiveMetaState &= ~KeyEvent.META_META_MASK;
                 } else {
-                    setHighBit = true;
-                    effectiveMetaState &= ~KeyEvent.META_META_MASK;
+                    if (SUPPORT_8_BIT_META) {
+                        setHighBit = true;
+                        effectiveMetaState &= ~KeyEvent.META_META_MASK;
+                    }
                 }
             }
             result = event.getUnicodeChar(effectiveMetaState);

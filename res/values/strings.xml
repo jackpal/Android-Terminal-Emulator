@@ -147,6 +147,6 @@
 
   <string name="alt_sends_esc">Alt key sends ESC</string>
   <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
-  <string name="alt_sends_esc_summary_off">Alt key sets high bit.</string>
+  <string name="alt_sends_esc_summary_off">Alt key does not send ESC.</string>
 
 </resources>
