@@ -21,6 +21,7 @@ import java.io.IOException;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.ClipboardManager;
@@ -171,6 +172,16 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mSelY2 = -1;
 
     private boolean mIsActive = false;
+
+    /**
+     * Routing alt and meta keyCodes away from the IME allows Alt key processing to work on
+     * the Asus Transformer TF101.
+     * It doesn't seem to harm anything else, but it also doesn't seem to be
+     * required on other platforms.
+     *
+     * This test should be refined as we learn more.
+     */
+    private final static boolean sTrapAltAndMeta = Build.MODEL.contains("Transformer TF101");
 
     private Runnable mBlinkCursor = new Runnable() {
         public void run() {
@@ -1014,22 +1025,24 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         return true;
     }
 
+    @Override
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
-        boolean altEsc = mKeyListener.getAltSendsEsc();
-        boolean altOn = (event.getMetaState() & KeyEvent.META_ALT_ON) != 0;
-        boolean metaOn = (event.getMetaState() & KeyEvent.META_META_ON) != 0;
-        boolean altPressed = (keyCode == KeyEvent.KEYCODE_ALT_LEFT)
-                || (keyCode == KeyEvent.KEYCODE_ALT_RIGHT);
-        boolean altActive = mKeyListener.isAltActive();
-        if (altEsc && (altOn || altPressed || altActive || metaOn)) {
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                return onKeyDown(keyCode, event);
-            } else {
-                return onKeyUp(keyCode, event);
+        if (sTrapAltAndMeta) {
+            boolean altOn = (event.getMetaState() & KeyEvent.META_ALT_ON) != 0;
+            boolean metaOn = (event.getMetaState() & KeyEvent.META_META_ON) != 0;
+            boolean altPressed = (keyCode == KeyEvent.KEYCODE_ALT_LEFT)
+                    || (keyCode == KeyEvent.KEYCODE_ALT_RIGHT);
+            boolean altActive = mKeyListener.isAltActive();
+            if (altEsc && (altOn || altPressed || altActive || metaOn)) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    return onKeyDown(keyCode, event);
+                } else {
+                    return onKeyUp(keyCode, event);
+                }
             }
-        } else {
-            return super.onKeyPreIme(keyCode, event);
         }
+
+        return super.onKeyPreIme(keyCode, event);
     };
 
     private boolean handleControlKey(int keyCode, boolean down) {
