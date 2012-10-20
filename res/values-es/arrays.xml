@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ -->
+
+<resources>
+    <string-array name="entries_statusbar_preference">
+        <item>Mostrar</item>
+        <item>Ocultar</item>
+    </string-array>
+
+    <string-array name="entries_actionbar_preference">
+        <!-- <item>Action bar disabled</item> -->
+        <item>Mostrar</item>
+        <item>Ocultar (Pulsa MENU para mostrarla)</item>
+    </string-array>
+
+    <string-array name="entries_cursorblink_preference">
+        <item>Non-blinking cursor</item>
+        <item>Blinking cursor</item>
+    </string-array>
+
+    <string-array name="entries_cursorstyle_preference">
+        <item>Rectángulo</item>
+        <item>Subrayado</item>
+        <item>Barra vertical</item>
+    </string-array>
+
+    <string-array name="entries_fontsize_preference">
+        <item>4 x 8 pixels</item>
+        <item>6 pt</item>
+        <item>7 pt</item>
+        <item>8 pt</item>
+        <item>9 pt</item>
+        <item>10 pt</item>
+        <item>12 pt</item>
+        <item>14 pt</item>
+        <item>16 pt</item>
+        <item>20 pt</item>
+    </string-array>
+
+    <string-array name="entries_color_preference">
+        <item>Negro en fondo blanco</item>
+        <item>Blanco en fondo negro</item>
+        <item>Blanco en fondo azul</item>
+        <item>Verde en fondo negro</item>
+        <item>Ámbar en fondo negro</item>
+        <item>Rojo en fondo negro</item>
+        <item>Azul en fondo negro</item>
+    </string-array>
+
+    <string-array name="entries_backaction_preference">
+        <item>Cierra todas las ventanas</item>
+        <item>Cierra sólo la ventana actual</item>
+        <item>Sale del terminal, dejándolo en segundo plano</item>
+        <item>Envía ESC al terminal</item>
+        <item>Envía TAB al terminal</item>
+    </string-array>
+
+    <string-array name="entries_controlkey_preference">
+        <item>Jog ball</item>
+        <item>\@ key</item>
+        <item>Left Alt key</item>
+        <item>Right Alt key</item>
+        <item>Tecla de subir volumen</item>
+        <item>Tecla de bajar volumen</item>
+        <item>Tecla de la camara</item>
+        <item>Nada</item>
+    </string-array>
+
+    <string-array name="entries_fnkey_preference">
+        <item>Jog ball</item>
+        <item>\@ key</item>
+        <item>Tecla Izq-Alt</item>
+        <item>Tecla Dcha-Alt</item>
+        <item>Tecla de subir volumen</item>
+        <item>Tecla de bajar volumen</item>
+        <item>Tecla de la camara</item>
+        <item>Nada</item>
+    </string-array>
+
+    <string-array name="entries_ime_preference">
+        <item>Basada en carácteres</item>
+        <item>Basada en palabras</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
+    <string-array name="control_keys_short_names">
+        <item>Pelota</item>
+        <item>\@</item>
+        <item>Izq-Alt</item>
+        <item>Dcha-Alt</item>
+        <item>Tecla de subir volumen</item>
+        <item>Tecla de bajar volumen</item>
+        <item>Tecla de la camara</item>
+        <item>Nada</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
+    <string-array name="fn_keys_short_names">
+        <item>Pelota</item>
+        <item>\@</item>
+        <item>Izq-Alt</item>
+        <item>Dcha-Alt</item>
+        <item>Tecla de subir volumen</item>
+        <item>Tecla de bajar volumen</item>
+        <item>Tecla de la camara</item>
+        <item>Nada</item>
+    </string-array>
+</resources>
