@@ -850,6 +850,7 @@ class TermKeyListener {
                     effectiveMetaState &= ~KeyEvent.META_ALT_MASK;
                 } else {
                     // Legacy behavior: Pass Alt through to allow composing characters.
+                    effectiveMetaState |= KeyEvent.META_ALT_ON;
                 }
             }
 
