@@ -19,15 +19,15 @@
     </string-array>
     <string-array name="entries_fontsize_preference">
         <item>4 x 8 пикселей</item>
-        <item>6 pt</item>
-        <item>7 pt</item>
-        <item>8 pt</item>
-        <item>9 pt</item>
-        <item>10 pt</item>
-        <item>12 pt</item>
-        <item>14 pt</item>
-        <item>16 pt</item>
-        <item>20 pt</item>
+        <item>6 пикселей</item>
+        <item>7 пикселей</item>
+        <item>8 пикселей</item>
+        <item>9 пикселей</item>
+        <item>10 пикселей</item>
+        <item>12 пикселей</item>
+        <item>14 пикселей</item>
+        <item>16 пикселей</item>
+        <item>20 пикселей</item>
     </string-array>
     <string-array name="entries_color_preference">
         <item>Чёрный на белом</item>

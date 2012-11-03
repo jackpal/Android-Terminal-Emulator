@@ -4,12 +4,18 @@
     <string name="preferences">Настройки</string>
 	<string name="new_window">Новое окно</string>
     <string name="close_window">Закрыть окно</string>
+	<string name="confirm_window_close_message">Закрыть это окно?</string>
     <string name="window_list">Окна</string>
     <string name="prev_window">Предыдущее окно</string>
     <string name="next_window">Следующее окно</string>
     <string name="reset">Сбросить терминал</string>
     <string name="send_email">Отправить Email</string>
+    <string name="enable_wakelock">Включить WakeLock</string>
+    <string name="disable_wakelock">Выключить WakeLock</string>
+    <string name="enable_wifilock">Включить WifiLock</string>
+    <string name="disable_wifilock">Выключить WifiLock</string>
     <string name="special_keys">Специальные клавиши</string>
+    <string name="control_key_dialog_title">Контроль и Функциональные Клавиши</string>
     <string name="toggle_soft_keyboard">Экранная клавиатура</string>
     <string name="edit_text">Изменить</string>
     <string name="copy_all">Копировать всё</string>
@@ -34,6 +40,8 @@
     <string name="title_utf8_by_default_preference">По умолчанию UTF-8</string>
     <string name="summary_utf8_by_default_preference">Применить режим UTF-8 по умолчанию.</string>
     <string name="keyboard_preferences">Клавиатура</string>
+    <string name="title_backaction_preference">Поведение кнопки Назад</string>
+    <string name="summary_backaction_preference">Выбор деиствия при нажатии кнопки назад.</string>
     <string name="title_controlkey_preference">Клавиша Control</string>
     <string name="summary_controlkey_preference">Выберите что будет клавишей Control.</string>
     <string name="dialog_title_controlkey_preference">Клавиша Control</string>
@@ -43,6 +51,9 @@
     <string name="title_ime_preference">Способ ввода</string>
     <string name="summary_ime_preference">Выберите способ ввода для экранной клавиатуры.</string>
     <string name="dialog_title_ime_preference">Способ ввода</string>
+    <string name="alt_sends_esc">Клавиша Alt посылает ESC</string>
+    <string name="alt_sends_esc_summary_on">Клавиша Alt посылает ESC.</string>
+    <string name="alt_sends_esc_summary_off">Клавиша Alt не посылает ESC.</string>
     <string name="shell_preferences">Командная оболочка</string>
     <string name="title_shell_preference">Командная строка</string>
     <string name="summary_shell_preference">Укажите строку обращения к командной оболочке.</string>
