@@ -24,7 +24,7 @@
     <string-array name="entries_actionbar_preference">
         <!-- <item>Akciósáv letiltva</item> -->
         <item>Mindig jelenjen meg</item>
-        <item>Elrejtés (a megjelenítéshez érintsd meg a képernyő tetejét vagy a menü gombot)</item>
+        <item>Elrejtés (a megjelenítéshez érintse meg a képernyő tetejét vagy a menü gombot)</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
