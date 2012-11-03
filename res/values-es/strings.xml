@@ -25,14 +25,14 @@
    <string name="reset">Reiniciar consola</string>
    <string name="send_email">Enviar email</string>
    <string name="special_keys">Teclas especiales</string>
-   <string name="toggle_soft_keyboard">Activar teclado en pantalla</string>
+   <string name="toggle_soft_keyboard">Ver/ocultar teclado</string>
 
-   <string name="reset_toast_notification">Esta ventana de la consola ha sido reiniciada.</string>
+   <string name="reset_toast_notification">Ventana de terminal reiniciada.</string>
 
-   <string name="enable_wakelock">Bloqueo de apagado</string>
-   <string name="disable_wakelock">Desbloquear de apagado</string>
-   <string name="enable_wifilock">Bloquear de Wifi</string>
-   <string name="disable_wifilock">Desbloquear de Wifi</string>
+   <string name="enable_wakelock">Activar WakeLock</string>
+   <string name="disable_wakelock">Desactivar WakeLock</string>
+   <string name="enable_wifilock">Activar WifiLock</string>
+   <string name="disable_wifilock">Desactivar WifiLock</string>
 
    <string name="edit_text">Editar texto</string>
    <string name="select_text">Seleccionar texto</string>
@@ -43,9 +43,9 @@
 
    <string name="window_title">Ventana %1$d</string>
 
-   <string name="service_notify_text">Una sesión de Terminal está activada</string>
+   <string name="service_notify_text">Sesión de terminal en ejecución</string>
 
-   <string name="process_exit_message">Sesión de Terminal acabada</string>
+   <string name="process_exit_message">Sesión de Terminal finalizada</string>
 
    <!-- Preference dialog -->
    <string name="screen_preferences">Pantalla</string>
@@ -93,13 +93,13 @@
    <string name="summary_fnkey_preference">Elije la tecla FN.</string>
    <string name="dialog_title_fnkey_preference">Tecla FN</string>
 
-   <string name="title_ime_preference"></string>
+   <string name="title_ime_preference">Método de introducción</string>
    <string name="summary_ime_preference">Elige el método de introducción.</string>
    <string name="dialog_title_ime_preference">Método de introducción</string>
 
    <string name="shell_preferences">Shell</string>
    <string name="title_shell_preference">Lineas de comandos</string>
-   <string name="summary_shell_preference">Especifica las líneas de comandos del shell.</string>
+   <string name="summary_shell_preference">Especifique el shell para la línea de comandos.</string>
    <string name="dialog_title_shell_preference">Shell</string>
 
    <string name="title_initialcommand_preference">Comando inicial</string>
@@ -107,7 +107,7 @@
    <string name="dialog_title_initialcommand_preference">Comando inicial</string>
 
    <string name="title_termtype_preference">Tipo de terminal</string>
-   <string name="summary_termtype_preference">Tipo de terminal se lanzará al intérprete.</string>
+   <string name="summary_termtype_preference">Que tipo de terminal se indica al shell.</string>
    <string name="dialog_title_termtype_preference">Tipo de terminal</string>
 
    <string name="title_close_window_on_process_exit_preference">Cerrar ventana al salir</string>
@@ -117,24 +117,24 @@
    <string name="summary_verify_path_preference">Los directorios inaccesibles serán eliminados de PATH.</string>
 
    <string name="title_do_path_extensions_preference">Permitir adiciones</string>
-   <string name="summary_do_path_extensions_preference">Otras aplicaciones están permitidas a añadir entradas al PATH.</string>
+   <string name="summary_do_path_extensions_preference">Se permite a otras aplicaciones añadir entradas al PATH.</string>
 
    <string name="title_allow_prepend_path_preference">Permitir anteponer adiciones</string>
    <string name="summary_allow_prepend_path_preference">Otras aplicaciones pueden sobreescribir entradas ya existentes del PATH</string>
 
-   <string name="control_key_dialog_title">Teclas de FN y control</string>
+   <string name="control_key_dialog_title">Teclas FN y Ctrl</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
         actual control key key name. -->
-   <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
-  <string name="control_key_dialog_control_disabled_text">No hay tecla para Ctrl.</string>
+   <string name="control_key_dialog_control_text">CTRLKEY Espacio : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+   <string name="control_key_dialog_control_disabled_text">No hay tecla definida para Ctrl.</string>
   <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
        actual function key key name. -->
-  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
-  <string name="control_key_dialog_fn_disabled_text">No hay tecla para FN.</string>
+  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : AvPágina\nFNKEY N : RetPágina\nFNKEY T : Tab\nFNKEY L : | (tubería)\nFNKEY U : _ (subrayado)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Suprimir\nFNKEY I : Insertar\nFNKEY H : Inicio\nFNKEY F : Fin\nFNKEY . : Control-\\\n</string>
+  <string name="control_key_dialog_fn_disabled_text">No hay tecla definida para FN.</string>
 
   <string name="confirm_window_close_message">¿Cerrar esta ventana?</string>
 
-  <string name="perm_run_script">Permitir que la aplicación ejecute scripts externos</string>
+  <string name="perm_run_script">Permitir que la aplicación ejecute comandos arbitrarios</string>
   <string name="permdesc_run_script">Permitir a las aplicaciones abrir nuevas ventanas de terminal con todos los permisos concedidos, incluso los de acceso a Internet y a la tarjeta SD.</string>
   <string name="perm_append_to_path">Añadir comandos al Terminal</string>
   <string name="permdesc_append_to_path">Otras aplicaciones pueden añadir nuevos comandos al PATH.</string>

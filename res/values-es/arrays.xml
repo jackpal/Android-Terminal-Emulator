@@ -28,8 +28,8 @@
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
-        <item>Non-blinking cursor</item>
-        <item>Blinking cursor</item>
+        <item>Cursor no-parpadeante</item>
+        <item>Cursor parpadeante</item>
     </string-array>
 
     <string-array name="entries_cursorstyle_preference">
@@ -39,7 +39,7 @@
     </string-array>
 
     <string-array name="entries_fontsize_preference">
-        <item>4 x 8 pixels</item>
+        <item>4 x 8 píxeles</item>
         <item>6 pt</item>
         <item>7 pt</item>
         <item>8 pt</item>
@@ -70,25 +70,25 @@
     </string-array>
 
     <string-array name="entries_controlkey_preference">
-        <item>Jog ball</item>
-        <item>\@ key</item>
-        <item>Left Alt key</item>
-        <item>Right Alt key</item>
+        <item>Track ball</item>
+        <item>Tecla \@</item>
+        <item>Tecla Alt izquierda</item>
+        <item>Tecla Alt derecha</item>
         <item>Tecla de subir volumen</item>
         <item>Tecla de bajar volumen</item>
-        <item>Tecla de la camara</item>
-        <item>Nada</item>
+        <item>Tecla de la cámara</item>
+        <item>Ninguna</item>
     </string-array>
 
     <string-array name="entries_fnkey_preference">
-        <item>Jog ball</item>
-        <item>\@ key</item>
-        <item>Tecla Izq-Alt</item>
-        <item>Tecla Dcha-Alt</item>
+        <item>Track ball</item>
+        <item>Tecla \@</item>
+        <item>Tecla Alt izquierda</item>
+        <item>Tecla Alt derecha</item>
         <item>Tecla de subir volumen</item>
         <item>Tecla de bajar volumen</item>
-        <item>Tecla de la camara</item>
-        <item>Nada</item>
+        <item>Tecla de la cámara</item>
+        <item>Ninguna</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
@@ -98,25 +98,25 @@
 
     <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
     <string-array name="control_keys_short_names">
-        <item>Pelota</item>
+        <item>T.Ball</item>
         <item>\@</item>
-        <item>Izq-Alt</item>
-        <item>Dcha-Alt</item>
-        <item>Tecla de subir volumen</item>
-        <item>Tecla de bajar volumen</item>
-        <item>Tecla de la camara</item>
-        <item>Nada</item>
+        <item>Alt.Izq.</item>
+        <item>Alt.Dcha.</item>
+        <item>Vol.Subir</item>
+        <item>Vol.Bajar</item>
+        <item>Cámara</item>
+        <item>Ninguna</item>
     </string-array>
 
     <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
     <string-array name="fn_keys_short_names">
-        <item>Pelota</item>
+        <item>T.Ball</item>
         <item>\@</item>
-        <item>Izq-Alt</item>
-        <item>Dcha-Alt</item>
-        <item>Tecla de subir volumen</item>
-        <item>Tecla de bajar volumen</item>
-        <item>Tecla de la camara</item>
-        <item>Nada</item>
+        <item>Alt.Izq.</item>
+        <item>Alt.Dcha.</item>
+        <item>Vol.Subir</item>
+        <item>Vol.Bajar</item>
+        <item>Cámara</item>
+        <item>Ninguna</item>
     </string-array>
 </resources>
