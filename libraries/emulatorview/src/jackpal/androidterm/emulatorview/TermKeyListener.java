@@ -506,10 +506,10 @@ class TermKeyListener {
         mKeyCodes[KEYCODE_DPAD_DOWN] = "\033[B";
         mKeyCodes[KEYCODE_DPAD_RIGHT] = "\033[C";
         mKeyCodes[KEYCODE_DPAD_LEFT] = "\033[D";
-        mKeyCodes[KEYCODE_F1] = "\033[OP";
-        mKeyCodes[KEYCODE_F2] = "\033[OQ";
-        mKeyCodes[KEYCODE_F3] = "\033[OR";
-        mKeyCodes[KEYCODE_F4] = "\033[OS";
+        mKeyCodes[KEYCODE_F1] = "\033OP"; // VT100 PF1
+        mKeyCodes[KEYCODE_F2] = "\033OQ"; // VT100 PF2
+        mKeyCodes[KEYCODE_F3] = "\033OR"; // VT100 PF3
+        mKeyCodes[KEYCODE_F4] = "\033OS"; // VT100 PF4
         mKeyCodes[KEYCODE_F5] = "\033[15~";
         mKeyCodes[KEYCODE_F6] = "\033[17~";
         mKeyCodes[KEYCODE_F7] = "\033[18~";
