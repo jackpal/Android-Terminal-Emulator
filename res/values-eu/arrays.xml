@@ -49,6 +49,17 @@
         <item>14 pt</item>
         <item>16 pt</item>
         <item>20 pt</item>
+        <item>24 pt</item>
+        <item>28 pt</item>
+        <item>32 pt</item>
+        <item>36 pt</item>
+        <item>42 pt</item>
+        <item>48 pt</item>
+        <item>64 pt</item>
+        <item>72 pt</item>
+        <item>96 pt</item>
+        <item>144 pt</item>
+        <item>288 pt</item>
     </string-array>
 
     <string-array name="entries_color_preference">
@@ -94,7 +105,7 @@
         <item>Karaktereetan oinarritua</item>
         <item>Hitzetan oinarritua</item>
     </string-array>
-    
+
     <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
     <string-array name="control_keys_short_names">
         <item>Bola</item>
@@ -106,7 +117,7 @@
         <item>Kamera</item>
         <item>Bat ere ez</item>
     </string-array>
-    
+
     <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
     <string-array name="fn_keys_short_names">
         <item>Bola</item>

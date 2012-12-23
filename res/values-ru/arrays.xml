@@ -28,6 +28,17 @@
         <item>14 пикселей</item>
         <item>16 пикселей</item>
         <item>20 пикселей</item>
+        <item>24 пикселей</item>
+        <item>28 пикселей</item>
+        <item>32 пикселей</item>
+        <item>36 пикселей</item>
+        <item>42 пикселей</item>
+        <item>48 пикселей</item>
+        <item>64 пикселей</item>
+        <item>72 пикселей</item>
+        <item>96 пикселей</item>
+        <item>144 пикселей</item>
+        <item>288 пикселей</item>
     </string-array>
     <string-array name="entries_color_preference">
         <item>Чёрный на белом</item>

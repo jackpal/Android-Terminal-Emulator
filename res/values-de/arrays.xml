@@ -49,6 +49,17 @@
     <item>14 Punkte</item>
     <item>16 Punkte</item>
     <item>20 Punkte</item>
+    <item>24 Punkte</item>
+    <item>28 Punkte</item>
+    <item>32 Punkte</item>
+    <item>36 Punkte</item>
+    <item>42 Punkte</item>
+    <item>48 Punkte</item>
+    <item>64 Punkte</item>
+    <item>72 Punkte</item>
+    <item>96 Punkte</item>
+    <item>144 Punkte</item>
+    <item>288 Punkte</item>
   </string-array>
 
   <string-array name="entries_color_preference">
@@ -67,7 +78,7 @@
     <item>Sendet ESC zum Terminal</item>
     <item>Sendet TAB zum Terminal</item>
   </string-array>
-    
+
   <string-array name="entries_controlkey_preference">
     <item>Trackball</item>
     <item>\@ Taste</item>
@@ -76,9 +87,9 @@
     <item>Lauter</item>
     <item>Leiser</item>
     <item>Kamera-Taste</item>
-    <item>Keine</item>    
+    <item>Keine</item>
   </string-array>
-  
+
   <string-array name="entries_fnkey_preference">
     <item>Trackball</item>
     <item>\@ Taste</item>
@@ -89,12 +100,12 @@
     <item>Kamera-Taste</item>
     <item>Keine</item>
   </string-array>
-    
+
   <string-array name="entries_ime_preference">
     <item>Zeichen-basiert</item>
     <item>Wort-basiert</item>
   </string-array>
-  
+
     <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
     <string-array name="control_keys_short_names">
        <item>Trackball</item>
