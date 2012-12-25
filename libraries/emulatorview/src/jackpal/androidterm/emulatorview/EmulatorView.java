@@ -1043,11 +1043,35 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
         }
 
+        if (handleHardwareControlKey(keyCode, event.getAction() == KeyEvent.ACTION_DOWN)) {
+                return true;
+        }
+
+        if (mKeyListener.isCtrlActive()) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                return onKeyDown(keyCode, event);
+            } else {
+                return onKeyUp(keyCode, event);
+            }
+        }
+
         return super.onKeyPreIme(keyCode, event);
     };
 
     private boolean handleControlKey(int keyCode, boolean down) {
         if (keyCode == mControlKeyCode) {
+            if (LOG_KEY_EVENTS) {
+                Log.w(TAG, "handleControlKey " + keyCode);
+            }
+            mKeyListener.handleControlKey(down);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handleHardwareControlKey(int keyCode, boolean down) {
+        if (keyCode == TermKeyListener.KEYCODE_CTRL_LEFT ||
+            keyCode == TermKeyListener.KEYCODE_CTRL_RIGHT) {
             if (LOG_KEY_EVENTS) {
                 Log.w(TAG, "handleControlKey " + keyCode);
             }
