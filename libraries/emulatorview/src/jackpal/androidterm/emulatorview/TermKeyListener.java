@@ -954,4 +954,8 @@ class TermKeyListener {
     public boolean isAltActive() {
         return mAltKey.isActive();
     }
+
+    public boolean isCtrlActive() {
+        return mControlKey.isActive();
+    }
 }
