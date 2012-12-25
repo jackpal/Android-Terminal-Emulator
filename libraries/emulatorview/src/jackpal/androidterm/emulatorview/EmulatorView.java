@@ -1044,7 +1044,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
 
         if (handleHardwareControlKey(keyCode, event.getAction() == KeyEvent.ACTION_DOWN)) {
-                return true;
+            return true;
         }
 
         if (mKeyListener.isCtrlActive()) {
