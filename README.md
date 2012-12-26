@@ -18,4 +18,4 @@ page for recent updates.
 
 Not on Market? Don't want to compile your own version? No problem. A fairly recent version of
 Android Terminal Emulator is here:
-[Download Prebuilt version for side-loading](https://github.com/jackpal/Android-Terminal-Emulator/downloads)
+[Download Prebuilt version for side-loading](http://jackpal.github.com/Android-Terminal-Emulator/downloads/Term.apk)
