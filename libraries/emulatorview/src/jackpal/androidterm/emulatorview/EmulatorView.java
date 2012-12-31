@@ -1207,9 +1207,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         int endLine = mTopRow + mRows;
         int cx = mEmulator.getCursorCol();
         int cy = mEmulator.getCursorRow();
+        boolean cursorVisible = mCursorVisible && mEmulator.getShowCursor();
         for (int i = mTopRow; i < endLine; i++) {
             int cursorX = -1;
-            if (i == cy && mCursorVisible) {
+            if (i == cy && cursorVisible) {
                 cursorX = cx;
             }
             int selx1 = -1;
