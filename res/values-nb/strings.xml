@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">Terminal Emulator</string>
+   <string name="preferences">Innstillinger</string>
+   <string name="reset">Tilbakestill terminal</string>
+   <string name="send_email">Send epost til</string>
+   <string name="special_keys">Spesielle tegn</string>
+   <string name="toggle_soft_keyboard">Veksle virtuelt tastatur</string>
+
+   <string name="edit_text">Rediger tekst</string>
+   <string name="select_text">Marker tekst</string>
+   <string name="copy_all">Kopier alt</string>
+   <string name="paste">Lim inn</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">Skjerm</string>
+
+   <string name="title_statusbar_preference">Statuslinje</string>
+   <string name="summary_statusbar_preference">Vis/Skjul statuslinje</string>
+   <string name="dialog_title_statusbar_preference">Statuslinje</string>
+
+   <string name="title_cursorstyle_preference">Pekertype</string>
+   <string name="summary_cursorstyle_preference">Velg pekertype.</string>
+   <string name="dialog_title_cursorstyle_preference">Pekertype</string>
+
+   <string name="title_cursorblink_preference">Blinkende peker</string>
+   <string name="summary_cursorblink_preference">Velg blinkende peker</string>
+   <string name="dialog_title_cursorblink_preference">Blinkende peker</string>
+
+   <string name="text_preferences">Tekst</string>
+
+   <string name="title_fontsize_preference">Skriftstørrelse</string>
+   <string name="summary_fontsize_preference">Velg tegnhøyde i ant punkter.</string>
+   <string name="dialog_title_fontsize_preference">Skriftstørrelse</string>
+
+   <string name="title_color_preference">Farger</string>
+   <string name="summary_color_preference">Velg tekstfarge.</string>
+   <string name="dialog_title_color_preference">Tekstfarge</string>
+
+   <string name="keyboard_preferences">Tastatur</string>
+
+   <string name="title_controlkey_preference">Ctrl-tast</string>
+   <string name="summary_controlkey_preference">Velg Ctrl-tast</string>
+   <string name="dialog_title_controlkey_preference">Ctrl-tast</string>
+
+   <string name="title_ime_preference">Input-type</string>
+   <string name="summary_ime_preference">Velg input-type for virtuelt tastatur.</string>
+   <string name="dialog_title_ime_preference">Input-type</string>
+
+   <string name="shell_preferences">Shell</string>
+   <string name="title_shell_preference">Kommandolinje</string>
+   <string name="summary_shell_preference">Velg shell kommandolinje.</string>
+   <string name="dialog_title_shell_preference">Shell</string>
+
+   <string name="title_initialcommand_preference">Innledende kommando</string>
+   <string name="summary_initialcommand_preference">Sendes til shellet når det starter.</string>
+   <string name="dialog_title_initialcommand_preference">Innledende kommando</string>
+
+</resources>

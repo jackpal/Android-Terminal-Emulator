@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">Terminal</string>
+   <string name="preferences">Instellingen</string>
+   <string name="new_window">Nieuw venster</string>
+   <string name="close_window">Venster sluiten</string>
+   <string name="window_list">Vensters</string>
+   <string name="prev_window">Vorig venster</string>
+   <string name="next_window">Volgend venster</string>
+   <string name="reset">Herstellen</string>
+   <string name="send_email">E-mail sturen naar</string>
+   <string name="special_keys">Speciale knoppen</string>
+   <string name="toggle_soft_keyboard">Toetsenbord aan/uit</string>
+
+   <string name="enable_wakelock">Slaapblokkering aan</string>
+   <string name="disable_wakelock">Slaapblokkering uit</string>
+   <string name="enable_wifilock">Wi-Fi-blokkering aan</string>
+   <string name="disable_wifilock">Wi-Fi-blokkering uit</string>
+
+   <string name="edit_text">Tekst wijzigen</string>
+   <string name="select_text">Selecteer tekst</string>
+   <string name="copy_all">Alles kopiëren</string>
+   <string name="paste">Plakken</string>
+
+   <string name="service_notify_text">Terminalsessie is actief</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">Scherm</string>
+
+   <string name="title_statusbar_preference">Statusbalk</string>
+   <string name="summary_statusbar_preference">Statusbalk tonen/verbergen.</string>
+   <string name="dialog_title_statusbar_preference">Statusbalk</string>
+
+   <string name="title_cursorstyle_preference">Cursorstijl</string>
+   <string name="summary_cursorstyle_preference">Kies cursorstijl.</string>
+   <string name="dialog_title_cursorstyle_preference">Cursorstijl</string>
+
+   <string name="title_cursorblink_preference">Cursorblink</string>
+   <string name="summary_cursorblink_preference">Kies cursorblink.</string>
+   <string name="dialog_title_cursorblink_preference">Cursorblink</string>
+
+   <string name="text_preferences">Tekst</string>
+
+   <string name="title_fontsize_preference">Lettergrootte</string>
+   <string name="summary_fontsize_preference">Kies karakterhoogte in punten.</string>
+   <string name="dialog_title_fontsize_preference">Lettergrootte</string>
+
+   <string name="title_color_preference">Kleuren</string>
+   <string name="summary_color_preference">Kies tekstkleur.</string>
+   <string name="dialog_title_color_preference">Tekstkleur</string>
+
+   <string name="keyboard_preferences">Toetsenbord</string>
+
+   <string name="title_controlkey_preference">Bedieningsknop</string>
+   <string name="summary_controlkey_preference">Kies bedieningsknop.</string>
+   <string name="dialog_title_controlkey_preference">Bedieningsknop</string>
+
+   <string name="title_fnkey_preference">Fn-knop</string>
+   <string name="summary_fnkey_preference">Kies Fn-knop.</string>
+   <string name="dialog_title_fnkey_preference">Fn-knop</string>
+
+   <string name="title_ime_preference">Invoermethode</string>
+   <string name="summary_ime_preference">Kies invoermethode voor toetsenbord.</string>
+   <string name="dialog_title_ime_preference">Invoermethode</string>
+
+   <string name="shell_preferences">Shell</string>
+   <string name="title_shell_preference">Opdrachtregel</string>
+   <string name="summary_shell_preference">Geef opdrachtregel-shell op</string>
+   <string name="dialog_title_shell_preference">Shell</string>
+
+   <string name="title_initialcommand_preference">Beginopdracht</string>
+   <string name="summary_initialcommand_preference">Wordt naar de shell verzonden bij het opstarten.</string>
+   <string name="dialog_title_initialcommand_preference">Beginopdracht</string>
+
+   <string name="control_key_dialog_title">Bedienings- en functieknoppen</string>
+</resources>

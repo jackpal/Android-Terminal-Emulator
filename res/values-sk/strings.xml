@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+  <string name="application_terminal">Emulácia terminálu</string>
+  <string name="preferences">Nastavenia</string>
+  <string name="new_window">Nové okno</string>
+  <string name="close_window">Zavrieť okno</string>
+  <string name="window_list">Okná</string>
+  <string name="prev_window">Dalšie okno</string>
+  <string name="next_window">Predch. okno</string>
+  <string name="reset">Obnoviť term.</string>
+  <string name="send_email">Poslať e-mailom</string>
+  <string name="special_keys">Špec. klávesy</string>
+  <string name="toggle_soft_keyboard">Skryť/zobraziť klávesnicu</string>
+
+  <string name="enable_wakelock">Zabrániť uspaniu</string>
+  <string name="disable_wakelock">Povoliť uspanie</string>
+  <string name="enable_wifilock">Zabrániť odpojeniu WiFi</string>
+  <string name="disable_wifilock">Povoliť odpojenie WiFi</string>
+
+  <string name="edit_text">Zmeniť text</string>
+  <string name="select_text">Vybrať text</string>
+  <string name="copy_all">Kopírovať vše</string>
+  <string name="paste">Vložiť</string>
+
+  <string name="service_notify_text">Terminálová relácia je spustená</string>
+
+  <!-- Preference dialog -->
+  <string name="screen_preferences">Obrazovka</string>
+
+  <string name="title_statusbar_preference">Stavový riadok</string>
+  <string name="summary_statusbar_preference">Zobraziť/skryť stavový riadok.</string>
+  <string name="dialog_title_statusbar_preference">Stavový riadok</string>
+
+  <string name="title_cursorstyle_preference">Štýl kurzoru</string>
+  <string name="summary_cursorstyle_preference">Zvoliť štýl kurzoru.</string>
+  <string name="dialog_title_cursorstyle_preference">Štýl kurzoru</string>
+  <string name="title_cursorblink_preference">Blikanie kurzoru</string>
+  <string name="summary_cursorblink_preference">Zvoliť blikanie kurzoru.</string>
+  <string name="dialog_title_cursorblink_preference">Blikanie kurzoru</string>
+
+  <string name="text_preferences">Text</string>
+
+  <string name="title_fontsize_preference">Veľkosť fontu</string>
+  <string name="summary_fontsize_preference">Zvoliť výšku znaku v bodoch.</string>
+  <string name="dialog_title_fontsize_preference">Veľkosť fontu</string>
+
+  <string name="title_color_preference">Farby</string>
+  <string name="summary_color_preference">Zvoliť farbu textu.</string>
+  <string name="dialog_title_color_preference">Farba textu</string>
+
+  <string name="keyboard_preferences">Klávesnica</string>
+
+  <string name="title_controlkey_preference">Riadiaca klávesa</string>
+  <string name="summary_controlkey_preference">Zvoliť riadiacu klávesu.</string>
+  <string name="dialog_title_controlkey_preference">Riadiaca klávesa</string>
+
+  <string name="title_fnkey_preference">Funkčná klávesa</string>
+  <string name="summary_fnkey_preference">Zvoliť funkčnú klávesu.</string>
+  <string name="dialog_title_fnkey_preference">Funkčná klávesa</string>
+
+  <string name="title_ime_preference">Metóda vstupu</string>
+  <string name="summary_ime_preference">Zvoliť metódu zadávania pre klávesnicu.</string>
+  <string name="dialog_title_ime_preference">Metóda vstupu</string>
+
+  <string name="shell_preferences">Shell</string>
+  <string name="title_shell_preference">Príkazový riadok</string>
+  <string name="summary_shell_preference">Zvoliť príkaz pre shell.</string>
+  <string name="dialog_title_shell_preference">Shell</string>
+
+  <string name="title_initialcommand_preference">Inicializácia</string>
+  <string name="summary_initialcommand_preference">Previesť po spustení shellu.</string>
+  <string name="dialog_title_initialcommand_preference">Inicializácia</string>
+  <string name="control_key_dialog_title">Ctrl a funkčné klávesy</string>
+  <string name="control_key_dialog_control_text">CTRLKEY medzera : Ctrl-@ (NUL)\nCTRLKEY A..Z : Ctrl-A..Z\nCTRLKEY 5 : Ctrl-]\nCTRLKEY 6 : Ctrl-^\nCTRLKEY 7 : Ctrl-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+  <string name="control_key_dialog_control_disabled_text">Ctrl klávesy nie sú nastavené.</string>
+  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : hore\nFNKEY A : vľavo\nFNKEY S : dole\nFNKEY D : vpravot\nFNKEY P : stránka hore\nFNKEY N : stránka dole\nFNKEY T : tabulátor\nFNKEY L : | (zvislá čiara)\nFNKEY U : _ (podčiarkovník)\nFNKEY E : Ctrl-[ (ESC)\nFNKEY X : vymazať\nFNKEY I : vložiť\nFNKEY H : domov\nFNKEY F : koniec\nFNKEY . : Ctrl-\\\n</string>
+  <string name="control_key_dialog_fn_disabled_text">Funkčné klávesy nie sú nastavené.</string>
+</resources>

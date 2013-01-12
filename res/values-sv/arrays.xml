@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string-array name="entries_statusbar_preference">
+        <item>Visa statusfältet</item>
+        <item>Dölj statusfältet</item>
+    </string-array>
+    <string-array name="entries_cursorblink_preference">
+        <item>Icke-blinkande markör</item>
+        <item>Blinkande markör</item>
+    </string-array>
+    <string-array name="entries_cursorstyle_preference">
+        <item>Rektangel</item>
+        <item>Understruken</item>
+        <item>Vertikalt streck</item>
+    </string-array>
+    <string-array name="entries_fontsize_preference">
+        <item>4x8 Pixlar</item>
+        <item>6 Punkter</item>
+        <item>7 Punkter</item>
+        <item>8 Punkter</item>
+        <item>9 Punkter</item>
+        <item>10 Punkter</item>
+        <item>12 Punkter</item>
+        <item>14 Punkter</item>
+        <item>16 Punkter</item>
+        <item>20 Punkter</item>
+    </string-array>
+    <string-array name="entries_color_preference">
+        <item>Svart text på vit</item>
+        <item>Vit text på svart</item>
+        <item>Vit text på blå</item>
+        <item>Grön text på svart</item>
+        <item>Orange text på svart</item>
+        <item>Röd text på svart</item>
+    </string-array>
+    <string-array name="entries_controlkey_preference">
+        <item>Trackball</item>
+        <item>\@-tangent</item>
+        <item>Vänster Alt-tangent</item>
+        <item>Höger Alt-tangent</item>
+        <item>Volym upp</item>
+        <item>Volym ner</item>
+        <item>Kamera-tangent</item>
+    </string-array>
+    <string-array name="entries_fnkey_preference">
+        <item>Trackball</item>
+        <item>\@-tangent</item>
+        <item>Vänster Alt-tangent</item>
+        <item>Höger Alt-tangent</item>
+        <item>Volym upp</item>
+        <item>Volym ner</item>
+        <item>Kamera-tangent</item>
+    </string-array>
+    <string-array name="entries_ime_preference">
+        <item>Teckenbaserade</item>
+        <item>Ordbaserade</item>
+    </string-array>
+</resources>
