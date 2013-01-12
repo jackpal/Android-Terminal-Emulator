@@ -21,6 +21,12 @@
         <item>Esconder barra de notificações</item>
     </string-array>
 
+    <string-array name="entries_actionbar_preference">
+        <!-- <item>Barra de ação</item> -->
+        <item>Mostrar barra de ação</item>
+        <item>Ocultar barra de ação (tocar no topo de ecrã ou na tecla Menu para mostrar)</item>
+    </string-array>
+
     <string-array name="entries_cursorblink_preference">
         <item>Cursor fixo</item>
         <item>Cursor a piscar</item>
@@ -43,6 +49,17 @@
         <item>14 pt</item>
         <item>16 pt</item>
         <item>20 pt</item>
+        <item>24 pt</item>
+        <item>28 pt</item>
+        <item>32 pt</item>
+        <item>36 pt</item>
+        <item>42 pt</item>
+        <item>48 pt</item>
+        <item>64 pt</item>
+        <item>72 pt</item>
+        <item>96 pt</item>
+        <item>144 pt</item>
+        <item>288 pt</item>
     </string-array>
 
     <string-array name="entries_color_preference">
@@ -52,21 +69,66 @@
         <item>Texto verde em fundo preto</item>
         <item>Texto âmbar em fundo preto</item>
         <item>Texto vermelho em fundo preto</item>
+        <item>Texto azul em fundo preto</item>
+    </string-array>
+
+    <string-array name="entries_backaction_preference">
+        <item>Fechar todas as janelas</item>
+        <item>Fechar esta janela</item>
+        <item>Fechar atividades e manter sessão</item>
+        <item>Envia ESC ao terminal</item>
+        <item>Envia TAB ao terminal</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
-        <item>Jog ball</item>
-        <item>\@ key</item>
-        <item>Left Alt key</item>
-        <item>Right Alt key</item>
-        <item>Vol Up key</item>
-        <item>Vol Down key</item>
-        <item>Camera key</item>
+        <item>Trackball</item>
+        <item>Tecla \@</item>
+        <item>Tecla Alt esquerda</item>
+        <item>Tecla Alt direita</item>
+        <item>Aum. volume</item>
+        <item>Dim. volume</item>
+        <item>Tecla da câmara</item>
+        <item>Nenhuma</item>
+    </string-array>
+
+    <string-array name="entries_fnkey_preference">
+       <item>Trackball</item>
+        <item>Tecla \@</item>
+        <item>Tecla Alt esquerda</item>
+        <item>Tecla Alt direita</item>
+        <item>Aum. volume</item>
+        <item>Dim. volume</item>
+        <item>Tecla da câmara</item>
+        <item>Nenhuma</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
         <item>Baseado em caracteres</item>
         <item>Baseado em palavras</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
+    <string-array name="control_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Alt esq.</item>
+        <item>Alt dir.</item>
+        <item>Aum. vol.</item>
+        <item>Dim vol.</item>
+        <item>Câmara</item>
+        <item>Nenhuma</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
+    <string-array name="fn_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Alt esq.</item>
+        <item>Alt dir.</item>
+        <item>Aum. vol.</item>
+        <item>Dim. vol.</item>
+        <item>Câmara</item>
+        <item>Nenhuma</item>
     </string-array>
 
 </resources>

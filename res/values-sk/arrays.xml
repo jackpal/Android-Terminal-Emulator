@@ -21,6 +21,12 @@
     <item>Skryť stavovú lištu</item>
   </string-array>
 
+  <string-array name="entries_actionbar_preference">
+      <!-- <item>Action bar disabled</item> -->
+      <item>Always show action bar</item>
+      <item>Hide action bar (touch top of screen or Menu key to show)</item>
+  </string-array>
+
   <string-array name="entries_cursorblink_preference">
     <item>Kurzor nebliká</item>
     <item>Kurzor bliká</item>
@@ -43,6 +49,17 @@
     <item>14 bodov</item>
     <item>16 bodov</item>
     <item>20 bodov</item>
+    <item>24 bodov</item>
+    <item>28 bodov</item>
+    <item>32 bodov</item>
+    <item>36 bodov</item>
+    <item>42 bodov</item>
+    <item>48 bodov</item>
+    <item>64 bodov</item>
+    <item>72 bodov</item>
+    <item>96 bodov</item>
+    <item>144 bodov</item>
+    <item>288 bodov</item>
   </string-array>
 
   <string-array name="entries_color_preference">
@@ -52,6 +69,15 @@
     <item>Zelený text na čiernom</item>
     <item>Jantárový text na čiernom</item>
     <item>Červený text na čiernom</item>
+    <item>Modrom text na čiernom</item>
+  </string-array>
+
+  <string-array name="entries_backaction_preference">
+      <item>Closes all terminal windows</item>
+      <item>Closes this terminal window only</item>
+      <item>Closes activity, leaving sessions running</item>
+      <item>Sends ESC to terminal</item>
+      <item>Sends TAB to terminal</item>
   </string-array>
 
   <string-array name="entries_controlkey_preference">
@@ -81,6 +107,7 @@
     <item>Po slovách</item>
   </string-array>
 
+  <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
   <string-array name="control_keys_short_names">
     <item>Gulička</item>
     <item>Klávesa \@</item>
@@ -92,6 +119,7 @@
     <item>Žiadna</item>
   </string-array>
 
+  <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
   <string-array name="fn_keys_short_names">
     <item>Gulička</item>
     <item>Klávesa \@</item>

@@ -21,6 +21,12 @@
     <item>Skjul statuslinje</item>
   </string-array>
 
+  <string-array name="entries_actionbar_preference">
+      <!-- <item>Action bar disabled</item> -->
+      <item>Always show action bar</item>
+      <item>Hide action bar (touch top of screen or Menu key to show)</item>
+  </string-array>
+
   <string-array name="entries_cursorblink_preference">
     <item>Ikke-blinkende peker</item>
     <item>Blinkende peker</item>
@@ -43,6 +49,17 @@
     <item>14 Punkter</item>
     <item>16 Punkter</item>
     <item>20 Punkter</item>
+    <item>24 Punkter</item>
+    <item>28 Punkter</item>
+    <item>32 Punkter</item>
+    <item>36 Punkter</item>
+    <item>42 Punkter</item>
+    <item>48 Punkter</item>
+    <item>64 Punkter</item>
+    <item>72 Punkter</item>
+    <item>96 Punkter</item>
+    <item>144 Punkter</item>
+    <item>288 Punkter</item>
   </string-array>
 
   <string-array name="entries_color_preference">
@@ -52,6 +69,15 @@
     <item>Grønn tekst på sort</item>
     <item>Orange tekst på sort</item>
     <item>Rød tekst på sort</item>
+    <item>Holo blue on black</item>
+  </string-array>
+
+  <string-array name="entries_backaction_preference">
+      <item>Closes all terminal windows</item>
+      <item>Closes this terminal window only</item>
+      <item>Closes activity, leaving sessions running</item>
+      <item>Sends ESC to terminal</item>
+      <item>Sends TAB to terminal</item>
   </string-array>
 
   <string-array name="entries_controlkey_preference">
@@ -62,10 +88,46 @@
     <item>Vol opp</item>
     <item>Vol ned</item>
     <item>Kamera-tast</item>
+    <item>None</item>
+  </string-array>
+
+  <string-array name="entries_fnkey_preference">
+    <item>Trackball</item>
+    <item>\@-tast</item>
+    <item>Venstre Alt-tast</item>
+    <item>Høyre Alt-tast</item>
+    <item>Vol opp</item>
+    <item>Vol ned</item>
+    <item>Kamera-tast</item>
+    <item>None</item>
   </string-array>
 
   <string-array name="entries_ime_preference">
     <item>Tegnbasert</item>
     <item>Ordbasert</item>
+  </string-array>
+
+  <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
+  <string-array name="control_keys_short_names">
+      <item>Ball</item>
+      <item>\@</item>
+      <item>Left-Alt</item>
+      <item>Right-Alt</item>
+      <item>Vol-Up</item>
+      <item>Vol-Dn</item>
+      <item>Camera</item>
+      <item>None</item>
+  </string-array>
+
+  <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
+  <string-array name="fn_keys_short_names">
+      <item>Ball</item>
+      <item>\@</item>
+      <item>Left-Alt</item>
+      <item>Right-Alt</item>
+      <item>Vol-Up</item>
+      <item>Vol-Dn</item>
+      <item>Camera</item>
+      <item>None</item>
   </string-array>
 </resources>
