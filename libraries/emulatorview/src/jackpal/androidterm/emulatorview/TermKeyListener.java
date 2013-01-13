@@ -865,6 +865,10 @@ class TermKeyListener {
             // Ignore the capslock key.
             return;
 
+        case KEYCODE_FUNCTION:
+            // Ignore the function key.
+            return;
+
         case KeyEvent.KEYCODE_BACK:
             result = mBackKeyCode;
             break;
