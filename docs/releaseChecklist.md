@@ -1,6 +1,6 @@
 ## Android Terminal Emulator Release Checklist
 
-# Test on 1.5 
+# Test on 1.5
 
 # Test on 1.6
 
@@ -68,15 +68,16 @@ The Android Developer Console Publishing UI is error prone:
 
 https://play.google.com/store/apps/details?id=jackpal.androidterm
 
-(Note, it can take up to an hour for the app to appear in the store.)
+(Note, it can take several hours for the app to appear in the store.)
 
 # Update the Android Terminal Emulator Wiki
 
 https://github.com/jackpal/Android-Terminal-Emulator/wiki/Recent-Updates
 
-# Upload a new pre-compiled version for people who can't access Market.
+# Publish a new pre-compiled version of the APK for people who can't access Market.
 
-https://github.com/jackpal/Android-Terminal-Emulator/downloads
+Github serves pages out of branch gh-pages , directory downloads/Term.apk
+Public URL is http://jackpal.github.com/Android-Terminal-Emulator/downloads/Term.apk
 
 
 

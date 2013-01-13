@@ -17,8 +17,8 @@
 
 <resources>
     <string-array name="entries_statusbar_preference">
-        <item>Show status bar</item>
-        <item>Hide status bar</item>
+        <item>顯示狀態列</item>
+        <item>隱藏狀態列</item>
     </string-array>
 
     <string-array name="entries_actionbar_preference">
@@ -28,47 +28,47 @@
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
-        <item>Non-blinking cursor</item>
-        <item>Blinking cursor</item>
+        <item>非閃爍式浮標</item>
+        <item>閃爍式浮標</item>
     </string-array>
 
     <string-array name="entries_cursorstyle_preference">
-        <item>Rectangle</item>
-        <item>Underline</item>
-        <item>Vertical bar</item>
+        <item>方形</item>
+        <item>底線</item>
+        <item>直線</item>
     </string-array>
 
     <string-array name="entries_fontsize_preference">
-        <item>4 x 8 pixels</item>
-        <item>6 pt</item>
-        <item>7 pt</item>
-        <item>8 pt</item>
-        <item>9 pt</item>
-        <item>10 pt</item>
-        <item>12 pt</item>
-        <item>14 pt</item>
-        <item>16 pt</item>
-        <item>20 pt</item>
-        <item>24 pt</item>
-        <item>28 pt</item>
-        <item>32 pt</item>
-        <item>36 pt</item>
-        <item>42 pt</item>
-        <item>48 pt</item>
-        <item>64 pt</item>
-        <item>72 pt</item>
-        <item>96 pt</item>
-        <item>144 pt</item>
-        <item>288 pt</item>
+        <item>4 x 8 像素</item>
+        <item>6 點</item>
+        <item>7 點</item>
+        <item>8 點</item>
+        <item>9 點</item>
+        <item>10 點</item>
+        <item>12 點</item>
+        <item>14 點</item>
+        <item>16 點</item>
+        <item>20 點</item>
+        <item>24 點</item>
+        <item>28 點</item>
+        <item>32 點</item>
+        <item>36 點</item>
+        <item>42 點</item>
+        <item>48 點</item>
+        <item>64 點</item>
+        <item>72 點</item>
+        <item>96 點</item>
+        <item>144 點</item>
+        <item>288 點</item>
     </string-array>
 
     <string-array name="entries_color_preference">
-        <item>Black text on white</item>
-        <item>White text on black</item>
-        <item>White text on blue</item>
-        <item>Green text on black</item>
-        <item>Amber text on black</item>
-        <item>Red text on black</item>
+        <item>白底黑字</item>
+        <item>黑底白字</item>
+        <item>藍底白字</item>
+        <item>黑底綠字</item>
+        <item>黑底黄字</item>
+        <item>黑底紅字</item>
         <item>Holo blue on black</item>
     </string-array>
 
@@ -81,30 +81,30 @@
     </string-array>
 
     <string-array name="entries_controlkey_preference">
-        <item>Jog ball</item>
-        <item>\@ key</item>
-        <item>Left Alt key</item>
-        <item>Right Alt key</item>
-        <item>Vol Up key</item>
-        <item>Vol Down key</item>
-        <item>Camera key</item>
+        <item>軌跡球</item>
+        <item>\@ 鍵</item>
+        <item>左 Alt 鍵</item>
+        <item>右 Alt 鍵</item>
+        <item>提升音量鍵</item>
+        <item>降低音量鍵</item>
+        <item>相機快門鍵</item>
         <item>None</item>
     </string-array>
 
     <string-array name="entries_fnkey_preference">
-        <item>Jog ball</item>
-        <item>\@ key</item>
-        <item>Left Alt key</item>
-        <item>Right Alt key</item>
-        <item>Vol Up key</item>
-        <item>Vol Down key</item>
-        <item>Camera key</item>
+        <item>軌跡球</item>
+        <item>\@ 鍵</item>
+        <item>左 Alt 鍵</item>
+        <item>右 Alt 鍵</item>
+        <item>提升音量鍵</item>
+        <item>降低音量鍵</item>
+        <item>相機快門鍵</item>
         <item>None</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
-        <item>Character-based</item>
-        <item>Word-based</item>
+        <item>字本</item>
+        <item>詞本</item>
     </string-array>
 
     <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->

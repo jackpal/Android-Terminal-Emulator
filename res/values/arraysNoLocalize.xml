@@ -40,6 +40,7 @@
         <item>2</item>
     </string-array>
 
+    <!-- Note: Must also modify the maximum allowed preference value in TermSettings.readPrefs -->
     <string-array name="entryvalues_fontsize_preference">
         <item>0</item>
         <item>6</item>
@@ -51,6 +52,17 @@
         <item>14</item>
         <item>16</item>
         <item>20</item>
+        <item>24</item>
+        <item>28</item>
+        <item>32</item>
+        <item>36</item>
+        <item>42</item>
+        <item>48</item>
+        <item>64</item>
+        <item>72</item>
+        <item>96</item>
+        <item>144</item>
+        <item>288</item>
     </string-array>
 
     <string-array name="entryvalues_color_preference">

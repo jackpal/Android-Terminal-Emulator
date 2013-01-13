@@ -1,0 +1,126 @@
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+--><resources>
+   <string name="application_terminal">"Emulator Terminal"</string>
+   <string name="preferences">"Preferinţe"</string>
+   <string name="new_window">"Fereastră nouă"</string>
+   <string name="close_window">"Închideţi fereastra"</string>
+   <string name="window_list">"Ferestre"</string>
+   <string name="prev_window">"Fereastra anterioră"</string>
+   <string name="next_window">"Fereastra următoare"</string>
+   <string name="reset">"Resetaţi "</string>
+   <string name="send_email">"E-mail"</string>
+   <string name="special_keys">"Taste speciale"</string>
+   <string name="toggle_soft_keyboard">"Comutați tastatura"</string>
+
+   <string name="reset_toast_notification">"Această fereastră a fost resetată."</string>
+
+   <string name="edit_text">"Editare text"</string>
+   <string name="select_text">"Selectaţi textul"</string>
+   <string name="copy_all">"Copiați tot"</string>
+   <string name="paste">"Lipeşte"</string>
+   <string name="send_control_key">"Trimiteţi tasta Control"</string>
+   <string name="send_fn_key">"Trimiteţi tasta Fn"</string>
+
+   <string name="window_title">"Fereastră"</string>
+
+   <string name="service_notify_text">"Sesiune de terminal se execută"</string>
+
+   <string name="process_exit_message">"Sesiune de terminal finisată"</string>
+
+   <string name="screen_preferences">"Ecran"</string>
+
+   <string name="title_statusbar_preference">"Bara de stare"</string>
+   <string name="summary_statusbar_preference">"Arătaţi/ascundeţi bara de stare."</string>
+   <string name="dialog_title_statusbar_preference">"Bara de stare"</string>
+
+   <string name="title_actionbar_preference">"Bara de acţiuni"</string>
+   <string name="summary_actionbar_preference">"Alegeți comportamentul barei de acțiuni (Android 3.0 și mai sus)."</string>
+   <string name="dialog_title_actionbar_preference">"Comportament bară de acţiune"</string>
+
+   <string name="title_cursorstyle_preference">"Stil cursor"</string>
+   <string name="summary_cursorstyle_preference">"Alegeţi stilul cursorului."</string>
+   <string name="dialog_title_cursorstyle_preference">"Stil cursor"</string>
+
+   <string name="title_cursorblink_preference">"Clipirea cursorului"</string>
+   <string name="summary_cursorblink_preference">"Alegeţi clipirea cursorului."</string>
+   <string name="dialog_title_cursorblink_preference">"Clipire cursor"</string>
+
+   <string name="text_preferences">"Text"</string>
+
+   <string name="title_utf8_by_default_preference">"Implicit UTF-8"</string>
+   <string name="summary_utf8_by_default_preference">"Dacă modul UTF-8 este activat în mod implicit."</string>
+
+   <string name="title_fontsize_preference">"Dimensiunea fontului"</string>
+   <string name="summary_fontsize_preference">"Alegeţi înălțimea caracterelor în puncte."</string>
+   <string name="dialog_title_fontsize_preference">"Dimensiunea fontului"</string>
+
+   <string name="title_color_preference">"Culori"</string>
+   <string name="summary_color_preference">"Alegeţi culoarea textului."</string>
+   <string name="dialog_title_color_preference">"Culoare text"</string>
+
+   <string name="keyboard_preferences">"Tastatură"</string>
+
+   <string name="title_backaction_preference">"Comportamentul butonulul Înapoi"</string>
+   <string name="summary_backaction_preference">"Alegeţi ce execută apăsarea butonului Înapoi."</string>
+   <string name="dialog_title_backaction_preference">"Comportamentul butonului Înapoi"</string>
+
+   <string name="title_controlkey_preference">"Tasta control"</string>
+   <string name="summary_controlkey_preference">"Alegeţi tasta control."</string>
+   <string name="dialog_title_controlkey_preference">"Tasta control"</string>
+
+   <string name="title_fnkey_preference">"Tasta Fn"</string>
+   <string name="summary_fnkey_preference">"Alegeţi tasta Fn."</string>
+   <string name="dialog_title_fnkey_preference">"Tasta Fn"</string>
+
+   <string name="title_ime_preference">"Metoda de intrare"</string>
+   <string name="summary_ime_preference">"Alegeți metoda de intrare pentru tastatură."</string>
+   <string name="dialog_title_ime_preference">"Metoda de intrare"</string>
+
+   <string name="title_shell_preference">"Linie de comandă"</string>
+
+   <string name="title_initialcommand_preference">"Comandă inițială"</string>
+   <string name="dialog_title_initialcommand_preference">"Comandă inițială"</string>
+
+   <string name="title_termtype_preference">"Tip terminal"</string>
+   <string name="dialog_title_termtype_preference">"Tip terminal"</string>
+
+   <string name="title_close_window_on_process_exit_preference">"Închideți fereastra la ieșire"</string>
+
+   <string name="title_verify_path_preference">"Verificați intrările PATH"</string>
+   <string name="summary_verify_path_preference">"Dacă directoare inaccesibile ar trebui să fie eliminate din PATH."</string>
+
+   <string name="title_do_path_extensions_preference">"Permiteți extensii PATH"</string>
+   <string name="summary_do_path_extensions_preference">"Dacă altor aplicații ar trebui să li se permită să furnizeze comenzi suplimentare."</string>
+
+   <string name="title_allow_prepend_path_preference">"Permiteți prefix PATH"</string>
+   <string name="summary_allow_prepend_path_preference">"Dacă altor aplicații ar trebui să li se permită să suprascrie comenzile existente."</string>
+
+   <string name="control_key_dialog_title">"Tastele control şi funcționale"</string>
+   <string name="control_key_dialog_control_disabled_text">"Nici o tastă control setată."</string>
+  <string name="control_key_dialog_fn_disabled_text">"Nici o tastă funcţie setată."</string>
+
+  <string name="confirm_window_close_message">"închideţi această fereastră?"</string>
+
+  <string name="perm_run_script">"Executare comenzi arbitrare în Emulator Terminal"</string>
+  <string name="perm_append_to_path">"Adaugaţi comenzi în Emulatorul Terminal"</string>
+  <string name="permdesc_append_to_path">"Permiteţi aplicației să furnizeze comenzi suplimentare pentru Emulatorul Terminal Android."</string>
+  <string name="perm_prepend_to_path">"Suprascriere comenzi în Emulatorul Terminal"</string>
+  <string name="permdesc_prepend_to_path">"Permiteţi aplicației să suprascrie comenzile existente, cu versiunile sale proprii în Emulatorul Terminal Android."</string>
+
+  <string name="alt_sends_esc">"Tasta Alt trimite ESC"</string>
+  <string name="alt_sends_esc_summary_on">"Tasta Alt trimite ESC."</string>
+  <string name="alt_sends_esc_summary_off">"Tasta Alt nu trimite ESC."</string>
+</resources>

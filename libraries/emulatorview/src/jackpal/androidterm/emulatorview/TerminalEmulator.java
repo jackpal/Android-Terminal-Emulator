@@ -201,6 +201,12 @@ class TerminalEmulator {
      */
     private static final int K_WRAPAROUND_MODE_MASK = 1 << 7;
 
+    /**
+     * This mask indicates that the cursor should be shown. DECTCEM
+     */
+
+    private static final int K_SHOW_CURSOR_MASK = 1 << 25;
+
     /** This mask is the subset of DecSet bits that are saved / restored by
      * the DECSC / DECRC commands
      */
@@ -558,6 +564,10 @@ class TerminalEmulator {
         return (mDecFlags & K_REVERSE_VIDEO_MASK) != 0;
     }
 
+    public final boolean getShowCursor() {
+        return (mDecFlags & K_SHOW_CURSOR_MASK) != 0;
+    }
+
     public final boolean getKeypadApplicationMode() {
         return mbKeypadApplicationMode;
     }
@@ -834,6 +844,7 @@ class TerminalEmulator {
 
     private void doEscLSBQuest(byte b) {
         int mask = getDecFlagsMask(getArg0(0));
+        int oldFlags = mDecFlags;
         switch (b) {
         case 'h': // Esc [ ? Pn h - DECSET
             mDecFlags |= mask;
@@ -856,23 +867,26 @@ class TerminalEmulator {
             break;
         }
 
+        int newlySetFlags = (~oldFlags) & mDecFlags;
+        int changedFlags = oldFlags ^ mDecFlags;
+
         // 132 column mode
-        if ((mask & K_132_COLUMN_MODE_MASK) != 0) {
-            // We don't actually set 132 cols, but we do want the
+        if ((changedFlags & K_132_COLUMN_MODE_MASK) != 0) {
+            // We don't actually set/reset 132 cols, but we do want the
             // side effect of clearing the screen and homing the cursor.
             blockClear(0, 0, mColumns, mRows);
             setCursorRowCol(0, 0);
         }
 
         // origin mode
-        if ((mask & K_ORIGIN_MODE_MASK) != 0) {
+        if ((newlySetFlags & K_ORIGIN_MODE_MASK) != 0) {
             // Home the cursor.
             setCursorPosition(0, 0);
         }
     }
 
     private int getDecFlagsMask(int argument) {
-        if (argument >= 1 && argument <= 9) {
+        if (argument >= 1 && argument <= 32) {
             return (1 << argument);
         }
 
@@ -1799,6 +1813,7 @@ class TerminalEmulator {
         if (DEFAULT_TO_AUTOWRAP_ENABLED) {
             mDecFlags |= K_WRAPAROUND_MODE_MASK;
         }
+        mDecFlags |= K_SHOW_CURSOR_MASK;
         mSavedDecFlags = 0;
         mInsertMode = false;
         mAutomaticNewlineMode = false;

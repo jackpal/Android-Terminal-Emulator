@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+   <string name="application_terminal">模擬終端</string>
+   <string name="preferences">設定</string>
+   <string name="reset">結束</string>
+   <string name="send_email">以電郵傳送</string>
+   <string name="special_keys">特別按鍵</string>
+   <string name="toggle_soft_keyboard">顯示／隱藏鍵盤</string>
+
+   <string name="enable_wakelock">使用喚醒鎖定</string>
+   <string name="disable_wakelock">解除喚醒鎖定</string>
+   <string name="enable_wifilock">使用 WiFi 鎖定</string>
+   <string name="disable_wifilock">解除 WiFi 鎖定</string>
+
+   <string name="edit_text">編輯文字</string>
+   <string name="select_text">選擇文字</string>
+   <string name="copy_all">全部複製</string>
+   <string name="paste">貼上</string>
+
+   <string name="service_notify_text">終端機工作階段執行中</string>
+
+   <!-- Preference dialog -->
+   <string name="screen_preferences">螢幕</string>
+
+   <string name="title_statusbar_preference">狀態列</string>
+   <string name="summary_statusbar_preference">顯示／隱藏狀態列</string>
+   <string name="dialog_title_statusbar_preference">狀態列</string>
+
+   <string name="title_cursorstyle_preference">浮標風格</string>
+   <string name="summary_cursorstyle_preference">選擇浮標風格</string>
+   <string name="dialog_title_cursorstyle_preference">浮標風格</string>
+
+   <string name="title_cursorblink_preference">浮標閃爍</string>
+   <string name="summary_cursorblink_preference">選擇浮標是否閃爍</string>
+   <string name="dialog_title_cursorblink_preference">浮標閃爍</string>
+
+   <string name="text_preferences">文字</string>
+
+   <string name="title_fontsize_preference">字型大小</string>
+   <string name="summary_fontsize_preference">選擇字元高度</string>
+   <string name="dialog_title_fontsize_preference">字型大小</string>
+
+   <string name="title_color_preference">色彩</string>
+   <string name="summary_color_preference">選擇文字色彩</string>
+   <string name="dialog_title_color_preference">文字色彩</string>
+
+   <string name="keyboard_preferences">鍵盤</string>
+
+   <string name="title_controlkey_preference">Ctrl 鍵</string>
+   <string name="summary_controlkey_preference">選擇 Ctrl 鍵</string>
+   <string name="dialog_title_controlkey_preference">Ctrl 鍵</string>
+
+   <string name="title_fnkey_preference">Fn 鍵</string>
+   <string name="summary_fnkey_preference">選擇 Fn 鍵</string>
+   <string name="dialog_title_fnkey_preference">Fn 鍵</string>
+
+   <string name="title_ime_preference">輸入方式</string>
+   <string name="summary_ime_preference">選擇軟體鍵盤的輸入方式</string>
+   <string name="dialog_title_ime_preference">輸入方式</string>
+
+   <string name="shell_preferences">殼層</string>
+   <string name="title_shell_preference">命令列</string>
+   <string name="summary_shell_preference">指定殼層的命令列</string>
+   <string name="dialog_title_shell_preference">殼層</string>
+
+   <string name="title_initialcommand_preference">初始命令</string>
+   <string name="summary_initialcommand_preference">在啟動時傳送至殼層</string>
+   <string name="dialog_title_initialcommand_preference">初始命令</string>
+
+   <!-- Don't localize these default values -->
+   <!-- skipping untranslatable /resources:0/string:name=default_value_statusbar_preference -->
+   <!-- skipping untranslatable /resources:0/string:name=default_value_cursorstyle_preference -->
+   <!-- skipping untranslatable /resources:0/string:name=default_value_cursorblink_preference -->
+   <!-- skipping untranslatable /resources:0/string:name=default_value_fontsize_preference -->
+   <!-- skipping untranslatable /resources:0/string:name=default_value_color_preference -->
+   <!-- skipping untranslatable /resources:0/string:name=default_value_controlkey_preference -->
+   <!-- skipping untranslatable /resources:0/string:name=default_value_fnkey_preference -->
+   <!-- skipping untranslatable /resources:0/string:name=default_value_ime_preference -->
+   <!-- skipping untranslatable /resources:0/string:name=default_value_shell_preference -->
+   <!-- skipping untranslatable /resources:0/string:name=default_value_initialcommand_preference -->
+</resources>

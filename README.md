@@ -6,7 +6,7 @@ that programs like "vi", "Emacs" and "NetHack" will display properly.
 
 This code is based on the "Term" application which is included in the Android source code release.
 
-[Download the Android Terminal Emulator from Android Market](https://market.android.com/details?id=jackpal.androidterm)
+[Download the Android Terminal Emulator from Google Play](https://play.google.com/store/apps/details?id=jackpal.androidterm)
 
 Got questions? Please check out the
 [FAQ](http://github.com/jackpal/Android-Terminal-Emulator/wiki/Frequently-Asked-Questions)
@@ -18,4 +18,4 @@ page for recent updates.
 
 Not on Market? Don't want to compile your own version? No problem. A fairly recent version of
 Android Terminal Emulator is here:
-[Download Prebuilt version for side-loading](https://github.com/jackpal/Android-Terminal-Emulator/downloads)
+[Download Prebuilt version for side-loading](http://jackpal.github.com/Android-Terminal-Emulator/downloads/Term.apk)

@@ -49,6 +49,17 @@
         <item>14 pt</item>
         <item>16 pt</item>
         <item>20 pt</item>
+        <item>24 pt</item>
+        <item>28 pt</item>
+        <item>32 pt</item>
+        <item>36 pt</item>
+        <item>42 pt</item>
+        <item>48 pt</item>
+        <item>64 pt</item>
+        <item>72 pt</item>
+        <item>96 pt</item>
+        <item>144 pt</item>
+        <item>288 pt</item>
     </string-array>
 
     <string-array name="entries_color_preference">

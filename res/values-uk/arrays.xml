@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="entries_statusbar_preference">
+        <item>Показувати</item>
+        <item>Приховувати</item>
+    </string-array>
+    <string-array name="entries_actionbar_preference">
+        <item>Завжди показувати бар дії</item>
+        <item>Сховати дії бару (торкніться верху екрану або клавіші Меню, щоб показати)</item>
+    </string-array>
+    <string-array name="entries_cursorblink_preference">
+        <item>Не-миготливий курсор</item>
+        <item>Миготливий курсор</item>
+    </string-array>
+    <string-array name="entries_cursorstyle_preference">
+        <item>Прямокутник</item>
+        <item>Підкреслення</item>
+        <item>Вертикальний бар</item>
+    </string-array>
+    <string-array name="entries_fontsize_preference">
+        <item>4 x 8 пікселів</item>
+        <item>6 пікселів</item>
+        <item>7 пікселів</item>
+        <item>8 пікселів</item>
+        <item>9 пікселів</item>
+        <item>10 пікселів</item>
+        <item>12 пікселів</item>
+        <item>14 пікселів</item>
+        <item>16 пікселів</item>
+        <item>20 пікселів</item>
+        <item>24 пікселів</item>
+        <item>28 пікселів</item>
+        <item>32 пікселів</item>
+        <item>36 пікселів</item>
+        <item>42 пікселів</item>
+        <item>48 пікселів</item>
+        <item>64 пікселів</item>
+        <item>72 пікселів</item>
+        <item>96 пікселів</item>
+        <item>144 пікселів</item>
+        <item>288 пікселів</item>
+    </string-array>
+    <string-array name="entries_color_preference">
+        <item>Чорний на білому</item>
+        <item>Білий на чорному</item>
+        <item>Білий на синьому</item>
+        <item>Зелений на чорному</item>
+        <item>Жовтий на чорному</item>
+        <item>Червоний на чорному</item>
+    </string-array>
+    <string-array name="entries_backaction_preference">
+        <item>Закрити всі вікна терміналу</item>
+        <item>Закрити тільки це вікно терміналу</item>
+        <item>Активне закриття, решти запущених сеансів</item>
+        <item>Послати ESC в термінал</item>
+        <item>Послати TAB в термінал</item>
+    </string-array>
+    <string-array name="entries_controlkey_preference">
+        <item>Куля Jog</item>
+        <item>Клавіша @</item>
+        <item>Лівий Alt</item>
+        <item>Правий Alt</item>
+        <item>Гучність вверх</item>
+        <item>Гучність вниз</item>
+        <item>Клавіша камери</item>
+        <item>Нема</item>
+    </string-array>
+    <string-array name="entries_fnkey_preference">
+        <item>Куля Jog</item>
+        <item>Клавіша @</item>
+        <item>Лівий Alt</item>
+        <item>Правий Alt</item>
+        <item>Гучність вверх</item>
+        <item>Гучність вниз</item>
+        <item>Клавіша камери</item>
+        <item>Нема</item>
+    </string-array>
+    <string-array name="entries_ime_preference">
+        <item>За знаками</item>
+        <item>За словами</item>
+    </string-array>
+    <string-array name="control_keys_short_names">
+        <item>Куля Jog</item>
+        <item>Клавіша @</item>
+        <item>Лівий Alt</item>
+        <item>Правий Alt</item>
+        <item>Гучність вверх</item>
+        <item>Гучність вниз</item>
+        <item>Клавіша камери</item>
+        <item>Нема</item>
+    </string-array>
+    <string-array name="fn_keys_short_names">
+        <item>Куля Jog</item>
+        <item>Клавіша @</item>
+        <item>Лівий Alt</item>
+        <item>Правий Alt</item>
+        <item>Гучність вверх</item>
+        <item>Гучність вниз</item>
+        <item>Клавіша камери</item>
+        <item>Нема</item>
+    </string-array>
+</resources>

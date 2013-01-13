@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ -->
+
+<resources>
+    <string-array name="entries_statusbar_preference">
+        <item>Arătaţi bara de stare</item>
+        <item>Ascundeţi bara de stare</item>
+    </string-array>
+
+    <string-array name="entries_actionbar_preference">
+        <!-- <item>Bara de acţiune dezactivată</item> -->
+        <item>Arătaţi mereu bara de acţiune</item>
+        <item>Ascundeţi bara de acţiune (atingeţi partea de sus a ecranului sau tasta de Meniu pentru a arăta)</item>
+    </string-array>
+
+    <string-array name="entries_cursorblink_preference">
+        <item>Cursorul nu clipeşte</item>
+        <item>Cursorul clipeşte</item>
+    </string-array>
+
+    <string-array name="entries_cursorstyle_preference">
+        <item>Dreptunghi</item>
+        <item>Subliniat</item>
+        <item>Bară verticală</item>
+    </string-array>
+
+    <string-array name="entries_fontsize_preference">
+        <item>4 x 8 pixeli</item>
+        <item>6 puncte</item>
+        <item>7 puncte</item>
+        <item>8 puncte</item>
+        <item>9 puncte</item>
+        <item>10 puncte</item>
+        <item>12 puncte</item>
+        <item>14 puncte</item>
+        <item>16 puncte</item>
+        <item>20 puncte</item>
+        <item>24 puncte</item>
+        <item>28 puncte</item>
+        <item>32 puncte</item>
+        <item>36 puncte</item>
+        <item>42 puncte</item>
+        <item>48 puncte</item>
+        <item>64 puncte</item>
+        <item>72 puncte</item>
+        <item>96 puncte</item>
+        <item>144 puncte</item>
+        <item>288 puncte</item>
+    </string-array>
+
+    <string-array name="entries_color_preference">
+        <item>Text negru pe alb</item>
+        <item>Text alb pe negru</item>
+        <item>Text alb pe albastru</item>
+        <item>Text verde pe negru</item>
+        <item>Text galben pe negru</item>
+        <item>Text roşu pe negru</item>
+        <item>Text holo albastru pe negru</item>
+    </string-array>
+
+    <string-array name="entries_backaction_preference">
+        <item>Închide toate ferestrele</item>
+        <item>Se închide această fereastră numai</item>
+        <item>Se închide activitatea, lăsând sesiunea să funcţioneze</item>
+        <item>Trimite ESC spre terminal</item>
+        <item>Trimite TAB spre terminal</item>
+    </string-array>
+
+    <string-array name="entries_controlkey_preference">
+        <item>Balon Jog</item>
+        <item>Tasta \@</item>
+        <item>Tasta Alt stângă</item>
+        <item>Tasta Alt dreaptă</item>
+        <item>Tasta Volum mărire</item>
+        <item>Tasta Volum micşorare</item>
+        <item>Tasta Cameră foto</item>
+        <item>Niciuna</item>
+    </string-array>
+
+    <string-array name="entries_fnkey_preference">
+        <item>Balon Jog</item>
+        <item>Tasta \@</item>
+        <item>Tasta Alt stângă</item>
+        <item>Tasta Alt dreaptă</item>
+        <item>Tasta Volum mărire</item>
+        <item>Tasta Volum micşorare</item>
+        <item>Tasta Cameră foto</item>
+        <item>Niciuna</item>
+    </string-array>
+
+    <string-array name="entries_ime_preference">
+        <item>Bazat pe caracter</item>
+        <item>Bazat pe cuvânt</item>
+    </string-array>
+
+    <string-array name="control_keys_short_names">
+        <item>Balon</item>
+        <item>\@</item>
+        <item>Alt stânga</item>
+        <item>Alt dreapta</item>
+        <item>Volum mărire</item>
+        <item>Volum micşorare</item>
+        <item>Cameră foto</item>
+        <item>Niciunul</item>
+    </string-array>
+
+    <string-array name="fn_keys_short_names">
+        <item>Balon</item>
+        <item>\@</item>
+        <item>Alt stânga</item>
+        <item>Alt dreapta</item>
+        <item>Volum mărire</item>
+        <item>Volum micşorare</item>
+        <item>Cameră foto</item>
+        <item>Niciunul</item>
+    </string-array>
+</resources>

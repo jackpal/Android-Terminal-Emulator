@@ -2,46 +2,48 @@
 <resources>
     <string name="application_terminal">Эмулятор Терминала</string>
     <string name="preferences">Настройки</string>
-	<string name="new_window">Новое окно</string>
+    <string name="new_window">Новое окно</string>
     <string name="close_window">Закрыть окно</string>
-	<string name="confirm_window_close_message">Закрыть это окно?</string>
     <string name="window_list">Окна</string>
     <string name="prev_window">Предыдущее окно</string>
     <string name="next_window">Следующее окно</string>
     <string name="reset">Сбросить терминал</string>
     <string name="send_email">Отправить Email</string>
+    <string name="special_keys">Специальные клавиши</string>
+    <string name="toggle_soft_keyboard">Экранная клавиатура</string>
     <string name="enable_wakelock">Включить WakeLock</string>
     <string name="disable_wakelock">Выключить WakeLock</string>
     <string name="enable_wifilock">Включить WifiLock</string>
     <string name="disable_wifilock">Выключить WifiLock</string>
-    <string name="special_keys">Специальные клавиши</string>
-    <string name="control_key_dialog_title">Контроль и Функциональные Клавиши</string>
-    <string name="toggle_soft_keyboard">Экранная клавиатура</string>
     <string name="edit_text">Изменить</string>
+    <string name="select_text">Выбрать текст</string>
     <string name="copy_all">Копировать всё</string>
     <string name="paste">Вставить</string>
-	<string name="window_title">Окно %1$d</string>
-	<string name="service_notify_text">Терминальный сеанс запущен</string>
+    <string name="send_control_key">Отправить кнопкой Control</string>
+    <string name="send_fn_key">Отправить кнопкой Fn</string>
+    <string name="window_title">Окно %1$d</string>
+    <string name="service_notify_text">Терминальный сеанс запущен</string>
     <string name="process_exit_message">Терминальный сеанс завершен</string>
     <string name="screen_preferences">Экран</string>
     <string name="title_statusbar_preference">Статус бар</string>
     <string name="summary_statusbar_preference">Показать/Скрыть статус бар.</string>
     <string name="dialog_title_statusbar_preference">Статус бар</string>
     <string name="title_actionbar_preference">Бар действия</string>
-    <string name="summary_actionbar_preference">"Выберите поведение бара действия (Android 3.0 и выше)."</string>
+    <string name="summary_actionbar_preference">Выберите поведение бара действия (Android 3.0 и выше).</string>
     <string name="dialog_title_actionbar_preference">Поведение бара действия</string>
     <string name="text_preferences">Текст</string>
-	<string name="title_fontsize_preference">Размер шрифта</string>
+    <string name="title_utf8_by_default_preference">По умолчанию UTF-8</string>
+    <string name="summary_utf8_by_default_preference">Применить режим UTF-8 по умолчанию.</string>
+    <string name="title_fontsize_preference">Размер шрифта</string>
     <string name="summary_fontsize_preference">Выберите размер шрифта.</string>
     <string name="dialog_title_fontsize_preference">Размер шрифта</string>
     <string name="title_color_preference">Цвета</string>
     <string name="summary_color_preference">Выберите цвет текста.</string>
     <string name="dialog_title_color_preference">Цвет текста</string>
-    <string name="title_utf8_by_default_preference">По умолчанию UTF-8</string>
-    <string name="summary_utf8_by_default_preference">Применить режим UTF-8 по умолчанию.</string>
     <string name="keyboard_preferences">Клавиатура</string>
     <string name="title_backaction_preference">Поведение кнопки Назад</string>
     <string name="summary_backaction_preference">Выбор деиствия при нажатии кнопки назад.</string>
+    <string name="dialog_title_backaction_preference">Поведение кнопки Назад</string>
     <string name="title_controlkey_preference">Клавиша Control</string>
     <string name="summary_controlkey_preference">Выберите что будет клавишей Control.</string>
     <string name="dialog_title_controlkey_preference">Клавиша Control</string>
@@ -72,4 +74,42 @@
     <string name="summary_do_path_extensions_preference">Разрешить другим приложениям обеспечивать дополнительные команды (добавление к ПУТИ).</string>
     <string name="title_allow_prepend_path_preference">Допускать ПУТЬ добавления</string>
     <string name="summary_allow_prepend_path_preference">Разрешить другим приложениям аннулировать существующие команды (добавление к началу ПУТИ).</string>
+    <string name="control_key_dialog_title">Управляющие и Функциональные Клавиши</string>
+    <string name="control_key_dialog_control_text">"CTRLKEY Space : Control-@ (NUL)
+CTRLKEY A..Z : Control-A..Z
+CTRLKEY 5 : Control-]
+CTRLKEY 6 : Control-^
+CTRLKEY 7 : Control-_
+CTRLKEY 9 : F11
+CTRLKEY 0 : F12"</string>
+    <string name="control_key_dialog_control_disabled_text">Нет установок управляющих клавиш.</string>
+    <string name="control_key_dialog_fn_text">"FNKEY 1..9 : F1-F9
+FNKEY 0 : F10
+FNKEY W : Up
+FNKEY A : Left
+FNKEY S : Down
+FNKEY D : Right
+FNKEY P : PageUp
+FNKEY N : PageDown
+FNKEY T : Tab
+FNKEY L : | (pipe)
+FNKEY U : _ (underscore)
+FNKEY E : Control-[ (ESC)
+FNKEY X : Delete
+FNKEY I : Insert
+FNKEY H : Home
+FNKEY F : End
+FNKEY . : Control-\\
+"</string>
+    <string name="control_key_dialog_fn_disabled_text">Нет установок функциональных клавиш.</string>
+    <string name="confirm_window_close_message">Закрыть это окно?</string>
+    <string name="perm_run_script">Выполнение произвольных команд в Эмуляторе Терминала</string>
+    <string name="permdesc_run_script">"Позволяет приложению открытие новых окон в Эмуляторе Терминала Android и запуск команд в этих окнах со всеми разрешениями Эмулятора Терминала Android, в том числе доступ к Интернету и SD-карте."</string>
+    <string name="perm_append_to_path">Добавление команд в Эмулятор Терминала</string>
+    <string name="permdesc_append_to_path">Приложение сможет обеспечить дополнительные команды (добавить каталоги в ПУТЬ) для Эмулятора Терминала Android.</string>
+    <string name="perm_prepend_to_path">Переопределение команд в Эмуляторе Терминала</string>
+    <string name="permdesc_prepend_to_path">Позволяет приложению переопределить существующие команды с собственной версией (добавьте в начале каталогов ПУТЬ) в Эмуляторе Терминала Android.</string>
+    <string name="email_transcript_subject">Расшифровка для Эмулятора Терминала Android</string>
+    <string name="email_transcript_chooser_title">Почтовая расшифровка с помощью:</string>
+    <string name="email_transcript_no_email_activity_found">Не могу выбрать почтовую деятельность для отправки расшифровки.</string>
 </resources>

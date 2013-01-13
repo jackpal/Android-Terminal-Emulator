@@ -17,29 +17,29 @@
 
 <resources>
     <string-array name="entries_statusbar_preference">
-        <item>Megjelenítés</item>
-        <item>Elrejtés</item>
+        <item>Pokaż pasek stanu</item>
+        <item>Ukryj pasek stanu</item>
     </string-array>
 
     <string-array name="entries_actionbar_preference">
-        <!-- <item>Akciósáv letiltva</item> -->
-        <item>Mindig jelenjen meg</item>
-        <item>Elrejtés (a megjelenítéshez érintsd meg a képernyő tetejét vagy a menü gombot)</item>
+        <!-- <item>Action bar disabled</item> -->
+        <item>Always show action bar</item>
+        <item>Hide action bar (touch top of screen or Menu key to show)</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
-        <item>Statikus kurzor</item>
-        <item>Villogó kurzor</item>
+        <item>Niemigający kursor</item>
+        <item>Migający kursor</item>
     </string-array>
 
     <string-array name="entries_cursorstyle_preference">
-        <item>Téglalap</item>
-        <item>Aláhúzás</item>
-        <item>Függőleges</item>
+        <item>Prostokąt</item>
+        <item>Podkreślenie</item>
+        <item>Poziomy pasek</item>
     </string-array>
 
     <string-array name="entries_fontsize_preference">
-        <item>4 x 8 képpont</item>
+        <item>4 x 8 pixeli</item>
         <item>6 pt</item>
         <item>7 pt</item>
         <item>8 pt</item>
@@ -63,72 +63,71 @@
     </string-array>
 
     <string-array name="entries_color_preference">
-        <item>Fekete szöveg, fehér háttér</item>
-        <item>Fehér szöveg, fekete háttér</item>
-        <item>Fehér szöveg, kék háttér</item>
-        <item>Zöld szöveg, fekete háttér</item>
-        <item>Sárga szöveg, fekete háttér</item>
-        <item>Piros szöveg, fekete háttér</item>
-        <item>Holo kék szöveg, fekete háttér</item>
+        <item>Czarny tekst na białym tle</item>
+        <item>Biały tekst na czarnym tle</item>
+        <item>Biały tekst na niebieskim tle</item>
+        <item>Zielony tekst na czarnym tle</item>
+        <item>Bursztynowy tekst na czarnym tle</item>
+        <item>Czerwony tekst na czarnym tle</item>
+        <item>Holo czarnym tekst na czarnym tle</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
-        <item>Bezárja az összes terminál ablakot</item>
-        <item>Bezárja az aktív terminál ablakot</item>
-        <item>Kilép a programból, de a munkamenetből nem</item>
-        <item>ESC-et küld a terminálra</item>
-        <item>TAB-ot küld a terminálra</item>
+        <item>Closes all terminal windows</item>
+        <item>Closes this terminal window only</item>
+        <item>Closes activity, leaving sessions running</item>
+        <item>Sends ESC to terminal</item>
+        <item>Sends TAB to terminal</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
-        <item>Görgő</item>
-        <item>\@ billentyű</item>
-        <item>Bal Alt billentyű</item>
-        <item>Jobb Alt billentyű</item>
-        <item>Hangerő fel gomb</item>
-        <item>Hangerő le gomb</item>
-        <item>Kamera gomb</item>
-        <item>Nincs</item>
+        <item>Kulka/tackball</item>
+        <item>Przycisk \@</item>
+        <item>Lewy Alt</item>
+        <item>Prawy Alt</item>
+        <item>Przycisk zwiększania głośności</item>
+        <item>Przycisk zmniejszania głośności</item>
+        <item>Przycisk aparatu</item>
+        <item>None</item>
     </string-array>
 
     <string-array name="entries_fnkey_preference">
-        <item>Görgő</item>
-        <item>\@ billentyű</item>
-        <item>Bal Alt billentyű</item>
-        <item>Jobb Alt billentyű</item>
-        <item>Hangerő fel gomb</item>
-        <item>Hangerő le gomb</item>
-        <item>Kamera gomb</item>
-        <item>Nincs</item>
+        <item>Kulka/tackball</item>
+        <item>Przycisk \@</item>
+        <item>Lewy Alt</item>
+        <item>Prawy Alt</item>
+        <item>Przycisk zwiększania głośności</item>
+        <item>Przycisk zmniejszania głośności</item>
+        <item>Przycisk aparatu</item>
+        <item>None</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
-        <item>Karakterenkénti bevitel</item>
-        <item>Szavankénti bevitel</item>
+        <item>oparta o litery</item>
+        <item>oparta o słowa</item>
     </string-array>
 
     <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
     <string-array name="control_keys_short_names">
-        <item>Görgő</item>
+        <item>Ball</item>
         <item>\@</item>
-        <item>Bal-Alt</item>
-        <item>Jobb-Alt</item>
-        <item>Hangerő-fel</item>
-        <item>Hangerő-le</item>
-        <item>Kamera</item>
-        <item>Nincs</item>
+        <item>Left-Alt</item>
+        <item>Right-Alt</item>
+        <item>Vol-Up</item>
+        <item>Vol-Dn</item>
+        <item>Camera</item>
+        <item>None</item>
     </string-array>
 
     <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
     <string-array name="fn_keys_short_names">
-        <item>Görgő</item>
+        <item>Ball</item>
         <item>\@</item>
-        <item>Bal-Alt</item>
-        <item>Jobb-Alt</item>
-        <item>Hangerő-fel</item>
-        <item>Hangerő-le</item>
-        <item>Kamera</item>
-        <item>Nincs</item>
+        <item>Left-Alt</item>
+        <item>Right-Alt</item>
+        <item>Vol-Up</item>
+        <item>Vol-Dn</item>
+        <item>Camera</item>
+        <item>None</item>
     </string-array>
-
 </resources>
