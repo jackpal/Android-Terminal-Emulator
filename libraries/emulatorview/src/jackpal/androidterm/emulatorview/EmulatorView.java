@@ -160,6 +160,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private boolean mIsControlKeySent = false;
     private boolean mIsFnKeySent = false;
 
+    private String mTermType;
+
     private float mDensity;
 
     private float mScaledDensity;
@@ -1319,5 +1321,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void setFnKeyCode(int keyCode) {
         mFnKeyCode = keyCode;
+    }
+
+    public void setTermType(String termType) {
+         mKeyListener.setTermType(termType);
+         mTermType = termType;
     }
 }

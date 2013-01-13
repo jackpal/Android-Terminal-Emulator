@@ -506,18 +506,7 @@ class TermKeyListener {
         mKeyCodes[KEYCODE_DPAD_DOWN] = "\033[B";
         mKeyCodes[KEYCODE_DPAD_RIGHT] = "\033[C";
         mKeyCodes[KEYCODE_DPAD_LEFT] = "\033[D";
-        mKeyCodes[KEYCODE_F1] = "\033OP"; // VT100 PF1
-        mKeyCodes[KEYCODE_F2] = "\033OQ"; // VT100 PF2
-        mKeyCodes[KEYCODE_F3] = "\033OR"; // VT100 PF3
-        mKeyCodes[KEYCODE_F4] = "\033OS"; // VT100 PF4
-        mKeyCodes[KEYCODE_F5] = "\033[15~";
-        mKeyCodes[KEYCODE_F6] = "\033[17~";
-        mKeyCodes[KEYCODE_F7] = "\033[18~";
-        mKeyCodes[KEYCODE_F8] = "\033[19~";
-        mKeyCodes[KEYCODE_F9] = "\033[20~";
-        mKeyCodes[KEYCODE_F10] = "\033[21~";
-        mKeyCodes[KEYCODE_F11] = "\033[23~";
-        mKeyCodes[KEYCODE_F12] = "\033[24~";
+        setFnKeys("vt100");
         mKeyCodes[KEYCODE_SYSRQ] = "\033[32~"; // Sys Request / Print
         // Is this Scroll lock? mKeyCodes[Cancel] = "\033[33~";
         mKeyCodes[KEYCODE_BREAK] = "\033[34~"; // Pause/Break
@@ -703,6 +692,58 @@ class TermKeyListener {
             mFnKey.onPress();
         } else {
             mFnKey.onRelease();
+        }
+    }
+
+    public void setTermType(String termType) {
+        setFnKeys(termType);
+    }
+
+    private void setFnKeys(String termType) {
+        // These key assignments taken from the debian squeeze terminfo database.
+        if (termType.equals("vt100")) {
+            mKeyCodes[KEYCODE_F1] = "\033OP"; // VT100 PF1
+            mKeyCodes[KEYCODE_F2] = "\033OQ"; // VT100 PF2
+            mKeyCodes[KEYCODE_F3] = "\033OR"; // VT100 PF3
+            mKeyCodes[KEYCODE_F4] = "\033OS"; // VT100 PF4
+            // the following keys are in the database, but aren't on a real vt100.
+            mKeyCodes[KEYCODE_F5] = "\033Ot";
+            mKeyCodes[KEYCODE_F6] = "\033Ou";
+            mKeyCodes[KEYCODE_F7] = "\033Ov";
+            mKeyCodes[KEYCODE_F8] = "\033Ol";
+            mKeyCodes[KEYCODE_F9] = "\033Ow";
+            mKeyCodes[KEYCODE_F10] = "\033Ox";
+            // The following keys are not in database.
+            mKeyCodes[KEYCODE_F11] = "\033[23~";
+            mKeyCodes[KEYCODE_F12] = "\033[24~";
+        } else if (termType.startsWith("linux")) {
+            mKeyCodes[KEYCODE_F1] = "\033[[A";
+            mKeyCodes[KEYCODE_F2] = "\033[[B";
+            mKeyCodes[KEYCODE_F3] = "\033[[C";
+            mKeyCodes[KEYCODE_F4] = "\033[[D";
+            mKeyCodes[KEYCODE_F5] = "\033[[E";
+            mKeyCodes[KEYCODE_F6] = "\033[17~";
+            mKeyCodes[KEYCODE_F7] = "\033[18~";
+            mKeyCodes[KEYCODE_F8] = "\033[19~";
+            mKeyCodes[KEYCODE_F9] = "\033[20~";
+            mKeyCodes[KEYCODE_F10] = "\033[21~";
+            mKeyCodes[KEYCODE_F11] = "\033[23~";
+            mKeyCodes[KEYCODE_F12] = "\033[24~";
+        } else {
+            // default
+            // screen, screen-256colors, xterm, anything new
+            mKeyCodes[KEYCODE_F1] = "\033OP"; // VT100 PF1
+            mKeyCodes[KEYCODE_F2] = "\033OQ"; // VT100 PF2
+            mKeyCodes[KEYCODE_F3] = "\033OR"; // VT100 PF3
+            mKeyCodes[KEYCODE_F4] = "\033OS"; // VT100 PF4
+            mKeyCodes[KEYCODE_F5] = "\033[15~";
+            mKeyCodes[KEYCODE_F6] = "\033[17~";
+            mKeyCodes[KEYCODE_F7] = "\033[18~";
+            mKeyCodes[KEYCODE_F8] = "\033[19~";
+            mKeyCodes[KEYCODE_F9] = "\033[20~";
+            mKeyCodes[KEYCODE_F10] = "\033[21~";
+            mKeyCodes[KEYCODE_F11] = "\033[23~";
+            mKeyCodes[KEYCODE_F12] = "\033[24~";
         }
     }
 
