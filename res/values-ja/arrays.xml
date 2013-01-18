@@ -21,6 +21,12 @@
         <item>ステータスバーを隠す</item>
     </string-array>
 
+    <string-array name="entries_actionbar_preference">
+        <!-- <item>Action bar disabled</item> -->
+        <item>常にアクションバーを表示する</item>
+        <item>アクションバーを隠す (スクリーンの上部へのタッチかメニューキーで表示)</item>
+    </string-array>
+
     <string-array name="entries_cursorblink_preference">
         <item>点滅しないカーソル</item>
         <item>点滅するカーソル</item>
@@ -63,6 +69,15 @@
         <item>黒背景に緑字</item>
         <item>黒背景にアンバー字</item>
         <item>黒背景に赤字</item>
+        <item>黒背景にホロブルー字</item>
+    </string-array>
+
+    <string-array name="entries_backaction_preference">
+        <item>すべてのターミナルウインドウを閉じる</item>
+        <item>このターミナルウインドウだけを閉じる</item>
+        <item>アクティビティを閉じ，セッションは実行を継続</item>
+        <item>ターミナルにESCを送出</item>
+        <item>ターミナルにTABを送出</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
@@ -72,6 +87,19 @@
         <item>右Altキー</item>
         <item>ボリュームアップ</item>
         <item>ボリュームダウン</item>
+        <item>カメラキー</item>
+        <item>なし</item>
+    </string-array>
+
+    <string-array name="entries_fnkey_preference">
+        <item>トラックボール</item>
+        <item>\@キー</item>
+        <item>左Altキー</item>
+        <item>右Altキー</item>
+        <item>ボリュームアップ</item>
+        <item>ボリュームダウン</item>
+        <item>カメラキー</item>
+        <item>なし</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
@@ -79,4 +107,27 @@
         <item>単語ベース</item>
     </string-array>
 
+    <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
+    <string-array name="control_keys_short_names">
+        <item>ボール</item>
+        <item>\@</item>
+        <item>左Alt</item>
+        <item>右Alt</item>
+        <item>ボリュームアップ</item>
+        <item>ボリュームダウン</item>
+        <item>カメラ</item>
+        <item>なし</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
+    <string-array name="fn_keys_short_names">
+        <item>ボール</item>
+        <item>\@</item>
+        <item>左Alt</item>
+        <item>右Alt</item>
+        <item>ボリュームアップ</item>
+        <item>ボリュームダウン</item>
+        <item>カメラ</item>
+        <item>なし</item>
+    </string-array>
 </resources>
