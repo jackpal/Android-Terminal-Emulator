@@ -1,0 +1,11 @@
+.classpath
+.project
+bin/
+build.xml
+examples/
+gen/
+libraries/
+libs/
+local.properties
+obj/
+tests/
