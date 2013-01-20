@@ -139,9 +139,15 @@ public class TermSession {
                             // EOF -- process exited
                             return;
                         }
-                        mByteQueue.write(mBuffer, 0, read);
-                        mMsgHandler.sendMessage(
-                                mMsgHandler.obtainMessage(NEW_INPUT));
+                        int offset = 0;
+                        while (read > 0) {
+                            int written = mByteQueue.write(mBuffer,
+                                    offset, read);
+                            offset += written;
+                            read -= written;
+                            mMsgHandler.sendMessage(
+                                    mMsgHandler.obtainMessage(NEW_INPUT));
+                        }
                     }
                 } catch (IOException e) {
                 } catch (InterruptedException e) {
@@ -236,10 +242,14 @@ public class TermSession {
      */
     public void write(byte[] data, int offset, int count) {
         try {
-            mWriteQueue.write(data, offset, count);
+            while (count > 0) {
+                int written = mWriteQueue.write(data, offset, count);
+                offset += written;
+                count -= written;
+                notifyNewOutput();
+            }
         } catch (InterruptedException e) {
         }
-        notifyNewOutput();
     }
 
     /**
