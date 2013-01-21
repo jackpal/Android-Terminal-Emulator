@@ -109,11 +109,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     private ColorScheme mColorScheme = BaseTextRenderer.defaultColorScheme;
 
-    /**
-     * Used to paint the cursor
-     */
-    private Paint mCursorPaint;
-
     private Paint mForegroundPaint;
 
     private Paint mBackgroundPaint;
@@ -299,8 +294,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void attachSession(TermSession session) {
         mTextRenderer = null;
-        mCursorPaint = new Paint();
-        mCursorPaint.setARGB(255,128,128,128);
         mForegroundPaint = new Paint();
         mBackgroundPaint = new Paint();
         mTopRow = 0;
