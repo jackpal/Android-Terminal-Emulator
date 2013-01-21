@@ -54,9 +54,9 @@ import android.widget.Scroller;
  * take care of this for you.
  */
 public class EmulatorView extends View implements GestureDetector.OnGestureListener {
-    private final String TAG = "EmulatorView";
-    private final boolean LOG_KEY_EVENTS = false;
-    private final boolean LOG_IME = false;
+    private final static String TAG = "EmulatorView";
+    private final static boolean LOG_KEY_EVENTS = false;
+    private final static boolean LOG_IME = false;
 
     /**
      * We defer some initialization until we have been layed out in the view
@@ -984,8 +984,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         // Translate the keyCode into an ASCII character.
 
         try {
+            int oldCombiningAccent = mKeyListener.getCombiningAccent();
             mKeyListener.keyDown(keyCode, event, getKeypadApplicationMode(),
                     TermKeyListener.isEventFromToggleDevice(event));
+            if (mKeyListener.getCombiningAccent() != oldCombiningAccent) {
+                invalidate();
+            }
         } catch (IOException e) {
             // Ignore I/O exceptions
         }
@@ -1208,6 +1212,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         int cx = mEmulator.getCursorCol();
         int cy = mEmulator.getCursorRow();
         boolean cursorVisible = mCursorVisible && mEmulator.getShowCursor();
+        String effectiveImeBuffer = mImeBuffer;
+        int combiningAccent = mKeyListener.getCombiningAccent();
+        if (combiningAccent != 0) {
+            effectiveImeBuffer += String.valueOf((char) combiningAccent);
+        }
         for (int i = mTopRow; i < endLine; i++) {
             int cursorX = -1;
             if (i == cy && cursorVisible) {
@@ -1225,7 +1234,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     selx2 = mColumns;
                 }
             }
-            mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2, mImeBuffer);
+            mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2, effectiveImeBuffer);
             y += mCharacterHeight;
         }
     }

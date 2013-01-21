@@ -5,16 +5,24 @@ import jackpal.androidterm.emulatorview.compat.KeyCharacterMapCompat;
 
 import java.io.IOException;
 
+import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 
 /**
  * An ASCII key listener. Supports control characters and escape. Keeps track of
  * the current state of the alt, shift, and control keys.
+ *
+ * This class is used to talk to hardware keyboards.
  */
 class TermKeyListener {
+    private final static String TAG = "TermKeyListener";
+    private static final boolean LOG_KEYS = false;
+    private static final boolean LOG_COMBINING_ACCENT = false;
+
     /** Disabled for now because it interferes with ALT processing on phones with physical keyboards. */
-    private boolean SUPPORT_8_BIT_META = false;
+    private final static boolean SUPPORT_8_BIT_META = false;
+
     /**
      * Android key codes that are defined in the Android 2.3 API.
      * We want to recognize these codes, because they will be sent to our
@@ -659,6 +667,8 @@ class TermKeyListener {
     private int mBackKeyCode;
     private boolean mAltSendsEsc;
 
+    private int mCombiningAccent;
+
     // Map keycodes out of (above) the Unicode code point space.
     static public final int KEYCODE_OFFSET = 0xA00000;
 
@@ -835,6 +845,9 @@ class TermKeyListener {
      */
     public void keyDown(int keyCode, KeyEvent event, boolean appMode,
             boolean allowToggle) throws IOException {
+        if (LOG_KEYS) {
+            Log.i(TAG, "keyDown(" + keyCode + "," + event + "," + appMode + "," + allowToggle + ")");
+        }
         if (handleKeyCode(keyCode, appMode)) {
             return;
         }
@@ -914,6 +927,23 @@ class TermKeyListener {
                 }
             }
             result = event.getUnicodeChar(effectiveMetaState);
+
+            if ((result & KeyCharacterMap.COMBINING_ACCENT) != 0) {
+                if (LOG_COMBINING_ACCENT) {
+                    Log.i(TAG, "Got combining accent " + result);
+                }
+                mCombiningAccent = result & KeyCharacterMap.COMBINING_ACCENT_MASK;
+                return;
+            }
+            if (mCombiningAccent != 0) {
+                int unaccentedChar = result;
+                result = KeyCharacterMap.getDeadChar(mCombiningAccent, unaccentedChar);
+                if (LOG_COMBINING_ACCENT) {
+                    Log.i(TAG, "getDeadChar(" + mCombiningAccent + ", " + unaccentedChar + ") -> " + result);
+                }
+                mCombiningAccent = 0;
+            }
+
             break;
             }
         }
@@ -931,6 +961,10 @@ class TermKeyListener {
             }
             mTermSession.write(result);
         }
+    }
+
+    public int getCombiningAccent() {
+        return mCombiningAccent;
     }
 
     static boolean isEventFromToggleDevice(KeyEvent event) {
