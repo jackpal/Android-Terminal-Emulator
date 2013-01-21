@@ -25,6 +25,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.ClipboardManager;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -466,11 +467,15 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 return true;
             }
 
-            public int getCursorCapsMode(int arg0) {
+            public int getCursorCapsMode(int reqModes) {
                 if (LOG_IME) {
-                    Log.w(TAG, "getCursorCapsMode(" + arg0 + ")");
+                    Log.w(TAG, "getCursorCapsMode(" + reqModes + ")");
                 }
-                return 0;
+                int mode = 0;
+                if ((reqModes & TextUtils.CAP_MODE_CHARACTERS) != 0) {
+                    mode |= TextUtils.CAP_MODE_CHARACTERS;
+                }
+                return mode;
             }
 
             public ExtractedText getExtractedText(ExtractedTextRequest arg0,
