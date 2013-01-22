@@ -985,9 +985,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         try {
             int oldCombiningAccent = mKeyListener.getCombiningAccent();
+            int oldCursorMode = mKeyListener.getCursorMode();
             mKeyListener.keyDown(keyCode, event, getKeypadApplicationMode(),
                     TermKeyListener.isEventFromToggleDevice(event));
-            if (mKeyListener.getCombiningAccent() != oldCombiningAccent) {
+            if (mKeyListener.getCombiningAccent() != oldCombiningAccent
+                    || mKeyListener.getCursorMode() != oldCursorMode) {
                 invalidate();
             }
         } catch (IOException e) {
@@ -1047,7 +1049,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
         }
 
-        if (handleHardwareControlKey(keyCode, event.getAction() == KeyEvent.ACTION_DOWN)) {
+        if (handleHardwareControlKey(keyCode, event)) {
             return true;
         }
 
@@ -1068,18 +1070,21 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 Log.w(TAG, "handleControlKey " + keyCode);
             }
             mKeyListener.handleControlKey(down);
+            invalidate();
             return true;
         }
         return false;
     }
 
-    private boolean handleHardwareControlKey(int keyCode, boolean down) {
+    private boolean handleHardwareControlKey(int keyCode, KeyEvent event) {
         if (keyCode == TermKeyListener.KEYCODE_CTRL_LEFT ||
             keyCode == TermKeyListener.KEYCODE_CTRL_RIGHT) {
             if (LOG_KEY_EVENTS) {
-                Log.w(TAG, "handleControlKey " + keyCode);
+                Log.w(TAG, "handleHardwareControlKey " + keyCode);
             }
-            mKeyListener.handleControlKey(down);
+            boolean down = event.getAction() == KeyEvent.ACTION_DOWN;
+            mKeyListener.handleHardwareControlKey(down);
+            invalidate();
             return true;
         }
         return false;
@@ -1091,6 +1096,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 Log.w(TAG, "handleFnKey " + keyCode);
             }
             mKeyListener.handleFnKey(down);
+            invalidate();
             return true;
         }
         return false;
@@ -1104,10 +1110,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mIsControlKeySent) {
             mIsControlKeySent = false;
             mKeyListener.handleControlKey(false);
+            invalidate();
         }
         if (mIsFnKeySent) {
             mIsFnKeySent = false;
             mKeyListener.handleFnKey(false);
+            invalidate();
         }
     }
 
@@ -1217,6 +1225,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (combiningAccent != 0) {
             effectiveImeBuffer += String.valueOf((char) combiningAccent);
         }
+        int cursorStyle = mKeyListener.getCursorMode();
         for (int i = mTopRow; i < endLine; i++) {
             int cursorX = -1;
             if (i == cy && cursorVisible) {
@@ -1234,7 +1243,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     selx2 = mColumns;
                 }
             }
-            mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2, effectiveImeBuffer);
+            mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2, effectiveImeBuffer, cursorStyle);
             y += mCharacterHeight;
         }
     }
@@ -1288,6 +1297,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public void sendControlKey() {
         mIsControlKeySent = true;
         mKeyListener.handleControlKey(true);
+        invalidate();
     }
 
     /**
@@ -1297,6 +1307,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public void sendFnKey() {
         mIsFnKeySent = true;
         mKeyListener.handleFnKey(true);
+        invalidate();
     }
 
     /**

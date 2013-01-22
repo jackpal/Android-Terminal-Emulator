@@ -16,6 +16,13 @@
 
 package jackpal.androidterm.emulatorview;
 
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PixelXorXfermode;
+import android.graphics.RectF;
+
 abstract class BaseTextRenderer implements TextRenderer {
     protected boolean mReverseVideo;
 
@@ -287,15 +294,63 @@ abstract class BaseTextRenderer implements TextRenderer {
             0xffeeeeee
     };
 
-    private final static int sCursorPaint = 0xff808080;
+    private final static int sCursorColor = 0xff808080;
     static final ColorScheme defaultColorScheme =
             new ColorScheme(0xffcccccc, 0xff000000);
+
+    private final Paint mCursorPaint;
+    private final Paint mCursorStrokePaint;
+    private final Path mShiftCursor;
+    private final Path mAltCursor;
+    private final Path mCtrlCursor;
+    private final Path mFnCursor;
+    private RectF mTempSrc;
+    private RectF mTempDst;
+    private Matrix mScaleMatrix;
+    private float mLastCharWidth;
+    private float mLastCharHeight;
+    private static final Matrix.ScaleToFit mScaleType = Matrix.ScaleToFit.FILL;
+
 
     public BaseTextRenderer(ColorScheme scheme) {
         if (scheme == null) {
             scheme = defaultColorScheme;
         }
         setDefaultColors(scheme.getForeColor(), scheme.getBackColor());
+
+        mCursorPaint = new Paint();
+        mCursorPaint.setColor(sCursorColor);
+        mCursorPaint.setXfermode(new PixelXorXfermode(~sCursorColor));
+        mCursorPaint.setAntiAlias(true);
+
+        mCursorStrokePaint = new Paint(mCursorPaint);
+        mCursorStrokePaint.setStrokeWidth(0.1f);
+        mCursorStrokePaint.setStyle(Paint.Style.STROKE);
+
+        mShiftCursor = new Path();
+        mShiftCursor.lineTo(0.5f, 0.33f);
+        mShiftCursor.lineTo(1.0f, 0.0f);
+
+        mAltCursor = new Path();
+        mAltCursor.moveTo(0.0f, 1.0f);
+        mAltCursor.lineTo(0.5f, 0.66f);
+        mAltCursor.lineTo(1.0f, 1.0f);
+
+        mCtrlCursor = new Path();
+        mCtrlCursor.moveTo(0.0f, 0.25f);
+        mCtrlCursor.lineTo(1.0f, 0.5f);
+        mCtrlCursor.lineTo(0.0f, 0.75f);
+
+        mFnCursor = new Path();
+        mFnCursor.moveTo(1.0f, 0.25f);
+        mFnCursor.lineTo(0.0f, 0.5f);
+        mFnCursor.lineTo(1.0f, 0.75f);
+
+        // For creating the transform when the terminal resizes
+        mTempSrc = new RectF();
+        mTempSrc.set(0.0f, 0.0f, 1.0f, 1.0f);
+        mTempDst = new RectF();
+        mScaleMatrix = new Matrix();
     }
 
     public void setReverseVideo(boolean reverseVideo) {
@@ -306,7 +361,7 @@ abstract class BaseTextRenderer implements TextRenderer {
         mPalette = cloneDefaultColors();
         mPalette[TextStyle.ciForeground] = forePaintColor;
         mPalette[TextStyle.ciBackground] = backPaintColor;
-        mPalette[TextStyle.ciCursor] = sCursorPaint;
+        mPalette[TextStyle.ciCursor] = sCursorColor;
     }
 
     private static int[] cloneDefaultColors() {
@@ -314,6 +369,40 @@ abstract class BaseTextRenderer implements TextRenderer {
         int[] clone = new int[TextStyle.ciColorLength];
         System.arraycopy(sXterm256Paint, 0, clone, 0, length);
         return clone;
+    }
+
+    protected void drawCursorImp(Canvas canvas, float x, float y, float charWidth, float charHeight,
+            int cursorMode) {
+        if (charWidth != mLastCharWidth || charHeight != mLastCharHeight) {
+            mLastCharWidth = charWidth;
+            mLastCharHeight = charHeight;
+            mTempDst.set(0.0f, 0.0f, charWidth, charHeight);
+            mScaleMatrix.setRectToRect(mTempSrc, mTempDst, mScaleType);
+        }
+        canvas.save();
+        canvas.translate(x, y - charHeight);
+        canvas.clipRect(0, 0, charWidth, charHeight);
+        canvas.drawPaint(mCursorPaint);
+
+        if (cursorMode != 0) {
+            canvas.concat(mScaleMatrix);
+            drawCursorHelper(canvas, mShiftCursor, cursorMode, MODE_SHIFT_SHIFT);
+            drawCursorHelper(canvas, mAltCursor, cursorMode, MODE_ALT_SHIFT);
+            drawCursorHelper(canvas, mCtrlCursor, cursorMode, MODE_CTRL_SHIFT);
+            drawCursorHelper(canvas, mFnCursor, cursorMode, MODE_FN_SHIFT);
+        }
+        canvas.restore();
+    }
+
+    private void drawCursorHelper(Canvas canvas, Path path, int mode, int shift) {
+        switch ((mode >> shift) & MODE_MASK) {
+        case MODE_ON:
+            canvas.drawPath(path, mCursorStrokePaint);
+            break;
+        case MODE_LOCKED:
+            canvas.drawPath(path, mCursorPaint);
+            break;
+        }
     }
 }
 
