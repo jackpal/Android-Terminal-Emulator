@@ -17,15 +17,35 @@
 <resources>
    <string name="application_terminal">Terminal Emulator</string>
    <string name="preferences">Ustawienia</string>
+   <string name="new_window">New window</string>
+   <string name="close_window">Close window</string>
+   <string name="window_list">Windows</string>
+   <string name="prev_window">Prev window</string>
+   <string name="next_window">Next window</string>
    <string name="reset">Wyczyść terminal</string>
    <string name="send_email">Wyślij e-mail</string>
    <string name="special_keys">Przyciski specjalne</string>
    <string name="toggle_soft_keyboard">Pokaż klawiaturę</string>
 
+   <string name="reset_toast_notification">This window\'s terminal state has been reset.</string>
+
+   <string name="enable_wakelock">Take WakeLock</string>
+   <string name="disable_wakelock">Drop WakeLock</string>
+   <string name="enable_wifilock">Take WifiLock</string>
+   <string name="disable_wifilock">Drop WifiLock</string>
+
    <string name="edit_text">Edytuj tekst</string>
    <string name="select_text">Wybierz tekst</string>
    <string name="copy_all">Kopiuj wszystko</string>
    <string name="paste">Wklej</string>
+   <string name="send_control_key">Send control key</string>
+   <string name="send_fn_key">Send fn key</string>
+
+   <string name="window_title">Window %1$d</string>
+
+   <string name="service_notify_text">Terminal session is running</string>
+
+   <string name="process_exit_message">Terminal session finished</string>
 
    <!-- Preference dialog -->
    <string name="screen_preferences">Ekran</string>
@@ -33,6 +53,10 @@
    <string name="title_statusbar_preference">Pasek stanu</string>
    <string name="summary_statusbar_preference">Pokaż/ukryj pasek stanu.</string>
    <string name="dialog_title_statusbar_preference">Pasek stanu</string>
+
+   <string name="title_actionbar_preference">Action bar</string>
+   <string name="summary_actionbar_preference">Choose the action bar\'s behavior (Android 3.0 and up).</string>
+   <string name="dialog_title_actionbar_preference">Action bar behavior</string>
 
    <string name="title_cursorstyle_preference">Styl kursora</string>
    <string name="summary_cursorstyle_preference">Wybierz styl kursora.</string>
@@ -44,6 +68,9 @@
 
    <string name="text_preferences">Tekst</string>
 
+   <string name="title_utf8_by_default_preference">Default to UTF-8</string>
+   <string name="summary_utf8_by_default_preference">Whether UTF-8 mode is enabled by default.</string>
+
    <string name="title_fontsize_preference">Rozmiar czcionki</string>
    <string name="summary_fontsize_preference">Wybierz wielkość liter.</string>
    <string name="dialog_title_fontsize_preference">Rozmiar czcionki</string>
@@ -54,9 +81,17 @@
 
    <string name="keyboard_preferences">Klawiatura</string>
 
+   <string name="title_backaction_preference">Back button behavior</string>
+   <string name="summary_backaction_preference">Choose what pressing the back button does.</string>
+   <string name="dialog_title_backaction_preference">Back button behavior</string>
+
    <string name="title_controlkey_preference">Przycisk control</string>
    <string name="summary_controlkey_preference">Wybierz przycisk control.</string>
    <string name="dialog_title_controlkey_preference">Przycisk control</string>
+
+   <string name="title_fnkey_preference">Fn key</string>
+   <string name="summary_fnkey_preference">Choose Fn key.</string>
+   <string name="dialog_title_fnkey_preference">Fn key</string>
 
    <string name="title_ime_preference">Metoda wprowadzania</string>
    <string name="summary_ime_preference">Wybierz metodę wprowadzania.</string>
@@ -70,5 +105,48 @@
    <string name="title_initialcommand_preference">Komenda początkowa</string>
    <string name="summary_initialcommand_preference">Wysyłana do powłoki podczas startu.</string>
    <string name="dialog_title_initialcommand_preference">Komenda początkowa</string>
+
+   <string name="title_termtype_preference">Terminal type</string>
+   <string name="summary_termtype_preference">What terminal type to report to the shell.</string>
+   <string name="dialog_title_termtype_preference">Terminal type</string>
+
+   <string name="title_close_window_on_process_exit_preference">Close window on exit</string>
+   <string name="summary_close_window_on_process_exit_preference">Whether a window should close when its shell exits.</string>
+
+   <string name="title_verify_path_preference">Verify PATH entries</string>
+   <string name="summary_verify_path_preference">Whether inaccessible directories should be removed from the PATH.</string>
+
+   <string name="title_do_path_extensions_preference">Allow PATH extensions</string>
+   <string name="summary_do_path_extensions_preference">Whether other apps should be allowed to provide additional commands (add to PATH).</string>
+
+   <string name="title_allow_prepend_path_preference">Allow PATH prepend</string>
+   <string name="summary_allow_prepend_path_preference">Whether other apps should be allowed to override existing commands (add to the beginning of PATH).</string>
+
+   <string name="control_key_dialog_title">Control and Function Keys</string>
+   <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
+        actual control key key name. -->
+   <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)\nCTRLKEY A..Z : Control-A..Z\nCTRLKEY 5 : Control-]\nCTRLKEY 6 : Control-^\nCTRLKEY 7 : Control-_\nCTRLKEY 9 : F11\nCTRLKEY 0 : F12</string>
+  <string name="control_key_dialog_control_disabled_text">No control key set.</string>
+  <!-- The word FNKEY should be left un-translated. It will be replaced at run-time with the
+       actual function key key name. -->
+  <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\nFNKEY 0 : F10\nFNKEY W : Up\nFNKEY A : Left\nFNKEY S : Down\nFNKEY D : Right\nFNKEY P : PageUp\nFNKEY N : PageDown\nFNKEY T : Tab\nFNKEY L : | (pipe)\nFNKEY U : _ (underscore)\nFNKEY E : Control-[ (ESC)\nFNKEY X : Delete\nFNKEY I : Insert\nFNKEY H : Home\nFNKEY F : End\nFNKEY . : Control-\\\n</string>
+  <string name="control_key_dialog_fn_disabled_text">No function key set.</string>
+
+  <string name="confirm_window_close_message">Close this window?</string>
+
+  <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>
+  <string name="permdesc_run_script">Allows application to open new windows in Android Terminal Emulator and run commands in those windows with all of Android Terminal Emulator\'s permissions, including access to the Internet and your SD Card.</string>
+  <string name="perm_append_to_path">Add commands to Terminal Emulator</string>
+  <string name="permdesc_append_to_path">Allows application to provide additional commands (add directories to the PATH) for Android Terminal Emulator.</string>
+  <string name="perm_prepend_to_path">Override commands in Terminal Emulator</string>
+  <string name="permdesc_prepend_to_path">Allows application to override existing commands with its own versions (prepend directories to the PATH) in Android Terminal Emulator.</string>
+
+  <string name="email_transcript_subject">Transcript from Android Terminal Emulator</string>
+  <string name="email_transcript_chooser_title">Mail transcript using:</string>
+  <string name="email_transcript_no_email_activity_found">Could not choose an email activity to send transcript.</string>
+
+  <string name="alt_sends_esc">Alt key sends ESC</string>
+  <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
+  <string name="alt_sends_esc_summary_off">Alt key does not send ESC.</string>
 
 </resources>
