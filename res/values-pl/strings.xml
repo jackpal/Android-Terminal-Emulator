@@ -17,8 +17,8 @@
 <resources>
    <string name="application_terminal">Terminal Emulator</string>
    <string name="preferences">Ustawienia</string>
-   <string name="reset">Reset</string>
-   <string name="send_email">Wyślij emailem</string>
+   <string name="reset">Wyczyść terminal</string>
+   <string name="send_email">Wyślij e-mail</string>
    <string name="special_keys">Przyciski specjalne</string>
    <string name="toggle_soft_keyboard">Pokaż klawiaturę</string>
 

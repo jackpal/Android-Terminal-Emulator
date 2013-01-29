@@ -22,9 +22,9 @@
     </string-array>
 
     <string-array name="entries_actionbar_preference">
-        <!-- <item>Action bar disabled</item> -->
-        <item>Always show action bar</item>
-        <item>Hide action bar (touch top of screen or Menu key to show)</item>
+        <!-- <item>Pasek narzędziowy wyłączony</item> -->
+        <item>Zawsze pokazuj pasek narzędziowy</item>
+        <item>Ukryj pasek narzędzi (dotknij góry ekranu lub przycisk Menu, aby wyświetlić)</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
@@ -69,15 +69,15 @@
         <item>Zielony tekst na czarnym tle</item>
         <item>Bursztynowy tekst na czarnym tle</item>
         <item>Czerwony tekst na czarnym tle</item>
-        <item>Holo czarnym tekst na czarnym tle</item>
+        <item>Błękitny tekst na czarnym tle</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
-        <item>Closes all terminal windows</item>
-        <item>Closes this terminal window only</item>
-        <item>Closes activity, leaving sessions running</item>
-        <item>Sends ESC to terminal</item>
-        <item>Sends TAB to terminal</item>
+        <item>Zamyka wszystkie okna terminala</item>
+        <item>Zamyka tylko aktualne okno terminala</item>
+        <item>Ukrywa program, pozostawiając sesję w tle</item>
+        <item>Wysyła klawisz ESC do terminala</item>
+        <item>Wysyła klawisz TAB do terminala</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
@@ -88,7 +88,7 @@
         <item>Przycisk zwiększania głośności</item>
         <item>Przycisk zmniejszania głośności</item>
         <item>Przycisk aparatu</item>
-        <item>None</item>
+        <item>Żaden</item>
     </string-array>
 
     <string-array name="entries_fnkey_preference">
@@ -99,35 +99,35 @@
         <item>Przycisk zwiększania głośności</item>
         <item>Przycisk zmniejszania głośności</item>
         <item>Przycisk aparatu</item>
-        <item>None</item>
+        <item>Żaden</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
-        <item>oparta o litery</item>
-        <item>oparta o słowa</item>
+        <item>Oparta o litery</item>
+        <item>Oparta o słowa</item>
     </string-array>
 
     <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
     <string-array name="control_keys_short_names">
-        <item>Ball</item>
+        <item>Kulka</item>
         <item>\@</item>
-        <item>Left-Alt</item>
-        <item>Right-Alt</item>
+        <item>Lewy Alt</item>
+        <item>Prawy Alt</item>
         <item>Vol-Up</item>
         <item>Vol-Dn</item>
-        <item>Camera</item>
-        <item>None</item>
+        <item>Aparat</item>
+        <item>Żaden</item>
     </string-array>
 
     <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
     <string-array name="fn_keys_short_names">
-        <item>Ball</item>
+        <item>Kulka</item>
         <item>\@</item>
-        <item>Left-Alt</item>
-        <item>Right-Alt</item>
+        <item>Lewy Alt</item>
+        <item>Prawy</item>
         <item>Vol-Up</item>
         <item>Vol-Dn</item>
-        <item>Camera</item>
-        <item>None</item>
+        <item>Aparat</item>
+        <item>Żaden</item>
     </string-array>
 </resources>
