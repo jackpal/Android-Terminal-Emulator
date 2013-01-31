@@ -94,8 +94,8 @@ public class TermSettings {
         {GREEN, BLACK},
         {AMBER, BLACK},
         {RED,   BLACK},
-        {HOLO_BLUE, BLACK}
-        {SOLARIZED_FG, SOLARIZED_BG}
+        {HOLO_BLUE, BLACK},
+        {SOLARIZED_FG, SOLARIZED_BG},
         {SOLARIZED_DARK_FG, SOLARIZED_DARK_BG}
     };
 
