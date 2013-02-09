@@ -54,9 +54,6 @@
     <string name="title_ime_preference">Спосіб введення</string>
     <string name="summary_ime_preference">Виберіть спосіб введення для екранної клавіатури.</string>
     <string name="dialog_title_ime_preference">Спосіб введення</string>
-    <string name="alt_sends_esc">Клавіша Alt посилає ESC</string>
-    <string name="alt_sends_esc_summary_on">Клавіша Alt посилає ESC.</string>
-    <string name="alt_sends_esc_summary_off">Клавіша Alt не посилає ESC.</string>
     <string name="shell_preferences">Командна оболонка</string>
     <string name="title_shell_preference">Командний рядок</string>
     <string name="summary_shell_preference">Вкажіть рядок звернення до командної оболонки.</string>
@@ -76,15 +73,15 @@
     <string name="title_allow_prepend_path_preference">Допускати ШЛЯХ додавання</string>
     <string name="summary_allow_prepend_path_preference">Дозволити іншим програмам анулювати існуючі команди (додавання до початку ШЛЯХУ).</string>
     <string name="control_key_dialog_title">Керуючі та Функціональні Клавіші</string>
-    <string name="control_key_dialog_control_text">"CTRLKEY Space : Control-@ (NUL)
+    <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)
 CTRLKEY A..Z : Control-A..Z
 CTRLKEY 5 : Control-]
 CTRLKEY 6 : Control-^
 CTRLKEY 7 : Control-_
 CTRLKEY 9 : F11
-CTRLKEY 0 : F12"</string>
+CTRLKEY 0 : F12</string>
     <string name="control_key_dialog_control_disabled_text">Нема установок керуючих клавіш.</string>
-    <string name="control_key_dialog_fn_text">"FNKEY 1..9 : F1-F9
+    <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9
 FNKEY 0 : F10
 FNKEY W : Up
 FNKEY A : Left
@@ -101,11 +98,11 @@ FNKEY I : Insert
 FNKEY H : Home
 FNKEY F : End
 FNKEY . : Control-\\
-"</string>
+</string>
     <string name="control_key_dialog_fn_disabled_text">Нема установок функціональних клавіш.</string>
     <string name="confirm_window_close_message">Закрити це вікно?</string>
     <string name="perm_run_script">Виконання довільних команд в Емуляторі Терміналу</string>
-    <string name="permdesc_run_script">"Дозволяє програмі відкриття нових вікон в Емуляторі Терміналу Android та запуск команд в цих вікнах з усіма дозволами Емулятора Терміналу Android, в тому числі доступ до Інтернету та SD-карти."</string>
+    <string name="permdesc_run_script">Дозволяє програмі відкриття нових вікон в Емуляторі Терміналу Android та запуск команд в цих вікнах з усіма дозволами Емулятора Терміналу Android, в тому числі доступ до Інтернету та SD-карти.</string>
     <string name="perm_append_to_path">Додавання команд в Емулятор Терміналу</string>
     <string name="permdesc_append_to_path">Програма зможе забезпечити додаткові команди (додати каталоги в ШЛЯХ) для емулятора терміналу Android.</string>
     <string name="perm_prepend_to_path">Перевизначення команд в Емуляторі Терміналу</string>
@@ -113,4 +110,7 @@ FNKEY . : Control-\\
     <string name="email_transcript_subject">Розшифрування для Емулятора Терміналу Android</string>
     <string name="email_transcript_chooser_title">Поштове розшифрування за допомогою:</string>
     <string name="email_transcript_no_email_activity_found">Не можу вибрати поштову діяльність для відправки розшифрування.</string>
+    <string name="alt_sends_esc">Клавіша Alt посилає ESC</string>
+    <string name="alt_sends_esc_summary_on">Клавіша Alt посилає ESC.</string>
+    <string name="alt_sends_esc_summary_off">Клавіша Alt не посилає ESC.</string>
 </resources>

@@ -11,7 +11,7 @@
     <string name="send_email">Отправить Email</string>
     <string name="special_keys">Специальные клавиши</string>
     <string name="toggle_soft_keyboard">Экранная клавиатура</string>
-    <string name="reset_toast_notification">"Терминальное состояние этого окна было сброшено."</string>
+    <string name="reset_toast_notification">Терминальное состояние этого окна было сброшено.</string>
     <string name="enable_wakelock">Включить WakeLock</string>
     <string name="disable_wakelock">Выключить WakeLock</string>
     <string name="enable_wifilock">Включить WifiLock</string>
@@ -54,9 +54,6 @@
     <string name="title_ime_preference">Способ ввода</string>
     <string name="summary_ime_preference">Выберите способ ввода для экранной клавиатуры.</string>
     <string name="dialog_title_ime_preference">Способ ввода</string>
-    <string name="alt_sends_esc">Клавиша Alt посылает ESC</string>
-    <string name="alt_sends_esc_summary_on">Клавиша Alt посылает ESC.</string>
-    <string name="alt_sends_esc_summary_off">Клавиша Alt не посылает ESC.</string>
     <string name="shell_preferences">Командная оболочка</string>
     <string name="title_shell_preference">Командная строка</string>
     <string name="summary_shell_preference">Укажите строку обращения к командной оболочке.</string>
@@ -76,15 +73,15 @@
     <string name="title_allow_prepend_path_preference">Допускать ПУТЬ добавления</string>
     <string name="summary_allow_prepend_path_preference">Разрешить другим приложениям аннулировать существующие команды (добавление к началу ПУТИ).</string>
     <string name="control_key_dialog_title">Управляющие и Функциональные Клавиши</string>
-    <string name="control_key_dialog_control_text">"CTRLKEY Space : Control-@ (NUL)
+    <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)
 CTRLKEY A..Z : Control-A..Z
 CTRLKEY 5 : Control-]
 CTRLKEY 6 : Control-^
 CTRLKEY 7 : Control-_
 CTRLKEY 9 : F11
-CTRLKEY 0 : F12"</string>
+CTRLKEY 0 : F12</string>
     <string name="control_key_dialog_control_disabled_text">Нет установок управляющих клавиш.</string>
-    <string name="control_key_dialog_fn_text">"FNKEY 1..9 : F1-F9
+    <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9
 FNKEY 0 : F10
 FNKEY W : Up
 FNKEY A : Left
@@ -101,11 +98,11 @@ FNKEY I : Insert
 FNKEY H : Home
 FNKEY F : End
 FNKEY . : Control-\\
-"</string>
+</string>
     <string name="control_key_dialog_fn_disabled_text">Нет установок функциональных клавиш.</string>
     <string name="confirm_window_close_message">Закрыть это окно?</string>
     <string name="perm_run_script">Выполнение произвольных команд в Эмуляторе Терминала</string>
-    <string name="permdesc_run_script">"Позволяет приложению открытие новых окон в Эмуляторе Терминала Android и запуск команд в этих окнах со всеми разрешениями Эмулятора Терминала Android, в том числе доступ к Интернету и SD-карте."</string>
+    <string name="permdesc_run_script">Позволяет приложению открытие новых окон в Эмуляторе Терминала Android и запуск команд в этих окнах со всеми разрешениями Эмулятора Терминала Android, в том числе доступ к Интернету и SD-карте.</string>
     <string name="perm_append_to_path">Добавление команд в Эмулятор Терминала</string>
     <string name="permdesc_append_to_path">Приложение сможет обеспечить дополнительные команды (добавить каталоги в ПУТЬ) для Эмулятора Терминала Android.</string>
     <string name="perm_prepend_to_path">Переопределение команд в Эмуляторе Терминала</string>
@@ -113,4 +110,7 @@ FNKEY . : Control-\\
     <string name="email_transcript_subject">Расшифровка для Эмулятора Терминала Android</string>
     <string name="email_transcript_chooser_title">Почтовая расшифровка с помощью:</string>
     <string name="email_transcript_no_email_activity_found">Не могу выбрать почтовую деятельность для отправки расшифровки.</string>
+    <string name="alt_sends_esc">Клавиша Alt посылает ESC</string>
+    <string name="alt_sends_esc_summary_on">Клавиша Alt посылает ESC.</string>
+    <string name="alt_sends_esc_summary_off">Клавиша Alt не посылает ESC.</string>
 </resources>
