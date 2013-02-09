@@ -11,6 +11,7 @@
     <string name="send_email">Отправить Email</string>
     <string name="special_keys">Специальные клавиши</string>
     <string name="toggle_soft_keyboard">Экранная клавиатура</string>
+    <string name="reset_toast_notification">"Терминальное состояние этого окна было сброшено."</string>
     <string name="enable_wakelock">Включить WakeLock</string>
     <string name="disable_wakelock">Выключить WakeLock</string>
     <string name="enable_wifilock">Включить WifiLock</string>
