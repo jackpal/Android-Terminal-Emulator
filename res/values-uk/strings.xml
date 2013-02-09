@@ -11,6 +11,7 @@
     <string name="send_email">Відіслати Email</string>
     <string name="special_keys">Спеціальні клавіші</string>
     <string name="toggle_soft_keyboard">Екранна клавіатура</string>
+    <string name="reset_toast_notification">"Термінальний стан цього вікна було скинуто."</string>
     <string name="enable_wakelock">Ввімкнути WakeLock</string>
     <string name="disable_wakelock">Вимкнути WakeLock</string>
     <string name="enable_wifilock">Ввімкнути WifiLock</string>
