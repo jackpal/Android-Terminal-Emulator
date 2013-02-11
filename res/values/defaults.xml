@@ -5,7 +5,7 @@
    <integer name="pref_actionbar_default">1</integer>
    <string name="pref_cursorstyle_default">0</string>
    <string name="pref_cursorblink_default">0</string>
-   <string name="pref_fontsize_default">10</string>
+   <string name="pref_fontsize_default">14</string>
    <string name="pref_color_default">1</string>
    <bool name="pref_utf8_by_default_default">false</bool>
    <string name="pref_backaction_default">2</string>
