@@ -63,6 +63,8 @@
     </string-array>
 
     <string-array name="entries_color_preference">
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
         <item>白底黑字</item>
         <item>黑底白字</item>
         <item>藍底白字</item>

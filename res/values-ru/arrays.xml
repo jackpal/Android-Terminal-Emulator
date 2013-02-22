@@ -41,6 +41,8 @@
         <item>288 пикселей</item>
     </string-array>
     <string-array name="entries_color_preference">
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
         <item>Чёрный на белом</item>
         <item>Белый на чёрном</item>
         <item>Белый на синем</item>

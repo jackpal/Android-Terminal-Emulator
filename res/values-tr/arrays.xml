@@ -57,6 +57,8 @@
     </string-array>
 
     <string-array name="entries_color_preference">
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
         <item>Beyaz arkaplan üzerinde siyah metin</item>
         <item>Siyah arkaplan üzerinde beyaz metin</item>
         <item>Mavi arkaplan üzerinde beyaz metin</item>

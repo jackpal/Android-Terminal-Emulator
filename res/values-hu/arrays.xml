@@ -63,6 +63,8 @@
     </string-array>
 
     <string-array name="entries_color_preference">
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
         <item>Fekete szöveg, fehér háttér</item>
         <item>Fehér szöveg, fekete háttér</item>
         <item>Fehér szöveg, kék háttér</item>
