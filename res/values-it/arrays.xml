@@ -63,6 +63,8 @@
         <item>Testo verde su nero</item>
         <item>Testo ambra su nero</item>
         <item>Testo rosso su nero</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

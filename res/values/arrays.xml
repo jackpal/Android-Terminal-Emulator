@@ -69,7 +69,9 @@
         <item>Green text on black</item>
         <item>Amber text on black</item>
         <item>Red text on black</item>
-        <item>Holo blue on black</item>
+        <item>Holo blue text on black</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">

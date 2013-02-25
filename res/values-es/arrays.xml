@@ -70,6 +70,8 @@
         <item>Ámbar en fondo negro</item>
         <item>Rojo en fondo negro</item>
         <item>Azul en fondo negro</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">

@@ -70,6 +70,8 @@
         <item>Sárga szöveg, fekete háttér</item>
         <item>Piros szöveg, fekete háttér</item>
         <item>Holo kék szöveg, fekete háttér</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">

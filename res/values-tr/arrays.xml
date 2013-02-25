@@ -63,6 +63,8 @@
         <item>Siyah arkaplan üzerinde yeşil metin</item>
         <item>Siyah arkaplan üzerinde turuncu metin</item>
         <item>Siyah arkaplan üzerinde kırmızı metin</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">

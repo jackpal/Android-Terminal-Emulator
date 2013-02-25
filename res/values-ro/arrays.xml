@@ -70,6 +70,8 @@
         <item>Text galben pe negru</item>
         <item>Text roşu pe negru</item>
         <item>Text holo albastru pe negru</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">

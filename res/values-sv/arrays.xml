@@ -70,6 +70,8 @@
         <item>Orange text på svart</item>
         <item>Röd text på svart</item>
         <item>Blå text på svart</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">

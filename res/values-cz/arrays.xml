@@ -69,6 +69,8 @@
         <item>Zelený text na černém podkladu</item>
         <item>Žlutý text na černém podkladu</item>
         <item>Červený text na černém podkladu</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">

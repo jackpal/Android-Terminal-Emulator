@@ -20,24 +20,24 @@
         <item>Afficher la barre de statut</item>
         <item>Masquer la barre de statut</item>
     </string-array>
-    
+
     <string-array name="entries_actionbar_preference">
         <!-- <item>Désactiver la barre d\'actions</item> -->
         <item>Toujours afficher la barre d\'actions</item>
         <item>Cacher la barre d\'actions (Touche Haut de l\'écran ou la touche Menu de l\'appareil pour afficher)</item>
     </string-array>
-    
+
     <string-array name="entries_cursorblink_preference">
         <item>Curseur non clignotant</item>
         <item>Curseur clignotant</item>
     </string-array>
-    
+
     <string-array name="entries_cursorstyle_preference">
         <item>Rectangle</item>
         <item>Souligné</item>
         <item>Barre verticale</item>
     </string-array>
-    
+
     <string-array name="entries_color_preference">
         <item>Texte noir sur blanc</item>
         <item>Texte blanc sur noir</item>
@@ -45,8 +45,10 @@
         <item>Texte vert sur noir</item>
         <item>Texte orange sur noir</item>
         <item>Texte rouge sur noir</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
     </string-array>
-    
+
     <string-array name="entries_backaction_preference">
         <item>Fermer toutes les fenêtres</item>
         <item>Fermer la fenêtre en cours</item>
@@ -54,7 +56,7 @@
         <item>Simuler la touche ESC</item>
         <item>Simuler la touche TAB</item>
     </string-array>
-    
+
     <string-array name="entries_controlkey_preference">
         <item>Trackball</item>
         <item>Touche \@</item>
@@ -64,7 +66,7 @@
         <item>Touche Vol Bas</item>
         <item>Touche Camera</item>
     </string-array>
-    
+
     <string-array name="entries_fnkey_preference">
         <item>Trackball</item>
         <item>Touche \@</item>
@@ -74,7 +76,7 @@
         <item>Touche Vol Bas</item>
         <item>Touche Camera</item>
     </string-array>
-    
+
     <string-array name="entries_ime_preference">
         <item>Par caractère</item>
         <item>Par mot</item>

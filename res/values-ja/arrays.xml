@@ -70,6 +70,8 @@
         <item>黒背景にアンバー字</item>
         <item>黒背景に赤字</item>
         <item>黒背景にホロブルー字</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
