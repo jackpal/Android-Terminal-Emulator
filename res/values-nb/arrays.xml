@@ -69,7 +69,9 @@
     <item>Grønn tekst på sort</item>
     <item>Orange tekst på sort</item>
     <item>Rød tekst på sort</item>
-    <item>Holo blue on black</item>
+    <item>Holo blå på sort</item>
+    <item>Solarized Light</item>
+    <item>Solarized Dark</item>
   </string-array>
 
   <string-array name="entries_backaction_preference">
