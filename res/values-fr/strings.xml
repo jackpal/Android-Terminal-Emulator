@@ -146,5 +146,5 @@
    <string name="perm_append_to_path">Ajouter des commandes</string>
    <string name="permdesc_append_to_path">Permettre à une application de fournir des commandes supplémentaires (ajouter le répertoire au PATH) pour Terminal Emulator</string>
    <string name="perm_prepend_to_path">Remplacer des commandes</string>
-   <string name="permdesc_prepend_to_path">Permettre à une application de réecrire des commandes existantes avec ses versions (répertoire à ajouter en préfixe au PATH) dans Terminal Emulator</string>
+   <string name="permdesc_prepend_to_path">Permettre à une application de remplacer des commandes existantes avec ses versions (répertoire à ajouter en préfixe au PATH) dans Terminal Emulator</string>
 </resources>
