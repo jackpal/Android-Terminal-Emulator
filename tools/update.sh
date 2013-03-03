@@ -16,9 +16,11 @@ ANDROID="$ANDROID_SDK_ROOT/tools/android"
 
 command -v "$ANDROID" >/dev/null 2>&1 || { echo >&2 "The $ANDROID tool is not found.  Aborting."; exit 1; }
 
-# Make sure target-11 is installed
+ANDROID_TARGET=android-11
 
-$ANDROID update sdk -u -t android-11
+# Make sure the target SDK is installed and up-to-date.
+
+$ANDROID update sdk -a -u -t $ANDROID_TARGET
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ATE_ROOT="$( cd $DIR/.. && pwd )"
@@ -31,5 +33,5 @@ for PROJECT_FILE in $PROJECT_FILES
 do
     PROJECT_DIR="$( dirname "$PROJECT_FILE" )"
     echo "Updating $PROJECT_FILE"
-    $ANDROID update project -p "$PROJECT_DIR" --target android-11
+    $ANDROID update project -p "$PROJECT_DIR" --target $ANDROID_TARGET
 done
