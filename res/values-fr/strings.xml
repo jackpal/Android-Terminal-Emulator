@@ -48,7 +48,7 @@
 
    <string name="process_exit_message">Session terminal terminée</string>
 
-   <string name="confirm_window_close_message">Fermer cette fenêtre?</string>
+   <string name="confirm_window_close_message">Fermer cette fenêtre ?</string>
 
    <!-- == Préférences == -->
    <string name="screen_preferences">Écran</string>
@@ -118,7 +118,7 @@
    <string name="dialog_title_termtype_preference">Type de Terminal</string>
 
    <string name="title_close_window_on_process_exit_preference">Quitter avec exit</string>
-   <string name="summary_close_window_on_process_exit_preference">Quitter le terminal en exécutant la commande exit</string>
+   <string name="summary_close_window_on_process_exit_preference">Quitter la fenêtre en cours en exécutant la commande exit</string>
 
    <string name="title_verify_path_preference">Vérifier le PATH</string>
    <string name="summary_verify_path_preference">Les répertoires inaccessibles seront retirés de PATH</string>
@@ -140,12 +140,11 @@
    <string name="email_transcript_subject">Transcription depuis Terminal Emulator</string>
    <string name="email_transcript_chooser_title">La transcription par email utilise:</string>
    <string name="email_transcript_no_email_activity_found">Impossible de choisir une activité de messagerie pour envoyer la transcription</string>
-
-   <!-- A traduire -->
-   <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>
-   <string name="permdesc_run_script">Allows application to open new windows in Android Terminal Emulator and run commands in those windows with all of Android Terminal Emulator\'s permissions, including access to the Internet and your SD Card.</string>
-   <string name="perm_append_to_path">Add commands to Terminal Emulator</string>
-   <string name="permdesc_append_to_path">Allows application to provide additional commands (add directories to the PATH) for Android Terminal Emulator.</string>
-   <string name="perm_prepend_to_path">Override commands in Terminal Emulator</string>
-   <string name="permdesc_prepend_to_path">Allows application to override existing commands with its own versions (prepend directories to the PATH) in Android Terminal Emulator.</string>
+   
+   <string name="perm_run_script">Lancer des commandes tierces</string>
+   <string name="permdesc_run_script">Permettre à une application d'ouvrir une nouvelle fenêtre dans Terminal Emulator en exécutant des commandes avec les permissions de l\'application comme l\'accès à internet et à votre carte SD</string>
+   <string name="perm_append_to_path">Ajouter des commandes</string>
+   <string name="permdesc_append_to_path">Permettre à une application de fournir des commandes supplémentaires (ajouter le répertoire au PATH) pour Terminal Emulator</string>
+   <string name="perm_prepend_to_path">Remplacer des commandes</string>
+   <string name="permdesc_prepend_to_path">Permettre à une application de remplacer des commandes existantes avec ses versions (répertoire à ajouter en préfixe au PATH) dans Terminal Emulator</string>
 </resources>
