@@ -35,7 +35,16 @@ Building ATE using ant
 The first time you build using Ant you must run a one-time setup script
 to set up the local.properties files for all the ant projects:
 
-    tools/setup.sh
+   (WAS:    tools/setup.sh which is missing)
+
+or:
+    ../sdk/tools/android update project --path `pwd`
+    cd libraries/emulatorview
+    ../sdk/tools/android update project --path `pwd` --subprojects
+
+You'll also need to set $ANDROID_NDK_ROOT to where your Android NDK
+is installed.
+
 
 After that, you can build ATE by:
 
