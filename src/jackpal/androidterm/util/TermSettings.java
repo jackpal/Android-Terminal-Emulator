@@ -97,7 +97,7 @@ public class TermSettings {
     /** An integer not in the range of real key codes. */
     public static final int KEYCODE_NONE = -1;
 
-    public static final int CONTROL_KEY_ID_NONE = 7;
+    public static final int CONTROL_KEY_ID_NONE = 8;
     public static final int[] CONTROL_KEY_SCHEMES = {
         KeyEvent.KEYCODE_DPAD_CENTER,
         KeyEvent.KEYCODE_AT,
@@ -106,6 +106,7 @@ public class TermSettings {
         KeyEvent.KEYCODE_VOLUME_UP,
         KeyEvent.KEYCODE_VOLUME_DOWN,
         KeyEvent.KEYCODE_CAMERA,
+        KeyEvent.KEYCODE_CAPS_LOCK,
         KEYCODE_NONE
     };
 
