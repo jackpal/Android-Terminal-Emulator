@@ -33,3 +33,5 @@ rights.
 
 + How can I build this?
 Build instructions can be found in the docs directory.
+
+Terminal on milestone2 
