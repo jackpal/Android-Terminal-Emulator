@@ -1077,8 +1077,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private boolean handleHardwareControlKey(int keyCode, KeyEvent event) {
-        if (keyCode == TermKeyListener.KEYCODE_CTRL_LEFT ||
-            keyCode == TermKeyListener.KEYCODE_CTRL_RIGHT) {
+        if (keyCode == KeycodeConstants.KEYCODE_CTRL_LEFT ||
+            keyCode == KeycodeConstants.KEYCODE_CTRL_RIGHT) {
             if (LOG_KEY_EVENTS) {
                 Log.w(TAG, "handleHardwareControlKey " + keyCode);
             }
