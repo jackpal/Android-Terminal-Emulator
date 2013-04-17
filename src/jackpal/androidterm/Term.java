@@ -26,6 +26,7 @@ import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.UpdateCallback;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
+import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
@@ -252,6 +253,34 @@ public class Term extends Activity implements UpdateCallback {
         }
     };
 
+	/**
+	 * Tab management via keyboard shortcuts
+	 */
+	private View.OnKeyListener mKeyboardTabManagementListener = new View.OnKeyListener() {
+		public boolean onKey(View v, int keyCode, KeyEvent event) {
+			if (event.getAction() != KeyEvent.ACTION_UP)
+				return false;
+			boolean isCtrlPressed = (event.getMetaState() & KeycodeConstants.META_CTRL_ON) != 0;
+			boolean isShiftPressed = (event.getMetaState() & KeycodeConstants.META_SHIFT_ON) != 0;
+
+			if (keyCode == KeycodeConstants.KEYCODE_TAB && isCtrlPressed) {
+				if (isShiftPressed) {
+					mViewFlipper.showPrevious();
+				} else {
+					mViewFlipper.showNext();
+				}
+
+				return true;
+			} else if (keyCode == KeycodeConstants.KEYCODE_N && isCtrlPressed && isShiftPressed) {
+				doCreateNewWindow();
+
+				return true;
+			} else {
+				return false;
+			}
+		}
+	};
+
     private Handler mHandler = new Handler();
 
     @Override
@@ -448,6 +477,7 @@ public class Term extends Activity implements UpdateCallback {
 
         emulatorView.setExtGestureListener(new EmulatorViewGestureListener(emulatorView));
         emulatorView.setOnKeyListener(mBackKeyListener);
+        emulatorView.setOnKeyListener(mKeyboardTabManagementListener);
         registerForContextMenu(emulatorView);
 
         return emulatorView;
