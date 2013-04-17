@@ -68,7 +68,6 @@
    <string name="title_fontsize_preference">文本大小</string>
    <string name="summary_fontsize_preference">选择文本大小</string>
    <string name="dialog_title_fontsize_preference">文本大小</string>
-
    <string name="title_color_preference">颜色</string>
    <string name="summary_color_preference">选择文本颜色</string>
    <string name="dialog_title_color_preference">文本颜色</string>

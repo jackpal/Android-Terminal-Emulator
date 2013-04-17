@@ -33,6 +33,7 @@
         <item>发送ESC到终端</item>
         <item>发送TAB到终端</item>
     </string-array>
+
     <string-array name="entries_ime_preference">
         <item>基于单字节(系统输入法)</item>
         <item>基于双字节(中文输入法)</item>
