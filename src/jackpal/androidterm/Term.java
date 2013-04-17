@@ -946,6 +946,38 @@ public class Term extends Activity implements UpdateCallback {
         clip.setText(getCurrentTermSession().getTranscriptText().trim());
     }
 
+    private static String escape(String value) {
+        int len = value.length();
+        StringBuilder sb = new StringBuilder(len * 3 / 2);
+
+        for (int i = 0; i < len; i++) {
+            char c = value.charAt(i);
+
+            if ((c >= ' ') && (c < 0x7f)) {
+                if ((c == '\'') || (c == '\"') || (c == '\\')) {
+                    sb.append('\\');
+                }
+                sb.append(c);
+                continue;
+            } else if (c <= 0x7f) {
+                switch (c) {
+                    case '\n': sb.append("\\n"); continue;
+                    case '\r': sb.append("\\r"); continue;
+                    case '\t': sb.append("\\t"); continue;
+                }
+            }
+            sb.append("\\u");
+            sb.append(Character.forDigit(c >> 12, 16));
+            sb.append(Character.forDigit((c >> 8) & 0x0f, 16));
+            sb.append(Character.forDigit((c >> 4) & 0x0f, 16));
+            sb.append(Character.forDigit(c & 0x0f, 16));
+        }
+
+        return sb.toString();
+    }
+
+
+
     private void doPaste() {
         ClipboardManager clip = (ClipboardManager)
          getSystemService(Context.CLIPBOARD_SERVICE);
@@ -957,7 +989,7 @@ public class Term extends Activity implements UpdateCallback {
             Log.e(TermDebug.LOG_TAG, "UTF-8 encoding not found.");
             return;
         }
-        getCurrentTermSession().write(paste.toString());
+        getCurrentTermSession().write(mSettings.mCharsToU?escape(paste.toString()):paste.toString());
     }
 
     private void doSendControlKey() {

@@ -29,6 +29,7 @@
 
    <string name="reset_toast_notification">当前窗口已被重置</string>
    <string name="edit_text">编辑文本</string>
+   <string name="select_text">选择文本</string>
    <string name="copy_all">全部复制</string>
    <string name="paste">粘贴</string>
 
