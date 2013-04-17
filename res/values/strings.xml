@@ -148,5 +148,25 @@
   <string name="alt_sends_esc">Alt key sends ESC</string>
   <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
   <string name="alt_sends_esc_summary_off">Alt key does not send ESC.</string>
+<string name="shortcut_preferences">Shortcuts</string>
+    <string name="title_enable_shortcut_vol_up">Volume Up Shortcut</string>
+    <string name="title_shortcut_vol_up_preference">Shortcut for Volume Up key</string>
+    <string name="dialog_title_shortcut_vol_up_preference">Volume Up shortcut</string>
+    <string name="title_enable_shortcut_vol_down">Volume Down Shortcut.</string>
+    <string name="title_shortcut_vol_down_preference">Shortcut for Volume Down key</string>
+    <string name="dialog_title_shortcut_vol_down_preference">Volume Down shortcut</string>
+    <string name="title_enable_shortcut_back">Back key shortcut.</string>
+    <string name="title_shortcut_back_preference">Shortcut for Back key</string>
+    <string name="dialog_title_shortcut_back_preference">Back Key shortcut</string>
+    <string name="title_enable_shortcut_search">Search key shortcut.</string>
+    <string name="title_shortcut_search_preference">Shortcut for Search key</string>
+    <string name="dialog_title_shortcut_search_preference">Search Key shortcut</string>
+    <string name="title_enable_shortcut_focus">Focus key shortcut.</string>
+    <string name="title_shortcut_focus_preference">Shortcut for Focus key</string>
+    <string name="dialog_title_shortcut_focus_preference">Focus Key shortcut</string>
+    <string name="title_enable_lock_control_preference">Lock Control key</string>
+ 
+   <string name="title_chars_to_unicode">Character Escape</string>
+   <string name="summary_chars_to_unicode">Character Escape(Whether Paste \\u1234)</string>
 
 </resources>

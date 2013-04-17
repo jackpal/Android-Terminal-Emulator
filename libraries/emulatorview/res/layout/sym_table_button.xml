@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button android:textAppearance="?android:textAppearanceLarge"
+    android:textColor="#ffffffff"
+    android:background="@drawable/btn"
+    android:focusable="false"
+    android:clickable="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

@@ -48,6 +48,20 @@ public class TermSettings {
     private boolean mDoPathExtensions;
     private boolean mAllowPathPrepend;
 
+    public boolean mCharsToU;
+    public boolean mEnableShortcutSearch;
+    public boolean mEnableShortcutBack;
+    public boolean mEnableShortcutFocus;
+    public boolean mEnableShortcutVolUp;
+    public boolean mEnableShortcutVolDown;
+    public String mShortcutSearch;
+    public String mShortcutBack;
+    public String mShortcutFocus;
+    public String mShortcutVolUp;
+    public String mShortcutVolDown;
+    public boolean mEnableLockControlKey;
+
+
     private String mPrependPath = null;
     private String mAppendPath = null;
 
@@ -72,6 +86,7 @@ public class TermSettings {
     private static final String PATHEXTENSIONS_KEY = "do_path_extensions";
     private static final String PATHPREPEND_KEY = "allow_prepend_path";
     private static final String ALT_SENDS_ESC = "alt_sends_esc";
+    private static final String CHARS_TO_UNICODE = "chars_to_unicode";
 
     public static final int WHITE               = 0xffffffff;
     public static final int BLACK               = 0xff000000;
@@ -106,27 +121,29 @@ public class TermSettings {
     /** An integer not in the range of real key codes. */
     public static final int KEYCODE_NONE = -1;
 
-    public static final int CONTROL_KEY_ID_NONE = 7;
+    public static final int CONTROL_KEY_ID_NONE = 8;
     public static final int[] CONTROL_KEY_SCHEMES = {
+        KeyEvent.KEYCODE_SEARCH,
         KeyEvent.KEYCODE_DPAD_CENTER,
         KeyEvent.KEYCODE_AT,
         KeyEvent.KEYCODE_ALT_LEFT,
         KeyEvent.KEYCODE_ALT_RIGHT,
         KeyEvent.KEYCODE_VOLUME_UP,
         KeyEvent.KEYCODE_VOLUME_DOWN,
-        KeyEvent.KEYCODE_CAMERA,
+        KeyEvent.KEYCODE_FOCUS,
         KEYCODE_NONE
     };
 
-    public static final int FN_KEY_ID_NONE = 7;
+    public static final int FN_KEY_ID_NONE = 8;
     public static final int[] FN_KEY_SCHEMES = {
+        KeyEvent.KEYCODE_SEARCH,
         KeyEvent.KEYCODE_DPAD_CENTER,
         KeyEvent.KEYCODE_AT,
         KeyEvent.KEYCODE_ALT_LEFT,
         KeyEvent.KEYCODE_ALT_RIGHT,
         KeyEvent.KEYCODE_VOLUME_UP,
         KeyEvent.KEYCODE_VOLUME_DOWN,
-        KeyEvent.KEYCODE_CAMERA,
+        KeyEvent.KEYCODE_FOCUS,
         KEYCODE_NONE
     };
 
@@ -188,6 +205,18 @@ public class TermSettings {
         mDoPathExtensions = readBooleanPref(PATHEXTENSIONS_KEY, mDoPathExtensions);
         mAllowPathPrepend = readBooleanPref(PATHPREPEND_KEY, mAllowPathPrepend);
         mAltSendsEsc = readBooleanPref(ALT_SENDS_ESC, mAltSendsEsc);
+        mEnableShortcutSearch=readBooleanPref("enable_shortcut_search",false);
+        mEnableShortcutBack=readBooleanPref("enable_shortcut_back",false);
+        mEnableShortcutFocus=readBooleanPref("enable_shortcut_focus",false);
+        mEnableShortcutVolUp=readBooleanPref("enable_shortcut_vol_up",false);
+        mEnableShortcutVolDown=readBooleanPref("enable_shortcut_vol_down",false);
+        mShortcutSearch=readStringPref("shortcut_search","");
+        mShortcutBack=readStringPref("shortcut_back","");
+        mShortcutFocus=readStringPref("shortcut_focus","");
+        mShortcutVolUp=readStringPref("shortcut_vol_up","");
+        mShortcutVolDown=readStringPref("shortcut_vol_down","");
+        mEnableLockControlKey = readBooleanPref("enable_lock_control", false);
+        mCharsToU = readBooleanPref(CHARS_TO_UNICODE, false);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 

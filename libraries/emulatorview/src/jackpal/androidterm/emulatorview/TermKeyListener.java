@@ -647,11 +647,28 @@ class TermKeyListener {
                 break;
             }
         }
+        public void resetKeyState(){
+            mState=UNPRESSED;
+        }
 
         public boolean isActive() {
             return mState != UNPRESSED;
         }
 
+        public boolean isUsed() {
+            return mState == USED;
+        }
+        public boolean isPressed() {
+            return mState == PRESSED;
+        }
+
+        public boolean isReleased() {
+            return mState == RELEASED;
+        }
+
+        public boolean isLocked() {
+            return mState == LOCKED;
+        }
         public int getUIMode() {
             switch (mState) {
             default:
@@ -684,7 +701,12 @@ class TermKeyListener {
     private int mBackKeyCode;
     private boolean mAltSendsEsc;
 
+
     private int mCombiningAccent;
+
+
+    //show symbols
+    private EmulatorView mEmulator;
 
     // Map keycodes out of (above) the Unicode code point space.
     static public final int KEYCODE_OFFSET = 0xA00000;
@@ -699,6 +721,9 @@ class TermKeyListener {
         updateCursorMode();
     }
 
+    public void setEmulatorView(EmulatorView view){
+        mEmulator=view;
+    }
     public void setBackKeyCharacter(int code) {
         mBackKeyCode = code;
     }
@@ -710,12 +735,15 @@ class TermKeyListener {
     public void handleHardwareControlKey(boolean down) {
         mHardwareControlKey = down;
     }
-
+    
     public void handleControlKey(boolean down) {
         if (down) {
             mControlKey.onPress();
         } else {
             mControlKey.onRelease();
+        }
+        if(!mEmulator.mEnableLockControlKey&&mControlKey.isLocked()){
+            mControlKey.onPress();
         }
         updateCursorMode();
     }
@@ -982,6 +1010,12 @@ class TermKeyListener {
 
         if (result >= KEYCODE_OFFSET) {
             handleKeyCode(result - KEYCODE_OFFSET, appMode);
+        }else if (result==0xef01){
+            if(mEmulator!=null){
+                mEmulator.showSymbolsTable();
+                mAltKey.resetKeyState();
+                updateCursorMode();
+            }
         } else if (result >= 0) {
             if (setHighBit) {
                 result |= 0x80;

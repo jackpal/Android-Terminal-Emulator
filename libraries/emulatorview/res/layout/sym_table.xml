@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal"
+ android:layout_width="304.0dip"
+  android:layout_height="160.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <GridView android:scrollbarStyle="insideInset"
+     android:gravity="left"
+      android:layout_gravity="center_vertical"
+       android:id="@+id/sym_table"
+       android:padding="4.0dip"
+       android:scrollbars="vertical"
+       android:fadingEdge="none"
+       android:layout_width="0.0dip"
+       android:layout_height="wrap_content"
+       android:listSelector="#00000000"
+       android:drawSelectorOnTop="false"
+       android:horizontalSpacing="8.0dip"
+       android:verticalSpacing="8.0dip"
+       android:columnWidth="48.0dip"
+       android:numColumns="4"
+       android:layout_weight="1.0"
+       android:fadeScrollbars="false"/>
+    <Button android:layout_gravity="center_vertical"
+     android:id="@+id/cancel"
+     android:layout_width="36dp"
+     android:layout_height="48dp"
+     android:layout_marginLeft="12.0dip"
+     android:layout_marginRight="12.0dip"
+     android:background="@drawable/btn_close"
+         />
+</LinearLayout>

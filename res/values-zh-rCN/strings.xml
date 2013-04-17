@@ -17,14 +17,29 @@
 <resources>
    <string name="application_terminal">终端模拟器</string>
    <string name="preferences">首选项</string>
+   <string name="new_window">新建窗口</string>
+   <string name="close_window">关闭窗口</string>
+   <string name="window_list">窗口</string>
+   <string name="prev_window">上一个</string>
+   <string name="next_window">下一个</string>
    <string name="reset">重置终端</string>
-   <string name="send_email">发送电子邮件到...</string>
+   <string name="send_email">发送邮件到..</string>
    <string name="special_keys">特殊键</string>
-   <string name="toggle_soft_keyboard">打开/关闭软键盘</string>
+   <string name="toggle_soft_keyboard">软键盘</string>
 
+   <string name="reset_toast_notification">当前窗口已被重置</string>
    <string name="edit_text">编辑文本</string>
    <string name="copy_all">全部复制</string>
    <string name="paste">粘贴</string>
+
+   <string name="send_control_key">发送Ctrl键</string>
+   <string name="send_fn_key">发送Fn键</string>
+
+   <string name="window_title">窗口 %1$d</string>
+
+   <string name="service_notify_text">终端会话运行中...</string>
+
+   <string name="process_exit_message">终端会话已停止.</string>
 
    <!-- Preference dialog -->
    <string name="screen_preferences">屏幕</string>
@@ -33,6 +48,9 @@
    <string name="summary_statusbar_preference">显示/隐藏状态栏。</string>
    <string name="dialog_title_statusbar_preference">状态栏</string>
 
+   <string name="title_actionbar_preference">动作栏</string>
+   <string name="summary_actionbar_preference">选择动作栏行为 (Android3.0以上)</string>
+   <string name="dialog_title_actionbar_preference">动作栏行为</string>
    <string name="title_cursorstyle_preference">光标样式</string>
    <string name="summary_cursorstyle_preference">选择光标样式</string>
    <string name="dialog_title_cursorstyle_preference">光标样式</string>
@@ -42,6 +60,9 @@
    <string name="dialog_title_cursorblink_preference">光标闪烁</string>
 
    <string name="text_preferences">文本</string>
+
+   <string name="title_utf8_by_default_preference">UTF-8</string>
+   <string name="summary_utf8_by_default_preference">以UTF-8模式处理字符</string>
 
    <string name="title_fontsize_preference">文本大小</string>
    <string name="summary_fontsize_preference">选择文本大小</string>
@@ -53,9 +74,18 @@
 
    <string name="keyboard_preferences">键盘</string>
 
+
+   <string name="title_backaction_preference">返回键行为</string>
+   <string name="summary_backaction_preference">按下返回键后的动作.</string>
+   <string name="dialog_title_backaction_preference">返回键行为</string>
+
    <string name="title_controlkey_preference">Ctrl 键</string>
    <string name="summary_controlkey_preference">设置 Ctrl 键</string>
    <string name="dialog_title_controlkey_preference">Ctrl 键</string>
+
+   <string name="title_fnkey_preference">Fn键</string>
+   <string name="summary_fnkey_preference">选择Fn键</string>
+   <string name="dialog_title_fnkey_preference">Fn键</string>
 
    <string name="title_ime_preference">输入方式</string>
    <string name="summary_ime_preference">选择输入方式或软键盘</string>
@@ -70,4 +100,51 @@
    <string name="summary_initialcommand_preference">启动 Shell 时自动执行的命令</string>
    <string name="dialog_title_initialcommand_preference">初始命令</string>
 
+   <string name="title_termtype_preference">终端类型</string>
+
+   <string name="summary_termtype_preference">选择终端类型</string>
+   <string name="dialog_title_termtype_preference">终端类型</string>
+   <string name="title_close_window_on_process_exit_preference">退出时关闭窗口</string>
+   <string name="summary_close_window_on_process_exit_preference">当Shell退出时关闭窗口</string>
+
+   <string name="title_verify_path_preference">验证PATH每项</string>
+   <string name="summary_verify_path_preference">当有无法访问的路径将会从PATH中移除</string>
+
+   <string name="title_do_path_extensions_preference">允许扩展PATH变量</string>
+   <string name="summary_do_path_extensions_preference">其他应用将可以添加新的命令(添加到PATH变量中).</string>
+
+   <string name="title_allow_prepend_path_preference">预先扩展PATH变量</string>
+   <string name="summary_allow_prepend_path_preference">其他应用将可以覆盖原有命令(类似PATH=/root:$PATH).</string>
+
+   <string name="control_key_dialog_title">Ctrl键和Fn键</string>
+   <string name="control_key_dialog_control_disabled_text">没设置Ctrl键</string>
+  <string name="control_key_dialog_fn_disabled_text">没设置Fn键</string>
+  <string name="confirm_window_close_message">是否关闭当前窗口</string>
+
+  <string name="alt_sends_esc">Alt发送ESC</string>
+  <string name="alt_sends_esc_summary_on">Alt发送ESC</string>
+  <string name="alt_sends_esc_summary_off">Alt不发送ESC</string>
+  <string name="shortcut_preferences">快捷键</string>
+  <string name="title_enable_shortcut_vol_up">音量+</string>
+    <string name="title_shortcut_vol_up_preference">设置音量+发送的键值</string>
+    <string name="dialog_title_shortcut_vol_up_preference">设置音量+发送的键值</string>
+    <string name="title_enable_shortcut_vol_down">音量-</string>
+    <string name="title_shortcut_vol_down_preference">设置音量-发送的键值</string>
+    <string name="dialog_title_shortcut_vol_down_preference">设置音量-发送的键值</string>
+
+    <string name="title_enable_shortcut_back">返回键</string>
+    <string name="title_shortcut_back_preference">设置返回键发送的键值</string>
+    <string name="dialog_title_shortcut_back_preference">设置返回键发送的键值</string>
+
+    <string name="title_enable_shortcut_search">搜索键</string>
+    <string name="title_shortcut_search_preference">设置搜索键发送的键值</string>
+    <string name="dialog_title_shortcut_search_preference">设置搜索键发送的键值</string>
+
+    <string name="title_enable_shortcut_focus">对焦键</string>
+    <string name="title_shortcut_focus_preference">设置对焦键发送的键值</string>
+    <string name="dialog_title_shortcut_focus_preference">设置对焦键发送的键值</string>
+    <string name="title_enable_lock_control_preference">锁定Ctrl键</string>
+   <string name="title_chars_to_unicode">字符转义</string>
+   <string name="summary_chars_to_unicode">字符转义(粘贴时对字符转义如\\u1234)</string>
+   <string name="sym_table">符号表</string>
 </resources>

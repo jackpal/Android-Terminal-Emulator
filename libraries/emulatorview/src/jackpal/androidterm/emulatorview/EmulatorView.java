@@ -42,6 +42,9 @@ import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
 import android.widget.Scroller;
 
+import android.widget.Button;
+import android.widget.AdapterView;
+
 /**
  * A view on a {@link TermSession}.  Displays the terminal emulator's screen,
  * provides access to its scrollback buffer, and passes input through to the
@@ -155,6 +158,28 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mFnKeyCode;
     private boolean mIsControlKeySent = false;
     private boolean mIsFnKeySent = false;
+
+
+    //handle the hard key
+    public boolean mEnableShortcutSearch;
+    public String mShortcutSearch;
+
+    public boolean mEnableShortcutBack;
+    public String mShortcutBack;
+
+    public boolean mEnableShortcutFocus;
+    public String mShortcutFocus;
+
+    public boolean mEnableShortcutVolUp;
+    public String mShortcutVolUp;
+
+    public boolean mEnableShortcutVolDown;
+    public String mShortcutVolDown;
+
+    public boolean mEnableLockControlKey;
+
+
+
 
     private String mTermType;
 
@@ -308,6 +333,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mTermSession = session;
 
         mKeyListener = new TermKeyListener(session);
+
+        mKeyListener.setEmulatorView(this);
 
         // Do init now if it was deferred until a TermSession was attached
         if (mDeferInit) {
@@ -974,6 +1001,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             return true;
         } else if (handleFnKey(keyCode, true)) {
             return true;
+        }else if(handleShortcutKey(keyCode,true)){
+            return true;
         } else if (isSystemKey(keyCode, event)) {
             if (! isInterceptedSystemKey(keyCode) ) {
                 // Don't intercept the system keys
@@ -1018,6 +1047,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (handleControlKey(keyCode, false)) {
             return true;
         } else if (handleFnKey(keyCode, false)) {
+            return true;
+        }else if(handleShortcutKey(keyCode,false)){
             return true;
         } else if (isSystemKey(keyCode, event)) {
             // Don't intercept the system keys
@@ -1089,6 +1120,81 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
         return false;
     }
+
+    public boolean handleShortcutKey(int keyCode,boolean down){
+        if(mEnableShortcutSearch&&keyCode==KeyEvent.KEYCODE_SEARCH){
+            return charSequenceMap(mShortcutSearch,down);
+        }
+        if(mEnableShortcutBack&&keyCode==KeyEvent.KEYCODE_BACK){
+            return charSequenceMap(mShortcutBack,down);
+        }
+        if(mEnableShortcutFocus&&keyCode==KeyEvent.KEYCODE_FOCUS){
+            return charSequenceMap(mShortcutFocus,down);
+        }
+        if(mEnableShortcutVolUp&&keyCode==KeyEvent.KEYCODE_VOLUME_UP){
+            return charSequenceMap(mShortcutVolUp,down);
+        }
+        if(mEnableShortcutVolDown&&keyCode==KeyEvent.KEYCODE_VOLUME_DOWN){
+            return charSequenceMap(mShortcutVolDown,down);
+        }
+        return false;
+    }
+
+    public  boolean charSequenceMap(String var,boolean  down){
+        if(var==null||"".equals(var))
+            return false;
+        if(var.charAt(0)=='^'&&var.length()>1){
+            switch(var.charAt(1)){
+                case '[':
+                    if(down){
+                        mTermSession.write(27);//esc
+                    }
+                    break;
+                case 'M':
+                    if(down){
+                        mTermSession.write(13);//enter
+                    }
+                    break;
+            }
+        }else{
+            if(down)
+                mTermSession.write(var);
+        }
+        return true;
+    }
+
+    public void showSymbolsTable(){
+        SymTable st=new SymTable(getContext()){
+            public void onItemClick(AdapterView paramAdapterView, View view, int paramInt, long paramLong)
+            {
+                EmulatorView.this.charSequenceMap(SymTable.SEQUENCES[paramInt],true);
+                
+                dismiss();
+            }
+
+            public void onClick(View view)
+            {
+                if ((view instanceof Button))
+                {
+                    Button btn = (Button)view;
+                    CharSequence sequence = (CharSequence)btn.getTag();
+                    if (sequence == null)
+                        dismiss();
+                    else{
+                        EmulatorView.this.charSequenceMap(sequence.toString(),true);
+                        dismiss();
+                    }
+
+                }
+            }
+        };
+        st.setTitle(R.string.sym_table);
+        st.show();
+    }
+
+
+
+
 
     private boolean handleFnKey(int keyCode, boolean down) {
         if (keyCode == mFnKeyCode) {

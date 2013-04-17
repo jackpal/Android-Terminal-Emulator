@@ -83,24 +83,26 @@
     </string-array>
 
     <string-array name="entries_controlkey_preference">
+        <item>Search Key</item>
         <item>Jog ball</item>
         <item>\@ key</item>
         <item>Left Alt key</item>
         <item>Right Alt key</item>
         <item>Vol Up key</item>
         <item>Vol Down key</item>
-        <item>Camera key</item>
+        <item>Focus key</item>
         <item>None</item>
     </string-array>
 
     <string-array name="entries_fnkey_preference">
+        <item>Search Key</item>
         <item>Jog ball</item>
         <item>\@ key</item>
         <item>Left Alt key</item>
         <item>Right Alt key</item>
         <item>Vol Up key</item>
         <item>Vol Down key</item>
-        <item>Camera key</item>
+        <item>Focus key</item>
         <item>None</item>
     </string-array>
 
@@ -111,25 +113,27 @@
 
     <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
     <string-array name="control_keys_short_names">
+        <item>Search</item>
         <item>Ball</item>
         <item>\@</item>
         <item>Left-Alt</item>
         <item>Right-Alt</item>
         <item>Vol-Up</item>
         <item>Vol-Dn</item>
-        <item>Camera</item>
+        <item>Focus</item>
         <item>None</item>
     </string-array>
 
     <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
     <string-array name="fn_keys_short_names">
+        <item>Search</item>
         <item>Ball</item>
         <item>\@</item>
         <item>Left-Alt</item>
         <item>Right-Alt</item>
         <item>Vol-Up</item>
         <item>Vol-Dn</item>
-        <item>Camera</item>
+        <item>Focus</item>
         <item>None</item>
     </string-array>
 </resources>

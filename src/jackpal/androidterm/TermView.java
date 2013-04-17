@@ -47,6 +47,24 @@ public class TermView extends EmulatorView {
         setControlKeyCode(settings.getControlKeyCode());
         setFnKeyCode(settings.getFnKeyCode());
         setTermType(settings.getTermType());
+
+        mEnableShortcutSearch=settings.mEnableShortcutSearch;
+        mShortcutSearch=settings.mShortcutSearch;
+
+        mEnableShortcutBack=settings.mEnableShortcutBack;
+        mShortcutBack=settings.mShortcutBack;
+
+        mEnableShortcutFocus=settings.mEnableShortcutFocus;
+        mShortcutFocus=settings.mShortcutFocus;
+
+        mEnableShortcutVolUp=settings.mEnableShortcutVolUp;
+        mShortcutVolUp=settings.mShortcutVolUp;
+
+        mEnableShortcutVolDown=settings.mEnableShortcutVolDown;
+        mShortcutVolDown=settings.mShortcutVolDown;
+
+        //lock the ctr
+        mEnableLockControlKey=settings.mEnableLockControlKey;
     }
 
     public void updatePrefs(TermSettings settings) {

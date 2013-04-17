@@ -87,7 +87,11 @@
                 android:defaultValue="@bool/pref_utf8_by_default_default"
                 android:title="@string/title_utf8_by_default_preference"
                 android:summary="@string/summary_utf8_by_default_preference" />
-
+            <CheckBoxPreference
+                android:key="chars_to_unicode"
+                android:defaultValue="false"
+                android:title="@string/title_chars_to_unicode"
+                android:summary="@string/summary_chars_to_unicode" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -134,7 +138,66 @@
                 android:defaultValue="@bool/pref_alt_sends_esc_default"
                 android:summaryOn="@string/alt_sends_esc_summary_on"
                 android:summaryOff="@string/alt_sends_esc_summary_off" />
+            <CheckBoxPreference
+                android:key="enable_lock_control"
+                android:defaultValue="false"
+                android:title="@string/title_enable_lock_control_preference"
+       />
 
+    </PreferenceCategory>
+    <PreferenceCategory 
+        android:title="@string/shortcut_preferences">
+        <CheckBoxPreference
+            android:title="@string/title_enable_shortcut_search"
+            android:key="enable_shortcut_search"
+            android:defaultValue="false" />
+        <EditTextPreference 
+            android:title="@string/title_shortcut_search_preference"
+            android:key="shortcut_search"
+            android:dialogTitle="@string/dialog_title_shortcut_search_preference" 
+            android:dependency="enable_shortcut_search"
+            android:defaultValue="^[" />
+        <CheckBoxPreference 
+            android:title="@string/title_enable_shortcut_back"
+            android:key="enable_shortcut_back"
+            android:defaultValue="0" />
+        <EditTextPreference
+            android:title="@string/title_shortcut_back_preference"
+            android:key="shortcut_back"
+            android:dialogTitle="@string/dialog_title_shortcut_back_preference"
+            android:dependency="enable_shortcut_back"
+            android:defaultValue="^M" />
+        <CheckBoxPreference
+            android:title="@string/title_enable_shortcut_focus"
+            android:key="enable_shortcut_focus"
+            android:defaultValue="false" />
+        <EditTextPreference
+            android:title="@string/title_shortcut_focus_preference"
+            android:key="shortcut_focus"
+            android:dialogTitle="@string/dialog_title_shortcut_focus_preference"
+            android:dependency="enable_shortcut_focus"
+            android:defaultValue="^[" />
+        <CheckBoxPreference 
+            android:title="@string/title_enable_shortcut_vol_up"
+            android:key="enable_shortcut_vol_up"
+            android:defaultValue="false" />
+        <EditTextPreference
+            android:title="@string/title_shortcut_vol_up_preference"
+            android:key="shortcut_vol_up"
+            android:dialogTitle="@string/dialog_title_shortcut_vol_up_preference" 
+            android:defaultValue="^["
+            android:dependency="enable_shortcut_vol_up"
+            />
+        <CheckBoxPreference
+            android:title="@string/title_enable_shortcut_vol_down"
+            android:key="enable_shortcut_vol_down"
+            android:defaultValue="false" />
+        <EditTextPreference
+            android:title="@string/title_shortcut_vol_down_preference"
+            android:key="shortcut_vol_down"
+            android:dialogTitle="@string/dialog_title_shortcut_vol_down_preference" 
+            android:dependency="enable_shortcut_vol_down"
+            android:defaultValue="^[" />
     </PreferenceCategory>
 
     <PreferenceCategory
