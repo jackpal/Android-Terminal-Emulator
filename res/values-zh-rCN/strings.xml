@@ -38,7 +38,7 @@
 
    <string name="window_title">窗口 %1$d</string>
 
-   <string name="service_notify_text">终端会话运行中...</string>
+   <string name="service_notify_text">运行中...</string>
 
    <string name="process_exit_message">终端会话已停止.</string>
 
@@ -126,23 +126,23 @@
   <string name="alt_sends_esc_summary_off">Alt不发送ESC</string>
   <string name="shortcut_preferences">快捷键</string>
   <string name="title_enable_shortcut_vol_up">音量+</string>
-    <string name="title_shortcut_vol_up_preference">设置音量+发送的键值</string>
-    <string name="dialog_title_shortcut_vol_up_preference">设置音量+发送的键值</string>
+    <string name="title_shortcut_vol_up_preference">设置音量+发送的字符</string>
+    <string name="dialog_title_shortcut_vol_up_preference">设置音量+发送的字符</string>
     <string name="title_enable_shortcut_vol_down">音量-</string>
-    <string name="title_shortcut_vol_down_preference">设置音量-发送的键值</string>
-    <string name="dialog_title_shortcut_vol_down_preference">设置音量-发送的键值</string>
+    <string name="title_shortcut_vol_down_preference">设置音量-发送的字符</string>
+    <string name="dialog_title_shortcut_vol_down_preference">设置音量-发送的字符</string>
 
     <string name="title_enable_shortcut_back">返回键</string>
-    <string name="title_shortcut_back_preference">设置返回键发送的键值</string>
-    <string name="dialog_title_shortcut_back_preference">设置返回键发送的键值</string>
+    <string name="title_shortcut_back_preference">设置返回键发送的字符</string>
+    <string name="dialog_title_shortcut_back_preference">设置返回键发送的字符</string>
 
     <string name="title_enable_shortcut_search">搜索键</string>
-    <string name="title_shortcut_search_preference">设置搜索键发送的键值</string>
-    <string name="dialog_title_shortcut_search_preference">设置搜索键发送的键值</string>
+    <string name="title_shortcut_search_preference">设置搜索键发送的字符</string>
+    <string name="dialog_title_shortcut_search_preference">设置搜索键发送的字符</string>
 
     <string name="title_enable_shortcut_focus">对焦键</string>
-    <string name="title_shortcut_focus_preference">设置对焦键发送的键值</string>
-    <string name="dialog_title_shortcut_focus_preference">设置对焦键发送的键值</string>
+    <string name="title_shortcut_focus_preference">设置对焦键发送的字符</string>
+    <string name="dialog_title_shortcut_focus_preference">设置对焦键发送的字符</string>
     <string name="title_enable_lock_control_preference">锁定Ctrl键</string>
    <string name="title_chars_to_unicode">字符转义</string>
    <string name="summary_chars_to_unicode">字符转义(粘贴时对字符转义如\\u1234)</string>

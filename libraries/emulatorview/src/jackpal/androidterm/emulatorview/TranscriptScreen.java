@@ -168,6 +168,7 @@ class TranscriptScreen implements Screen {
             TextRenderer renderer, int cx, int selx1, int selx2, String imeText, int cursorMode) {
         char[] line;
         StyleRow color;
+        int cursorWidth = 1;
         try {
             line = mData.getLine(row);
             color = mData.getLineColor(row);
@@ -191,7 +192,7 @@ class TranscriptScreen implements Screen {
                                 blank, 0, 1, true, defaultStyle);
             } else if (cx != -1) {
                 // We need to draw the cursor
-                renderer.drawCursor(canvas, x, y, cx, cursorMode);
+                renderer.drawCursor(canvas, x, y, cx, cursorWidth, cursorMode);
             }
 
             return;
@@ -237,6 +238,9 @@ class TranscriptScreen implements Screen {
                 lastRunStartIndex = index;
                 forceFlushRun = false;
             }
+            if(cx==column){
+                cursorWidth=width;
+            }
             runWidth += width;
             column += width;
             index += incr;
@@ -264,7 +268,7 @@ class TranscriptScreen implements Screen {
         }
 
         if (cx >= 0) {
-            renderer.drawCursor(canvas,  x, y, cx, cursorMode);
+            renderer.drawCursor(canvas,  x, y, cx, cursorWidth, cursorMode);
         }
      }
 

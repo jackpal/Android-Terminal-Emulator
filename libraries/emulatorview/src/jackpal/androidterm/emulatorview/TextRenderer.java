@@ -41,5 +41,5 @@ interface TextRenderer {
     void drawTextRun(Canvas canvas, float x, float y,
             int lineOffset, int runWidth, char[] text,
             int index, int count, boolean cursor, int textStyle);
-    void drawCursor(Canvas canvas, float x, float y, int lineOffset, int cursorMode);
+    void drawCursor(Canvas canvas, float x, float y, int lineOffset, int width, int cursorMode);
 }
