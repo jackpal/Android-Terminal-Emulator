@@ -531,6 +531,13 @@ public class Term extends Activity implements UpdateCallback {
         }
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        // the HOME dir needs to be set here since it comes from Context
+        SharedPreferences.Editor editor = mPrefs.edit();
+        String defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
+        String homePath = mPrefs.getString("home_path", defValue);
+        editor.putString("home_path", homePath);
+        editor.commit();
+
         mSettings.readPrefs(mPrefs);
         updatePrefs();
 

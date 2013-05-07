@@ -47,6 +47,7 @@ public class TermSettings {
     private boolean mVerifyPath;
     private boolean mDoPathExtensions;
     private boolean mAllowPathPrepend;
+    private String mHomePath;
 
     private String mPrependPath = null;
     private String mAppendPath = null;
@@ -71,6 +72,7 @@ public class TermSettings {
     private static final String VERIFYPATH_KEY = "verify_path";
     private static final String PATHEXTENSIONS_KEY = "do_path_extensions";
     private static final String PATHPREPEND_KEY = "allow_prepend_path";
+    private static final String HOMEPATH_KEY = "home_path";
     private static final String ALT_SENDS_ESC = "alt_sends_esc";
 
     public static final int WHITE               = 0xffffffff;
@@ -162,6 +164,7 @@ public class TermSettings {
         mVerifyPath = res.getBoolean(R.bool.pref_verify_path_default);
         mDoPathExtensions = res.getBoolean(R.bool.pref_do_path_extensions_default);
         mAllowPathPrepend = res.getBoolean(R.bool.pref_allow_prepend_path_default);
+        // the mHomePath default is set dynamically in readPrefs()
         mAltSendsEsc = res.getBoolean(R.bool.pref_alt_sends_esc_default);
     }
 
@@ -187,6 +190,7 @@ public class TermSettings {
         mVerifyPath = readBooleanPref(VERIFYPATH_KEY, mVerifyPath);
         mDoPathExtensions = readBooleanPref(PATHEXTENSIONS_KEY, mDoPathExtensions);
         mAllowPathPrepend = readBooleanPref(PATHPREPEND_KEY, mAllowPathPrepend);
+        mHomePath = readStringPref(HOMEPATH_KEY, mHomePath);
         mAltSendsEsc = readBooleanPref(ALT_SENDS_ESC, mAltSendsEsc);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
@@ -325,5 +329,13 @@ public class TermSettings {
 
     public String getAppendPath() {
         return mAppendPath;
+    }
+
+    public void setHomePath(String homePath) {
+        mHomePath = homePath;
+    }
+
+    public String getHomePath() {
+        return mHomePath;
     }
 }

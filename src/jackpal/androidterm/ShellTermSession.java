@@ -128,9 +128,10 @@ public class ShellTermSession extends TermSession {
         if (settings.verifyPath()) {
             path = checkPath(path);
         }
-        String[] env = new String[2];
+        String[] env = new String[3];
         env[0] = "TERM=" + settings.getTermType();
         env[1] = "PATH=" + path;
+        env[2] = "HOME=" + settings.getHomePath();
 
         createSubprocess(processId, settings.getShell(), env);
         mProcId = processId[0];

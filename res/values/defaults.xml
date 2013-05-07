@@ -20,4 +20,5 @@
    <bool name="pref_verify_path_default">true</bool>
    <bool name="pref_do_path_extensions_default">true</bool>
    <bool name="pref_allow_prepend_path_default">true</bool>
+   <!-- the home_path default is set dynamically in Term.onResume() -->
 </resources>
