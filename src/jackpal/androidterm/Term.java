@@ -254,9 +254,9 @@ public class Term extends Activity implements UpdateCallback {
     };
 
 	/**
-	 * Tab management via keyboard shortcuts
+	 * Keyboard shortcuts (tab management, paste)
 	 */
-	private View.OnKeyListener mKeyboardTabManagementListener = new View.OnKeyListener() {
+	private View.OnKeyListener mKeyboardShortcutListener = new View.OnKeyListener() {
 		public boolean onKey(View v, int keyCode, KeyEvent event) {
 			if (event.getAction() != KeyEvent.ACTION_UP)
 				return false;
@@ -273,6 +273,10 @@ public class Term extends Activity implements UpdateCallback {
 				return true;
 			} else if (keyCode == KeycodeConstants.KEYCODE_N && isCtrlPressed && isShiftPressed) {
 				doCreateNewWindow();
+
+				return true;
+			} else if (keyCode == KeycodeConstants.KEYCODE_V && isCtrlPressed && isShiftPressed) {
+				doPaste();
 
 				return true;
 			} else {
@@ -477,7 +481,7 @@ public class Term extends Activity implements UpdateCallback {
 
         emulatorView.setExtGestureListener(new EmulatorViewGestureListener(emulatorView));
         emulatorView.setOnKeyListener(mBackKeyListener);
-        emulatorView.setOnKeyListener(mKeyboardTabManagementListener);
+        emulatorView.setOnKeyListener(mKeyboardShortcutListener);
         registerForContextMenu(emulatorView);
 
         return emulatorView;
