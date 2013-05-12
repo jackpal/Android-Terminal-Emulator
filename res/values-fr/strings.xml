@@ -142,7 +142,7 @@
    <string name="email_transcript_no_email_activity_found">Impossible de choisir une activité de messagerie pour envoyer la transcription</string>
    
    <string name="perm_run_script">Lancer des commandes tierces</string>
-   <string name="permdesc_run_script">Permettre à une application d'ouvrir une nouvelle fenêtre dans Terminal Emulator en exécutant des commandes avec les permissions de l\'application comme l\'accès à internet et à votre carte SD</string>
+   <string name="permdesc_run_script">Permettre à une application d\'ouvrir une nouvelle fenêtre dans Terminal Emulator en exécutant des commandes avec les permissions de l\'application comme l\'accès à internet et à votre carte SD</string>
    <string name="perm_append_to_path">Ajouter des commandes</string>
    <string name="permdesc_append_to_path">Permettre à une application de fournir des commandes supplémentaires (ajouter le répertoire au PATH) pour Terminal Emulator</string>
    <string name="perm_prepend_to_path">Remplacer des commandes</string>
