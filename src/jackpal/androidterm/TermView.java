@@ -18,7 +18,6 @@ package jackpal.androidterm;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import jackpal.androidterm.emulatorview.ColorScheme;
 import jackpal.androidterm.emulatorview.EmulatorView;
