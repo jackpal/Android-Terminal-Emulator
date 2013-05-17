@@ -26,7 +26,6 @@ import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.util.TermSettings;
 
 public class TermView extends EmulatorView {
-    private static final String TAG = "TermView";
 
     public TermView(Context context, TermSession session, DisplayMetrics metrics) {
         super(context, session, metrics);
