@@ -16,11 +16,10 @@
 
 package jackpal.androidterm.util;
 
-import android.content.res.Resources;
-import android.content.SharedPreferences;
-import android.view.KeyEvent;
-
 import jackpal.androidterm.R;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.view.KeyEvent;
 
 /**
  * Terminal emulator settings
@@ -30,6 +29,7 @@ public class TermSettings {
 
     private int mStatusBar;
     private int mActionBarMode;
+    private int mOrientation;
     private int mCursorStyle;
     private int mCursorBlink;
     private int mFontSize;
@@ -55,6 +55,7 @@ public class TermSettings {
 
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String ACTIONBAR_KEY = "actionbar";
+    private static final String ORIENTATION_KEY = "orientation";
     private static final String CURSORSTYLE_KEY = "cursorstyle";
     private static final String CURSORBLINK_KEY = "cursorblink";
     private static final String FONTSIZE_KEY = "fontsize";
@@ -103,6 +104,10 @@ public class TermSettings {
     public static final int ACTION_BAR_MODE_HIDES = 2;
     private static final int ACTION_BAR_MODE_MAX = 2;
 
+    public static final int ORIENTATION_UNSPECIFIED = 0;
+    public static final int ORIENTATION_LANDSCAPE = 1;
+    public static final int ORIENTATION_PORTRAIT = 2;
+
     /** An integer not in the range of real key codes. */
     public static final int KEYCODE_NONE = -1;
 
@@ -145,6 +150,7 @@ public class TermSettings {
     private void readDefaultPrefs(Resources res) {
         mStatusBar = Integer.parseInt(res.getString(R.string.pref_statusbar_default));
         mActionBarMode = res.getInteger(R.integer.pref_actionbar_default);
+        mOrientation = res.getInteger(R.integer.pref_orientation_default);
         mCursorStyle = Integer.parseInt(res.getString(R.string.pref_cursorstyle_default));
         mCursorBlink = Integer.parseInt(res.getString(R.string.pref_cursorblink_default));
         mFontSize = Integer.parseInt(res.getString(R.string.pref_fontsize_default));
@@ -169,6 +175,7 @@ public class TermSettings {
         mPrefs = prefs;
         mStatusBar = readIntPref(STATUSBAR_KEY, mStatusBar, 1);
         mActionBarMode = readIntPref(ACTIONBAR_KEY, mActionBarMode, ACTION_BAR_MODE_MAX);
+        mOrientation = readIntPref(ORIENTATION_KEY, mOrientation, 2);
         // mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 2);
         // mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
         mFontSize = readIntPref(FONTSIZE_KEY, mFontSize, 288);
@@ -217,6 +224,10 @@ public class TermSettings {
 
     public int actionBarMode() {
         return mActionBarMode;
+    }
+
+    public int getScreenOrientation() {
+        return mOrientation;
     }
 
     public int getCursorStyle() {
