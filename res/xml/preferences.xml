@@ -181,5 +181,10 @@
             android:defaultValue="@bool/pref_allow_prepend_path_default"
             android:title="@string/title_allow_prepend_path_preference"
             android:summary="@string/summary_allow_prepend_path_preference" />
+    <!-- the home_path default is set dynamically in Term.onResume() -->
+    <EditTextPreference
+            android:key="home_path"
+            android:title="@string/title_home_path_preference"
+            android:summary="@string/summary_home_path_preference" />
     </PreferenceCategory>
 </PreferenceScreen>
