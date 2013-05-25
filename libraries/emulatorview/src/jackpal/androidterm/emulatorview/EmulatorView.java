@@ -169,8 +169,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mSelX2 = -1;
     private int mSelY2 = -1;
 
-    private boolean mIsActive = false;
-
     /**
      * Routing alt and meta keyCodes away from the IME allows Alt key processing to work on
      * the Asus Transformer TF101.
@@ -335,7 +333,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * Inform the view that it is now visible on screen.
      */
     public void onResume() {
-        mIsActive = true;
         updateSize(false);
         if (mCursorBlink != 0) {
             mHandler.postDelayed(mBlinkCursor, CURSOR_BLINK_PERIOD);
@@ -349,7 +346,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mCursorBlink != 0) {
             mHandler.removeCallbacks(mBlinkCursor);
         }
-        mIsActive = false;
     }
 
     /**

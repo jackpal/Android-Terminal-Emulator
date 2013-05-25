@@ -101,7 +101,6 @@ public class Term extends Activity implements UpdateCallback {
     private boolean mStopServiceOnFinish = false;
 
     private Intent TSIntent;
-    private Intent mLastNewIntent;
 
     public static final int REQUEST_CHOOSE_WINDOW = 1;
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
