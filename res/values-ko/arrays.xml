@@ -17,91 +17,91 @@
 
 <resources>
     <string-array name="entries_statusbar_preference">
-        <item>»óÅÂÇ¥½ÃÁÙ º¸ÀÌ±â</item>
-        <item>»óÅÂÇ¥½ÃÁÙ ¼û±â±â</item>
+        <item>ìƒíƒœí‘œì‹œì¤„ ë³´ì´ê¸°</item>
+        <item>ìƒíƒœí‘œì‹œì¤„ ìˆ¨ê¸°ê¸°</item>
     </string-array>
 
     <string-array name="entries_actionbar_preference">
         <!-- <item>Action bar disabled</item> -->
-        <item>¾ðÁ¦³ª ¾×¼Ç¹Ù º¸ÀÌ±â</item>
-        <item>¾×¼Ç¹Ù ¼û±â±â(È­¸éÀÇ »ó´ÜÀ» ÅÍÄ¡ÇÏ°Å³ª ¸Þ´ºÅ°¸¦ ´©¸£¸é ³ªÅ¸³³´Ï´Ù)</item>
+        <item>ì–¸ì œë‚˜ ì•¡ì…˜ë°” ë³´ì´ê¸°</item>
+        <item>ì•¡ì…˜ë°” ìˆ¨ê¸°ê¸°(í™”ë©´ì˜ ìƒë‹¨ì„ í„°ì¹˜í•˜ê±°ë‚˜ ë©”ë‰´í‚¤ë¥¼ ëˆ„ë¥´ë©´ ë‚˜íƒ€ë‚©ë‹ˆë‹¤)</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
-        <item>±ôºýÀÌÁö ¾Ê´Â Ä¿¼­</item>
-        <item>±ôºýÀÌ´Â Ä¿¼­</item>
+        <item>ê¹œë¹¡ì´ì§€ ì•ŠëŠ” ì»¤ì„œ</item>
+        <item>ê¹œë¹¡ì´ëŠ” ì»¤ì„œ</item>
     </string-array>
 
     <string-array name="entries_cursorstyle_preference">
-        <item>»ç°¢Çü</item>
-        <item>¹ØÁÙ</item>
+        <item>ì‚¬ê°í˜•</item>
+        <item>ë°‘ì¤„</item>
         <item>Vertical bar</item>
     </string-array>
 
     <string-array name="entries_fontsize_preference">
-        <item>4 x 8 ÇÈ¼¿</item>
-        <item>6 Æ÷ÀÎÆ®</item>
-        <item>7 Æ÷ÀÎÆ®</item>
-        <item>8 Æ÷ÀÎÆ®</item>
-        <item>9 Æ÷ÀÎÆ®</item>
-        <item>10 Æ÷ÀÎÆ®</item>
-        <item>12 Æ÷ÀÎÆ®</item>
-        <item>14 Æ÷ÀÎÆ®</item>
-        <item>16 Æ÷ÀÎÆ®</item>
-        <item>20 Æ÷ÀÎÆ®</item>
-        <item>24 Æ÷ÀÎÆ®</item>
-        <item>28 Æ÷ÀÎÆ®</item>
-        <item>32 Æ÷ÀÎÆ®</item>
-        <item>36 Æ÷ÀÎÆ®</item>
-        <item>42 Æ÷ÀÎÆ®</item>
-        <item>48 Æ÷ÀÎÆ®</item>
-        <item>64 Æ÷ÀÎÆ®</item>
-        <item>72 Æ÷ÀÎÆ®</item>
-        <item>96 Æ÷ÀÎÆ®</item>
-        <item>144 Æ÷ÀÎÆ®</item>
-        <item>288 Æ÷ÀÎÆ®</item>
+        <item>4 x 8 í”½ì…€</item>
+        <item>6 í¬ì¸íŠ¸</item>
+        <item>7 í¬ì¸íŠ¸</item>
+        <item>8 í¬ì¸íŠ¸</item>
+        <item>9 í¬ì¸íŠ¸</item>
+        <item>10 í¬ì¸íŠ¸</item>
+        <item>12 í¬ì¸íŠ¸</item>
+        <item>14 í¬ì¸íŠ¸</item>
+        <item>16 í¬ì¸íŠ¸</item>
+        <item>20 í¬ì¸íŠ¸</item>
+        <item>24 í¬ì¸íŠ¸</item>
+        <item>28 í¬ì¸íŠ¸</item>
+        <item>32 í¬ì¸íŠ¸</item>
+        <item>36 í¬ì¸íŠ¸</item>
+        <item>42 í¬ì¸íŠ¸</item>
+        <item>48 í¬ì¸íŠ¸</item>
+        <item>64 í¬ì¸íŠ¸</item>
+        <item>72 í¬ì¸íŠ¸</item>
+        <item>96 í¬ì¸íŠ¸</item>
+        <item>144 í¬ì¸íŠ¸</item>
+        <item>288 í¬ì¸íŠ¸</item>
     </string-array>
 
     <string-array name="entries_color_preference">
-        <item>Èò ¹ÙÅÁ¿¡ °ËÀº»ö ±ÛÀÚ</item>
-        <item>°ËÀº ¹ÙÅÁ¿¡ Èò ±ÛÀÚ</item>
-        <item>ÆÄ¶õ ¹ÙÅÁ¿¡ Èò ±ÛÀÚ</item>
-        <item>°ËÀº ¹ÙÅÁ¿¡ ³ì»ö ±ÛÀÚ</item>
-        <item>°ËÀº ¹ÙÅÁ¿¡ È²»ö ±ÛÀÚ</item>
-        <item>°ËÀº ¹ÙÅÁ¿¡ »¡°£ ±ÛÀÚ</item>
-        <item>°ËÀº ¹ÙÅÁ¿¡ Holo blue ±ÛÀÚ</item>
+        <item>í° ë°”íƒ•ì— ê²€ì€ìƒ‰ ê¸€ìž</item>
+        <item>ê²€ì€ ë°”íƒ•ì— í° ê¸€ìž</item>
+        <item>íŒŒëž€ ë°”íƒ•ì— í° ê¸€ìž</item>
+        <item>ê²€ì€ ë°”íƒ•ì— ë…¹ìƒ‰ ê¸€ìž</item>
+        <item>ê²€ì€ ë°”íƒ•ì— í™©ìƒ‰ ê¸€ìž</item>
+        <item>ê²€ì€ ë°”íƒ•ì— ë¹¨ê°„ ê¸€ìž</item>
+        <item>ê²€ì€ ë°”íƒ•ì— Holo blue ê¸€ìž</item>
         <item>Solarized Light</item>
         <item>Solarized Dark</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
-        <item>¸ðµç ÅÍ¹Ì³Î Ã¢ ´Ý±â</item>
-        <item>ÀÌ ÅÍ¹Ì³Î Ã¢¸¸ ´Ý±â</item>
-        <item>¼¼¼ÇÀ» ½ÇÇà½ÃÅ² »óÅÂ·Î È­¸é ´Ý±â</item>
-        <item>ÅÍ¹Ì³Î·Î ESCÅ° ÀÌº¥Æ® º¸³»±â</item>
-        <item>ÅÍ¹Ì³Î·Î TABÅ° ÀÌº¥Æ® º¸³»±â</item>
+        <item>ëª¨ë“  í„°ë¯¸ë„ ì°½ ë‹«ê¸°</item>
+        <item>ì´ í„°ë¯¸ë„ ì°½ë§Œ ë‹«ê¸°</item>
+        <item>ì„¸ì…˜ì„ ì‹¤í–‰ì‹œí‚¨ ìƒíƒœë¡œ í™”ë©´ ë‹«ê¸°</item>
+        <item>í„°ë¯¸ë„ë¡œ ESCí‚¤ ì´ë²¤íŠ¸ ë³´ë‚´ê¸°</item>
+        <item>í„°ë¯¸ë„ë¡œ TABí‚¤ ì´ë²¤íŠ¸ ë³´ë‚´ê¸°</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
         <item>Jog ball</item>
         <item>\@ key</item>
-        <item>¿ÞÂÊ Alt Å°</item>
-        <item>¿À¸¥ÂÊ Alt Å°</item>
-        <item>º¼·ý ¾÷ Å°</item>
-        <item>º¼·ý ´Ù¿î Å°</item>
-        <item>Ä«¸Þ¶ó Å°</item>
-        <item>¾øÀ½</item>
+        <item>ì™¼ìª½ Alt í‚¤</item>
+        <item>ì˜¤ë¥¸ìª½ Alt í‚¤</item>
+        <item>ë³¼ë¥¨ ì—… í‚¤</item>
+        <item>ë³¼ë¥¨ ë‹¤ìš´ í‚¤</item>
+        <item>ì¹´ë©”ë¼ í‚¤</item>
+        <item>ì—†ìŒ</item>
     </string-array>
 
     <string-array name="entries_fnkey_preference">
         <item>Jog ball</item>
         <item>\@ key</item>
-        <item>¿ÞÂÊ Alt Å°</item>
-        <item>¿À¸¥ÂÊ Alt Å°</item>
-        <item>º¼·ý ¾÷ Å°</item>
-        <item>º¼·ý ´Ù¿î Å°</item>
-        <item>Ä«¸Þ¶ó Å°</item>
-        <item>¾øÀ½</item>
+        <item>ì™¼ìª½ Alt í‚¤</item>
+        <item>ì˜¤ë¥¸ìª½ Alt í‚¤</item>
+        <item>ë³¼ë¥¨ ì—… í‚¤</item>
+        <item>ë³¼ë¥¨ ë‹¤ìš´ í‚¤</item>
+        <item>ì¹´ë©”ë¼ í‚¤</item>
+        <item>ì—†ìŒ</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
@@ -113,23 +113,23 @@
     <string-array name="control_keys_short_names">
         <item>Ball</item>
         <item>\@</item>
-        <item>¿ÞÂÊ-Alt</item>
-        <item>¿À¸¥ÂÊ-Alt</item>
-        <item>º¼·ý ¾÷</item>
-        <item>º¼·ý´Ù¿î</item>
-        <item>Ä«¸Þ¶ó</item>
-        <item>¾øÀ½</item>
+        <item>ì™¼ìª½-Alt</item>
+        <item>ì˜¤ë¥¸ìª½-Alt</item>
+        <item>ë³¼ë¥¨ ì—…</item>
+        <item>ë³¼ë¥¨ë‹¤ìš´</item>
+        <item>ì¹´ë©”ë¼</item>
+        <item>ì—†ìŒ</item>
     </string-array>
 
     <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
     <string-array name="fn_keys_short_names">
         <item>Ball</item>
         <item>\@</item>
-        <item>¿ÞÂÊ-Alt</item>
-        <item>¿À¸¥ÂÊ-Alt</item>
-        <item>º¼·ý ¾÷</item>
-        <item>º¼·ý´Ù¿î</item>
-        <item>Ä«¸Þ¶ó</item>
-        <item>¾øÀ½</item>
+        <item>ì™¼ìª½-Alt</item>
+        <item>ì˜¤ë¥¸ìª½-Alt</item>
+        <item>ë³¼ë¥¨ ì—…</item>
+        <item>ë³¼ë¥¨ë‹¤ìš´</item>
+        <item>ì¹´ë©”ë¼</item>
+        <item>ì—†ìŒ</item>
     </string-array>
 </resources>
