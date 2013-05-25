@@ -16,6 +16,9 @@
 
 package jackpal.androidterm;
 
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
+
 import java.io.UnsupportedEncodingException;
 import java.text.Collator;
 import java.util.Arrays;
@@ -40,7 +43,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
-import android.text.ClipboardManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -892,7 +894,8 @@ public class Term extends Activity implements UpdateCallback {
     }
 
     private boolean canPaste() {
-        ClipboardManager clip = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                .getManager(getApplicationContext());
         if (clip.hasText()) {
             return true;
         }
@@ -941,14 +944,14 @@ public class Term extends Activity implements UpdateCallback {
     }
 
     private void doCopyAll() {
-        ClipboardManager clip = (ClipboardManager)
-             getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                .getManager(getApplicationContext());
         clip.setText(getCurrentTermSession().getTranscriptText().trim());
     }
 
     private void doPaste() {
-        ClipboardManager clip = (ClipboardManager)
-         getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                .getManager(getApplicationContext());
         CharSequence paste = clip.getText();
         byte[] utf8;
         try {
