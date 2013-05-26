@@ -16,13 +16,12 @@
 
 package jackpal.androidterm;
 
-import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.view.MenuItem;
-
 import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
 import jackpal.androidterm.compat.AndroidCompat;
+import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.view.MenuItem;
 
 public class TermPreferences extends PreferenceActivity {
     private static final String ACTIONBAR_KEY = "actionbar";

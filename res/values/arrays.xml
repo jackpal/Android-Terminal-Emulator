@@ -27,6 +27,12 @@
         <item>Hide action bar (touch top of screen or Menu key to show)</item>
     </string-array>
 
+    <string-array name="entries_orientation_preference">
+        <item>Unspecified</item>
+        <item>Landscape</item>
+        <item>Portrait</item>
+    </string-array>
+
     <string-array name="entries_cursorblink_preference">
         <item>Non-blinking cursor</item>
         <item>Blinking cursor</item>
