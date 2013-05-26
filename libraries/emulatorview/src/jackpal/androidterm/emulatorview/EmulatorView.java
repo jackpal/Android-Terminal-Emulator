@@ -339,10 +339,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mCursorBlink != 0) {
             mHandler.postDelayed(mBlinkCursor, CURSOR_BLINK_PERIOD);
         }
-
-        // Ensure we don't have any left-over modifier state when switching
-        // views
-        mKeyListener.handleHardwareControlKey(false);
+        mKeyListener.onResume();
     }
 
     /**
@@ -352,6 +349,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mCursorBlink != 0) {
             mHandler.removeCallbacks(mBlinkCursor);
         }
+        mKeyListener.onPause();
     }
 
     /**

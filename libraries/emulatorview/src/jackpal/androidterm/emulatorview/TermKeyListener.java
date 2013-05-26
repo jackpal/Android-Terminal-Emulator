@@ -711,6 +711,16 @@ class TermKeyListener {
         mHardwareControlKey = down;
     }
 
+    public void onPause() {
+        // Ensure we don't have any left-over modifier state when switching
+        // views.
+        mHardwareControlKey = false;
+    }
+
+    public void onResume() {
+        // Nothing special.
+    }
+
     public void handleControlKey(boolean down) {
         if (down) {
             mControlKey.onPress();
