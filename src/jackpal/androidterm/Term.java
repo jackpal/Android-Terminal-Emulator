@@ -16,6 +16,17 @@
 
 package jackpal.androidterm;
 
+import jackpal.androidterm.compat.ActionBarCompat;
+import jackpal.androidterm.compat.ActivityCompat;
+import jackpal.androidterm.compat.AndroidCompat;
+import jackpal.androidterm.compat.MenuItemCompat;
+import jackpal.androidterm.emulatorview.ColorScheme;
+import jackpal.androidterm.emulatorview.EmulatorView;
+import jackpal.androidterm.emulatorview.TermSession;
+import jackpal.androidterm.emulatorview.UpdateCallback;
+import jackpal.androidterm.util.SessionList;
+import jackpal.androidterm.util.TermSettings;
+
 import java.io.UnsupportedEncodingException;
 import java.text.Collator;
 import java.util.Arrays;
@@ -29,8 +40,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -58,18 +70,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import jackpal.androidterm.emulatorview.ColorScheme;
-import jackpal.androidterm.emulatorview.EmulatorView;
-import jackpal.androidterm.emulatorview.TermSession;
-import jackpal.androidterm.emulatorview.UpdateCallback;
-
-import jackpal.androidterm.compat.ActionBarCompat;
-import jackpal.androidterm.compat.ActivityCompat;
-import jackpal.androidterm.compat.AndroidCompat;
-import jackpal.androidterm.compat.MenuItemCompat;
-import jackpal.androidterm.util.SessionList;
-import jackpal.androidterm.util.TermSettings;
 
 /**
  * A terminal emulator activity.
@@ -501,6 +501,19 @@ public class Term extends Activity implements UpdateCallback {
                 }
             }
         }
+
+        int orientation = mSettings.getScreenOrientation();
+        int o = 0;
+        if (orientation == 0) {
+            o = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+        } else if (orientation == 1) {
+            o = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        } else if (orientation == 2) {
+            o = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        } else {
+            /* Shouldn't be happened. */
+        }
+        setRequestedOrientation(o);
     }
 
     @Override
