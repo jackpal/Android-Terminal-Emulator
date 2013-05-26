@@ -16,6 +16,9 @@
 
 package jackpal.androidterm.emulatorview;
 
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
+
 import java.io.IOException;
 
 import android.content.Context;
@@ -24,7 +27,6 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.ClipboardManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -911,7 +913,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
     }
 
-    @SuppressWarnings("deprecation")
     private boolean onTouchEventWhileSelectingText(MotionEvent ev) {
         int action = ev.getAction();
         int cx = (int)(ev.getX() / mCharacterWidth);
@@ -938,9 +939,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             mSelX2 = maxx;
             mSelY2 = maxy;
             if (action == MotionEvent.ACTION_UP) {
-                ClipboardManager clip = (ClipboardManager)
-                     getContext().getApplicationContext()
-                         .getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                        .getManager(getContext().getApplicationContext());
                 clip.setText(getSelectedText().trim());
                 toggleSelectingText();
             }
