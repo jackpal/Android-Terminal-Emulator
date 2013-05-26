@@ -5,7 +5,7 @@ To keep from typing "Android Terminal Emulator" over and over again, this
 document will use the abbreviation "ATE" to stand for "Android Terminal
 Emulator".
 
-ATE is built using the Android SDK r18 or newer and the Android NDK r8 or
+ATE is built using the Android SDK r22 or newer and the Android NDK r8e or
 newer. You can download them from:
 
 http://developer.android.com/sdk
@@ -60,7 +60,7 @@ You need to build the project from the commmand line in order to generate the
 shared libraries and Java JAR files used by Android Terminal Emulator.
 
 Use the instructions in "Building ATE with ant", above.
-    
+
 Create the Eclipse projects:
 
     Start Eclipse
