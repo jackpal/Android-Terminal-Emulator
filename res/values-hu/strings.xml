@@ -58,6 +58,10 @@
    <string name="summary_actionbar_preference">Válassza ki az akciósáv viselkedési módját (csak Android 3.0-tól).</string>
    <string name="dialog_title_actionbar_preference">Akciósáv viselkedése</string>
 
+   <string name="title_orientation_preference">Kijelző tájolása</string>
+   <string name="summary_orientation_preference">Válassza ki a képernyő tájolásának módját.</string>
+   <string name="dialog_title_orientation_preference">Kijelző tájolása</string>
+
    <string name="title_cursorstyle_preference">Kurzor stílusa</string>
    <string name="summary_cursorstyle_preference">Válassza ki a kurzor stílusát.</string>
    <string name="dialog_title_cursorstyle_preference">Kurzor stílusa</string>
@@ -121,6 +125,9 @@
 
    <string name="title_allow_prepend_path_preference">PATH felülírásának engedélyezése</string>
    <string name="summary_allow_prepend_path_preference">Az alkalmazások felülírhatják a meglévő parancsokat (hozzáfűzhetnek a PATH változó elejéhez).</string>
+
+   <string name="title_home_path_preference">HOME könyvtár</string>
+   <string name="summary_home_path_preference">Egy írható könyvtár útvonala, amely HOME-ként szolgál.</string>
 
    <string name="control_key_dialog_title">Control és funkció billentyűk</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
