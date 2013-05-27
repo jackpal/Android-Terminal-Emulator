@@ -87,6 +87,7 @@ public class TermSettings {
     public static final int SOLARIZED_BG        = 0xfffdf6e3;
     public static final int SOLARIZED_DARK_FG   = 0xff839496;
     public static final int SOLARIZED_DARK_BG   = 0xff002b36;
+    public static final int LINUX_CONSOLE_WHITE = 0xffaaaaaa;
 
     // foreground color, background color
     public static final int[][] COLOR_SCHEMES = {
@@ -98,7 +99,8 @@ public class TermSettings {
         {RED,               BLACK},
         {HOLO_BLUE,         BLACK},
         {SOLARIZED_FG,      SOLARIZED_BG},
-        {SOLARIZED_DARK_FG, SOLARIZED_DARK_BG}
+        {SOLARIZED_DARK_FG, SOLARIZED_DARK_BG},
+        {LINUX_CONSOLE_WHITE, BLACK}
     };
 
     public static final int ACTION_BAR_MODE_NONE = 0;

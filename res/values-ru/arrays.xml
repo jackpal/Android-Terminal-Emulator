@@ -49,6 +49,7 @@
         <item>Красный на чёрном</item>
         <item>Solarized Light</item>
         <item>Solarized Dark</item>
+        <item>Linux Console</item>
     </string-array>
     <string-array name="entries_backaction_preference">
         <item>Закрыть все окна терминала</item>
