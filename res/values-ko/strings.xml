@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
  * Copyright (C) 2008 The Android Open Source Project
  *
@@ -57,6 +57,10 @@
    <string name="title_actionbar_preference">액션바</string>
    <string name="summary_actionbar_preference">액션바 행동을 선택합니다(안드로이드 3.0 이상).</string>
    <string name="dialog_title_actionbar_preference">액션바 행동</string>
+
+   <string name="title_orientation_preference">화면 회전</string>
+   <string name="summary_orientation_preference">회면 회전시 행동을 선택합니다.</string>
+   <string name="dialog_title_orientation_preference">화면 회전 행동</string>
 
    <string name="title_cursorstyle_preference">커서 스타일</string>
    <string name="summary_cursorstyle_preference">커서 스타일을 선택합니다.</string>
@@ -121,6 +125,9 @@
 
    <string name="title_allow_prepend_path_preference">PATH 덧붙이기를 허용</string>
    <string name="summary_allow_prepend_path_preference">다른 앱에서 기존에 존재하는 명령어를 무시할 수 있도록 허용할지 설정합니다(PATH의 시작지점에 추가).</string>
+
+   <string name="title_home_path_preference">HOME 폴더</string>
+   <string name="summary_home_path_preference">HOME으로 사용될 쓰기 가능한 폴더의 경로를 선택합니다.</string>
 
    <string name="control_key_dialog_title">컨트롤과 펑션 키</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
