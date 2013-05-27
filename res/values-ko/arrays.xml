@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
  * Copyright (C) 2007 The Android Open Source Project
  *
@@ -25,6 +25,12 @@
         <!-- <item>Action bar disabled</item> -->
         <item>언제나 액션바 보이기</item>
         <item>액션바 숨기기(화면의 상단을 터치하거나 메뉴키를 누르면 나타납니다)</item>
+    </string-array>
+
+    <string-array name="entries_orientation_preference">
+        <item>자동</item>
+        <item>가로</item>
+        <item>세로</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
