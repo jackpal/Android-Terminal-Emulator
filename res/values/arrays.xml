@@ -27,6 +27,12 @@
         <item>Hide action bar (touch top of screen or Menu key to show)</item>
     </string-array>
 
+    <string-array name="entries_orientation_preference">
+        <item>Automatic</item>
+        <item>Landscape</item>
+        <item>Portrait</item>
+    </string-array>
+
     <string-array name="entries_cursorblink_preference">
         <item>Non-blinking cursor</item>
         <item>Blinking cursor</item>
@@ -69,7 +75,10 @@
         <item>Green text on black</item>
         <item>Amber text on black</item>
         <item>Red text on black</item>
-        <item>Holo blue on black</item>
+        <item>Holo blue text on black</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
+        <item>Linux Console</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">

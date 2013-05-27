@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ATE Intent サンプル</string>
+    <string name="open_new_window">新しいウインドウを開く</string>
+    <string name="script_label">スクリプト:</string>
+    <string name="run_script">スクリプト実行</string>
+    <string name="run_script_save_window">スクリプトを実行しウインドウを保存</string>
+    <string name="run_script_existing_window">保存されたウインドウでスクリプトを実行</string>
+    <string name="help">このサンプルは Android端末エミュレータへインテントを送る方法を示しています．</string>
+
+    <!-- Do not translate: -->
+    <string name="default_script">echo \'Hello, world!\'</string>
+</resources>

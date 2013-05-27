@@ -14,10 +14,6 @@ public class AndroidCharacterCompat {
     public static final int EAST_ASIAN_WIDTH_WIDE = 5;
 
     private static class Api8OrLater {
-        public static void initialize() {
-            // Does nothing -- call this to force the class to try to load
-        }
-
         public static int getEastAsianWidth(char c) {
             return AndroidCharacter.getEastAsianWidth(c);
         }

@@ -17,8 +17,14 @@
 
 <resources>
     <string-array name="entries_statusbar_preference">
-        <item>Mostra status bar</item>
-        <item>Nascondi status bar</item>
+        <item>Mostra barra di stato</item>
+        <item>Nascondi barra di stato</item>
+    </string-array>
+
+    <string-array name="entries_actionbar_preference">
+        <!-- <item>Barra di azione disabilitata</item> -->
+        <item>Mostra sempre barra di azione</item>
+        <item>Nascondi barra di azione (tocca cima dello schermo o tasto Menu per mostrarla)</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
@@ -28,7 +34,7 @@
 
     <string-array name="entries_cursorstyle_preference">
         <item>Rettangolo</item>
-        <item>Underline</item>
+        <item>Sottolineatura</item>
         <item>Barra verticale</item>
     </string-array>
 
@@ -63,13 +69,24 @@
         <item>Testo verde su nero</item>
         <item>Testo ambra su nero</item>
         <item>Testo rosso su nero</item>
+	<item>Testo blu brillante su nero</item>
+        <item>Solarizzato Chiaro</item>
+        <item>Solarizzato Scuro</item>
+    </string-array>
+
+    <string-array name="entries_backaction_preference">
+        <item>Chiude tutte le finestre terminale</item>
+        <item>Chiude solo questa finestra terminale</item>
+        <item>Chiude l\'attività, lasciando attive le sessioni</item>
+        <item>Invia ESC al terminale</item>
+        <item>Invia TAB al terminale</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
         <item>Trackball</item>
         <item>\@</item>
-        <item>Alt sin.</item>
-        <item>Alt des.</item>
+        <item>Alt sinistro</item>
+        <item>Alt destro</item>
         <item>Volume +</item>
         <item>Volume -</item>
         <item>Fotocamera</item>
@@ -88,10 +105,11 @@
     </string-array>
 
     <string-array name="entries_ime_preference">
-        <item>Character-based</item>
-        <item>Word-based</item>
+        <item>Basato su carattere</item>
+        <item>Basato su parola</item>
     </string-array>
 
+    <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
     <string-array name="control_keys_short_names">
         <item>T.ball</item>
         <item>\@</item>
@@ -103,6 +121,7 @@
         <item>Ness.</item>
     </string-array>
 
+    <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
     <string-array name="fn_keys_short_names">
         <item>T.ball</item>
         <item>\@</item>

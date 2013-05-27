@@ -91,7 +91,7 @@
 
    <string name="title_fnkey_preference">Fnキー</string>
    <string name="summary_fnkey_preference">Fnキーを選択</string>
-   <string name="dialog_title_fnkey_preference">Fn key</string>
+   <string name="dialog_title_fnkey_preference">Fnキー</string>
 
    <string name="title_ime_preference">インプットメソッド</string>
    <string name="summary_ime_preference">ソフトキーボードのインプットメソッドを選択</string>

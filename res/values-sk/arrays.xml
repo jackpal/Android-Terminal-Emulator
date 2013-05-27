@@ -70,6 +70,9 @@
     <item>Jantárový text na čiernom</item>
     <item>Červený text na čiernom</item>
     <item>Modrom text na čiernom</item>
+    <item>Solarized Light</item>
+    <item>Solarized Dark</item>
+    <item>Linux Console</item>
   </string-array>
 
   <string-array name="entries_backaction_preference">

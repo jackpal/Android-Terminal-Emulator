@@ -47,6 +47,9 @@
         <item>Зелений на чорному</item>
         <item>Жовтий на чорному</item>
         <item>Червоний на чорному</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
+        <item>Linux Console</item>
     </string-array>
     <string-array name="entries_backaction_preference">
         <item>Закрити всі вікна терміналу</item>

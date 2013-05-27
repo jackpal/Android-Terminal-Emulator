@@ -1,0 +1,18 @@
+#!/bin/bash
+# Courtesy PabloEskimo
+# See https://github.com/jackpal/Android-Terminal-Emulator/issues/192
+
+OLD_TERM=$TERM;
+TYPES="linux xterm xterm-color xterm-256color vt100";
+for TYPE in $TYPES; do
+
+    echo "Emulation Type: $TYPE";
+    export TERM=$TYPE;
+
+    for x in {1..12}; do
+        echo -n "    F$x ";
+        tput kf$x | cat -v;
+        echo;
+    done
+done;
+export TERM=$OLD_TERM;

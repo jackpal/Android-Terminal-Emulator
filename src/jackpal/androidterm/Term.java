@@ -16,6 +16,19 @@
 
 package jackpal.androidterm;
 
+import jackpal.androidterm.compat.ActionBarCompat;
+import jackpal.androidterm.compat.ActivityCompat;
+import jackpal.androidterm.compat.AndroidCompat;
+import jackpal.androidterm.compat.MenuItemCompat;
+import jackpal.androidterm.emulatorview.ColorScheme;
+import jackpal.androidterm.emulatorview.EmulatorView;
+import jackpal.androidterm.emulatorview.TermSession;
+import jackpal.androidterm.emulatorview.UpdateCallback;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
+import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
+import jackpal.androidterm.util.SessionList;
+import jackpal.androidterm.util.TermSettings;
+
 import java.io.UnsupportedEncodingException;
 import java.text.Collator;
 import java.util.Arrays;
@@ -29,8 +42,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -40,7 +54,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
-import android.text.ClipboardManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -58,18 +71,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import jackpal.androidterm.emulatorview.ColorScheme;
-import jackpal.androidterm.emulatorview.EmulatorView;
-import jackpal.androidterm.emulatorview.TermSession;
-import jackpal.androidterm.emulatorview.UpdateCallback;
-
-import jackpal.androidterm.compat.ActionBarCompat;
-import jackpal.androidterm.compat.ActivityCompat;
-import jackpal.androidterm.compat.AndroidCompat;
-import jackpal.androidterm.compat.MenuItemCompat;
-import jackpal.androidterm.util.SessionList;
-import jackpal.androidterm.util.TermSettings;
 
 /**
  * A terminal emulator activity.
@@ -101,7 +102,6 @@ public class Term extends Activity implements UpdateCallback {
     private boolean mStopServiceOnFinish = false;
 
     private Intent TSIntent;
-    private Intent mLastNewIntent;
 
     public static final int REQUEST_CHOOSE_WINDOW = 1;
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
@@ -285,10 +285,10 @@ public class Term extends Activity implements UpdateCallback {
             mActionBarMode = actionBarMode;
             switch (actionBarMode) {
             case TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE:
-                setTheme(R.style.Theme_Holo);
+                setTheme(R.style.Theme_Holo_Light);
                 break;
             case TermSettings.ACTION_BAR_MODE_HIDES:
-                setTheme(R.style.Theme_Holo_ActionBarOverlay);
+                setTheme(R.style.Theme_Holo_Light_ActionBarOverlay);
                 break;
             }
         }
@@ -502,6 +502,19 @@ public class Term extends Activity implements UpdateCallback {
                 }
             }
         }
+
+        int orientation = mSettings.getScreenOrientation();
+        int o = 0;
+        if (orientation == 0) {
+            o = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+        } else if (orientation == 1) {
+            o = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        } else if (orientation == 2) {
+            o = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        } else {
+            /* Shouldn't be happened. */
+        }
+        setRequestedOrientation(o);
     }
 
     @Override
@@ -531,6 +544,13 @@ public class Term extends Activity implements UpdateCallback {
         }
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        // the HOME dir needs to be set here since it comes from Context
+        SharedPreferences.Editor editor = mPrefs.edit();
+        String defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
+        String homePath = mPrefs.getString("home_path", defValue);
+        editor.putString("home_path", homePath);
+        editor.commit();
+
         mSettings.readPrefs(mPrefs);
         updatePrefs();
 
@@ -892,7 +912,8 @@ public class Term extends Activity implements UpdateCallback {
     }
 
     private boolean canPaste() {
-        ClipboardManager clip = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                .getManager(getApplicationContext());
         if (clip.hasText()) {
             return true;
         }
@@ -941,14 +962,14 @@ public class Term extends Activity implements UpdateCallback {
     }
 
     private void doCopyAll() {
-        ClipboardManager clip = (ClipboardManager)
-             getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                .getManager(getApplicationContext());
         clip.setText(getCurrentTermSession().getTranscriptText().trim());
     }
 
     private void doPaste() {
-        ClipboardManager clip = (ClipboardManager)
-         getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManagerCompat clip = ClipboardManagerCompatFactory
+                .getManager(getApplicationContext());
         CharSequence paste = clip.getText();
         byte[] utf8;
         try {

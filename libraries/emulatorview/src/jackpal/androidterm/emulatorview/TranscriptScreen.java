@@ -162,9 +162,10 @@ class TranscriptScreen implements Screen {
      * @param selx1 the text selection start X coordinate
      * @param selx2 the text selection end X coordinate, if equals to selx1 don't draw selection
      * @param imeText current IME text, to be rendered at cursor
+     * @param cursorMode the cursor mode. See TextRenderer.
      */
     public final void drawText(int row, Canvas canvas, float x, float y,
-            TextRenderer renderer, int cx, int selx1, int selx2, String imeText) {
+            TextRenderer renderer, int cx, int selx1, int selx2, String imeText, int cursorMode) {
         char[] line;
         StyleRow color;
         try {
@@ -190,8 +191,7 @@ class TranscriptScreen implements Screen {
                                 blank, 0, 1, true, defaultStyle);
             } else if (cx != -1) {
                 // We need to draw the cursor
-                renderer.drawTextRun(canvas, x, y, cx, 1,
-                                " ".toCharArray(), 0, 1, true, defaultStyle);
+                renderer.drawCursor(canvas, x, y, cx, cursorMode);
             }
 
             return;
@@ -217,7 +217,7 @@ class TranscriptScreen implements Screen {
             } else {
                 width = UnicodeTranscript.charWidth(line[index]);
             }
-            if (cx == column || (column >= selx1 && column <= selx2)) {
+            if (column >= selx1 && column <= selx2) {
                 // Set cursor background color:
                 cursorStyle = true;
             }
@@ -261,6 +261,10 @@ class TranscriptScreen implements Screen {
             int imePosition = Math.min(cx, columns - imeLength);
             renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
                     imeOffset, imeLength, true, TextStyle.encode(0x0f, 0x00, TextStyle.fxNormal));
+        }
+
+        if (cx >= 0) {
+            renderer.drawCursor(canvas,  x, y, cx, cursorMode);
         }
      }
 

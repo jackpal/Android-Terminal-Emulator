@@ -70,6 +70,9 @@
         <item>黑底黄字</item>
         <item>黑底紅字</item>
         <item>Holo blue on black</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
+        <item>Linux Console</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">

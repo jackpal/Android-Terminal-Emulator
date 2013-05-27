@@ -20,15 +20,15 @@
         <item name="android:windowFrame">@null</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
-    <style name="Theme.Holo" parent="@android:style/Theme.Holo">
+    <style name="Theme.Holo.Light" parent="@android:style/Theme.Holo.Light">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
-    <style name="Theme.Holo.ActionBarOverlay" parent="@style/Theme.Holo">
+    <style name="Theme.Holo.Light.ActionBarOverlay" parent="@style/Theme.Holo.Light">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:actionBarStyle">@style/Widget.ActionBarOverlay</item>
     </style>
-    <style name="Widget.ActionBarOverlay" parent="@android:style/Widget.Holo.ActionBar">
+    <style name="Widget.ActionBarOverlay" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">#a0000000</item>
     </style>
 </resources>
