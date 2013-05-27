@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
  * Copyright (C) 2007 The Android Open Source Project
  *
@@ -17,14 +17,14 @@
 
 <resources>
     <string-array name="entries_statusbar_preference">
-        <item>상태표시줄 보이기</item>
-        <item>상태표시줄 숨기기</item>
+        <item>상단바 보이기</item>
+        <item>상단바 숨기기</item>
     </string-array>
 
     <string-array name="entries_actionbar_preference">
         <!-- <item>Action bar disabled</item> -->
-        <item>언제나 액션바 보이기</item>
-        <item>액션바 숨기기(화면의 상단을 터치하거나 메뉴키를 누르면 나타납니다)</item>
+        <item>액션바 보이기</item>
+        <item>액션바 숨기기 (화면 상단을 누르거나 메뉴키를 누르면 반투명하게 표시됩니다.)</item>
     </string-array>
 
     <string-array name="entries_orientation_preference">
@@ -34,108 +34,108 @@
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
-        <item>깜빡이지 않는 커서</item>
-        <item>깜빡이는 커서</item>
+        <item>깜박이지 않음</item>
+        <item>깜박임</item>
     </string-array>
 
     <string-array name="entries_cursorstyle_preference">
-        <item>사각형</item>
+        <item>직사각형</item>
         <item>밑줄</item>
-        <item>Vertical bar</item>
+        <item>세로줄</item>
     </string-array>
 
     <string-array name="entries_fontsize_preference">
         <item>4 x 8 픽셀</item>
-        <item>6 포인트</item>
-        <item>7 포인트</item>
-        <item>8 포인트</item>
-        <item>9 포인트</item>
-        <item>10 포인트</item>
-        <item>12 포인트</item>
-        <item>14 포인트</item>
-        <item>16 포인트</item>
-        <item>20 포인트</item>
-        <item>24 포인트</item>
-        <item>28 포인트</item>
-        <item>32 포인트</item>
-        <item>36 포인트</item>
-        <item>42 포인트</item>
-        <item>48 포인트</item>
-        <item>64 포인트</item>
-        <item>72 포인트</item>
-        <item>96 포인트</item>
-        <item>144 포인트</item>
-        <item>288 포인트</item>
+        <item>6 pt</item>
+        <item>7 pt</item>
+        <item>8 pt</item>
+        <item>9 pt</item>
+        <item>10 pt</item>
+        <item>12 pt</item>
+        <item>14 pt</item>
+        <item>16 pt</item>
+        <item>20 pt</item>
+        <item>24 pt</item>
+        <item>28 pt</item>
+        <item>32 pt</item>
+        <item>36 pt</item>
+        <item>42 pt</item>
+        <item>48 pt</item>
+        <item>64 pt</item>
+        <item>72 pt</item>
+        <item>96 pt</item>
+        <item>144 pt</item>
+        <item>288 pt</item>
     </string-array>
 
     <string-array name="entries_color_preference">
-        <item>흰 바탕에 검은색 글자</item>
-        <item>검은 바탕에 흰 글자</item>
-        <item>파란 바탕에 흰 글자</item>
-        <item>검은 바탕에 녹색 글자</item>
-        <item>검은 바탕에 황색 글자</item>
-        <item>검은 바탕에 빨간 글자</item>
-        <item>검은 바탕에 Holo blue 글자</item>
-        <item>Solarized Light</item>
-        <item>Solarized Dark</item>
+        <item>하얀 배경에 검은색 글자</item>
+        <item>검은 배경에 하얀 글자</item>
+        <item>파란 배경에 하얀 글자</item>
+        <item>검은 배경에 초록색 글자</item>
+        <item>검은 배경에 황색 글자</item>
+        <item>검은 배경에 빨간 글자</item>
+        <item>검은 배경에 Holo Blue 글자</item>
+        <item>밝은 솔라리스</item>
+        <item>어두운 솔라리스</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
         <item>모든 터미널 창 닫기</item>
-        <item>이 터미널 창만 닫기</item>
-        <item>세션을 실행시킨 상태로 화면 닫기</item>
-        <item>터미널로 ESC키 이벤트 보내기</item>
-        <item>터미널로 TAB키 이벤트 보내기</item>
+        <item>현재 터미널 창만 닫기</item>
+        <item>어플리케이션 및 세션 종료</item>
+        <item>ESC키 입력</item>
+        <item>TAB키 입력</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
-        <item>Jog ball</item>
-        <item>\@ key</item>
-        <item>왼쪽 Alt 키</item>
-        <item>오른쪽 Alt 키</item>
-        <item>볼륨 업 키</item>
-        <item>볼륨 다운 키</item>
-        <item>카메라 키</item>
+        <item>트랙볼</item>
+        <item>\@ 키</item>
+        <item>왼쪽 Alt 버튼</item>
+        <item>오른쪽 Alt 버튼</item>
+        <item>볼륨 상 버튼</item>
+        <item>볼륨 하 버튼</item>
+        <item>카메라 버튼</item>
         <item>없음</item>
     </string-array>
 
     <string-array name="entries_fnkey_preference">
-        <item>Jog ball</item>
-        <item>\@ key</item>
-        <item>왼쪽 Alt 키</item>
-        <item>오른쪽 Alt 키</item>
-        <item>볼륨 업 키</item>
-        <item>볼륨 다운 키</item>
-        <item>카메라 키</item>
+        <item>트랙볼</item>
+        <item>\@ 키</item>
+        <item>왼쪽 Alt 버튼</item>
+        <item>오른쪽 Alt 버튼</item>
+        <item>볼륨 상 버튼</item>
+        <item>볼륨 하 버튼</item>
+        <item>카메라 버튼</item>
         <item>없음</item>
     </string-array>
 
     <string-array name="entries_ime_preference">
-        <item>Character-based</item>
-        <item>Word-based</item>
+        <item>문자 기반</item>
+        <item>단어 기반</item>
     </string-array>
 
     <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
     <string-array name="control_keys_short_names">
-        <item>Ball</item>
-        <item>\@</item>
-        <item>왼쪽-Alt</item>
-        <item>오른쪽-Alt</item>
-        <item>볼륨 업</item>
-        <item>볼륨다운</item>
-        <item>카메라</item>
+        <item>트랙볼</item>
+        <item>\@키</item>
+        <item>왼쪽 Alt</item>
+        <item>오른쪽 Alt</item>
+        <item>볼륨 상</item>
+        <item>볼륨 하</item>
+        <item>카메라 키</item>
         <item>없음</item>
     </string-array>
 
     <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
     <string-array name="fn_keys_short_names">
-        <item>Ball</item>
-        <item>\@</item>
-        <item>왼쪽-Alt</item>
-        <item>오른쪽-Alt</item>
-        <item>볼륨 업</item>
-        <item>볼륨다운</item>
-        <item>카메라</item>
+        <item>트랙볼</item>
+        <item>\@키</item>
+        <item>왼쪽 Alt</item>
+        <item>오른쪽 Alt</item>
+        <item>볼륨 상</item>
+        <item>볼륨 하</item>
+        <item>카메라 키</item>
         <item>없음</item>
     </string-array>
 </resources>
