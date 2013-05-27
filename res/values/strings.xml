@@ -58,7 +58,7 @@
    <string name="summary_actionbar_preference">Choose the action bar\'s behavior (Android 3.0 and up).</string>
    <string name="dialog_title_actionbar_preference">Action bar behavior</string>
 
-      <string name="title_orientation_preference">Screen orientation</string>
+   <string name="title_orientation_preference">Screen orientation</string>
    <string name="summary_orientation_preference">Choose the screen orientation behavior.</string>
    <string name="dialog_title_orientation_preference">Screen orientation behavior</string>
 
