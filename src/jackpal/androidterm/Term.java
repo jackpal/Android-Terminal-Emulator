@@ -285,10 +285,10 @@ public class Term extends Activity implements UpdateCallback {
             mActionBarMode = actionBarMode;
             switch (actionBarMode) {
             case TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE:
-                setTheme(R.style.Theme_Holo);
+                setTheme(R.style.Theme_Holo_Light);
                 break;
             case TermSettings.ACTION_BAR_MODE_HIDES:
-                setTheme(R.style.Theme_Holo_ActionBarOverlay);
+                setTheme(R.style.Theme_Holo_Light_ActionBarOverlay);
                 break;
             }
         }
