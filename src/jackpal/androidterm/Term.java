@@ -240,24 +240,18 @@ public class Term extends Activity implements UpdateCallback {
         }
     }
 
-    private View.OnKeyListener mBackKeyListener = new View.OnKeyListener() {
-        public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_BACK && mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES && mActionBar.isShowing()) {
-                /* We need to intercept the key event before the view sees it,
-                   otherwise the view will handle it before we get it */
-                onKeyUp(keyCode, event);
-                return true;
-            } else {
-                return false;
-            }
-        }
-    };
-
-	/**
-	 * Keyboard shortcuts (tab management, paste)
-	 */
-	private View.OnKeyListener mKeyboardShortcutListener = new View.OnKeyListener() {
+    /**
+     * Intercepts keys before the view/terminal gets it.
+     */
+	private View.OnKeyListener mKeyListener = new View.OnKeyListener() {
 		public boolean onKey(View v, int keyCode, KeyEvent event) {
+			return backkeyInterceptor(keyCode, event) || keyboardShortcuts(keyCode, event);
+		}
+
+		/**
+		 * Keyboard shortcuts (tab management, paste)
+		 */
+		private boolean keyboardShortcuts(int keyCode, KeyEvent event) {
 			if (event.getAction() != KeyEvent.ACTION_UP)
 				return false;
 			boolean isCtrlPressed = (event.getMetaState() & KeycodeConstants.META_CTRL_ON) != 0;
@@ -282,6 +276,20 @@ public class Term extends Activity implements UpdateCallback {
 			} else {
 				return false;
 			}
+		}
+
+		/**
+		 * Make sure the back button always leaves the application.
+		 */
+		private boolean backkeyInterceptor(int keyCode, KeyEvent event) {
+			if (keyCode == KeyEvent.KEYCODE_BACK && mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES && mActionBar.isShowing()) {
+                /* We need to intercept the key event before the view sees it,
+                   otherwise the view will handle it before we get it */
+                onKeyUp(keyCode, event);
+                return true;
+            } else {
+                return false;
+            }
 		}
 	};
 
@@ -480,8 +488,7 @@ public class Term extends Activity implements UpdateCallback {
         TermView emulatorView = new TermView(this, session, metrics);
 
         emulatorView.setExtGestureListener(new EmulatorViewGestureListener(emulatorView));
-        emulatorView.setOnKeyListener(mBackKeyListener);
-        emulatorView.setOnKeyListener(mKeyboardShortcutListener);
+        emulatorView.setOnKeyListener(mKeyListener);
         registerForContextMenu(emulatorView);
 
         return emulatorView;
