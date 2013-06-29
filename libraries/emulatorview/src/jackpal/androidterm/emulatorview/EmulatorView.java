@@ -828,20 +828,26 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     // Begin GestureDetector.OnGestureListener methods
 
+	//DLS
+	private void sendMouseEventCode(MotionEvent e, int button_code) {
+		int x = (int)(e.getX() / mCharacterWidth);
+		int y = (int)(e.getY() / mCharacterHeight);
+		Log.w(TAG, "mouse button "+x+","+y+","+button_code);
+
+		byte[] data = {
+			'\033', '[', 'M',
+			(byte)(32 + button_code),
+			(byte)(32 + x),
+			(byte)(32 + y) };
+		mTermSession.write(data, 0, data.length);
+	}
+
     public boolean onSingleTapUp(MotionEvent e) {
 		// DLS
 		// FIXME - when to forward to mExtGestureListener?
 		if(mEmulator.getMouseMode() != 0) {
-			byte[] data = new byte[6];
-			data[0] = '\033';
-			data[1] = '[';
-			data[2] = 'M';
-			data[3] = 32;
-			data[4] = (byte)(32 + e.getX() / mCharacterWidth);
-			data[5] = (byte)(32 + e.getY() / mCharacterHeight);
-			mTermSession.write(data, 0, 6);
-			data[3] = 35;
-			mTermSession.write(data, 0, 6);
+			sendMouseEventCode(e, 0); // BTN1 press
+			sendMouseEventCode(e, 3); // release
 		}
 
 		if (mExtGestureListener != null && mExtGestureListener.onSingleTapUp(e)) {
@@ -862,19 +868,18 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mExtGestureListener != null && mExtGestureListener.onScroll(e1, e2, distanceX, distanceY)) {
             return true;
         }
+
         distanceY += mScrollRemainder;
         int deltaRows = (int) (distanceY / mCharacterHeight);
         mScrollRemainder = distanceY - deltaRows * mCharacterHeight;
 
 		// DLS
-		// FIXME - also handle fling event
-		// FIXME - when to forward to mExtGestureListener?
 		if(mEmulator.getMouseMode() != 0) {
 			for(; deltaRows>0; deltaRows--) {
-				mTermSession.write("\033[M\141\040\040");
+				sendMouseEventCode(e1, 65);
 			}
 			for(; deltaRows<0; deltaRows++) {
-				mTermSession.write("\033[M\140\040\040");
+				sendMouseEventCode(e1, 64);
 			}
 			return true;
 		}
@@ -906,15 +911,31 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
             float velocityY) {
+		// DLS
+		// FIXME - handle vertical fling event
+		if(mEmulator.getMouseMode() != 0) {
+            float absVelocityX = Math.abs(velocityX);
+            float absVelocityY = Math.abs(velocityY);
+            if (absVelocityX > Math.max(1000.0f, 2.0 * absVelocityY)) {
+                // Assume user wanted side to side movement
+                if (velocityX > 0) {
+                    // Left to right swipe -- tmux previous window
+					// FIXME - make configurable
+					byte[] data = { (byte)1, 'p' };
+					mTermSession.write(data, 0, data.length);
+                } else {
+                    // Right to left swipe -- tmux next window
+					// FIXME - make configurable
+					byte[] data = { (byte)1, 'n' };
+					mTermSession.write(data, 0, data.length);
+                }
+                return true;
+            }
+		}
+
         if (mExtGestureListener != null && mExtGestureListener.onFling(e1, e2, velocityX, velocityY)) {
             return true;
         }
-
-		// DLS
-		// FIXME - handle fling event
-		if(mEmulator.getMouseMode() != 0) {
-			return true;
-		}
 
         float SCALE = 0.25f;
         mScroller.fling(0, mTopRow,
