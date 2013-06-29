@@ -160,6 +160,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private String mTermType;
 
+    private boolean mSendMouseEvents;
+
     private float mDensity;
 
     private float mScaledDensity;
@@ -170,9 +172,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mSelY1 = -1;
     private int mSelX2 = -1;
     private int mSelY2 = -1;
-
-    // DLS
-    private boolean mSendMouseEvents;
 
     /**
      * Routing alt and meta keyCodes away from the IME allows Alt key processing to work on
@@ -831,12 +830,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     // Begin GestureDetector.OnGestureListener methods
 
-    //DLS
     private boolean shouldSendMouseEvents() {
         return mEmulator.getMouseMode() != 0 && mSendMouseEvents;
     }
 
-    //DLS
     private void sendMouseEventCode(MotionEvent e, int button_code) {
         int x = (int)(e.getX() / mCharacterWidth);
         int y = (int)(e.getY() / mCharacterHeight);
@@ -851,7 +848,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     public boolean onSingleTapUp(MotionEvent e) {
-        // DLS
         // FIXME - should put after mExtGestureListener, except that it swallows events
         if(shouldSendMouseEvents()) {
             sendMouseEventCode(e, 0); // BTN1 press
@@ -881,7 +877,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         int deltaRows = (int) (distanceY / mCharacterHeight);
         mScrollRemainder = distanceY - deltaRows * mCharacterHeight;
 
-        // DLS
         if(shouldSendMouseEvents()) {
             for(; deltaRows>0; deltaRows--) {
                 sendMouseEventCode(e1, 65);
@@ -919,7 +914,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
             float velocityY) {
-        // DLS
         // FIXME - handle vertical fling event
         if(shouldSendMouseEvents()) {
             float absVelocityX = Math.abs(velocityX);
@@ -1410,7 +1404,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
          mTermType = termType;
     }
 
-    // DLS
     public void setSendMouseEvents(boolean flag) {
         mSendMouseEvents = flag;
         //Log.w(TAG, "mSendMouseEvents="+flag);
