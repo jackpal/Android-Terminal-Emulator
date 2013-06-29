@@ -171,6 +171,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mSelX2 = -1;
     private int mSelY2 = -1;
 
+    // DLS
+    private boolean mSendMouseEvents;
+
     /**
      * Routing alt and meta keyCodes away from the IME allows Alt key processing to work on
      * the Asus Transformer TF101.
@@ -828,31 +831,36 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     // Begin GestureDetector.OnGestureListener methods
 
-	//DLS
-	private void sendMouseEventCode(MotionEvent e, int button_code) {
-		int x = (int)(e.getX() / mCharacterWidth);
-		int y = (int)(e.getY() / mCharacterHeight);
-		Log.w(TAG, "mouse button "+x+","+y+","+button_code);
+    //DLS
+    private boolean shouldSendMouseEvents() {
+        return mEmulator.getMouseMode() != 0 && mSendMouseEvents;
+    }
 
-		byte[] data = {
-			'\033', '[', 'M',
-			(byte)(32 + button_code),
-			(byte)(32 + x),
-			(byte)(32 + y) };
-		mTermSession.write(data, 0, data.length);
-	}
+    //DLS
+    private void sendMouseEventCode(MotionEvent e, int button_code) {
+        int x = (int)(e.getX() / mCharacterWidth);
+        int y = (int)(e.getY() / mCharacterHeight);
+        Log.w(TAG, "mouse button "+x+","+y+","+button_code);
+
+        byte[] data = {
+            '\033', '[', 'M',
+            (byte)(32 + button_code),
+            (byte)(32 + x),
+            (byte)(32 + y) };
+        mTermSession.write(data, 0, data.length);
+    }
 
     public boolean onSingleTapUp(MotionEvent e) {
-		// DLS
-		// FIXME - when to forward to mExtGestureListener?
-		if(mEmulator.getMouseMode() != 0) {
-			sendMouseEventCode(e, 0); // BTN1 press
-			sendMouseEventCode(e, 3); // release
-		}
+        // DLS
+        // FIXME - should put after mExtGestureListener, except that it swallows events
+        if(shouldSendMouseEvents()) {
+            sendMouseEventCode(e, 0); // BTN1 press
+            sendMouseEventCode(e, 3); // release
+        }
 
-		if (mExtGestureListener != null && mExtGestureListener.onSingleTapUp(e)) {
-			return true;
-		}
+        if (mExtGestureListener != null && mExtGestureListener.onSingleTapUp(e)) {
+            return true;
+        }
 
         requestFocus();
         return true;
@@ -873,21 +881,21 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         int deltaRows = (int) (distanceY / mCharacterHeight);
         mScrollRemainder = distanceY - deltaRows * mCharacterHeight;
 
-		// DLS
-		if(mEmulator.getMouseMode() != 0) {
-			for(; deltaRows>0; deltaRows--) {
-				sendMouseEventCode(e1, 65);
-			}
-			for(; deltaRows<0; deltaRows++) {
-				sendMouseEventCode(e1, 64);
-			}
-			return true;
-		}
+        // DLS
+        if(shouldSendMouseEvents()) {
+            for(; deltaRows>0; deltaRows--) {
+                sendMouseEventCode(e1, 65);
+            }
+            for(; deltaRows<0; deltaRows++) {
+                sendMouseEventCode(e1, 64);
+            }
+            return true;
+        }
 
-		mTopRow =
-			Math.min(0, Math.max(-(mTranscriptScreen
-					.getActiveTranscriptRows()), mTopRow + deltaRows));
-		invalidate();
+        mTopRow =
+            Math.min(0, Math.max(-(mTranscriptScreen
+                    .getActiveTranscriptRows()), mTopRow + deltaRows));
+        invalidate();
 
         return true;
     }
@@ -911,27 +919,27 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
             float velocityY) {
-		// DLS
-		// FIXME - handle vertical fling event
-		if(mEmulator.getMouseMode() != 0) {
+        // DLS
+        // FIXME - handle vertical fling event
+        if(shouldSendMouseEvents()) {
             float absVelocityX = Math.abs(velocityX);
             float absVelocityY = Math.abs(velocityY);
             if (absVelocityX > Math.max(1000.0f, 2.0 * absVelocityY)) {
                 // Assume user wanted side to side movement
                 if (velocityX > 0) {
                     // Left to right swipe -- tmux previous window
-					// FIXME - make configurable
-					byte[] data = { (byte)1, 'p' };
-					mTermSession.write(data, 0, data.length);
+                    // FIXME - make configurable
+                    byte[] data = { (byte)1, 'p' };
+                    mTermSession.write(data, 0, data.length);
                 } else {
                     // Right to left swipe -- tmux next window
-					// FIXME - make configurable
-					byte[] data = { (byte)1, 'n' };
-					mTermSession.write(data, 0, data.length);
+                    // FIXME - make configurable
+                    byte[] data = { (byte)1, 'n' };
+                    mTermSession.write(data, 0, data.length);
                 }
                 return true;
             }
-		}
+        }
 
         if (mExtGestureListener != null && mExtGestureListener.onFling(e1, e2, velocityX, velocityY)) {
             return true;
@@ -1400,5 +1408,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public void setTermType(String termType) {
          mKeyListener.setTermType(termType);
          mTermType = termType;
+    }
+
+    // DLS
+    public void setSendMouseEvents(boolean flag) {
+        mSendMouseEvents = flag;
+        //Log.w(TAG, "mSendMouseEvents="+flag);
     }
 }

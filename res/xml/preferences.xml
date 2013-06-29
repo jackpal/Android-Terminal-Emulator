@@ -168,6 +168,11 @@
             android:entries="@array/entries_termtype_preference"
             android:entryValues="@array/entries_termtype_preference"
             android:dialogTitle="@string/dialog_title_termtype_preference" />
+    <CheckBoxPreference android:title="@string/send_mouse_events"
+            android:key="send_mouse_events"
+            android:defaultValue="@bool/pref_send_mouse_events_default"
+            android:summaryOn="@string/send_mouse_events_summary_on"
+            android:summaryOff="@string/send_mouse_events_summary_off" />
     <CheckBoxPreference
             android:key="close_window_on_process_exit"
             android:defaultValue="@bool/pref_close_window_on_process_exit_default"

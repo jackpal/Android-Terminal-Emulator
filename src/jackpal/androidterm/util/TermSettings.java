@@ -54,6 +54,8 @@ public class TermSettings {
 
     private boolean mAltSendsEsc;
 
+    private boolean mSendMouseEvents;
+
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String ORIENTATION_KEY = "orientation";
@@ -75,6 +77,7 @@ public class TermSettings {
     private static final String PATHPREPEND_KEY = "allow_prepend_path";
     private static final String HOMEPATH_KEY = "home_path";
     private static final String ALT_SENDS_ESC = "alt_sends_esc";
+    private static final String SEND_MOUSE_EVENTS = "send_mouse_events";
 
     public static final int WHITE               = 0xffffffff;
     public static final int BLACK               = 0xff000000;
@@ -174,6 +177,7 @@ public class TermSettings {
         mAllowPathPrepend = res.getBoolean(R.bool.pref_allow_prepend_path_default);
         // the mHomePath default is set dynamically in readPrefs()
         mAltSendsEsc = res.getBoolean(R.bool.pref_alt_sends_esc_default);
+        mSendMouseEvents = res.getBoolean(R.bool.pref_send_mouse_events_default);
     }
 
     public void readPrefs(SharedPreferences prefs) {
@@ -201,6 +205,7 @@ public class TermSettings {
         mAllowPathPrepend = readBooleanPref(PATHPREPEND_KEY, mAllowPathPrepend);
         mHomePath = readStringPref(HOMEPATH_KEY, mHomePath);
         mAltSendsEsc = readBooleanPref(ALT_SENDS_ESC, mAltSendsEsc);
+        mSendMouseEvents = readBooleanPref(SEND_MOUSE_EVENTS, mSendMouseEvents);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 
@@ -266,6 +271,10 @@ public class TermSettings {
 
     public boolean getAltSendsEscFlag() {
         return mAltSendsEsc;
+    }
+
+    public boolean getSendMouseEventsFlag() {
+        return mSendMouseEvents;
     }
 
     public int getBackKeyCharacter() {
