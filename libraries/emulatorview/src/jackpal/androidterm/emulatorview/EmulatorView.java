@@ -829,18 +829,24 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     // Begin GestureDetector.OnGestureListener methods
 
     public boolean onSingleTapUp(MotionEvent e) {
-        //if (mExtGestureListener != null && mExtGestureListener.onSingleTapUp(e)) {
-        //    return true;
-        //}
+		// DLS
+		// FIXME - when to forward to mExtGestureListener?
+		if(mEmulator.getMouseMode() != 0) {
+			byte[] data = new byte[6];
+			data[0] = '\033';
+			data[1] = '[';
+			data[2] = 'M';
+			data[3] = 32;
+			data[4] = (byte)(32 + e.getX() / mCharacterWidth);
+			data[5] = (byte)(32 + e.getY() / mCharacterHeight);
+			mTermSession.write(data, 0, 6);
+			data[3] = 35;
+			mTermSession.write(data, 0, 6);
+		}
 
-		byte[] data = new byte[6];
-		data[0] = '\033';
-		data[1] = '[';
-		data[2] = 'M';
-		data[3] = 32;
-		data[4] = (byte)(32 + e.getX() / mCharacterWidth);
-		data[5] = (byte)(32 + e.getY() / mCharacterHeight);
-		mTermSession.write(data, 0, 6);
+		if (mExtGestureListener != null && mExtGestureListener.onSingleTapUp(e)) {
+			return true;
+		}
 
         requestFocus();
         return true;
@@ -860,17 +866,23 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         int deltaRows = (int) (distanceY / mCharacterHeight);
         mScrollRemainder = distanceY - deltaRows * mCharacterHeight;
 
-		for(; deltaRows>0; deltaRows--) {
-            mTermSession.write("\033[M\141\000\000");
-		}
-		for(; deltaRows<0; deltaRows++) {
-            mTermSession.write("\033[M\140\000\000");
+		// DLS
+		// FIXME - also handle fling event
+		// FIXME - when to forward to mExtGestureListener?
+		if(mEmulator.getMouseMode() != 0) {
+			for(; deltaRows>0; deltaRows--) {
+				mTermSession.write("\033[M\141\040\040");
+			}
+			for(; deltaRows<0; deltaRows++) {
+				mTermSession.write("\033[M\140\040\040");
+			}
+			return true;
 		}
 
-        //mTopRow =
-        //    Math.min(0, Math.max(-(mTranscriptScreen
-        //            .getActiveTranscriptRows()), mTopRow + deltaRows));
-        //invalidate();
+		mTopRow =
+			Math.min(0, Math.max(-(mTranscriptScreen
+					.getActiveTranscriptRows()), mTopRow + deltaRows));
+		invalidate();
 
         return true;
     }
@@ -897,6 +909,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mExtGestureListener != null && mExtGestureListener.onFling(e1, e2, velocityX, velocityY)) {
             return true;
         }
+
+		// DLS
+		// FIXME - handle fling event
+		if(mEmulator.getMouseMode() != 0) {
+			return true;
+		}
+
         float SCALE = 0.25f;
         mScroller.fling(0, mTopRow,
                 -(int) (velocityX * SCALE), -(int) (velocityY * SCALE),

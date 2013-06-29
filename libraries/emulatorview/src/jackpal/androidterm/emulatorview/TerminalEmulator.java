@@ -227,6 +227,9 @@ class TerminalEmulator {
      */
     private int mSavedDecFlags;
 
+	// DLS
+	private int mMouseMode;
+
     // Modes set with Set Mode / Reset Mode
 
     /**
@@ -572,6 +575,11 @@ class TerminalEmulator {
         return mbKeypadApplicationMode;
     }
 
+	// DLS
+	public final int getMouseMode() {
+		return mMouseMode;
+	}
+
     private void setDefaultTabStops() {
         for (int i = 0; i < mColumns; i++) {
             mTabStop[i] = (i & 7) == 0 && i != 0;
@@ -843,15 +851,26 @@ class TerminalEmulator {
     }
 
     private void doEscLSBQuest(byte b) {
-        int mask = getDecFlagsMask(getArg0(0));
+		int arg = getArg0(0);
+        int mask = getDecFlagsMask(arg);
         int oldFlags = mDecFlags;
         switch (b) {
         case 'h': // Esc [ ? Pn h - DECSET
             mDecFlags |= mask;
+			// DLS
+			if(arg == 9 || (arg >= 1000 && arg <= 1003)) {
+				mMouseMode = arg;
+				Log.w(EmulatorDebug.LOG_TAG, "MouseMode=" + Integer.toString(mMouseMode));
+			}
             break;
 
         case 'l': // Esc [ ? Pn l - DECRST
             mDecFlags &= ~mask;
+			// DLS
+			if(arg == 9 || (arg >= 1000 && arg <= 1003)) {
+				mMouseMode = 0;
+				Log.w(EmulatorDebug.LOG_TAG, "MouseMode=" + Integer.toString(mMouseMode));
+			}
             break;
 
         case 'r': // Esc [ ? Pn r - restore
