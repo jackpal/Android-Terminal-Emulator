@@ -858,7 +858,7 @@ class TerminalEmulator {
         switch (b) {
         case 'h': // Esc [ ? Pn h - DECSET
             mDecFlags |= mask;
-            if(arg == 9 || (arg >= 1000 && arg <= 1003)) {
+            if (arg == 9 || (arg >= 1000 && arg <= 1003)) {
                 mMouseMode = arg;
                 //Log.w(EmulatorDebug.LOG_TAG, "MouseMode=" + Integer.toString(mMouseMode));
             }
@@ -866,7 +866,7 @@ class TerminalEmulator {
 
         case 'l': // Esc [ ? Pn l - DECRST
             mDecFlags &= ~mask;
-            if(arg == 9 || (arg >= 1000 && arg <= 1003)) {
+            if (arg == 9 || (arg >= 1000 && arg <= 1003)) {
                 mMouseMode = 0;
                 //Log.w(EmulatorDebug.LOG_TAG, "MouseMode=" + Integer.toString(mMouseMode));
             }

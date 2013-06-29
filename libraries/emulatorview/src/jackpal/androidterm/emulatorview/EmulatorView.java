@@ -876,7 +876,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         int deltaRows = (int) (distanceY / mCharacterHeight);
         mScrollRemainder = distanceY - deltaRows * mCharacterHeight;
 
-        if(mouseTrackingActive()) {
+        if (mouseTrackingActive()) {
             for(; deltaRows>0; deltaRows--) {
                 sendMouseEventCode(e1, 65);
             }
@@ -917,20 +917,20 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             return true;
         }
 
-        // FIXME - handle vertical fling event
-        if(mouseTrackingActive()) {
+        // XXX - handle vertical fling event
+        if (mouseTrackingActive()) {
             float absVelocityX = Math.abs(velocityX);
             float absVelocityY = Math.abs(velocityY);
             if (absVelocityX > Math.max(1000.0f, 2.0 * absVelocityY)) {
                 // Assume user wanted side to side movement
                 if (velocityX > 0) {
                     // Left to right swipe -- tmux previous window
-                    // FIXME - make configurable
+                    // XXX - make configurable
                     byte[] data = { (byte)1, 'p' };
                     mTermSession.write(data, 0, data.length);
                 } else {
                     // Right to left swipe -- tmux next window
-                    // FIXME - make configurable
+                    // XXX - make configurable
                     byte[] data = { (byte)1, 'n' };
                     mTermSession.write(data, 0, data.length);
                 }
