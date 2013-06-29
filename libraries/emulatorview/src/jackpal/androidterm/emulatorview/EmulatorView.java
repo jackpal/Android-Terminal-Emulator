@@ -917,26 +917,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             return true;
         }
 
-        // XXX - handle vertical fling event
-        if (mouseTrackingActive()) {
-            float absVelocityX = Math.abs(velocityX);
-            float absVelocityY = Math.abs(velocityY);
-            if (absVelocityX > Math.max(1000.0f, 2.0 * absVelocityY)) {
-                // Assume user wanted side to side movement
-                if (velocityX > 0) {
-                    // Left to right swipe -- tmux previous window
-                    // XXX - make configurable
-                    byte[] data = { (byte)1, 'p' };
-                    mTermSession.write(data, 0, data.length);
-                } else {
-                    // Right to left swipe -- tmux next window
-                    // XXX - make configurable
-                    byte[] data = { (byte)1, 'n' };
-                    mTermSession.write(data, 0, data.length);
-                }
-                return true;
-            }
-        }
+        // XXX - handle mouse tracking
 
         float SCALE = 0.25f;
         mScroller.fling(0, mTopRow,

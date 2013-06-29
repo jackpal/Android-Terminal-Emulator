@@ -215,6 +215,7 @@ public class Term extends Activity implements UpdateCallback {
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
+            // Let the EmulatorView handle taps if mouse tracking is active
             if (view.mouseTrackingActive()) return false;
 
             doUIToggle((int) e.getX(), (int) e.getY(), view.getVisibleWidth(), view.getVisibleHeight());
@@ -223,9 +224,6 @@ public class Term extends Activity implements UpdateCallback {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            // XXX need pref for tmux window switching
-            if (view.mouseTrackingActive()) return false;
-
             float absVelocityX = Math.abs(velocityX);
             float absVelocityY = Math.abs(velocityY);
             if (absVelocityX > Math.max(1000.0f, 2.0 * absVelocityY)) {
