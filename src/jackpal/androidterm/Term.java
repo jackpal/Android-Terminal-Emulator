@@ -215,12 +215,17 @@ public class Term extends Activity implements UpdateCallback {
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
+            if(view.mouseTrackingActive()) return false;
+
             doUIToggle((int) e.getX(), (int) e.getY(), view.getVisibleWidth(), view.getVisibleHeight());
             return true;
         }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            // XXX need pref for tmux window switching
+            if(view.mouseTrackingActive()) return false;
+
             float absVelocityX = Math.abs(velocityX);
             float absVelocityY = Math.abs(velocityY);
             if (absVelocityX > Math.max(1000.0f, 2.0 * absVelocityY)) {

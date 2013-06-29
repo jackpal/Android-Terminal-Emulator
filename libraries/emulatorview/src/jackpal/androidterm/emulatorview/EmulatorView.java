@@ -830,7 +830,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     // Begin GestureDetector.OnGestureListener methods
 
-    private boolean shouldSendMouseEvents() {
+    public boolean mouseTrackingActive() {
         return mEmulator.getMouseMode() != 0 && mSendMouseEvents;
     }
 
@@ -848,14 +848,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     public boolean onSingleTapUp(MotionEvent e) {
-        // FIXME - should put after mExtGestureListener, except that it swallows events
-        if(shouldSendMouseEvents()) {
-            sendMouseEventCode(e, 0); // BTN1 press
-            sendMouseEventCode(e, 3); // release
-        }
-
         if (mExtGestureListener != null && mExtGestureListener.onSingleTapUp(e)) {
             return true;
+        }
+
+        if (mouseTrackingActive()) {
+            sendMouseEventCode(e, 0); // BTN1 press
+            sendMouseEventCode(e, 3); // release
         }
 
         requestFocus();
@@ -877,7 +876,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         int deltaRows = (int) (distanceY / mCharacterHeight);
         mScrollRemainder = distanceY - deltaRows * mCharacterHeight;
 
-        if(shouldSendMouseEvents()) {
+        if(mouseTrackingActive()) {
             for(; deltaRows>0; deltaRows--) {
                 sendMouseEventCode(e1, 65);
             }
@@ -914,8 +913,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
             float velocityY) {
+        if (mExtGestureListener != null && mExtGestureListener.onFling(e1, e2, velocityX, velocityY)) {
+            return true;
+        }
+
         // FIXME - handle vertical fling event
-        if(shouldSendMouseEvents()) {
+        if(mouseTrackingActive()) {
             float absVelocityX = Math.abs(velocityX);
             float absVelocityY = Math.abs(velocityY);
             if (absVelocityX > Math.max(1000.0f, 2.0 * absVelocityY)) {
@@ -933,10 +936,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 }
                 return true;
             }
-        }
-
-        if (mExtGestureListener != null && mExtGestureListener.onFling(e1, e2, velocityX, velocityY)) {
-            return true;
         }
 
         float SCALE = 0.25f;
