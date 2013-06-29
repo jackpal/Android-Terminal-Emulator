@@ -829,9 +829,19 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     // Begin GestureDetector.OnGestureListener methods
 
     public boolean onSingleTapUp(MotionEvent e) {
-        if (mExtGestureListener != null && mExtGestureListener.onSingleTapUp(e)) {
-            return true;
-        }
+        //if (mExtGestureListener != null && mExtGestureListener.onSingleTapUp(e)) {
+        //    return true;
+        //}
+
+		byte[] data = new byte[6];
+		data[0] = '\033';
+		data[1] = '[';
+		data[2] = 'M';
+		data[3] = 32;
+		data[4] = (byte)(32 + e.getX() / mCharacterWidth);
+		data[5] = (byte)(32 + e.getY() / mCharacterHeight);
+		mTermSession.write(data, 0, 6);
+
         requestFocus();
         return true;
     }
@@ -849,10 +859,18 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         distanceY += mScrollRemainder;
         int deltaRows = (int) (distanceY / mCharacterHeight);
         mScrollRemainder = distanceY - deltaRows * mCharacterHeight;
-        mTopRow =
-            Math.min(0, Math.max(-(mTranscriptScreen
-                    .getActiveTranscriptRows()), mTopRow + deltaRows));
-        invalidate();
+
+		for(; deltaRows>0; deltaRows--) {
+            mTermSession.write("\033[M\141\000\000");
+		}
+		for(; deltaRows<0; deltaRows++) {
+            mTermSession.write("\033[M\140\000\000");
+		}
+
+        //mTopRow =
+        //    Math.min(0, Math.max(-(mTranscriptScreen
+        //            .getActiveTranscriptRows()), mTopRow + deltaRows));
+        //invalidate();
 
         return true;
     }
