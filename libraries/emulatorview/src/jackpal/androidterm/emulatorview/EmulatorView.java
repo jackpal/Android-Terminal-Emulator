@@ -204,6 +204,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             if (mScroller.isFinished()) {
                 return;
             }
+            // Check whether mouse tracking was turned on during fling.
+            if (mouseTrackingActive()) {
+                return;
+            }
 
             boolean more = mScroller.computeScrollOffset();
             int newTopRow = mScroller.getCurrY();
@@ -218,6 +222,47 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         }
     };
+
+    private class MouseTrackerFlingRunner implements Runnable {
+        private Scroller mScroller;
+        private int mLastY;
+        private MotionEvent mMotionEvent;
+
+        public void fling(MotionEvent e, float velocityX, float velocityY) {
+            float SCALE = 0.15f;
+            mScroller.fling(0, 0,
+                    -(int) (velocityX * SCALE), -(int) (velocityY * SCALE),
+                    0, 0, -100, 100);
+            mLastY = 0;
+            mMotionEvent = e;
+            post(this);
+        }
+
+        public void run() {
+            if (mScroller.isFinished()) {
+                return;
+            }
+            // Check whether mouse tracking was turned off during fling.
+            if (!mouseTrackingActive()) {
+                return;
+            }
+
+            boolean more = mScroller.computeScrollOffset();
+            int newY = mScroller.getCurrY();
+            for(; mLastY < newY; mLastY++) {
+                sendMouseEventCode(mMotionEvent, 65);
+            }
+            for(; mLastY > newY; mLastY--) {
+                sendMouseEventCode(mMotionEvent, 64);
+            }
+
+            if (more) {
+                post(this);
+            }
+        }
+    };
+    private MouseTrackerFlingRunner mMouseTrackerFlingRunner = new MouseTrackerFlingRunner();
+
     private float mScrollRemainder;
     private TermKeyListener mKeyListener;
 
@@ -288,6 +333,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private void commonConstructor(Context context) {
         // TODO: See if we want to use the API level 11 constructor to get new flywheel feature.
         mScroller = new Scroller(context);
+        mMouseTrackerFlingRunner.mScroller = new Scroller(context);
     }
 
     /**
@@ -917,16 +963,18 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             return true;
         }
 
-        // XXX - handle mouse tracking
-
-        float SCALE = 0.25f;
-        mScroller.fling(0, mTopRow,
-                -(int) (velocityX * SCALE), -(int) (velocityY * SCALE),
-                0, 0,
-                -mTranscriptScreen.getActiveTranscriptRows(), 0);
         mScrollRemainder = 0.0f;
-        // onScroll(e1, e2, 0.1f * velocityX, -0.1f * velocityY);
-        post(mFlingRunner);
+        if (mouseTrackingActive()) {
+            mMouseTrackerFlingRunner.fling(e1, velocityX, velocityY);
+        } else {
+            float SCALE = 0.25f;
+            mScroller.fling(0, mTopRow,
+                    -(int) (velocityX * SCALE), -(int) (velocityY * SCALE),
+                    0, 0,
+                    -mTranscriptScreen.getActiveTranscriptRows(), 0);
+            // onScroll(e1, e2, 0.1f * velocityX, -0.1f * velocityY);
+            post(mFlingRunner);
+        }
         return true;
     }
 
