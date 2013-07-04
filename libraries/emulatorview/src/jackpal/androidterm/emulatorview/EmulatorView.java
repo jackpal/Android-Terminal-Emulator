@@ -881,9 +881,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     private void sendMouseEventCode(MotionEvent e, int button_code) {
-        int x = (int)(e.getX() / mCharacterWidth);
-        int y = (int)(e.getY() / mCharacterHeight);
-        Log.w(TAG, "mouse button "+x+","+y+","+button_code);
+        int x = (int)(e.getX() / mCharacterWidth) + 1;
+        int y = (int)((e.getY()-mTopOfScreenMargin) / mCharacterHeight) + 1;
+        x = Math.max(1, Math.min(mColumns, x));
+        y = Math.max(1, Math.min(mRows, y));
+        //Log.d(TAG, "mouse button "+x+","+y+","+button_code);
 
         byte[] data = {
             '\033', '[', 'M',
