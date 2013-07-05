@@ -156,8 +156,8 @@
   <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
   <string name="alt_sends_esc_summary_off">Alt key does not send ESC.</string>
 
-  <string name="send_mouse_events">Send mouse events</string>
-  <string name="send_mouse_events_summary_on">Mouse events will be sent.</string>
-  <string name="send_mouse_events_summary_off">Mouse events will not be sent.</string>
+  <string name="mouse_tracking">Send mouse events to terminal</string>
+  <string name="mouse_tracking_summary_on">Mouse events will be sent.</string>
+  <string name="mouse_tracking_summary_off">Mouse events will not be sent.</string>
 
 </resources>

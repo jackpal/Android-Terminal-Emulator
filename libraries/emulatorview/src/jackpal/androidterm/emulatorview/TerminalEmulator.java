@@ -230,7 +230,7 @@ class TerminalEmulator {
     /**
      * The current DECSET mouse tracking mode, zero for no mouse tracking.
      */
-    private int mMouseMode;
+    private int mMouseTrackingMode;
 
     // Modes set with Set Mode / Reset Mode
 
@@ -577,8 +577,8 @@ class TerminalEmulator {
         return mbKeypadApplicationMode;
     }
 
-    public final int getMouseMode() {
-        return mMouseMode;
+    public final int getMouseTrackingMode() {
+        return mMouseTrackingMode;
     }
 
     private void setDefaultTabStops() {
@@ -858,17 +858,15 @@ class TerminalEmulator {
         switch (b) {
         case 'h': // Esc [ ? Pn h - DECSET
             mDecFlags |= mask;
-            if (arg == 9 || (arg >= 1000 && arg <= 1003)) {
-                mMouseMode = arg;
-                //Log.w(EmulatorDebug.LOG_TAG, "MouseMode=" + Integer.toString(mMouseMode));
+            if (arg >= 1000 && arg <= 1003) {
+                mMouseTrackingMode = arg;
             }
             break;
 
         case 'l': // Esc [ ? Pn l - DECRST
             mDecFlags &= ~mask;
-            if (arg == 9 || (arg >= 1000 && arg <= 1003)) {
-                mMouseMode = 0;
-                //Log.w(EmulatorDebug.LOG_TAG, "MouseMode=" + Integer.toString(mMouseMode));
+            if (arg >= 1000 && arg <= 1003) {
+                mMouseTrackingMode = 0;
             }
             break;
 
