@@ -577,6 +577,11 @@ class TerminalEmulator {
         return mbKeypadApplicationMode;
     }
 
+    /**
+     * Get the current DECSET mouse tracking mode, zero for no mouse tracking.
+     *
+     * @return the current DECSET mouse tracking mode.
+     */
     public final int getMouseTrackingMode() {
         return mMouseTrackingMode;
     }
