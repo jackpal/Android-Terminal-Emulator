@@ -24,7 +24,7 @@
     <string-array name="entries_actionbar_preference">
         <!-- <item>Action bar disabled</item> -->
         <item>Vždy zobrazovat panel akcí</item>
-        <item>Skrývat panel akcí (dotekem v horní části obrazovky, nebo tlačítkem menu)</item>
+        <item>Skrývat panel akcí (zobrazit dotykem v horní části obrazovky, nebo tlačítkem menu)</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
