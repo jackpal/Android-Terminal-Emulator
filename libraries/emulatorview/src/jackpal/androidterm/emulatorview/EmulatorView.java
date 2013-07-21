@@ -160,6 +160,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private String mTermType;
 
+    private boolean mMouseTracking;
+
     private float mDensity;
 
     private float mScaledDensity;
@@ -202,6 +204,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             if (mScroller.isFinished()) {
                 return;
             }
+            // Check whether mouse tracking was turned on during fling.
+            if (isMouseTrackingActive()) {
+                return;
+            }
 
             boolean more = mScroller.computeScrollOffset();
             int newTopRow = mScroller.getCurrY();
@@ -216,6 +222,50 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         }
     };
+
+    /**
+     * Sends mouse wheel codes to terminal in response to fling.
+     */
+    private class MouseTrackingFlingRunner implements Runnable {
+        private Scroller mScroller;
+        private int mLastY;
+        private MotionEvent mMotionEvent;
+
+        public void fling(MotionEvent e, float velocityX, float velocityY) {
+            float SCALE = 0.15f;
+            mScroller.fling(0, 0,
+                    -(int) (velocityX * SCALE), -(int) (velocityY * SCALE),
+                    0, 0, -100, 100);
+            mLastY = 0;
+            mMotionEvent = e;
+            post(this);
+        }
+
+        public void run() {
+            if (mScroller.isFinished()) {
+                return;
+            }
+            // Check whether mouse tracking was turned off during fling.
+            if (!isMouseTrackingActive()) {
+                return;
+            }
+
+            boolean more = mScroller.computeScrollOffset();
+            int newY = mScroller.getCurrY();
+            for (; mLastY < newY; mLastY++) {
+                sendMouseEventCode(mMotionEvent, 65);
+            }
+            for (; mLastY > newY; mLastY--) {
+                sendMouseEventCode(mMotionEvent, 64);
+            }
+
+            if (more) {
+                post(this);
+            }
+        }
+    };
+    private MouseTrackingFlingRunner mMouseTrackingFlingRunner = new MouseTrackingFlingRunner();
+
     private float mScrollRemainder;
     private TermKeyListener mKeyListener;
 
@@ -286,6 +336,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private void commonConstructor(Context context) {
         // TODO: See if we want to use the API level 11 constructor to get new flywheel feature.
         mScroller = new Scroller(context);
+        mMouseTrackingFlingRunner.mScroller = new Scroller(context);
     }
 
     /**
@@ -826,12 +877,43 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mUseCookedIme = useCookedIME;
     }
 
+    /**
+     * Returns true if mouse events are being sent as escape sequences to the terminal.
+     */
+    public boolean isMouseTrackingActive() {
+        return mEmulator.getMouseTrackingMode() != 0 && mMouseTracking;
+    }
+
+    /**
+     * Send a single mouse event code to the terminal.
+     */
+    private void sendMouseEventCode(MotionEvent e, int button_code) {
+        int x = (int)(e.getX() / mCharacterWidth) + 1;
+        int y = (int)((e.getY()-mTopOfScreenMargin) / mCharacterHeight) + 1;
+        x = Math.max(1, Math.min(mColumns, x));
+        y = Math.max(1, Math.min(mRows, y));
+        //Log.d(TAG, "mouse button "+x+","+y+","+button_code);
+
+        byte[] data = {
+            '\033', '[', 'M',
+            (byte)(32 + button_code),
+            (byte)(32 + x),
+            (byte)(32 + y) };
+        mTermSession.write(data, 0, data.length);
+    }
+
     // Begin GestureDetector.OnGestureListener methods
 
     public boolean onSingleTapUp(MotionEvent e) {
         if (mExtGestureListener != null && mExtGestureListener.onSingleTapUp(e)) {
             return true;
         }
+
+        if (isMouseTrackingActive()) {
+            sendMouseEventCode(e, 0); // BTN1 press
+            sendMouseEventCode(e, 3); // release
+        }
+
         requestFocus();
         return true;
     }
@@ -846,9 +928,22 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mExtGestureListener != null && mExtGestureListener.onScroll(e1, e2, distanceX, distanceY)) {
             return true;
         }
+
         distanceY += mScrollRemainder;
         int deltaRows = (int) (distanceY / mCharacterHeight);
         mScrollRemainder = distanceY - deltaRows * mCharacterHeight;
+
+        if (isMouseTrackingActive()) {
+            // Send mouse wheel events to terminal.
+            for (; deltaRows>0; deltaRows--) {
+                sendMouseEventCode(e1, 65);
+            }
+            for (; deltaRows<0; deltaRows++) {
+                sendMouseEventCode(e1, 64);
+            }
+            return true;
+        }
+
         mTopRow =
             Math.min(0, Math.max(-(mTranscriptScreen
                     .getActiveTranscriptRows()), mTopRow + deltaRows));
@@ -879,14 +974,19 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         if (mExtGestureListener != null && mExtGestureListener.onFling(e1, e2, velocityX, velocityY)) {
             return true;
         }
-        float SCALE = 0.25f;
-        mScroller.fling(0, mTopRow,
-                -(int) (velocityX * SCALE), -(int) (velocityY * SCALE),
-                0, 0,
-                -mTranscriptScreen.getActiveTranscriptRows(), 0);
+
         mScrollRemainder = 0.0f;
-        // onScroll(e1, e2, 0.1f * velocityX, -0.1f * velocityY);
-        post(mFlingRunner);
+        if (isMouseTrackingActive()) {
+            mMouseTrackingFlingRunner.fling(e1, velocityX, velocityY);
+        } else {
+            float SCALE = 0.25f;
+            mScroller.fling(0, mTopRow,
+                    -(int) (velocityX * SCALE), -(int) (velocityY * SCALE),
+                    0, 0,
+                    -mTranscriptScreen.getActiveTranscriptRows(), 0);
+            // onScroll(e1, e2, 0.1f * velocityX, -0.1f * velocityY);
+            post(mFlingRunner);
+        }
         return true;
     }
 
@@ -1342,5 +1442,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public void setTermType(String termType) {
          mKeyListener.setTermType(termType);
          mTermType = termType;
+    }
+
+    /**
+     * Set whether mouse events should be sent to the terminal as escape codes.
+     */
+    public void setMouseTracking(boolean flag) {
+        mMouseTracking = flag;
     }
 }

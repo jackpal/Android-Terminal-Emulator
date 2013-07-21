@@ -156,4 +156,7 @@
   <string name="alt_sends_esc_summary_on">Alt key sends ESC.</string>
   <string name="alt_sends_esc_summary_off">Alt key does not send ESC.</string>
 
+  <string name="title_mouse_tracking_preference">Send mouse events</string>
+  <string name="summary_mouse_tracking_preference">Whether tap and scroll events should be sent as escape sequences to the terminal.</string>
+
 </resources>

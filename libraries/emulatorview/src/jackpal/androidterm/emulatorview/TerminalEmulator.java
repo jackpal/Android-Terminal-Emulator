@@ -227,6 +227,11 @@ class TerminalEmulator {
      */
     private int mSavedDecFlags;
 
+    /**
+     * The current DECSET mouse tracking mode, zero for no mouse tracking.
+     */
+    private int mMouseTrackingMode;
+
     // Modes set with Set Mode / Reset Mode
 
     /**
@@ -572,6 +577,15 @@ class TerminalEmulator {
         return mbKeypadApplicationMode;
     }
 
+    /**
+     * Get the current DECSET mouse tracking mode, zero for no mouse tracking.
+     *
+     * @return the current DECSET mouse tracking mode.
+     */
+    public final int getMouseTrackingMode() {
+        return mMouseTrackingMode;
+    }
+
     private void setDefaultTabStops() {
         for (int i = 0; i < mColumns; i++) {
             mTabStop[i] = (i & 7) == 0 && i != 0;
@@ -843,15 +857,22 @@ class TerminalEmulator {
     }
 
     private void doEscLSBQuest(byte b) {
-        int mask = getDecFlagsMask(getArg0(0));
+        int arg = getArg0(0);
+        int mask = getDecFlagsMask(arg);
         int oldFlags = mDecFlags;
         switch (b) {
         case 'h': // Esc [ ? Pn h - DECSET
             mDecFlags |= mask;
+            if (arg >= 1000 && arg <= 1003) {
+                mMouseTrackingMode = arg;
+            }
             break;
 
         case 'l': // Esc [ ? Pn l - DECRST
             mDecFlags &= ~mask;
+            if (arg >= 1000 && arg <= 1003) {
+                mMouseTrackingMode = 0;
+            }
             break;
 
         case 'r': // Esc [ ? Pn r - restore
