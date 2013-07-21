@@ -168,6 +168,10 @@
             android:entries="@array/entries_termtype_preference"
             android:entryValues="@array/entries_termtype_preference"
             android:dialogTitle="@string/dialog_title_termtype_preference" />
+    <CheckBoxPreference android:title="@string/title_mouse_tracking_preference"
+            android:key="mouse_tracking"
+            android:defaultValue="@bool/pref_mouse_tracking_default"
+            android:summary="@string/summary_mouse_tracking_preference" />
     <CheckBoxPreference
             android:key="close_window_on_process_exit"
             android:defaultValue="@bool/pref_close_window_on_process_exit_default"

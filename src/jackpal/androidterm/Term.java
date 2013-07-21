@@ -215,6 +215,9 @@ public class Term extends Activity implements UpdateCallback {
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
+            // Let the EmulatorView handle taps if mouse tracking is active
+            if (view.isMouseTrackingActive()) return false;
+
             doUIToggle((int) e.getX(), (int) e.getY(), view.getVisibleWidth(), view.getVisibleHeight());
             return true;
         }
