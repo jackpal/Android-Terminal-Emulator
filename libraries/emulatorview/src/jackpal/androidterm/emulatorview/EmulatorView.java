@@ -890,16 +890,24 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private void sendMouseEventCode(MotionEvent e, int button_code) {
         int x = (int)(e.getX() / mCharacterWidth) + 1;
         int y = (int)((e.getY()-mTopOfScreenMargin) / mCharacterHeight) + 1;
-        x = Math.max(1, Math.min(mColumns, x));
-        y = Math.max(1, Math.min(mRows, y));
-        //Log.d(TAG, "mouse button "+x+","+y+","+button_code);
-
-        byte[] data = {
-            '\033', '[', 'M',
-            (byte)(32 + button_code),
-            (byte)(32 + x),
-            (byte)(32 + y) };
-        mTermSession.write(data, 0, data.length);
+        // Clip to screen, and clip to the limits of 8-bit data.
+        boolean out_of_bounds =
+            x < 1 || y < 1 ||
+            x > mColumns || y > mRows ||
+            x > 255-32 || y > 255-32;
+        //Log.d(TAG, "mouse button "+x+","+y+","+button_code+",oob="+out_of_bounds);
+        if(button_code < 0 || button_code > 255-32) {
+            Log.e(TAG, "mouse button_code out of range: "+button_code);
+            return;
+        }
+        if(!out_of_bounds) {
+            byte[] data = {
+                '\033', '[', 'M',
+                (byte)(32 + button_code),
+                (byte)(32 + x),
+                (byte)(32 + y) };
+            mTermSession.write(data, 0, data.length);
+        }
     }
 
     // Begin GestureDetector.OnGestureListener methods
