@@ -23,9 +23,15 @@
 
   <string-array name="entries_actionbar_preference">
       <!-- <item>Action bar disabled</item> -->
-      <item>Always show action bar</item>
-      <item>Hide action bar (touch top of screen or Menu key to show)</item>
+      <item>Alltid vis handlingslinjen</item>
+      <item>Skjul handlingslinjen (Trykk på toppen av skjermen for å vise den)</item>
   </string-array>
+
+    <string-array name="entries_orientation_preference">
+        <item>Automatisk</item>
+        <item>Landskap</item>
+        <item>Portrett</item>
+    </string-array>
 
   <string-array name="entries_cursorblink_preference">
     <item>Ikke-blinkende peker</item>
@@ -70,17 +76,17 @@
     <item>Orange tekst på sort</item>
     <item>Rød tekst på sort</item>
     <item>Holo blå på sort</item>
-    <item>Solarized Light</item>
-    <item>Solarized Dark</item>
-    <item>Linux Console</item>
+    <item>Solarized Lys</item>
+    <item>Solarized Mørk</item>
+    <item>Linux konsoll</item>
   </string-array>
 
   <string-array name="entries_backaction_preference">
-      <item>Closes all terminal windows</item>
-      <item>Closes this terminal window only</item>
-      <item>Closes activity, leaving sessions running</item>
-      <item>Sends ESC to terminal</item>
-      <item>Sends TAB to terminal</item>
+      <item>Lukker alle terminalvinduer</item>
+      <item>Lukker kun dette terminalviduet</item>
+      <item>Lukker aktiviteten, men lar økten kjøre</item>
+      <item>Sender ESC til terminalen</item>
+      <item>Sender TAB til terminalen</item>
   </string-array>
 
   <string-array name="entries_controlkey_preference">
@@ -91,7 +97,7 @@
     <item>Vol opp</item>
     <item>Vol ned</item>
     <item>Kamera-tast</item>
-    <item>None</item>
+    <item>Ingen</item>
   </string-array>
 
   <string-array name="entries_fnkey_preference">
@@ -102,7 +108,7 @@
     <item>Vol opp</item>
     <item>Vol ned</item>
     <item>Kamera-tast</item>
-    <item>None</item>
+    <item>Ingen</item>
   </string-array>
 
   <string-array name="entries_ime_preference">
@@ -114,23 +120,23 @@
   <string-array name="control_keys_short_names">
       <item>Ball</item>
       <item>\@</item>
-      <item>Left-Alt</item>
-      <item>Right-Alt</item>
-      <item>Vol-Up</item>
-      <item>Vol-Dn</item>
-      <item>Camera</item>
-      <item>None</item>
+      <item>Venstre-Alt</item>
+      <item>Høyre-Alt</item>
+      <item>Vol-Opp</item>
+      <item>Vol-Ned</item>
+      <item>Kamera</item>
+      <item>Ingen</item>
   </string-array>
 
   <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
   <string-array name="fn_keys_short_names">
       <item>Ball</item>
       <item>\@</item>
-      <item>Left-Alt</item>
-      <item>Right-Alt</item>
-      <item>Vol-Up</item>
-      <item>Vol-Dn</item>
-      <item>Camera</item>
-      <item>None</item>
+      <item>Venstre-Alt</item>
+      <item>Høyre-Alt</item>
+      <item>Vol-Opp</item>
+      <item>Vol-Ned</item>
+      <item>Kamera</item>
+      <item>Ingen</item>
   </string-array>
 </resources>
