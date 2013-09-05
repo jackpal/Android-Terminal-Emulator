@@ -505,7 +505,8 @@ class TermKeyListener {
     private static final int META_META_MASK = 0x00070000;
 
     private String[] mKeyCodes = new String[256];
-    private String[] mAppKeyCodes = new String[256];
+    private String[] mKeypadAppKeyCodes = new String[256];
+    private String[] mCursorAppKeyCodes = new String[256];
 
     private void initKeyCodes() {
         mKeyCodes[KEYCODE_DPAD_CENTER] = "\015";
@@ -549,28 +550,29 @@ class TermKeyListener {
         mKeyCodes[KEYCODE_NUMPAD_8] = "8";
         mKeyCodes[KEYCODE_NUMPAD_9] = "9";
 
-        mAppKeyCodes[KEYCODE_DPAD_UP] = "\033OA";
-        mAppKeyCodes[KEYCODE_DPAD_DOWN] = "\033OB";
-        mAppKeyCodes[KEYCODE_DPAD_RIGHT] = "\033OC";
-        mAppKeyCodes[KEYCODE_DPAD_LEFT] = "\033OD";
-        mAppKeyCodes[KEYCODE_NUMPAD_DIVIDE] = "\033Oo";
-        mAppKeyCodes[KEYCODE_NUMPAD_MULTIPLY] = "\033Oj";
-        mAppKeyCodes[KEYCODE_NUMPAD_SUBTRACT] = "\033Om";
-        mAppKeyCodes[KEYCODE_NUMPAD_ADD] = "\033Ok";
-        mAppKeyCodes[KEYCODE_NUMPAD_ENTER] = "\033OM";
-        mAppKeyCodes[KEYCODE_NUMPAD_EQUALS] = "\033OX";
-        mAppKeyCodes[KEYCODE_NUMPAD_DOT] = "\033On";
-        mAppKeyCodes[KEYCODE_NUMPAD_COMMA] = "\033Ol";
-        mAppKeyCodes[KEYCODE_NUMPAD_0] = "\033Op";
-        mAppKeyCodes[KEYCODE_NUMPAD_1] = "\033Oq";
-        mAppKeyCodes[KEYCODE_NUMPAD_2] = "\033Or";
-        mAppKeyCodes[KEYCODE_NUMPAD_3] = "\033Os";
-        mAppKeyCodes[KEYCODE_NUMPAD_4] = "\033Ot";
-        mAppKeyCodes[KEYCODE_NUMPAD_5] = "\033Ou";
-        mAppKeyCodes[KEYCODE_NUMPAD_6] = "\033Ov";
-        mAppKeyCodes[KEYCODE_NUMPAD_7] = "\033Ow";
-        mAppKeyCodes[KEYCODE_NUMPAD_8] = "\033Ox";
-        mAppKeyCodes[KEYCODE_NUMPAD_9] = "\033Oy";
+        mCursorAppKeyCodes[KEYCODE_DPAD_UP] = "\033OA";
+        mCursorAppKeyCodes[KEYCODE_DPAD_DOWN] = "\033OB";
+        mCursorAppKeyCodes[KEYCODE_DPAD_RIGHT] = "\033OC";
+        mCursorAppKeyCodes[KEYCODE_DPAD_LEFT] = "\033OD";
+
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_DIVIDE] = "\033Oo";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_MULTIPLY] = "\033Oj";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_SUBTRACT] = "\033Om";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_ADD] = "\033Ok";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_ENTER] = "\033OM";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_EQUALS] = "\033OX";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_DOT] = "\033On";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_COMMA] = "\033Ol";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_0] = "\033Op";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_1] = "\033Oq";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_2] = "\033Or";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_3] = "\033Os";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_4] = "\033Ot";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_5] = "\033Ou";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_6] = "\033Ov";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_7] = "\033Ow";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_8] = "\033Ox";
+        mKeypadAppKeyCodes[KEYCODE_NUMPAD_9] = "\033Oy";
     }
 
     /**
@@ -709,16 +711,6 @@ class TermKeyListener {
 
     public void handleHardwareControlKey(boolean down) {
         mHardwareControlKey = down;
-    }
-
-    public void onPause() {
-        // Ensure we don't have any left-over modifier state when switching
-        // views.
-        mHardwareControlKey = false;
-    }
-
-    public void onResume() {
-        // Nothing special.
     }
 
     public void handleControlKey(boolean down) {
@@ -878,12 +870,12 @@ class TermKeyListener {
      * @param keyCode the keycode of the keyDown event
      *
      */
-    public void keyDown(int keyCode, KeyEvent event, boolean appMode,
+    public void keyDown(int keyCode, KeyEvent event, boolean keypadAppMode, boolean cursorAppMode,
             boolean allowToggle) throws IOException {
         if (LOG_KEYS) {
-            Log.i(TAG, "keyDown(" + keyCode + "," + event + "," + appMode + "," + allowToggle + ")");
+            Log.i(TAG, "keyDown(" + keyCode + "," + event + "," + keypadAppMode + "," + cursorAppMode + "," + allowToggle + ")");
         }
-        if (handleKeyCode(keyCode, appMode)) {
+        if (handleKeyCode(keyCode, keypadAppMode, cursorAppMode)) {
             return;
         }
         int result = -1;
@@ -991,7 +983,7 @@ class TermKeyListener {
         result = mapControlChar(effectiveControl, effectiveFn, result);
 
         if (result >= KEYCODE_OFFSET) {
-            handleKeyCode(result - KEYCODE_OFFSET, appMode);
+            handleKeyCode(result - KEYCODE_OFFSET, keypadAppMode, cursorAppMode);
         } else if (result >= 0) {
             if (setHighBit) {
                 result |= 0x80;
@@ -1029,11 +1021,14 @@ class TermKeyListener {
                 KeyCharacterMapCompat.MODIFIER_BEHAVIOR_CHORDED_OR_TOGGLED;
     }
 
-    public boolean handleKeyCode(int keyCode, boolean appMode) throws IOException {
+    public boolean handleKeyCode(int keyCode, boolean keypadAppMode, boolean cursorAppMode) throws IOException {
         if (keyCode >= 0 && keyCode < mKeyCodes.length) {
             String code = null;
-            if (appMode) {
-                code = mAppKeyCodes[keyCode];
+            if (keypadAppMode) {
+                code = mKeypadAppKeyCodes[keyCode];
+            }
+            if(cursorAppMode) {
+                code = mCursorAppKeyCodes[keyCode];
             }
             if (code == null) {
                 code = mKeyCodes[keyCode];
