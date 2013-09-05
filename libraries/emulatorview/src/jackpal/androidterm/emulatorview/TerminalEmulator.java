@@ -876,6 +876,8 @@ class TerminalEmulator {
                 mKeyListener.setCursorKeysApplicationMode(true);
                 break;
             case 47:
+            case 1047:
+            case 1049:
                 mScreen = mAltBuffer;
                 break;
             }
@@ -891,6 +893,8 @@ class TerminalEmulator {
                 mKeyListener.setCursorKeysApplicationMode(false);
                 break;
             case 47:
+            case 1047:
+            case 1049:
                 mScreen = mMainBuffer;
                 break;
             }
