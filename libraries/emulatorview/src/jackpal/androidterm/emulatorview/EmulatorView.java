@@ -469,7 +469,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (result < TermKeyListener.KEYCODE_OFFSET) {
                     mTermSession.write(result);
                 } else {
-                    mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, getKeypadApplicationMode());
+                    mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, null, getKeypadApplicationMode());
                 }
                 clearSpecialKeyStatus();
             }
