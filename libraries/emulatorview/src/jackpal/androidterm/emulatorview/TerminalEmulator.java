@@ -311,6 +311,8 @@ class TerminalEmulator {
     private int mEffect;
 
     private boolean mbKeypadApplicationMode;
+    private boolean mbCursorApplicationMode;
+
 
     /** false == G0, true == G1 */
     private boolean mAlternateCharSet;
@@ -584,6 +586,10 @@ class TerminalEmulator {
      */
     public final int getMouseTrackingMode() {
         return mMouseTrackingMode;
+    }
+
+    public final boolean getCursorApplicationMode() {
+        return mbCursorApplicationMode;
     }
 
     private void setDefaultTabStops() {
@@ -861,10 +867,25 @@ class TerminalEmulator {
         int mask = getDecFlagsMask(arg);
         int oldFlags = mDecFlags;
         switch (b) {
-        case 'h': // Esc [ ? Pn h - DECSET
-            mDecFlags |= mask;
-            if (arg >= 1000 && arg <= 1003) {
-                mMouseTrackingMode = arg;
+
+        case '1':
+            if(getArg0(0) == 1){
+                // Esc [ ? Pn 11 (DECCKM set)
+                mbCursorApplicationMode = false;
+            } else {
+                parseArg(b);
+            }
+            break;
+        case 'h':
+            if(getArg0(0) == 1){
+                // Esc [ ? Pn 1h (DECCKM reset)
+                mbCursorApplicationMode = true;
+            } else {
+                // Esc [ ? Pn h - DECSET
+                mDecFlags |= mask;
+                if (arg >= 1000 && arg <= 1003) {
+                    mMouseTrackingMode = arg;
+                }
             }
             break;
 
@@ -1844,6 +1865,7 @@ class TerminalEmulator {
         mForeColor = mDefaultForeColor;
         mBackColor = mDefaultBackColor;
         mbKeypadApplicationMode = false;
+        mbCursorApplicationMode = false;
         mAlternateCharSet = false;
         mCharSet[0] = CHAR_SET_ASCII;
         mCharSet[1] = CHAR_SET_SPECIAL_GRAPHICS;

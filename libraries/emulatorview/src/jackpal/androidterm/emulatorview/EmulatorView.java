@@ -469,7 +469,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (result < TermKeyListener.KEYCODE_OFFSET) {
                     mTermSession.write(result);
                 } else {
-                    mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, getKeypadApplicationMode());
+                    mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, getKeypadApplicationMode(), getCursorApplicationMode());
                 }
                 clearSpecialKeyStatus();
             }
@@ -728,6 +728,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public boolean getKeypadApplicationMode() {
         return mEmulator.getKeypadApplicationMode();
+    }
+
+    /**
+     * Get the terminal emulator's cursor application mode.
+     */
+    public boolean getCursorApplicationMode() {
+        return mEmulator.getCursorApplicationMode();
     }
 
     /**
@@ -1092,7 +1099,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         try {
             int oldCombiningAccent = mKeyListener.getCombiningAccent();
             int oldCursorMode = mKeyListener.getCursorMode();
-            mKeyListener.keyDown(keyCode, event, getKeypadApplicationMode(),
+            mKeyListener.keyDown(keyCode, event, getKeypadApplicationMode(), getCursorApplicationMode(),
                     TermKeyListener.isEventFromToggleDevice(event));
             if (mKeyListener.getCombiningAccent() != oldCombiningAccent
                     || mKeyListener.getCursorMode() != oldCursorMode) {
