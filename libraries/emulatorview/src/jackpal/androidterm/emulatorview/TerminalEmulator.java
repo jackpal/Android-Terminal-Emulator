@@ -60,7 +60,9 @@ class TerminalEmulator {
     /**
      * Stores the characters that appear on the screen of the emulated terminal.
      */
-    private Screen mScreen;
+    private TranscriptScreen mMainBuffer;
+    private TranscriptScreen mAltBuffer;
+    private TranscriptScreen mScreen;
 
     /**
      * The terminal session this emulator is bound to.
@@ -413,9 +415,11 @@ class TerminalEmulator {
      * @param rows the number of rows to emulate
      * @param scheme the default color scheme of this emulator
      */
-    public TerminalEmulator(TermSession session, Screen screen, int columns, int rows, ColorScheme scheme) {
+    public TerminalEmulator(TermSession session, TranscriptScreen screen, int columns, int rows, ColorScheme scheme) {
         mSession = session;
-        mScreen = screen;
+        mMainBuffer = screen;
+        mScreen = mMainBuffer;
+        mAltBuffer = new TranscriptScreen(columns, rows, rows, scheme);
         mRows = rows;
         mColumns = columns;
         mTabStop = new boolean[mColumns];
@@ -429,6 +433,10 @@ class TerminalEmulator {
         mUTF8Decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
 
         reset();
+    }
+
+    public TranscriptScreen getScreen() {
+        return mScreen;
     }
 
     public void updateSize(int columns, int rows) {
@@ -445,7 +453,8 @@ class TerminalEmulator {
 
         // Try to resize the screen without getting the transcript
         int[] cursor = { mCursorCol, mCursorRow };
-        boolean fastResize = mScreen.fastResize(columns, rows, cursor);
+        boolean fastResize = mMainBuffer.fastResize(columns, rows, cursor);
+        mAltBuffer.resize(columns, rows, getStyle());
 
         GrowableIntArray cursorColor = null;
         String charAtCursor = null;
@@ -461,9 +470,9 @@ class TerminalEmulator {
             mScreen.set(mCursorCol, mCursorRow, 27, 0);
 
             colors = new GrowableIntArray(1024);
-            transcriptText = mScreen.getTranscriptText(colors);
+            transcriptText = mMainBuffer.getTranscriptText(colors);
 
-            mScreen.resize(columns, rows, getStyle());
+            mMainBuffer.resize(columns, rows, getStyle());
         }
 
         if (mRows != rows) {
@@ -522,7 +531,7 @@ class TerminalEmulator {
                    is the place to restore the cursor to */
                 newCursorRow = mCursorRow;
                 newCursorCol = mCursorCol;
-                newCursorTranscriptPos = mScreen.getActiveRows();
+                newCursorTranscriptPos = mMainBuffer.getActiveRows();
                 if (charAtCursor != null && charAtCursor.length() > 0) {
                     // Emit the real character that was in this spot
                     int encodedCursorColor = cursorColor.at(0);
@@ -540,7 +549,7 @@ class TerminalEmulator {
 
             /* Adjust for any scrolling between the time we marked the cursor
                location and now */
-            int scrollCount = mScreen.getActiveRows() - newCursorTranscriptPos;
+            int scrollCount = mMainBuffer.getActiveRows() - newCursorTranscriptPos;
             if (scrollCount > 0 && scrollCount <= newCursorRow) {
                 mCursorRow -= scrollCount;
             } else if (scrollCount > newCursorRow) {
@@ -866,6 +875,9 @@ class TerminalEmulator {
             case 1:
                 mKeyListener.setCursorKeysApplicationMode(true);
                 break;
+            case 47:
+                mScreen = mAltBuffer;
+                break;
             }
             if (arg >= 1000 && arg <= 1003) {
                 mMouseTrackingMode = arg;
@@ -877,6 +889,9 @@ class TerminalEmulator {
             switch (arg) {
             case 1:
                 mKeyListener.setCursorKeysApplicationMode(false);
+                break;
+            case 47:
+                mScreen = mMainBuffer;
                 break;
             }
             if (arg >= 1000 && arg <= 1003) {
@@ -1898,9 +1913,18 @@ class TerminalEmulator {
     public void setColorScheme(ColorScheme scheme) {
         mDefaultForeColor = TextStyle.ciForeground;
         mDefaultBackColor = TextStyle.ciBackground;
+        mMainBuffer.setColorScheme(scheme);
+        mAltBuffer.setColorScheme(scheme);
     }
 
     public String getSelectedText(int x1, int y1, int x2, int y2) {
         return mScreen.getSelectedText(x1, y1, x2, y2);
+    }
+
+    public void finish() {
+        if (mAltBuffer != null) {
+            mAltBuffer.finish();
+            mAltBuffer = null;
+        }
     }
 }

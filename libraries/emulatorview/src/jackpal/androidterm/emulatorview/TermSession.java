@@ -516,7 +516,6 @@ public class TermSession {
             return;
         }
         mEmulator.setColorScheme(scheme);
-        mTranscriptScreen.setColorScheme(scheme);
     }
 
     /**
@@ -588,6 +587,7 @@ public class TermSession {
      */
     public void finish() {
         mIsRunning = false;
+        mEmulator.finish();
         if (mTranscriptScreen != null) {
             mTranscriptScreen.finish();
         }
