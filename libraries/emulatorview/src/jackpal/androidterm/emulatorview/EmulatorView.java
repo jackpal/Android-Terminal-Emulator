@@ -359,6 +359,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mTermSession = session;
 
         mKeyListener = new TermKeyListener(session);
+        session.setKeyListener(mKeyListener);
 
         // Do init now if it was deferred until a TermSession was attached
         if (mDeferInit) {

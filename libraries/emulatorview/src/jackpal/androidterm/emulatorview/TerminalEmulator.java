@@ -33,6 +33,10 @@ import android.util.Log;
  * video, color) alternate screen cursor key and keypad escape sequences.
  */
 class TerminalEmulator {
+    public void setKeyListener(TermKeyListener l) {
+        mKeyListener = l;
+    }
+    private TermKeyListener mKeyListener;
     /**
      * The cursor row. Numbered 0..mRows-1.
      */
@@ -858,6 +862,11 @@ class TerminalEmulator {
         switch (b) {
         case 'h': // Esc [ ? Pn h - DECSET
             mDecFlags |= mask;
+            switch (arg) {
+            case 1:
+                mKeyListener.setCursorKeysApplicationMode(true);
+                break;
+            }
             if (arg >= 1000 && arg <= 1003) {
                 mMouseTrackingMode = arg;
             }
@@ -865,6 +874,11 @@ class TerminalEmulator {
 
         case 'l': // Esc [ ? Pn l - DECRST
             mDecFlags &= ~mask;
+            switch (arg) {
+            case 1:
+                mKeyListener.setCursorKeysApplicationMode(false);
+                break;
+            }
             if (arg >= 1000 && arg <= 1003) {
                 mMouseTrackingMode = 0;
             }
