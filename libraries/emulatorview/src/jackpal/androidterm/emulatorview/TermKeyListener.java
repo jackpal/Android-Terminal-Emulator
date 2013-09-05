@@ -615,10 +615,10 @@ class TermKeyListener {
         mKeyCodes[KEYCODE_NUMPAD_8] = "8";
         mKeyCodes[KEYCODE_NUMPAD_9] = "9";
 
-        mAppKeyCodes[KEYCODE_DPAD_UP] = "\033OA";
-        mAppKeyCodes[KEYCODE_DPAD_DOWN] = "\033OB";
-        mAppKeyCodes[KEYCODE_DPAD_RIGHT] = "\033OC";
-        mAppKeyCodes[KEYCODE_DPAD_LEFT] = "\033OD";
+//        mAppKeyCodes[KEYCODE_DPAD_UP] = "\033OA";
+//        mAppKeyCodes[KEYCODE_DPAD_DOWN] = "\033OB";
+//        mAppKeyCodes[KEYCODE_DPAD_RIGHT] = "\033OC";
+//        mAppKeyCodes[KEYCODE_DPAD_LEFT] = "\033OD";
         mAppKeyCodes[KEYCODE_NUMPAD_DIVIDE] = "\033Oo";
         mAppKeyCodes[KEYCODE_NUMPAD_MULTIPLY] = "\033Oj";
         mAppKeyCodes[KEYCODE_NUMPAD_SUBTRACT] = "\033Om";
@@ -637,6 +637,21 @@ class TermKeyListener {
         mAppKeyCodes[KEYCODE_NUMPAD_7] = "\033Ow";
         mAppKeyCodes[KEYCODE_NUMPAD_8] = "\033Ox";
         mAppKeyCodes[KEYCODE_NUMPAD_9] = "\033Oy";
+    }
+
+    public void setCursorKeysApplicationMode(boolean val) {
+        Log.d(EmulatorDebug.LOG_TAG, "CursorKeysApplicationMode=" + val);
+        if (val) {
+            mKeyCodes[KEYCODE_DPAD_UP] = "\033OA";
+            mKeyCodes[KEYCODE_DPAD_DOWN] = "\033OB";
+            mKeyCodes[KEYCODE_DPAD_RIGHT] = "\033OC";
+            mKeyCodes[KEYCODE_DPAD_LEFT] = "\033OD";
+        } else {
+            mKeyCodes[KEYCODE_DPAD_UP] = "\033[A";
+            mKeyCodes[KEYCODE_DPAD_DOWN] = "\033[B";
+            mKeyCodes[KEYCODE_DPAD_RIGHT] = "\033[C";
+            mKeyCodes[KEYCODE_DPAD_LEFT] = "\033[D";
+        }
     }
 
     /**
