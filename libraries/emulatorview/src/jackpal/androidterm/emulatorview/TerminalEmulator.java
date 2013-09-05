@@ -600,17 +600,12 @@ class TerminalEmulator {
      * @param length the number of bytes in the array to process
      */
     public void append(byte[] buffer, int base, int length) {
+        if (EmulatorDebug.LOG_CHARACTERS_FLAG) {
+            Log.d(EmulatorDebug.LOG_TAG, "In: '" + EmulatorDebug.bytesToString(buffer, base, length) + "'");
+        }
         for (int i = 0; i < length; i++) {
             byte b = buffer[base + i];
             try {
-                if (EmulatorDebug.LOG_CHARACTERS_FLAG) {
-                    char printableB = (char) b;
-                    if (b < 32 || b > 126) {
-                        printableB = ' ';
-                    }
-                    Log.w(EmulatorDebug.LOG_TAG, "'" + Character.toString(printableB)
-                            + "' (" + Integer.toString(b) + ")");
-                }
                 process(b);
                 mProcessedCharCount++;
             } catch (Exception e) {
