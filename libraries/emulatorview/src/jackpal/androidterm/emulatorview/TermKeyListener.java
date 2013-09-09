@@ -595,8 +595,7 @@ class TermKeyListener {
 
         mKeyCodes[KEYCODE_INSERT] = "\033[2~";
         mKeyCodes[KEYCODE_FORWARD_DEL] = "\033[3~";
-        mKeyCodes[KEYCODE_MOVE_HOME] = "\033[1~";
-        mKeyCodes[KEYCODE_MOVE_END] = "\033[4~";
+        // Home/End keys are set by setFnKeys()
         mKeyCodes[KEYCODE_PAGE_UP] = "\033[5~";
         mKeyCodes[KEYCODE_PAGE_DOWN] = "\033[6~";
         mKeyCodes[KEYCODE_DEL]= "\177";
@@ -846,6 +845,13 @@ class TermKeyListener {
 
     private void setFnKeys(String termType) {
         // These key assignments taken from the debian squeeze terminfo database.
+        if (termType.equals("xterm")) {
+            mKeyCodes[KEYCODE_NUMPAD_7] = mKeyCodes[KEYCODE_MOVE_HOME] = "\033OH";
+            mKeyCodes[KEYCODE_NUMPAD_1] = mKeyCodes[KEYCODE_MOVE_END] = "\033OF";
+        } else {
+            mKeyCodes[KEYCODE_NUMPAD_7] = mKeyCodes[KEYCODE_MOVE_HOME] = "\033[1~";
+            mKeyCodes[KEYCODE_NUMPAD_1] = mKeyCodes[KEYCODE_MOVE_END] = "\033[4~";
+        }
         if (termType.equals("vt100")) {
             mKeyCodes[KEYCODE_F1] = "\033OP"; // VT100 PF1
             mKeyCodes[KEYCODE_F2] = "\033OQ"; // VT100 PF2
