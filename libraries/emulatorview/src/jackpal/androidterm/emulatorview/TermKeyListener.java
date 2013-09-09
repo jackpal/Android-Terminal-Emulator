@@ -590,8 +590,11 @@ class TermKeyListener {
 
         mKeyCodes[KEYCODE_INSERT] = "\033[2~";
         mKeyCodes[KEYCODE_FORWARD_DEL] = "\033[3~";
-        mKeyCodes[KEYCODE_MOVE_HOME] = "\033[1~";
-        mKeyCodes[KEYCODE_MOVE_END] = "\033[4~";
+//        mKeyCodes[KEYCODE_MOVE_HOME] = "\033[1~";
+//        mKeyCodes[KEYCODE_MOVE_END] = "\033[4~";
+        // XTerm bindings
+        mKeyCodes[KEYCODE_MOVE_HOME] = "\033OH";
+        mKeyCodes[KEYCODE_MOVE_END] = "\033OF";
         mKeyCodes[KEYCODE_PAGE_UP] = "\033[5~";
         mKeyCodes[KEYCODE_PAGE_DOWN] = "\033[6~";
         mKeyCodes[KEYCODE_DEL]= "\177";
