@@ -607,8 +607,9 @@ class TermKeyListener {
         mKeyCodes[KEYCODE_NUMPAD_ADD] = "+";
         mKeyCodes[KEYCODE_NUMPAD_ENTER] = "\015";
         mKeyCodes[KEYCODE_NUMPAD_EQUALS] = "=";
-        mKeyCodes[KEYCODE_NUMPAD_DOT] = ".";
         mKeyCodes[KEYCODE_NUMPAD_COMMA] = ",";
+/*
+        mKeyCodes[KEYCODE_NUMPAD_DOT] = ".";
         mKeyCodes[KEYCODE_NUMPAD_0] = "0";
         mKeyCodes[KEYCODE_NUMPAD_1] = "1";
         mKeyCodes[KEYCODE_NUMPAD_2] = "2";
@@ -619,6 +620,20 @@ class TermKeyListener {
         mKeyCodes[KEYCODE_NUMPAD_7] = "7";
         mKeyCodes[KEYCODE_NUMPAD_8] = "8";
         mKeyCodes[KEYCODE_NUMPAD_9] = "9";
+*/
+        // Keypad is used for cursor/func keys
+        mKeyCodes[KEYCODE_NUMPAD_DOT] = mKeyCodes[KEYCODE_FORWARD_DEL];
+        mKeyCodes[KEYCODE_NUMPAD_0] = mKeyCodes[KEYCODE_INSERT];
+        mKeyCodes[KEYCODE_NUMPAD_1] = mKeyCodes[KEYCODE_MOVE_END];
+        mKeyCodes[KEYCODE_NUMPAD_2] = mKeyCodes[KEYCODE_DPAD_DOWN];
+        mKeyCodes[KEYCODE_NUMPAD_3] = mKeyCodes[KEYCODE_PAGE_DOWN];
+        mKeyCodes[KEYCODE_NUMPAD_4] = mKeyCodes[KEYCODE_DPAD_LEFT];
+        mKeyCodes[KEYCODE_NUMPAD_5] = "5";
+        mKeyCodes[KEYCODE_NUMPAD_6] = mKeyCodes[KEYCODE_DPAD_RIGHT];
+        mKeyCodes[KEYCODE_NUMPAD_7] = mKeyCodes[KEYCODE_MOVE_HOME];
+        mKeyCodes[KEYCODE_NUMPAD_8] = mKeyCodes[KEYCODE_DPAD_UP];
+        mKeyCodes[KEYCODE_NUMPAD_9] = mKeyCodes[KEYCODE_PAGE_UP];
+
 
 //        mAppKeyCodes[KEYCODE_DPAD_UP] = "\033OA";
 //        mAppKeyCodes[KEYCODE_DPAD_DOWN] = "\033OB";
@@ -647,15 +662,15 @@ class TermKeyListener {
     public void setCursorKeysApplicationMode(boolean val) {
         Log.d(EmulatorDebug.LOG_TAG, "CursorKeysApplicationMode=" + val);
         if (val) {
-            mKeyCodes[KEYCODE_DPAD_UP] = "\033OA";
-            mKeyCodes[KEYCODE_DPAD_DOWN] = "\033OB";
-            mKeyCodes[KEYCODE_DPAD_RIGHT] = "\033OC";
-            mKeyCodes[KEYCODE_DPAD_LEFT] = "\033OD";
+            mKeyCodes[KEYCODE_NUMPAD_8] = mKeyCodes[KEYCODE_DPAD_UP] = "\033OA";
+            mKeyCodes[KEYCODE_NUMPAD_2] = mKeyCodes[KEYCODE_DPAD_DOWN] = "\033OB";
+            mKeyCodes[KEYCODE_NUMPAD_6] = mKeyCodes[KEYCODE_DPAD_RIGHT] = "\033OC";
+            mKeyCodes[KEYCODE_NUMPAD_4] = mKeyCodes[KEYCODE_DPAD_LEFT] = "\033OD";
         } else {
-            mKeyCodes[KEYCODE_DPAD_UP] = "\033[A";
-            mKeyCodes[KEYCODE_DPAD_DOWN] = "\033[B";
-            mKeyCodes[KEYCODE_DPAD_RIGHT] = "\033[C";
-            mKeyCodes[KEYCODE_DPAD_LEFT] = "\033[D";
+            mKeyCodes[KEYCODE_NUMPAD_8] = mKeyCodes[KEYCODE_DPAD_UP] = "\033[A";
+            mKeyCodes[KEYCODE_NUMPAD_2] = mKeyCodes[KEYCODE_DPAD_DOWN] = "\033[B";
+            mKeyCodes[KEYCODE_NUMPAD_6] = mKeyCodes[KEYCODE_DPAD_RIGHT] = "\033[C";
+            mKeyCodes[KEYCODE_NUMPAD_4] = mKeyCodes[KEYCODE_DPAD_LEFT] = "\033[D";
         }
     }
 
