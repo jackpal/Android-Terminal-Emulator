@@ -75,6 +75,8 @@
     <string name="summary_do_path_extensions_preference">Разрешить другим приложениям обеспечивать дополнительные команды (добавление к PATH).</string>
     <string name="title_allow_prepend_path_preference">Разрешить перезапись PATH</string>
     <string name="summary_allow_prepend_path_preference">Разрешить другим приложениям изменять существующие команды (добавление к началу PATH).</string>
+    <string name="title_home_path_preference">Домашняя папка</string>
+    <string name="summary_home_path_preference">Установка пути к папке, которая будет использована в качестве домашней (должны быть права записи)</string>
     <string name="control_key_dialog_title">Управляющие и функциональные клавиши</string>
     <string name="control_key_dialog_control_text">CTRLKEY + Пробел: Control-@ (NUL)\n
 CTRLKEY + A..Z: Control-A..Z\n
@@ -109,11 +111,13 @@ FNKEY + .: Control-\\\n
     <string name="perm_append_to_path">Добавление команд в терминала</string>
     <string name="permdesc_append_to_path">Приложение сможет обеспечить дополнительные команды (добавить каталоги в PATH) для Эмулятора Терминала Android.</string>
     <string name="perm_prepend_to_path">Переопределение команд в Эмуляторе Терминала</string>
-    <string name="permdesc_prepend_to_path">Позволяет приложению переопределить существующие команды с собственной версией (перезаписывать PATH) в Эмуляторе Терминала Android.</string>
+    <string name="permdesc_prepend_to_path">Позволяет приложению переопределить существующие команды своими (перезаписывать PATH) в Эмуляторе Терминала Android.</string>
     <string name="email_transcript_subject">Вывод терминала Android</string>
     <string name="email_transcript_chooser_title">Отправить текст из терминала с помощью:</string>
     <string name="email_transcript_no_email_activity_found">Не найдено приложения для отправки текста.</string>
     <string name="alt_sends_esc">Клавиша Alt посылает ESC</string>
     <string name="alt_sends_esc_summary_on">Клавиша Alt посылает ESC.</string>
     <string name="alt_sends_esc_summary_off">Клавиша Alt не посылает ESC.</string>
+    <string name="title_mouse_tracking_preference">Передавать события мыши</string>
+    <string name="summary_mouse_tracking_preference">Определяет, будут ли события касания и прокрутки передаваться в терминал как Escape-последовательности</string>
 </resources>
