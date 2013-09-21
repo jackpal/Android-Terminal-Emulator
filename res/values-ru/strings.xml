@@ -32,6 +32,9 @@
     <string name="title_actionbar_preference">Панель действий</string>
     <string name="summary_actionbar_preference">Настройка поведения панели действий (Android 3.0 и выше).</string>
     <string name="dialog_title_actionbar_preference">Поведение панели действий</string>
+    <string name="title_orientation_preference">Поворот экрана</string>
+    <string name="summary_orientation_preference">Выбор ориентации экрана</string>
+    <string name="dialog_title_orientation_preference">Поворот экрана</string>
     <string name="text_preferences">Текст</string>
     <string name="title_utf8_by_default_preference">По умолчанию UTF-8</string>
     <string name="summary_utf8_by_default_preference">Применить режим UTF-8 по умолчанию.</string>
