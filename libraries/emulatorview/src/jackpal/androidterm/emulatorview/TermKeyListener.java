@@ -4,6 +4,8 @@ import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 import jackpal.androidterm.emulatorview.compat.KeyCharacterMapCompat;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
 
 import android.util.Log;
 import android.view.KeyCharacterMap;
@@ -504,10 +506,79 @@ class TermKeyListener {
     private static final int META_META_ON   = 0x00010000;
     private static final int META_META_MASK = 0x00070000;
 
+    private static final int KEYMOD_ALT   = 0x80000000;
+    private static final int KEYMOD_CTRL  = 0x40000000;
+    private static final int KEYMOD_SHIFT = 0x20000000;
+    /** Means this maps raw scancode */
+    private static final int KEYMOD_SCAN  = 0x10000000;
+    private static Map<Integer, String> mKeyMap;
+
     private String[] mKeyCodes = new String[256];
     private String[] mAppKeyCodes = new String[256];
 
     private void initKeyCodes() {
+        mKeyMap = new HashMap<Integer, String>();
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_DPAD_LEFT, "\033[1;2D");
+        mKeyMap.put(KEYMOD_ALT | KEYCODE_DPAD_LEFT, "\033[1;3D");
+        mKeyMap.put(KEYMOD_ALT | KEYMOD_SHIFT | KEYCODE_DPAD_LEFT, "\033[1;4D");
+        mKeyMap.put(KEYMOD_CTRL | KEYCODE_DPAD_LEFT, "\033[1;5D");
+        mKeyMap.put(KEYMOD_CTRL | KEYMOD_SHIFT | KEYCODE_DPAD_LEFT, "\033[1;6D");
+        mKeyMap.put(KEYMOD_CTRL | KEYMOD_ALT | KEYCODE_DPAD_LEFT, "\033[1;7D");
+        mKeyMap.put(KEYMOD_CTRL | KEYMOD_ALT | KEYMOD_SHIFT | KEYCODE_DPAD_LEFT, "\033[1;8D");
+
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_DPAD_RIGHT, "\033[1;2C");
+        mKeyMap.put(KEYMOD_ALT | KEYCODE_DPAD_RIGHT, "\033[1;3C");
+        mKeyMap.put(KEYMOD_ALT | KEYMOD_SHIFT | KEYCODE_DPAD_RIGHT, "\033[1;4C");
+        mKeyMap.put(KEYMOD_CTRL | KEYCODE_DPAD_RIGHT, "\033[1;5C");
+        mKeyMap.put(KEYMOD_CTRL | KEYMOD_SHIFT | KEYCODE_DPAD_RIGHT, "\033[1;6C");
+        mKeyMap.put(KEYMOD_CTRL | KEYMOD_ALT | KEYCODE_DPAD_RIGHT, "\033[1;7C");
+        mKeyMap.put(KEYMOD_CTRL | KEYMOD_ALT | KEYMOD_SHIFT | KEYCODE_DPAD_RIGHT, "\033[1;8C");
+
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_DPAD_UP, "\033[1;2A");
+        mKeyMap.put(KEYMOD_ALT | KEYCODE_DPAD_UP, "\033[1;3A");
+        mKeyMap.put(KEYMOD_ALT | KEYMOD_SHIFT | KEYCODE_DPAD_UP, "\033[1;4A");
+        mKeyMap.put(KEYMOD_CTRL | KEYCODE_DPAD_UP, "\033[1;5A");
+        mKeyMap.put(KEYMOD_CTRL | KEYMOD_SHIFT | KEYCODE_DPAD_UP, "\033[1;6A");
+        mKeyMap.put(KEYMOD_CTRL | KEYMOD_ALT | KEYCODE_DPAD_UP, "\033[1;7A");
+        mKeyMap.put(KEYMOD_CTRL | KEYMOD_ALT | KEYMOD_SHIFT | KEYCODE_DPAD_UP, "\033[1;8A");
+
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_DPAD_DOWN, "\033[1;2B");
+        mKeyMap.put(KEYMOD_ALT | KEYCODE_DPAD_DOWN, "\033[1;3B");
+        mKeyMap.put(KEYMOD_ALT | KEYMOD_SHIFT | KEYCODE_DPAD_DOWN, "\033[1;4B");
+        mKeyMap.put(KEYMOD_CTRL | KEYCODE_DPAD_DOWN, "\033[1;5B");
+        mKeyMap.put(KEYMOD_CTRL | KEYMOD_SHIFT | KEYCODE_DPAD_DOWN, "\033[1;6B");
+        mKeyMap.put(KEYMOD_CTRL | KEYMOD_ALT | KEYCODE_DPAD_DOWN, "\033[1;7B");
+        mKeyMap.put(KEYMOD_CTRL | KEYMOD_ALT | KEYMOD_SHIFT | KEYCODE_DPAD_DOWN, "\033[1;8B");
+
+        //^[[3~
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_FORWARD_DEL, "\033[3;2~");
+        mKeyMap.put(KEYMOD_ALT | KEYCODE_FORWARD_DEL, "\033[3;3~");
+        mKeyMap.put(KEYMOD_CTRL | KEYCODE_FORWARD_DEL, "\033[3;5~");
+
+        //^[[2~
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_INSERT, "\033[2;2~");
+        mKeyMap.put(KEYMOD_ALT | KEYCODE_INSERT, "\033[2;3~");
+        mKeyMap.put(KEYMOD_CTRL | KEYCODE_INSERT, "\033[2;5~");
+
+        mKeyMap.put(KEYMOD_CTRL | KEYCODE_MOVE_HOME, "\033[1;5H");
+        mKeyMap.put(KEYMOD_CTRL | KEYCODE_MOVE_END, "\033[1;5F");
+
+        mKeyMap.put(KEYMOD_ALT | KEYCODE_ENTER, "\033\r");
+        mKeyMap.put(KEYMOD_CTRL | KEYCODE_ENTER, "\n");
+        // Duh, so special...
+        mKeyMap.put(KEYMOD_CTRL | KEYCODE_SPACE, "\000");
+
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_F1, "\033[1;2P");
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_F2, "\033[1;2Q");
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_F3, "\033[1;2R");
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_F4, "\033[1;2S");
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_F5, "\033[15;2~");
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_F6, "\033[17;2~");
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_F7, "\033[18;2~");
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_F8, "\033[19;2~");
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_F9, "\033[20;2~");
+        mKeyMap.put(KEYMOD_SHIFT | KEYCODE_F10, "\033[21;2~");
+
         mKeyCodes[KEYCODE_DPAD_CENTER] = "\015";
         mKeyCodes[KEYCODE_DPAD_UP] = "\033[A";
         mKeyCodes[KEYCODE_DPAD_DOWN] = "\033[B";
@@ -524,8 +595,7 @@ class TermKeyListener {
 
         mKeyCodes[KEYCODE_INSERT] = "\033[2~";
         mKeyCodes[KEYCODE_FORWARD_DEL] = "\033[3~";
-        mKeyCodes[KEYCODE_MOVE_HOME] = "\033[1~";
-        mKeyCodes[KEYCODE_MOVE_END] = "\033[4~";
+        // Home/End keys are set by setFnKeys()
         mKeyCodes[KEYCODE_PAGE_UP] = "\033[5~";
         mKeyCodes[KEYCODE_PAGE_DOWN] = "\033[6~";
         mKeyCodes[KEYCODE_DEL]= "\177";
@@ -536,8 +606,9 @@ class TermKeyListener {
         mKeyCodes[KEYCODE_NUMPAD_ADD] = "+";
         mKeyCodes[KEYCODE_NUMPAD_ENTER] = "\015";
         mKeyCodes[KEYCODE_NUMPAD_EQUALS] = "=";
-        mKeyCodes[KEYCODE_NUMPAD_DOT] = ".";
         mKeyCodes[KEYCODE_NUMPAD_COMMA] = ",";
+/*
+        mKeyCodes[KEYCODE_NUMPAD_DOT] = ".";
         mKeyCodes[KEYCODE_NUMPAD_0] = "0";
         mKeyCodes[KEYCODE_NUMPAD_1] = "1";
         mKeyCodes[KEYCODE_NUMPAD_2] = "2";
@@ -548,11 +619,25 @@ class TermKeyListener {
         mKeyCodes[KEYCODE_NUMPAD_7] = "7";
         mKeyCodes[KEYCODE_NUMPAD_8] = "8";
         mKeyCodes[KEYCODE_NUMPAD_9] = "9";
+*/
+        // Keypad is used for cursor/func keys
+        mKeyCodes[KEYCODE_NUMPAD_DOT] = mKeyCodes[KEYCODE_FORWARD_DEL];
+        mKeyCodes[KEYCODE_NUMPAD_0] = mKeyCodes[KEYCODE_INSERT];
+        mKeyCodes[KEYCODE_NUMPAD_1] = mKeyCodes[KEYCODE_MOVE_END];
+        mKeyCodes[KEYCODE_NUMPAD_2] = mKeyCodes[KEYCODE_DPAD_DOWN];
+        mKeyCodes[KEYCODE_NUMPAD_3] = mKeyCodes[KEYCODE_PAGE_DOWN];
+        mKeyCodes[KEYCODE_NUMPAD_4] = mKeyCodes[KEYCODE_DPAD_LEFT];
+        mKeyCodes[KEYCODE_NUMPAD_5] = "5";
+        mKeyCodes[KEYCODE_NUMPAD_6] = mKeyCodes[KEYCODE_DPAD_RIGHT];
+        mKeyCodes[KEYCODE_NUMPAD_7] = mKeyCodes[KEYCODE_MOVE_HOME];
+        mKeyCodes[KEYCODE_NUMPAD_8] = mKeyCodes[KEYCODE_DPAD_UP];
+        mKeyCodes[KEYCODE_NUMPAD_9] = mKeyCodes[KEYCODE_PAGE_UP];
 
-        mAppKeyCodes[KEYCODE_DPAD_UP] = "\033OA";
-        mAppKeyCodes[KEYCODE_DPAD_DOWN] = "\033OB";
-        mAppKeyCodes[KEYCODE_DPAD_RIGHT] = "\033OC";
-        mAppKeyCodes[KEYCODE_DPAD_LEFT] = "\033OD";
+
+//        mAppKeyCodes[KEYCODE_DPAD_UP] = "\033OA";
+//        mAppKeyCodes[KEYCODE_DPAD_DOWN] = "\033OB";
+//        mAppKeyCodes[KEYCODE_DPAD_RIGHT] = "\033OC";
+//        mAppKeyCodes[KEYCODE_DPAD_LEFT] = "\033OD";
         mAppKeyCodes[KEYCODE_NUMPAD_DIVIDE] = "\033Oo";
         mAppKeyCodes[KEYCODE_NUMPAD_MULTIPLY] = "\033Oj";
         mAppKeyCodes[KEYCODE_NUMPAD_SUBTRACT] = "\033Om";
@@ -571,6 +656,21 @@ class TermKeyListener {
         mAppKeyCodes[KEYCODE_NUMPAD_7] = "\033Ow";
         mAppKeyCodes[KEYCODE_NUMPAD_8] = "\033Ox";
         mAppKeyCodes[KEYCODE_NUMPAD_9] = "\033Oy";
+    }
+
+    public void setCursorKeysApplicationMode(boolean val) {
+        Log.d(EmulatorDebug.LOG_TAG, "CursorKeysApplicationMode=" + val);
+        if (val) {
+            mKeyCodes[KEYCODE_NUMPAD_8] = mKeyCodes[KEYCODE_DPAD_UP] = "\033OA";
+            mKeyCodes[KEYCODE_NUMPAD_2] = mKeyCodes[KEYCODE_DPAD_DOWN] = "\033OB";
+            mKeyCodes[KEYCODE_NUMPAD_6] = mKeyCodes[KEYCODE_DPAD_RIGHT] = "\033OC";
+            mKeyCodes[KEYCODE_NUMPAD_4] = mKeyCodes[KEYCODE_DPAD_LEFT] = "\033OD";
+        } else {
+            mKeyCodes[KEYCODE_NUMPAD_8] = mKeyCodes[KEYCODE_DPAD_UP] = "\033[A";
+            mKeyCodes[KEYCODE_NUMPAD_2] = mKeyCodes[KEYCODE_DPAD_DOWN] = "\033[B";
+            mKeyCodes[KEYCODE_NUMPAD_6] = mKeyCodes[KEYCODE_DPAD_RIGHT] = "\033[C";
+            mKeyCodes[KEYCODE_NUMPAD_4] = mKeyCodes[KEYCODE_DPAD_LEFT] = "\033[D";
+        }
     }
 
     /**
@@ -745,6 +845,13 @@ class TermKeyListener {
 
     private void setFnKeys(String termType) {
         // These key assignments taken from the debian squeeze terminfo database.
+        if (termType.equals("xterm")) {
+            mKeyCodes[KEYCODE_NUMPAD_7] = mKeyCodes[KEYCODE_MOVE_HOME] = "\033OH";
+            mKeyCodes[KEYCODE_NUMPAD_1] = mKeyCodes[KEYCODE_MOVE_END] = "\033OF";
+        } else {
+            mKeyCodes[KEYCODE_NUMPAD_7] = mKeyCodes[KEYCODE_MOVE_HOME] = "\033[1~";
+            mKeyCodes[KEYCODE_NUMPAD_1] = mKeyCodes[KEYCODE_MOVE_END] = "\033[4~";
+        }
         if (termType.equals("vt100")) {
             mKeyCodes[KEYCODE_F1] = "\033OP"; // VT100 PF1
             mKeyCodes[KEYCODE_F2] = "\033OQ"; // VT100 PF2
@@ -883,7 +990,7 @@ class TermKeyListener {
         if (LOG_KEYS) {
             Log.i(TAG, "keyDown(" + keyCode + "," + event + "," + appMode + "," + allowToggle + ")");
         }
-        if (handleKeyCode(keyCode, appMode)) {
+        if (handleKeyCode(keyCode, event, appMode)) {
             return;
         }
         int result = -1;
@@ -991,7 +1098,7 @@ class TermKeyListener {
         result = mapControlChar(effectiveControl, effectiveFn, result);
 
         if (result >= KEYCODE_OFFSET) {
-            handleKeyCode(result - KEYCODE_OFFSET, appMode);
+            handleKeyCode(result - KEYCODE_OFFSET, null, appMode);
         } else if (result >= 0) {
             if (setHighBit) {
                 result |= 0x80;
@@ -1029,19 +1136,45 @@ class TermKeyListener {
                 KeyCharacterMapCompat.MODIFIER_BEHAVIOR_CHORDED_OR_TOGGLED;
     }
 
-    public boolean handleKeyCode(int keyCode, boolean appMode) throws IOException {
-        if (keyCode >= 0 && keyCode < mKeyCodes.length) {
-            String code = null;
+    public boolean handleKeyCode(int keyCode, KeyEvent event, boolean appMode) throws IOException {
+        String code = null;
+        if (event != null) {
+            int keyMod = 0;
+            // META_CTRL_ON was added only in API 11, so don't use it,
+            // use our own tracking of Ctrl key instead.
+            // (event.getMetaState() & META_CTRL_ON) != 0
+            if (mHardwareControlKey || mControlKey.isActive()) {
+                keyMod |= KEYMOD_CTRL;
+            }
+            if ((event.getMetaState() & META_ALT_ON) != 0) {
+                keyMod |= KEYMOD_ALT;
+            }
+            if ((event.getMetaState() & META_SHIFT_ON) != 0) {
+                keyMod |= KEYMOD_SHIFT;
+            }
+            // First try to map scancode
+            code = mKeyMap.get(event.getScanCode() | KEYMOD_SCAN | keyMod);
+            if (code == null) {
+                code = mKeyMap.get(keyCode | keyMod);
+            }
+        }
+
+        if (code == null && keyCode >= 0 && keyCode < mKeyCodes.length) {
             if (appMode) {
                 code = mAppKeyCodes[keyCode];
             }
             if (code == null) {
                 code = mKeyCodes[keyCode];
             }
-            if (code != null) {
-                mTermSession.write(code);
-                return true;
+        }
+
+        if (code != null) {
+            if (EmulatorDebug.LOG_CHARACTERS_FLAG) {
+                byte[] bytes = code.getBytes();
+                Log.d(EmulatorDebug.LOG_TAG, "Out: '" + EmulatorDebug.bytesToString(bytes, 0, bytes.length) + "'");
             }
+            mTermSession.write(code);
+            return true;
         }
         return false;
     }
