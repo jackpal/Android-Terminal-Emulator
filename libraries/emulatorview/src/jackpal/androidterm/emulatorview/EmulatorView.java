@@ -157,7 +157,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mFnKeyCode;
     private boolean mIsControlKeySent = false;
     private boolean mIsFnKeySent = false;
-
+    
     private String mTermType;
 
     private boolean mMouseTracking;
@@ -1457,5 +1457,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void setMouseTracking(boolean flag) {
         mMouseTracking = flag;
+    }
+    
+    //TODO comment
+    public String getURLat(float x, float y)
+    {
+    	return mTranscriptScreen.getURLat(x, y, getWidth(), getHeight(), mTopRow);
     }
 }

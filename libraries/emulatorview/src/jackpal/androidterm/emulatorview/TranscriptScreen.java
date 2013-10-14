@@ -109,6 +109,23 @@ class TranscriptScreen implements Screen {
          }
     }
     
+    //TODO comment
+    //having issues with links that are off-screen
+    public String getURLat(float x, float y, int width, int height, int topRow)
+    {
+    	float x_pos = x / width;
+    	float y_pos = y / height;
+    	
+    	int x_ind = (int)Math.floor(x_pos * mColumns);
+    	int y_ind = (int)Math.floor(y_pos * mScreenRows) + topRow;
+    	
+    	URLSpan link = mLinkLayer[y_ind][x_ind];
+    	if(link != null)
+    		return link.getURL();
+    	else
+    		return null;
+    }
+    
     public void setColorScheme(ColorScheme scheme) {
         mData.setDefaultStyle(TextStyle.kNormalTextStyle);
     }
