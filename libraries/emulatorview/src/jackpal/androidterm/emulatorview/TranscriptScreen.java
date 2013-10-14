@@ -18,7 +18,12 @@ package jackpal.androidterm.emulatorview;
 
 import java.util.Arrays;
 
+import android.text.SpannableStringBuilder;
+import android.text.style.URLSpan;
+
 import android.graphics.Canvas;
+import android.text.style.URLSpan;
+import android.text.util.Linkify;
 
 /**
  * A TranscriptScreen is a screen that remembers data that's been scrolled. The
@@ -46,6 +51,12 @@ class TranscriptScreen implements Screen {
     private UnicodeTranscript mData;
 
     /**
+     * A matrix of underlying URLs to implement clickable links.
+     */
+    private URLSpan [][] mLinkLayer;
+    
+    
+    /**
      * Create a transcript screen.
      *
      * @param columns the width of the screen in characters.
@@ -66,8 +77,38 @@ class TranscriptScreen implements Screen {
 
         mData = new UnicodeTranscript(columns, totalRows, screenRows, style);
         mData.blockSet(0, 0, mColumns, mScreenRows, ' ', style);
+        
+        //Initialize the URLSpan matrix
+        mLinkLayer = new URLSpan[totalRows][columns];
+        for(int i=0; i<screenRows; ++i)
+        {
+        	for(int j=0; j<columns; ++j)
+        		mLinkLayer[i][j] = null;
+        }
     }
 
+    /**
+     * Convert any URLs in the current row into a URLSpan,
+     * and store that result in a matrix of URLSpan entries.
+     * 
+     * @param text
+     * @param row
+     */
+    private void createLinks(char[] text, int row)
+    {
+    	 SpannableStringBuilder textLine = new SpannableStringBuilder(new String(text));
+         Linkify.addLinks(textLine,Linkify.WEB_URLS);
+         URLSpan [] spans = textLine.getSpans(0, mColumns, URLSpan.class);
+         for(int i=0; i<spans.length; ++i)
+         {
+        	URLSpan span = spans[i];
+        	int spanStart = textLine.getSpanStart(span);
+        	int spanEnd   = textLine.getSpanEnd(span);
+        	for(int j=spanStart; j < spanEnd; ++j)
+        		mLinkLayer[row][j] = span;
+         }
+    }
+    
     public void setColorScheme(ColorScheme scheme) {
         mData.setDefaultStyle(TextStyle.kNormalTextStyle);
     }
@@ -197,6 +238,7 @@ class TranscriptScreen implements Screen {
             return;
         }
 
+        createLinks(line, row);
         int columns = mColumns;
         int lastStyle = 0;
         boolean lastCursorStyle = false;
