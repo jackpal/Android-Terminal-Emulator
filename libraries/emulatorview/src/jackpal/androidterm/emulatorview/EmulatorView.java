@@ -21,13 +21,17 @@ import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 
 import java.io.IOException;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.URLSpan;
+import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -222,6 +226,47 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         }
     };
+    
+    /**
+     * A matrix of underlying URLs to implement clickable links.
+     */
+    private URLSpan [][] mLinkLayer;
+    
+    /**
+     * Convert any URLs in the current row into a URLSpan,
+     * and store that result in a matrix of URLSpan entries.
+     * 
+     * @param text
+     * @param row
+     */
+    private void createLinks(char[] text, int row)
+    {
+    	if(text == null || row < 0)
+    		return;
+    	
+		SpannableStringBuilder textLine = new SpannableStringBuilder(new String(text));
+		Linkify.addLinks(textLine,Linkify.WEB_URLS);
+		URLSpan [] spans = textLine.getSpans(0, mColumns, URLSpan.class);
+		for(int i=0; i<spans.length; ++i)
+		{
+			URLSpan span = spans[i];
+			int spanStart = textLine.getSpanStart(span);
+			int spanEnd   = textLine.getSpanEnd(span);
+			for(int j=spanStart; j < spanEnd; ++j)
+				mLinkLayer[row][j] = span;
+		}
+    }
+    
+    private void resetURLSpans()
+    {
+        //Initialize the URLSpan matrix
+        mLinkLayer = new URLSpan[mRows][mColumns];
+        for(int i=0; i<mRows; ++i)
+        {
+        	for(int j=0; j<mColumns; ++j)
+        		mLinkLayer[i][j] = null;
+        }
+    }
 
     /**
      * Sends mouse wheel codes to terminal in response to fling.
@@ -1274,7 +1319,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         // Reset our paging:
         mTopRow = 0;
         mLeftColumn = 0;
-
+ 
         invalidate();
     }
 
@@ -1285,6 +1330,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      *              view's size has not changed.
      */
     public void updateSize(boolean force) {
+        resetURLSpans();
         if (mKnownSize) {
             int w = getWidth();
             int h = getHeight();
@@ -1351,6 +1397,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
             mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2, effectiveImeBuffer, cursorStyle);
             y += mCharacterHeight;
+            createLinks(mTranscriptScreen.getScriptLine(i), i);
         }
     }
 
@@ -1459,9 +1506,21 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mMouseTracking = flag;
     }
     
+    
     //TODO comment
+    //having issues with links that are off-screen
     public String getURLat(float x, float y)
     {
-    	return mTranscriptScreen.getURLat(x, y, getWidth(), getHeight(), mTopRow);
+    	float x_pos = x / getWidth();
+    	float y_pos = y / getHeight();
+    	
+    	int row = (int)Math.floor(y_pos * mRows);
+    	int col = (int)Math.floor(x_pos * mColumns);
+
+		URLSpan link = mLinkLayer[row][col];
+    	if(link != null)
+    		return link.getURL();
+    	else
+    		return null;
     }
 }

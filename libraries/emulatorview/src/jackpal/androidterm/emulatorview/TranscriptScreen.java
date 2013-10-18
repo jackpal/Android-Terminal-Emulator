@@ -49,12 +49,6 @@ class TranscriptScreen implements Screen {
     private int mScreenRows;
 
     private UnicodeTranscript mData;
-
-    /**
-     * A matrix of underlying URLs to implement clickable links.
-     */
-    private URLSpan [][] mLinkLayer;
-    
     
     /**
      * Create a transcript screen.
@@ -77,55 +71,8 @@ class TranscriptScreen implements Screen {
 
         mData = new UnicodeTranscript(columns, totalRows, screenRows, style);
         mData.blockSet(0, 0, mColumns, mScreenRows, ' ', style);
-        
-        //Initialize the URLSpan matrix
-        mLinkLayer = new URLSpan[totalRows][columns];
-        for(int i=0; i<screenRows; ++i)
-        {
-        	for(int j=0; j<columns; ++j)
-        		mLinkLayer[i][j] = null;
-        }
     }
 
-    /**
-     * Convert any URLs in the current row into a URLSpan,
-     * and store that result in a matrix of URLSpan entries.
-     * 
-     * @param text
-     * @param row
-     */
-    private void createLinks(char[] text, int row)
-    {
-    	 SpannableStringBuilder textLine = new SpannableStringBuilder(new String(text));
-         Linkify.addLinks(textLine,Linkify.WEB_URLS);
-         URLSpan [] spans = textLine.getSpans(0, mColumns, URLSpan.class);
-         for(int i=0; i<spans.length; ++i)
-         {
-        	URLSpan span = spans[i];
-        	int spanStart = textLine.getSpanStart(span);
-        	int spanEnd   = textLine.getSpanEnd(span);
-        	for(int j=spanStart; j < spanEnd; ++j)
-        		mLinkLayer[row][j] = span;
-         }
-    }
-    
-    //TODO comment
-    //having issues with links that are off-screen
-    public String getURLat(float x, float y, int width, int height, int topRow)
-    {
-    	float x_pos = x / width;
-    	float y_pos = y / height;
-    	
-    	int x_ind = (int)Math.floor(x_pos * mColumns);
-    	int y_ind = (int)Math.floor(y_pos * mScreenRows) + topRow;
-    	
-    	URLSpan link = mLinkLayer[y_ind][x_ind];
-    	if(link != null)
-    		return link.getURL();
-    	else
-    		return null;
-    }
-    
     public void setColorScheme(ColorScheme scheme) {
         mData.setDefaultStyle(TextStyle.kNormalTextStyle);
     }
@@ -255,7 +202,6 @@ class TranscriptScreen implements Screen {
             return;
         }
 
-        createLinks(line, row);
         int columns = mColumns;
         int lastStyle = 0;
         boolean lastCursorStyle = false;
@@ -468,5 +414,17 @@ class TranscriptScreen implements Screen {
 
     public void resize(int columns, int rows, int style) {
         init(columns, mTotalRows, rows, style);
+    }
+    
+    public char[] getScriptLine(int row)
+    {
+    	try
+    	{
+    		return mData.getLine(row);
+    	}
+    	catch (IllegalArgumentException e)
+    	{
+    		return null;
+    	}
     }
 }
