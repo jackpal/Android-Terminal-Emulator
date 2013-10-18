@@ -66,6 +66,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private final static boolean LOG_KEY_EVENTS = false;
     private final static boolean LOG_IME = false;
 
+    public void onDetachedFromWindow()
+    {
+    	super.onDetachedFromWindow();
+    }
+    
     /**
      * We defer some initialization until we have been layed out in the view
      * hierarchy. The boolean tracks when we know what our size is.
@@ -233,7 +238,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      *  
      * A hash table of underlying URLs to implement clickable links.
      */
-    private Hashtable<Integer,URLSpan[]> mLinkLayer;
+    private Hashtable<Integer,URLSpan[]> mLinkLayer = new Hashtable<Integer,URLSpan[]>();
     
     /**
      * 
@@ -258,6 +263,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 		if(urls.length > 0)
 		{
 			URLSpan [] linkLayerRow = new URLSpan[mColumns];
+			Arrays.fill(linkLayerRow, null);
 			for(int i=0; i<urls.length; ++i)
 			{
 				URLSpan url = urls[i];
@@ -269,15 +275,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 		}
     }
     
-    /**
-     * 
-     * Initialize the URLSpan hash table
-     */
-    private void resetLinkLayer()
-    {
-    	mLinkLayer = new Hashtable<Integer, URLSpan[]>();
-    }
-
     /**
      * Sends mouse wheel codes to terminal in response to fling.
      */
@@ -1341,7 +1338,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void updateSize(boolean force) {
     	//Need to clear saved links on each display refresh
-        resetLinkLayer();
+        mLinkLayer.clear();
         if (mKnownSize) {
             int w = getWidth();
             int h = getHeight();
