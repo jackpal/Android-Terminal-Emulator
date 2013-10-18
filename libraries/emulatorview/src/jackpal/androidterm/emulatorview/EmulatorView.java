@@ -241,8 +241,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     private void createLinks(char[] text, int row)
     {
-    	if(text == null || row < 0)
+    	if(text == null)
     		return;
+    	
+    	//re-index row to 0 if it is negative
+    	row -= mTopRow;
     	
 		SpannableStringBuilder textLine = new SpannableStringBuilder(new String(text));
 		Linkify.addLinks(textLine,Linkify.WEB_URLS);
