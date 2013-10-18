@@ -416,6 +416,12 @@ class TranscriptScreen implements Screen {
         init(columns, mTotalRows, rows, style);
     }
     
+    /**
+     * 
+     * Return the UnicodeTranscript line at this row index.
+     * @param row The row index to be queried
+     * @return The line of text at this row index
+     */
     public char[] getScriptLine(int row)
     {
     	try

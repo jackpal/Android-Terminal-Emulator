@@ -216,12 +216,12 @@ public class Term extends Activity implements UpdateCallback {
             this.view = view;
         }
 
-        //TODO comment
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             // Let the EmulatorView handle taps if mouse tracking is active
             if (view.isMouseTrackingActive()) return false;
             
+            //Check for link at tap location
         	String link = view.getURLat(e.getX(), e.getY());
             if(link != null)
             	execURL(link);
@@ -1095,7 +1095,11 @@ public class Term extends Activity implements UpdateCallback {
         getCurrentEmulatorView().requestFocus();
     }
     
-    //TODO test
+    /**
+     * 
+     * Send a URL up to Android to be handled by a browser.
+     * @param link The URL to be opened.
+     */
     private void execURL(String link)
     {
     	Uri webLink = Uri.parse(link);

@@ -230,20 +230,22 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     };
     
     /**
-     * A matrix of underlying URLs to implement clickable links.
+     *  
+     * A hash table of underlying URLs to implement clickable links.
      */
-    //private URLSpan [][] mLinkLayer;
     private Hashtable<Integer,URLSpan[]> mLinkLayer;
     
     /**
-     * Convert any URLs in the current row into a URLSpan,
-     * and store that result in a matrix of URLSpan entries.
      * 
-     * @param text
-     * @param row
+     * Convert any URLs in the current row into a URLSpan,
+     * and store that result in a hash table of URLSpan entries.
+     * 
+     * @param text The text of the current row to check for links
+     * @param row The number of the current row
      */
     private void createLinks(char[] text, int row)
     {
+    	//Nothing to do if there's no text.
     	if(text == null)
     		return;
     	
@@ -267,9 +269,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 		}
     }
     
-    private void resetURLSpans()
+    /**
+     * 
+     * Initialize the URLSpan hash table
+     */
+    private void resetLinkLayer()
     {
-    	//Initialize the URLSpan table
     	mLinkLayer = new Hashtable<Integer, URLSpan[]>();
     }
 
@@ -1335,7 +1340,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      *              view's size has not changed.
      */
     public void updateSize(boolean force) {
-        resetURLSpans();
+    	//Need to clear saved links on each display refresh
+        resetLinkLayer();
         if (mKnownSize) {
             int w = getWidth();
             int h = getHeight();
@@ -1402,6 +1408,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
             mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2, effectiveImeBuffer, cursorStyle);
             y += mCharacterHeight;
+            //create links for the line being drawn
             createLinks(mTranscriptScreen.getScriptLine(i), i);
         }
     }
@@ -1512,13 +1519,28 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
     
     
-    //TODO comment
-    //having issues with links that are off-screen
+    /**
+     * 
+     * Get the URL at the specified screen coordinates and return its string value
+     * @param x The x coordinate being queried (from 0 to screen width)
+     * @param y The y coordinate being queried (from 0 to screen height)
+     * @return
+     */
     public String getURLat(float x, float y)
     {
-    	float x_pos = x / getWidth();
-    	float y_pos = y / getHeight();
+    	float w = getWidth();
+    	float h = getHeight();
     	
+    	//Check for division by zero
+    	//If width or height is zero, there are probably no links around, so return null.
+    	if(w == 0 || h == 0)
+    		return null;
+    	
+    	//Get fraction of total screen
+    	float x_pos = x / w;
+    	float y_pos = y / h;
+    	
+    	//Convert to integer row/column index
     	int row = (int)Math.floor(y_pos * mRows);
     	int col = (int)Math.floor(x_pos * mColumns);
 
