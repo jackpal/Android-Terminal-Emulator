@@ -20,6 +20,8 @@ import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Hashtable;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -230,7 +232,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     /**
      * A matrix of underlying URLs to implement clickable links.
      */
-    private URLSpan [][] mLinkLayer;
+    //private URLSpan [][] mLinkLayer;
+    private Hashtable<Integer,URLSpan[]> mLinkLayer;
     
     /**
      * Convert any URLs in the current row into a URLSpan,
@@ -249,26 +252,25 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     	
 		SpannableStringBuilder textLine = new SpannableStringBuilder(new String(text));
 		Linkify.addLinks(textLine,Linkify.WEB_URLS);
-		URLSpan [] spans = textLine.getSpans(0, mColumns, URLSpan.class);
-		for(int i=0; i<spans.length; ++i)
+		URLSpan [] urls = textLine.getSpans(0, mColumns, URLSpan.class);
+		if(urls.length > 0)
 		{
-			URLSpan span = spans[i];
-			int spanStart = textLine.getSpanStart(span);
-			int spanEnd   = textLine.getSpanEnd(span);
-			for(int j=spanStart; j < spanEnd; ++j)
-				mLinkLayer[row][j] = span;
+			URLSpan [] linkLayerRow = new URLSpan[mColumns];
+			for(int i=0; i<urls.length; ++i)
+			{
+				URLSpan url = urls[i];
+				int spanStart = textLine.getSpanStart(url);
+				int spanEnd   = textLine.getSpanEnd(url);
+				Arrays.fill(linkLayerRow, spanStart, spanEnd, url);
+			}
+			mLinkLayer.put(row, linkLayerRow);
 		}
     }
     
     private void resetURLSpans()
     {
-        //Initialize the URLSpan matrix
-        mLinkLayer = new URLSpan[mRows][mColumns];
-        for(int i=0; i<mRows; ++i)
-        {
-        	for(int j=0; j<mColumns; ++j)
-        		mLinkLayer[i][j] = null;
-        }
+    	//Initialize the URLSpan table
+    	mLinkLayer = new Hashtable<Integer, URLSpan[]>();
     }
 
     /**
@@ -1520,8 +1522,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     	int row = (int)Math.floor(y_pos * mRows);
     	int col = (int)Math.floor(x_pos * mColumns);
 
-		URLSpan link = mLinkLayer[row][col];
-    	if(link != null)
+    	URLSpan [] linkRow = mLinkLayer.get(row);
+    	URLSpan link;
+    	if(linkRow != null && (link = linkRow[col]) != null)
     		return link.getURL();
     	else
     		return null;
