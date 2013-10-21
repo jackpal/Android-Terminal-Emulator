@@ -55,6 +55,10 @@ class PaintRenderer extends BaseTextRenderer {
             backColor = TextStyle.ciCursor;
         }
 
+        boolean blink = (effect & TextStyle.fxBlink) != 0;
+        if (blink && backColor < 8) {
+            backColor += 8;
+        }
         mTextPaint.setColor(mPalette[backColor]);
 
         float left = x + lineOffset * mCharWidth;
@@ -63,7 +67,7 @@ class PaintRenderer extends BaseTextRenderer {
                 mTextPaint);
         boolean invisible = (effect & TextStyle.fxInvisible) != 0;
         if (!invisible) {
-            boolean bold = (effect & (TextStyle.fxBold | TextStyle.fxBlink)) != 0;
+            boolean bold = (effect & TextStyle.fxBold) != 0;
             boolean underline = (effect & TextStyle.fxUnderline) != 0;
             if (bold) {
                 mTextPaint.setFakeBoldText(true);
