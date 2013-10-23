@@ -17,13 +17,7 @@
 package jackpal.androidterm.emulatorview;
 
 import java.util.Arrays;
-
-import android.text.SpannableStringBuilder;
-import android.text.style.URLSpan;
-
 import android.graphics.Canvas;
-import android.text.style.URLSpan;
-import android.text.util.Linkify;
 
 /**
  * A TranscriptScreen is a screen that remembers data that's been scrolled. The
