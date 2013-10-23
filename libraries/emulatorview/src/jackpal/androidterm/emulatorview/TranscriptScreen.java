@@ -431,4 +431,10 @@ class TranscriptScreen implements Screen {
     		return null;
     	}
     }
+    
+    //TODO comments
+    public boolean getScriptLineWrap(int row)
+    {
+    	return mData.getLineWrap(row);
+    }
 }

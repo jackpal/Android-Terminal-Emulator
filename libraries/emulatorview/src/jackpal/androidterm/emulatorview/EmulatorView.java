@@ -236,40 +236,76 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private Hashtable<Integer,URLSpan[]> mLinkLayer = new Hashtable<Integer,URLSpan[]>();
     
     /**
-     * 
+     * TODO rewrite comments
      * Convert any URLs in the current row into a URLSpan,
      * and store that result in a hash table of URLSpan entries.
      * 
      * @param text The text of the current row to check for links
      * @param row The number of the current row
      */
-    private void createLinks(char[] text, int row)
+    private int createLinks(int row)
     {
+    	char [] result = mTranscriptScreen.getScriptLine(row);
+    	int lineCount = 1;
+    	
     	//Nothing to do if there's no text.
-    	if(text == null)
-    		return;
+    	if(result == null)
+    		return lineCount;
     	
-    	//re-index row to 0 if it is negative
-    	row -= mTopRow;
+    	SpannableStringBuilder textToLinkify = new SpannableStringBuilder(new String(result));
     	
-		SpannableStringBuilder textLine = new SpannableStringBuilder(new String(text));
-		Linkify.addLinks(textLine,Linkify.WEB_URLS);
-		URLSpan [] urls = textLine.getSpans(0, mColumns, URLSpan.class);
-		if(urls.length > 0)
-		{
-			URLSpan [] linkLayerRow = new URLSpan[mColumns];
-			Arrays.fill(linkLayerRow, null);
-			for(int i=0; i<urls.length; ++i)
-			{
-				URLSpan url = urls[i];
-				int spanStart = textLine.getSpanStart(url);
-				int spanEnd   = textLine.getSpanEnd(url);
-				Arrays.fill(linkLayerRow, spanStart, spanEnd, url);
-			}
-			mLinkLayer.put(row, linkLayerRow);
-		}
+    	boolean lineWrap = mTranscriptScreen.getScriptLineWrap(row);
+    	
+    	while(lineWrap)
+    	{
+    		result = mTranscriptScreen.getScriptLine(row + lineCount);
+    		lineWrap = mTranscriptScreen.getScriptLineWrap(row + lineCount);
+    		textToLinkify.append(new String(result));
+    		++lineCount;
+    	}
+    	
+    	Linkify.addLinks(textToLinkify, Linkify.WEB_URLS);
+		URLSpan [] urls = textToLinkify.getSpans(0, mColumns, URLSpan.class);
+    	if(urls.length > 0)
+    	{
+        	//re-index row to 0 if it is negative
+        	int screenRow = row - mTopRow;
+        	
+        	//Create and initialize set of links
+        	URLSpan [][] linkRows = new URLSpan[lineCount][];
+        	for(int i=0; i<lineCount; ++i)
+        	{
+        		linkRows[i] = new URLSpan[mColumns];
+        		Arrays.fill(linkRows[i], null);
+        	}
+        	
+        	//For each span:
+        	for(int urlNum=0; urlNum<urls.length; ++urlNum)
+        	{
+        		URLSpan url = urls[urlNum];
+        		int spanStart = textToLinkify.getSpanStart(url);
+        		int spanEnd = textToLinkify.getSpanEnd(url);
+        		
+        		int startRow = spanStart / mColumns;
+        		int startCol = spanStart % mColumns;
+        		int endRow   = spanEnd   / mColumns;
+        		int endCol   = spanEnd   % mColumns;
+        		
+        		for(int i=startRow; i <= endRow; ++i)
+        		{
+        			int runStart = (i == startRow) ? startCol: 0;
+        			int runEnd = (i == endRow) ? endCol : mColumns;
+        			
+        			Arrays.fill(linkRows[i], runStart, runEnd, url);	
+        		}
+        	}
+        	
+        	for(int i=0; i<lineCount; ++i)
+        		mLinkLayer.put(screenRow + i, linkRows[i]);
+    	}
+    	return lineCount;
     }
-    
+
     /**
      * Sends mouse wheel codes to terminal in response to fling.
      */
@@ -1381,6 +1417,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             effectiveImeBuffer += String.valueOf((char) combiningAccent);
         }
         int cursorStyle = mKeyListener.getCursorMode();
+        
+        int linkLinesToSkip = 0;
+        
         for (int i = mTopRow; i < endLine; i++) {
             int cursorX = -1;
             if (i == cy && cursorVisible) {
@@ -1401,7 +1440,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2, effectiveImeBuffer, cursorStyle);
             y += mCharacterHeight;
             //create links for the line being drawn
-            createLinks(mTranscriptScreen.getScriptLine(i), i);
+            if(linkLinesToSkip == 0)
+            	linkLinesToSkip = createLinks(i);
+            
+            --linkLinesToSkip;
         }
     }
 
