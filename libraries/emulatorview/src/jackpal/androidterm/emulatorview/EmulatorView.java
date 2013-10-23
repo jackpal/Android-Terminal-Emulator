@@ -65,11 +65,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private final static String TAG = "EmulatorView";
     private final static boolean LOG_KEY_EVENTS = false;
     private final static boolean LOG_IME = false;
-
-    public void onDetachedFromWindow()
-    {
-    	super.onDetachedFromWindow();
-    }
     
     /**
      * We defer some initialization until we have been layed out in the view

@@ -432,5 +432,9 @@ class TranscriptScreen implements Screen {
     	{
     		return null;
     	}
+    	catch (NullPointerException e)
+    	{
+    		return null;
+    	}
     }
 }
