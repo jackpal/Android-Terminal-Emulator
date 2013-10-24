@@ -432,7 +432,11 @@ class TranscriptScreen implements Screen {
     	}
     }
     
-    //TODO comments
+    /**
+     * Get the line wrap status of the row provided.
+     * @param row The row to check for line-wrap status
+     * @return The line wrap status of the row provided
+     */
     public boolean getScriptLineWrap(int row)
     {
     	return mData.getLineWrap(row);

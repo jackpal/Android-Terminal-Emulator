@@ -236,12 +236,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private Hashtable<Integer,URLSpan[]> mLinkLayer = new Hashtable<Integer,URLSpan[]>();
     
     /**
-     * TODO rewrite comments
      * Convert any URLs in the current row into a URLSpan,
      * and store that result in a hash table of URLSpan entries.
      * 
-     * @param text The text of the current row to check for links
-     * @param row The number of the current row
+     * @param row The number of the row to check for links
+     * @return The number of lines in a multi-line-wrap set of links
      */
     private int createLinks(int row)
     {
@@ -256,16 +255,20 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     	
     	boolean lineWrap = mTranscriptScreen.getScriptLineWrap(row);
     	
+    	//While the current line has a wrap
     	while(lineWrap)
     	{
+    		//Get next line
     		result = mTranscriptScreen.getScriptLine(row + lineCount);
     		
     		//If next line is blank, don't try and append
     		if(result == null)
     			break;
     		
-    		lineWrap = mTranscriptScreen.getScriptLineWrap(row + lineCount);
     		textToLinkify.append(new String(result));
+    		
+    		//Check if line after next is wrapped
+    		lineWrap = mTranscriptScreen.getScriptLineWrap(row + lineCount);
     		++lineCount;
     	}
     	
@@ -284,18 +287,20 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         		Arrays.fill(linkRows[i], null);
         	}
         	
-        	//For each span:
+        	//For each URL:
         	for(int urlNum=0; urlNum<urls.length; ++urlNum)
         	{
         		URLSpan url = urls[urlNum];
         		int spanStart = textToLinkify.getSpanStart(url);
         		int spanEnd = textToLinkify.getSpanEnd(url) - 1;
         		
+        		//Build accurate indices for multi-line links
         		int startRow = spanStart / mColumns;
         		int startCol = spanStart % mColumns;
         		int endRow   = spanEnd   / mColumns;
         		int endCol   = spanEnd   % mColumns;
         		
+        		//Fill linkRows with the URL where appropriate
         		for(int i=startRow; i <= endRow; ++i)
         		{
         			int runStart = (i == startRow) ? startCol: 0;
@@ -305,6 +310,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         		}
         	}
         	
+        	//Add links into the link layer for later retrieval
         	for(int i=0; i<lineCount; ++i)
         		mLinkLayer.put(screenRow + i, linkRows[i]);
     	}
@@ -1423,7 +1429,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
         int cursorStyle = mKeyListener.getCursorMode();
         
-        int linkLinesToSkip = 0;
+        int linkLinesToSkip = 0; //for multi-line links
         
         for (int i = mTopRow; i < endLine; i++) {
             int cursorX = -1;
@@ -1444,10 +1450,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             }
             mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2, effectiveImeBuffer, cursorStyle);
             y += mCharacterHeight;
-            //create links for the line being drawn
+            //if no lines to skip, create links for the line being drawn
             if(linkLinesToSkip == 0)
             	linkLinesToSkip = createLinks(i);
             
+            //createLinks always returns at least 1
             --linkLinesToSkip;
         }
     }
@@ -1583,8 +1590,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     	int row = (int)Math.floor(y_pos * mRows);
     	int col = (int)Math.floor(x_pos * mColumns);
 
+    	//Grab row from link layer
     	URLSpan [] linkRow = mLinkLayer.get(row);
     	URLSpan link;
+    	
+    	//If row exists, and link exists at column, return it
     	if(linkRow != null && (link = linkRow[col]) != null)
     		return link.getURL();
     	else
