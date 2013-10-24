@@ -270,7 +270,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     	}
     	
     	Linkify.addLinks(textToLinkify, Linkify.WEB_URLS);
-		URLSpan [] urls = textToLinkify.getSpans(0, mColumns, URLSpan.class);
+		URLSpan [] urls = textToLinkify.getSpans(0, textToLinkify.length(), URLSpan.class);
     	if(urls.length > 0)
     	{
         	//re-index row to 0 if it is negative
