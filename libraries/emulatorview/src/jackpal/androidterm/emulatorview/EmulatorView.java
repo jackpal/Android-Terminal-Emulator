@@ -259,6 +259,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     	while(lineWrap)
     	{
     		result = mTranscriptScreen.getScriptLine(row + lineCount);
+    		
+    		//If next line is blank, don't try and append
+    		if(result == null)
+    			break;
+    		
     		lineWrap = mTranscriptScreen.getScriptLineWrap(row + lineCount);
     		textToLinkify.append(new String(result));
     		++lineCount;
