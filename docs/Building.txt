@@ -5,15 +5,21 @@ To keep from typing "Android Terminal Emulator" over and over again, this
 document will use the abbreviation "ATE" to stand for "Android Terminal
 Emulator".
 
-ATE is built using the Android SDK r22 or newer and the Android NDK r8e or
-newer. You can download them from:
+ATE is built using:
+
+   Android SDK ADT Bundle 20131030 or newer
+   Android NDK r9b or newer
+
+You can download them from:
 
 http://developer.android.com/sdk
 
-If you want to build, edit, or debug with Eclipse you will also need to
-install Eclipse 3.4 or newer, Java version, available from:
+Note 1: Recent (2013+) versions of the Android ADT SDK Bundle include an
+Android-specific version of Eclipse.
 
-http://eclipse.org
+Note 2: Android Terminal Emulator can not currently be built using the new
+Android Studio IDE. Android Studio does not currently support projects that
+use the NDK.
 
 After you install the SDK and the NDK, please build some of the samples that
 come with the SDK and NDK in order to get a feel for using the SDK and the NDK.
