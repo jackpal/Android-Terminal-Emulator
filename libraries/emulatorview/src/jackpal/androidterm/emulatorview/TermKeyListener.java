@@ -558,6 +558,10 @@ class TermKeyListener {
                 code = mKeyCodes[keyCode];
             }
             if (code != null) {
+                if (EmulatorDebug.LOG_CHARACTERS_FLAG) {
+                    byte[] bytes = code.getBytes();
+                    Log.d(EmulatorDebug.LOG_TAG, "Out: '" + EmulatorDebug.bytesToString(bytes, 0, bytes.length) + "'");
+                }
                 mTermSession.write(code);
                 return true;
             }
