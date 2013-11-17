@@ -260,7 +260,7 @@ public class Term extends Activity implements UpdateCallback {
          * Keyboard shortcuts (tab management, paste)
          */
         private boolean keyboardShortcuts(int keyCode, KeyEvent event) {
-            if (event.getAction() != KeyEvent.ACTION_UP) {
+            if (event.getAction() != KeyEvent.ACTION_DOWN) {
                 return false;
             }
             if (!mUseKeyboardShortcuts) {
