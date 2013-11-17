@@ -143,7 +143,13 @@
                 android:summaryOn="@string/alt_sends_esc_summary_on"
                 android:summaryOff="@string/alt_sends_esc_summary_off" />
 
-    </PreferenceCategory>
+        <CheckBoxPreference android:title="@string/title_use_keyboard_shortcuts"
+                android:key="use_keyboard_shortcuts"
+                android:defaultValue="@bool/pref_use_keyboard_shortcuts_default"
+                android:summaryOn="@string/use_keyboard_shortcuts_summary_on"
+                android:summaryOff="@string/use_keyboard_shortcuts_summary_off" />
+
+        </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/shell_preferences">

@@ -159,4 +159,8 @@
   <string name="title_mouse_tracking_preference">Send mouse events</string>
   <string name="summary_mouse_tracking_preference">Whether tap and scroll events should be sent as escape sequences to the terminal.</string>
 
+  <string name="title_use_keyboard_shortcuts">Use Keyboard Shortcuts</string>
+  <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: cycle window, Ctrl-Shift-N: new window, Ctrl-Shift-V: paste.</string>
+  <string name="use_keyboard_shortcuts_summary_off">Keyboard shortcuts disabled.</string>
+
 </resources>
