@@ -124,5 +124,6 @@
         <item>screen</item>
         <item>linux</item>
         <item>screen-256color</item>
+        <item>xterm</item>
     </string-array>
 </resources>

@@ -56,6 +56,11 @@ import android.os.Message;
  * and closes the attached I/O streams.
  */
 public class TermSession {
+    public void setKeyListener(TermKeyListener l) {
+        mKeyListener = l;
+    }
+    private TermKeyListener mKeyListener;
+
     private ColorScheme mColorScheme = BaseTextRenderer.defaultColorScheme;
     private UpdateCallback mNotify;
 
@@ -218,6 +223,7 @@ public class TermSession {
         mTranscriptScreen = new TranscriptScreen(columns, TRANSCRIPT_ROWS, rows, mColorScheme);
         mEmulator = new TerminalEmulator(this, mTranscriptScreen, columns, rows, mColorScheme);
         mEmulator.setDefaultUTF8Mode(mDefaultUTF8Mode);
+        mEmulator.setKeyListener(mKeyListener);
 
         mIsRunning = true;
         mReaderThread.start();
@@ -510,7 +516,6 @@ public class TermSession {
             return;
         }
         mEmulator.setColorScheme(scheme);
-        mTranscriptScreen.setColorScheme(scheme);
     }
 
     /**
@@ -582,6 +587,7 @@ public class TermSession {
      */
     public void finish() {
         mIsRunning = false;
+        mEmulator.finish();
         if (mTranscriptScreen != null) {
             mTranscriptScreen.finish();
         }

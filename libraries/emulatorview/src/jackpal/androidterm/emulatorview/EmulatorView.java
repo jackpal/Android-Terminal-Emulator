@@ -76,11 +76,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private TermSession mTermSession;
 
     /**
-     * Our transcript. Contains the screen and the transcript.
-     */
-    private TranscriptScreen mTranscriptScreen;
-
-    /**
      * Total width of each character, in pixels
      */
     private float mCharacterWidth;
@@ -120,7 +115,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private boolean mUseCookedIme;
 
     /**
-     * Our terminal emulator. We use this to get the current cursor position.
+     * Our terminal emulator.
      */
     private TerminalEmulator mEmulator;
 
@@ -360,6 +355,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         mTermSession = session;
 
         mKeyListener = new TermKeyListener(session);
+        session.setKeyListener(mKeyListener);
 
         // Do init now if it was deferred until a TermSession was attached
         if (mDeferInit) {
@@ -470,7 +466,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 if (result < TermKeyListener.KEYCODE_OFFSET) {
                     mTermSession.write(result);
                 } else {
-                    mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, getKeypadApplicationMode());
+                    mKeyListener.handleKeyCode(result - TermKeyListener.KEYCODE_OFFSET, null, getKeypadApplicationMode());
                 }
                 clearSpecialKeyStatus();
             }
@@ -751,7 +747,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     @Override
     protected int computeVerticalScrollRange() {
-        return mTranscriptScreen.getActiveRows();
+        return mEmulator.getScreen().getActiveRows();
     }
 
     /**
@@ -771,7 +767,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     @Override
     protected int computeVerticalScrollOffset() {
-        return mTranscriptScreen.getActiveRows() + mTopRow - mRows;
+        return mEmulator.getScreen().getActiveRows() + mTopRow - mRows;
     }
 
     /**
@@ -782,7 +778,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         updateText();
 
-        mTranscriptScreen = session.getTranscriptScreen();
         mEmulator = session.getEmulator();
         session.setUpdateCallback(mUpdateNotify);
 
@@ -825,7 +820,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public void page(int delta) {
         mTopRow =
-                Math.min(0, Math.max(-(mTranscriptScreen
+                Math.min(0, Math.max(-(mEmulator.getScreen()
                         .getActiveTranscriptRows()), mTopRow + mRows * delta));
         invalidate();
     }
@@ -954,7 +949,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         }
 
         mTopRow =
-            Math.min(0, Math.max(-(mTranscriptScreen
+            Math.min(0, Math.max(-(mEmulator.getScreen()
                     .getActiveTranscriptRows()), mTopRow + deltaRows));
         invalidate();
 
@@ -973,7 +968,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public boolean onJumpTapUp(MotionEvent e1, MotionEvent e2) {
         // Scroll to top
-        mTopRow = -mTranscriptScreen.getActiveTranscriptRows();
+        mTopRow = -mEmulator.getScreen().getActiveTranscriptRows();
         invalidate();
         return true;
     }
@@ -992,7 +987,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             mScroller.fling(0, mTopRow,
                     -(int) (velocityX * SCALE), -(int) (velocityY * SCALE),
                     0, 0,
-                    -mTranscriptScreen.getActiveTranscriptRows(), 0);
+                    -mEmulator.getScreen().getActiveTranscriptRows(), 0);
             // onScroll(e1, e2, 0.1f * velocityX, -0.1f * velocityY);
             post(mFlingRunner);
         }
@@ -1350,7 +1345,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                     selx2 = mColumns;
                 }
             }
-            mTranscriptScreen.drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2, effectiveImeBuffer, cursorStyle);
+            mEmulator.getScreen().drawText(i, canvas, x, y, mTextRenderer, cursorX, selx1, selx2, effectiveImeBuffer, cursorStyle);
             y += mCharacterHeight;
         }
     }
