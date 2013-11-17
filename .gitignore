@@ -1,5 +1,6 @@
 .classpath
 .project
+.settings/
 bin/
 build.xml
 examples/
