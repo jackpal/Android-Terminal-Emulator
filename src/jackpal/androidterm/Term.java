@@ -1023,6 +1023,9 @@ public class Term extends Activity implements UpdateCallback {
     }
 
     private void doPaste() {
+        if (!canPaste()) {
+            return;
+        }
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(getApplicationContext());
         CharSequence paste = clip.getText();
