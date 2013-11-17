@@ -66,7 +66,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private final static String TAG = "EmulatorView";
     private final static boolean LOG_KEY_EVENTS = false;
     private final static boolean LOG_IME = false;
-    
+
     /**
      * We defer some initialization until we have been layed out in the view
      * hierarchy. The boolean tracks when we know what our size is.
@@ -159,7 +159,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mFnKeyCode;
     private boolean mIsControlKeySent = false;
     private boolean mIsFnKeySent = false;
-    
+
     private String mTermType;
 
     private boolean mMouseTracking;
@@ -224,93 +224,94 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
         }
     };
-    
+
     /**
-     *  
+     *
      * A hash table of underlying URLs to implement clickable links.
      */
     private Hashtable<Integer,URLSpan[]> mLinkLayer = new Hashtable<Integer,URLSpan[]>();
-    
+
     /**
      * Convert any URLs in the current row into a URLSpan,
      * and store that result in a hash table of URLSpan entries.
-     * 
+     *
      * @param row The number of the row to check for links
      * @return The number of lines in a multi-line-wrap set of links
      */
     private int createLinks(int row)
     {
-    	char [] result = mTranscriptScreen.getScriptLine(row);
-    	int lineCount = 1;
-    	
-    	//Nothing to do if there's no text.
-    	if(result == null)
-    		return lineCount;
-    	
-    	SpannableStringBuilder textToLinkify = new SpannableStringBuilder(new String(result));
-    	
-    	boolean lineWrap = mTranscriptScreen.getScriptLineWrap(row);
-    	
-    	//While the current line has a wrap
-    	while(lineWrap)
-    	{
-    		//Get next line
-    		result = mTranscriptScreen.getScriptLine(row + lineCount);
-    		
-    		//If next line is blank, don't try and append
-    		if(result == null)
-    			break;
-    		
-    		textToLinkify.append(new String(result));
-    		
-    		//Check if line after next is wrapped
-    		lineWrap = mTranscriptScreen.getScriptLineWrap(row + lineCount);
-    		++lineCount;
-    	}
-    	
-    	Linkify.addLinks(textToLinkify, Linkify.WEB_URLS);
-		URLSpan [] urls = textToLinkify.getSpans(0, textToLinkify.length(), URLSpan.class);
-    	if(urls.length > 0)
-    	{
-        	//re-index row to 0 if it is negative
-        	int screenRow = row - mTopRow;
-        	
-        	//Create and initialize set of links
-        	URLSpan [][] linkRows = new URLSpan[lineCount][];
-        	for(int i=0; i<lineCount; ++i)
-        	{
-        		linkRows[i] = new URLSpan[mColumns];
-        		Arrays.fill(linkRows[i], null);
-        	}
-        	
-        	//For each URL:
-        	for(int urlNum=0; urlNum<urls.length; ++urlNum)
-        	{
-        		URLSpan url = urls[urlNum];
-        		int spanStart = textToLinkify.getSpanStart(url);
-        		int spanEnd = textToLinkify.getSpanEnd(url) - 1;
-        		
-        		//Build accurate indices for multi-line links
-        		int startRow = spanStart / mColumns;
-        		int startCol = spanStart % mColumns;
-        		int endRow   = spanEnd   / mColumns;
-        		int endCol   = spanEnd   % mColumns;
-        		
-        		//Fill linkRows with the URL where appropriate
-        		for(int i=startRow; i <= endRow; ++i)
-        		{
-        			int runStart = (i == startRow) ? startCol: 0;
-        			int runEnd = (i == endRow) ? endCol : mColumns;
-        			
-        			Arrays.fill(linkRows[i], runStart, runEnd, url);	
-        		}
-        	}
-        	
-        	//Add links into the link layer for later retrieval
-        	for(int i=0; i<lineCount; ++i)
-        		mLinkLayer.put(screenRow + i, linkRows[i]);
-    	}
-    	return lineCount;
+        TranscriptScreen transcriptScreen = mEmulator.getScreen();
+        char [] result = transcriptScreen.getScriptLine(row);
+        int lineCount = 1;
+
+        //Nothing to do if there's no text.
+        if(result == null)
+            return lineCount;
+
+        SpannableStringBuilder textToLinkify = new SpannableStringBuilder(new String(result));
+
+        boolean lineWrap = transcriptScreen.getScriptLineWrap(row);
+
+        //While the current line has a wrap
+        while (lineWrap)
+        {
+            //Get next line
+            result = transcriptScreen.getScriptLine(row + lineCount);
+
+            //If next line is blank, don't try and append
+            if(result == null)
+                break;
+
+            textToLinkify.append(new String(result));
+
+            //Check if line after next is wrapped
+            lineWrap = transcriptScreen.getScriptLineWrap(row + lineCount);
+            ++lineCount;
+        }
+
+        Linkify.addLinks(textToLinkify, Linkify.WEB_URLS);
+        URLSpan [] urls = textToLinkify.getSpans(0, textToLinkify.length(), URLSpan.class);
+        if(urls.length > 0)
+        {
+            //re-index row to 0 if it is negative
+            int screenRow = row - mTopRow;
+
+            //Create and initialize set of links
+            URLSpan [][] linkRows = new URLSpan[lineCount][];
+            for(int i=0; i<lineCount; ++i)
+            {
+                linkRows[i] = new URLSpan[mColumns];
+                Arrays.fill(linkRows[i], null);
+            }
+
+            //For each URL:
+            for(int urlNum=0; urlNum<urls.length; ++urlNum)
+            {
+                URLSpan url = urls[urlNum];
+                int spanStart = textToLinkify.getSpanStart(url);
+                int spanEnd = textToLinkify.getSpanEnd(url) - 1;
+
+                //Build accurate indices for multi-line links
+                int startRow = spanStart / mColumns;
+                int startCol = spanStart % mColumns;
+                int endRow   = spanEnd   / mColumns;
+                int endCol   = spanEnd   % mColumns;
+
+                //Fill linkRows with the URL where appropriate
+                for(int i=startRow; i <= endRow; ++i)
+                {
+                    int runStart = (i == startRow) ? startCol: 0;
+                    int runEnd = (i == endRow) ? endCol : mColumns;
+
+                    Arrays.fill(linkRows[i], runStart, runEnd, url);
+                }
+            }
+
+            //Add links into the link layer for later retrieval
+            for(int i=0; i<lineCount; ++i)
+                mLinkLayer.put(screenRow + i, linkRows[i]);
+        }
+        return lineCount;
     }
 
     /**
@@ -1364,7 +1365,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         // Reset our paging:
         mTopRow = 0;
         mLeftColumn = 0;
- 
+
         invalidate();
     }
 
@@ -1375,7 +1376,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      *              view's size has not changed.
      */
     public void updateSize(boolean force) {
-    	//Need to clear saved links on each display refresh
+        //Need to clear saved links on each display refresh
         mLinkLayer.clear();
         if (mKnownSize) {
             int w = getWidth();
@@ -1424,9 +1425,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             effectiveImeBuffer += String.valueOf((char) combiningAccent);
         }
         int cursorStyle = mKeyListener.getCursorMode();
-        
+
         int linkLinesToSkip = 0; //for multi-line links
-        
+
         for (int i = mTopRow; i < endLine; i++) {
             int cursorX = -1;
             if (i == cy && cursorVisible) {
@@ -1448,8 +1449,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             y += mCharacterHeight;
             //if no lines to skip, create links for the line being drawn
             if(linkLinesToSkip == 0)
-            	linkLinesToSkip = createLinks(i);
-            
+                linkLinesToSkip = createLinks(i);
+
             //createLinks always returns at least 1
             --linkLinesToSkip;
         }
@@ -1559,10 +1560,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public void setMouseTracking(boolean flag) {
         mMouseTracking = flag;
     }
-    
-    
+
+
     /**
-     * 
+     *
      * Get the URL at the specified screen coordinates and return its string value
      * @param x The x coordinate being queried (from 0 to screen width)
      * @param y The y coordinate being queried (from 0 to screen height)
@@ -1570,30 +1571,30 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     public String getURLat(float x, float y)
     {
-    	float w = getWidth();
-    	float h = getHeight();
-    	
-    	//Check for division by zero
-    	//If width or height is zero, there are probably no links around, so return null.
-    	if(w == 0 || h == 0)
-    		return null;
-    	
-    	//Get fraction of total screen
-    	float x_pos = x / w;
-    	float y_pos = y / h;
-    	
-    	//Convert to integer row/column index
-    	int row = (int)Math.floor(y_pos * mRows);
-    	int col = (int)Math.floor(x_pos * mColumns);
+        float w = getWidth();
+        float h = getHeight();
 
-    	//Grab row from link layer
-    	URLSpan [] linkRow = mLinkLayer.get(row);
-    	URLSpan link;
-    	
-    	//If row exists, and link exists at column, return it
-    	if(linkRow != null && (link = linkRow[col]) != null)
-    		return link.getURL();
-    	else
-    		return null;
+        //Check for division by zero
+        //If width or height is zero, there are probably no links around, so return null.
+        if(w == 0 || h == 0)
+            return null;
+
+        //Get fraction of total screen
+        float x_pos = x / w;
+        float y_pos = y / h;
+
+        //Convert to integer row/column index
+        int row = (int)Math.floor(y_pos * mRows);
+        int col = (int)Math.floor(x_pos * mColumns);
+
+        //Grab row from link layer
+        URLSpan [] linkRow = mLinkLayer.get(row);
+        URLSpan link;
+
+        //If row exists, and link exists at column, return it
+        if(linkRow != null && (link = linkRow[col]) != null)
+            return link.getURL();
+        else
+            return null;
     }
 }
