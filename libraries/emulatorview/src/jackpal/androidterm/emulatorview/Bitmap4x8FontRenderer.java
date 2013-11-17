@@ -74,10 +74,15 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
             backColor = temp;
         }
 
-        boolean bold = ((effect & (TextStyle.fxBold | TextStyle.fxBlink)) != 0);
+        boolean bold = ((effect & TextStyle.fxBold) != 0);
         if (bold && foreColor < 8) {
             // In 16-color mode, bold also implies bright foreground colors
             foreColor += 8;
+        }
+        boolean blink = ((effect & TextStyle.fxBlink) != 0);
+        if (blink && backColor < 8) {
+            // In 16-color mode, blink also implies bright background colors
+            backColor += 8;
         }
 
         if (cursor) {
