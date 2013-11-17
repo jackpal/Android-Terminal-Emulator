@@ -19,6 +19,7 @@ import static jackpal.androidterm.emulatorview.compat.KeycodeConstants.*;
  */
 class TermKeyListener {
     private final static String TAG = "TermKeyListener";
+    private static final boolean LOG_MISC = false;
     private static final boolean LOG_KEYS = false;
     private static final boolean LOG_COMBINING_ACCENT = false;
 
@@ -179,7 +180,9 @@ class TermKeyListener {
     }
 
     public void setCursorKeysApplicationMode(boolean val) {
-        Log.d(EmulatorDebug.LOG_TAG, "CursorKeysApplicationMode=" + val);
+        if (LOG_MISC) {
+            Log.d(EmulatorDebug.LOG_TAG, "CursorKeysApplicationMode=" + val);
+        }
         if (val) {
             mKeyCodes[KEYCODE_NUMPAD_8] = mKeyCodes[KEYCODE_DPAD_UP] = "\033OA";
             mKeyCodes[KEYCODE_NUMPAD_2] = mKeyCodes[KEYCODE_DPAD_DOWN] = "\033OB";
