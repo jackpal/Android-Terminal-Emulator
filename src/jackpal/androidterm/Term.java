@@ -33,6 +33,7 @@ import jackpal.androidterm.util.TermSettings;
 import java.io.UnsupportedEncodingException;
 import java.text.Collator;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -46,6 +47,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -218,8 +221,13 @@ public class Term extends Activity implements UpdateCallback {
         public boolean onSingleTapUp(MotionEvent e) {
             // Let the EmulatorView handle taps if mouse tracking is active
             if (view.isMouseTrackingActive()) return false;
-
-            doUIToggle((int) e.getX(), (int) e.getY(), view.getVisibleWidth(), view.getVisibleHeight());
+            
+            //Check for link at tap location
+        	String link = view.getURLat(e.getX(), e.getY());
+            if(link != null)
+            	execURL(link);
+            else
+            	doUIToggle((int) e.getX(), (int) e.getY(), view.getVisibleWidth(), view.getVisibleHeight());
             return true;
         }
 
@@ -1140,5 +1148,20 @@ public class Term extends Activity implements UpdateCallback {
             break;
         }
         getCurrentEmulatorView().requestFocus();
+    }
+    
+    /**
+     * 
+     * Send a URL up to Android to be handled by a browser.
+     * @param link The URL to be opened.
+     */
+    private void execURL(String link)
+    {
+    	Uri webLink = Uri.parse(link);
+    	Intent openLink = new Intent(Intent.ACTION_VIEW, webLink);
+    	PackageManager pm = getPackageManager();
+    	List<ResolveInfo> handlers = pm.queryIntentActivities(openLink, 0);
+    	if(handlers.size() > 0)
+    		startActivity(openLink);
     }
 }

@@ -17,7 +17,6 @@
 package jackpal.androidterm.emulatorview;
 
 import java.util.Arrays;
-
 import android.graphics.Canvas;
 
 /**
@@ -44,7 +43,7 @@ class TranscriptScreen implements Screen {
     private int mScreenRows;
 
     private UnicodeTranscript mData;
-
+    
     /**
      * Create a transcript screen.
      *
@@ -409,5 +408,37 @@ class TranscriptScreen implements Screen {
 
     public void resize(int columns, int rows, int style) {
         init(columns, mTotalRows, rows, style);
+    }
+    
+    /**
+     * 
+     * Return the UnicodeTranscript line at this row index.
+     * @param row The row index to be queried
+     * @return The line of text at this row index
+     */
+    public char[] getScriptLine(int row)
+    {
+    	try
+    	{
+    		return mData.getLine(row);
+    	}
+    	catch (IllegalArgumentException e)
+    	{
+    		return null;
+    	}
+    	catch (NullPointerException e)
+    	{
+    		return null;
+    	}
+    }
+    
+    /**
+     * Get the line wrap status of the row provided.
+     * @param row The row to check for line-wrap status
+     * @return The line wrap status of the row provided
+     */
+    public boolean getScriptLineWrap(int row)
+    {
+    	return mData.getLineWrap(row);
     }
 }

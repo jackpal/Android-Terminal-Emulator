@@ -1791,6 +1791,10 @@ class TerminalEmulator {
 
         if (autoWrap) {
             mAboutToAutoWrap = (mCursorCol == mColumns - 1);
+            
+            //Force line-wrap flag to trigger even for lines being typed
+            if(mAboutToAutoWrap)
+            	mScreen.setLineWrap(mCursorRow);
         }
 
         mCursorCol = Math.min(mCursorCol + width, mColumns - 1);
