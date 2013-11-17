@@ -1284,6 +1284,28 @@ class TerminalEmulator {
             selectGraphicRendition();
             break;
 
+        case 'n': // Esc [ Pn n - ECMA-48 Status Report Commands
+            //sendDeviceAttributes()
+            switch (getArg0(0)) {
+            case 5: // Device status report (DSR):
+                    // Answer is ESC [ 0 n (Terminal OK).
+                byte[] dsr = { (byte) 27, (byte) '[', (byte) '0', (byte) 'n' };
+                mSession.write(dsr, 0, dsr.length);
+                break;
+
+            case 6: // Cursor position report (CPR):
+                    // Answer is ESC [ y ; x R, where x,y is
+                    // the cursor location.
+                byte[] cpr = String.format("\033[%d;%dR",
+                                 mCursorRow + 1, mCursorCol + 1).getBytes();
+                mSession.write(cpr, 0, cpr.length);
+                break;
+
+            default:
+                break;
+            }
+            break;
+
         case 'r': // Esc [ Pn ; Pn r - set top and bottom margins
         {
             // The top margin defaults to 1, the bottom margin
