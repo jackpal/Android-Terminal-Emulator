@@ -79,5 +79,5 @@ https://github.com/jackpal/Android-Terminal-Emulator/wiki/Recent-Updates
 Github serves pages out of branch gh-pages , directory downloads/Term.apk
 Public URL is http://jackpal.github.com/Android-Terminal-Emulator/downloads/Term.apk
 
-
+Also update the version number in index.html
 

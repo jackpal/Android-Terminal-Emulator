@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="application_terminal">Эмулятор Терминала</string>
+    <string name="application_terminal">Терминал</string>
     <string name="preferences">Настройки</string>
     <string name="new_window">Новое окно</string>
     <string name="close_window">Закрыть окно</string>
@@ -8,10 +8,10 @@
     <string name="prev_window">Предыдущее окно</string>
     <string name="next_window">Следующее окно</string>
     <string name="reset">Сбросить терминал</string>
-    <string name="send_email">Отправить Email</string>
-    <string name="special_keys">Специальные клавиши</string>
+    <string name="send_email">Отправить по Email</string>
+    <string name="special_keys">Сочетания клавиш</string>
     <string name="toggle_soft_keyboard">Экранная клавиатура</string>
-    <string name="reset_toast_notification">Терминальное состояние этого окна было сброшено.</string>
+    <string name="reset_toast_notification">Терминал перезапущен.</string>
     <string name="enable_wakelock">Включить WakeLock</string>
     <string name="disable_wakelock">Выключить WakeLock</string>
     <string name="enable_wifilock">Включить WifiLock</string>
@@ -20,97 +20,104 @@
     <string name="select_text">Выбрать текст</string>
     <string name="copy_all">Копировать всё</string>
     <string name="paste">Вставить</string>
-    <string name="send_control_key">Отправить кнопкой Control</string>
-    <string name="send_fn_key">Отправить кнопкой Fn</string>
+    <string name="send_control_key">Передать кнопку Control</string>
+    <string name="send_fn_key">Передать кнопку Fn</string>
     <string name="window_title">Окно %1$d</string>
-    <string name="service_notify_text">Терминальный сеанс запущен</string>
+    <string name="service_notify_text">Запущен терминальный сеанс</string>
     <string name="process_exit_message">Терминальный сеанс завершен</string>
     <string name="screen_preferences">Экран</string>
-    <string name="title_statusbar_preference">Статус бар</string>
-    <string name="summary_statusbar_preference">Показать/Скрыть статус бар.</string>
-    <string name="dialog_title_statusbar_preference">Статус бар</string>
-    <string name="title_actionbar_preference">Бар действия</string>
-    <string name="summary_actionbar_preference">Выберите поведение бара действия (Android 3.0 и выше).</string>
-    <string name="dialog_title_actionbar_preference">Поведение бара действия</string>
+    <string name="title_statusbar_preference">Строка состояния</string>
+    <string name="summary_statusbar_preference">Показывать или скрывать строку состояния</string>
+    <string name="dialog_title_statusbar_preference">Строка состояния</string>
+    <string name="title_actionbar_preference">Панель действий</string>
+    <string name="summary_actionbar_preference">Настройка поведения панели действий (Android 3.0 и выше).</string>
+    <string name="dialog_title_actionbar_preference">Поведение панели действий</string>
+    <string name="title_orientation_preference">Поворот экрана</string>
+    <string name="summary_orientation_preference">Выбор ориентации экрана</string>
+    <string name="dialog_title_orientation_preference">Поворот экрана</string>
     <string name="text_preferences">Текст</string>
     <string name="title_utf8_by_default_preference">По умолчанию UTF-8</string>
     <string name="summary_utf8_by_default_preference">Применить режим UTF-8 по умолчанию.</string>
     <string name="title_fontsize_preference">Размер шрифта</string>
-    <string name="summary_fontsize_preference">Выберите размер шрифта.</string>
+    <string name="summary_fontsize_preference">Выбор размера шрифта</string>
     <string name="dialog_title_fontsize_preference">Размер шрифта</string>
-    <string name="title_color_preference">Цвета</string>
+    <string name="title_color_preference">Цветовая схема</string>
     <string name="summary_color_preference">Выберите цвет текста.</string>
     <string name="dialog_title_color_preference">Цвет текста</string>
     <string name="keyboard_preferences">Клавиатура</string>
-    <string name="title_backaction_preference">Поведение кнопки Назад</string>
-    <string name="summary_backaction_preference">Выбор деиствия при нажатии кнопки назад.</string>
-    <string name="dialog_title_backaction_preference">Поведение кнопки Назад</string>
+    <string name="title_backaction_preference">Поведение кнопки «Назад»</string>
+    <string name="summary_backaction_preference">Выбор действия при нажатии кнопки «Назад».</string>
+    <string name="dialog_title_backaction_preference">Поведение кнопки «Назад»</string>
     <string name="title_controlkey_preference">Клавиша Control</string>
-    <string name="summary_controlkey_preference">Выберите что будет клавишей Control.</string>
+    <string name="summary_controlkey_preference">Выбор аналога клавиши Control.</string>
     <string name="dialog_title_controlkey_preference">Клавиша Control</string>
     <string name="title_fnkey_preference">Клавиша Fn</string>
-    <string name="summary_fnkey_preference">Выберите что будет клавишей Fn.</string>
+    <string name="summary_fnkey_preference">Выбор аналога клавиши Fn.</string>
     <string name="dialog_title_fnkey_preference">Клавиша Fn</string>
     <string name="title_ime_preference">Способ ввода</string>
     <string name="summary_ime_preference">Выберите способ ввода для экранной клавиатуры.</string>
     <string name="dialog_title_ime_preference">Способ ввода</string>
     <string name="shell_preferences">Командная оболочка</string>
-    <string name="title_shell_preference">Командная строка</string>
+    <string name="title_shell_preference">Обработчик команд</string>
     <string name="summary_shell_preference">Укажите строку обращения к командной оболочке.</string>
     <string name="dialog_title_shell_preference">Оболочка</string>
     <string name="title_initialcommand_preference">Команды запуска</string>
     <string name="summary_initialcommand_preference">Передаются облочке при запуске терминала.</string>
     <string name="dialog_title_initialcommand_preference">Команды запуска</string>
     <string name="title_termtype_preference">Тип терминала</string>
-    <string name="summary_termtype_preference">Выбор типа терминала, для использования в оболочке.</string>
+    <string name="summary_termtype_preference">Выбор типа терминала для использования в оболочке.</string>
     <string name="dialog_title_termtype_preference">Тип терминала</string>
     <string name="title_close_window_on_process_exit_preference">Закрытие окна при выходе</string>
     <string name="summary_close_window_on_process_exit_preference">Окно закроется если выйти из оболочки.</string>
-    <string name="title_verify_path_preference">Проверять ПУТЬ данных</string>
-    <string name="summary_verify_path_preference">Удалять недоступные директории из ПУТИ.</string>
-    <string name="title_do_path_extensions_preference">Допускаемые разрешения ПУТИ</string>
-    <string name="summary_do_path_extensions_preference">Разрешить другим приложениям обеспечивать дополнительные команды (добавление к ПУТИ).</string>
-    <string name="title_allow_prepend_path_preference">Допускать ПУТЬ добавления</string>
-    <string name="summary_allow_prepend_path_preference">Разрешить другим приложениям аннулировать существующие команды (добавление к началу ПУТИ).</string>
-    <string name="control_key_dialog_title">Управляющие и Функциональные Клавиши</string>
-    <string name="control_key_dialog_control_text">CTRLKEY Space : Control-@ (NUL)
-CTRLKEY A..Z : Control-A..Z
-CTRLKEY 5 : Control-]
-CTRLKEY 6 : Control-^
-CTRLKEY 7 : Control-_
-CTRLKEY 9 : F11
-CTRLKEY 0 : F12</string>
-    <string name="control_key_dialog_control_disabled_text">Нет установок управляющих клавиш.</string>
-    <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9
-FNKEY 0 : F10
-FNKEY W : Up
-FNKEY A : Left
-FNKEY S : Down
-FNKEY D : Right
-FNKEY P : PageUp
-FNKEY N : PageDown
-FNKEY T : Tab
-FNKEY L : | (pipe)
-FNKEY U : _ (underscore)
-FNKEY E : Control-[ (ESC)
-FNKEY X : Delete
-FNKEY I : Insert
-FNKEY H : Home
-FNKEY F : End
-FNKEY . : Control-\\
+    <string name="title_verify_path_preference">Проверять пути в PATH</string>
+    <string name="summary_verify_path_preference">Удалять недоступные каталоги из PATH.</string>
+    <string name="title_do_path_extensions_preference">Включить расширения PATH</string>
+    <string name="summary_do_path_extensions_preference">Разрешить другим приложениям обеспечивать дополнительные команды (добавление к PATH).</string>
+    <string name="title_allow_prepend_path_preference">Разрешить перезапись PATH</string>
+    <string name="summary_allow_prepend_path_preference">Разрешить другим приложениям изменять существующие команды (добавление к началу PATH).</string>
+    <string name="title_home_path_preference">Домашняя папка</string>
+    <string name="summary_home_path_preference">Установка пути к папке, которая будет использована в качестве домашней (должны быть права записи)</string>
+    <string name="control_key_dialog_title">Управляющие и функциональные клавиши</string>
+    <string name="control_key_dialog_control_text">CTRLKEY + Пробел: Control-@ (NUL)\n
+CTRLKEY + A..Z: Control-A..Z\n
+CTRLKEY + 5: Control-]\n
+CTRLKEY + 6: Control-^\n
+CTRLKEY + 7: Control-_\n
+CTRLKEY + 9: F11\n
+CTRLKEY + 0: F12</string>
+    <string name="control_key_dialog_control_disabled_text">Управляющие клавиши отключены.</string>
+    <string name="control_key_dialog_fn_text">FNKEY 1..9 : F1-F9\n
+FNKEY + 0: F10\n
+FNKEY + W: Вверх\n
+FNKEY + A: Влево\n
+FNKEY + S: Вниз\n
+FNKEY + D: Вправо\n
+FNKEY + P: PageUp\n
+FNKEY + N: PageDown\n
+FNKEY + T: Tab\n
+FNKEY + L: | (вертикальная черта)\n
+FNKEY + U: _ (подчёркивание)\n
+FNKEY + E: Control-[ (ESC)\n
+FNKEY + X: Delete\n
+FNKEY + I: Insert\n
+FNKEY + H: Home\n
+FNKEY + F: End\n
+FNKEY + .: Control-\\\n
 </string>
-    <string name="control_key_dialog_fn_disabled_text">Нет установок функциональных клавиш.</string>
+    <string name="control_key_dialog_fn_disabled_text">Функциональные клавиши отключены.</string>
     <string name="confirm_window_close_message">Закрыть это окно?</string>
-    <string name="perm_run_script">Выполнение произвольных команд в Эмуляторе Терминала</string>
+    <string name="perm_run_script">Выполнение произвольных команд в терминале</string>
     <string name="permdesc_run_script">Позволяет приложению открытие новых окон в Эмуляторе Терминала Android и запуск команд в этих окнах со всеми разрешениями Эмулятора Терминала Android, в том числе доступ к Интернету и SD-карте.</string>
-    <string name="perm_append_to_path">Добавление команд в Эмулятор Терминала</string>
-    <string name="permdesc_append_to_path">Приложение сможет обеспечить дополнительные команды (добавить каталоги в ПУТЬ) для Эмулятора Терминала Android.</string>
+    <string name="perm_append_to_path">Добавление команд в терминала</string>
+    <string name="permdesc_append_to_path">Приложение сможет обеспечить дополнительные команды (добавить каталоги в PATH) для Эмулятора Терминала Android.</string>
     <string name="perm_prepend_to_path">Переопределение команд в Эмуляторе Терминала</string>
-    <string name="permdesc_prepend_to_path">Позволяет приложению переопределить существующие команды с собственной версией (добавьте в начале каталогов ПУТЬ) в Эмуляторе Терминала Android.</string>
-    <string name="email_transcript_subject">Расшифровка для Эмулятора Терминала Android</string>
-    <string name="email_transcript_chooser_title">Почтовая расшифровка с помощью:</string>
-    <string name="email_transcript_no_email_activity_found">Не могу выбрать почтовую деятельность для отправки расшифровки.</string>
+    <string name="permdesc_prepend_to_path">Позволяет приложению переопределить существующие команды своими (перезаписывать PATH) в Эмуляторе Терминала Android.</string>
+    <string name="email_transcript_subject">Вывод терминала Android</string>
+    <string name="email_transcript_chooser_title">Отправить текст из терминала с помощью:</string>
+    <string name="email_transcript_no_email_activity_found">Не найдено приложения для отправки текста.</string>
     <string name="alt_sends_esc">Клавиша Alt посылает ESC</string>
     <string name="alt_sends_esc_summary_on">Клавиша Alt посылает ESC.</string>
     <string name="alt_sends_esc_summary_off">Клавиша Alt не посылает ESC.</string>
+    <string name="title_mouse_tracking_preference">Передавать события мыши</string>
+    <string name="summary_mouse_tracking_preference">Определяет, будут ли события касания и прокрутки передаваться в терминал как Escape-последовательности</string>
 </resources>

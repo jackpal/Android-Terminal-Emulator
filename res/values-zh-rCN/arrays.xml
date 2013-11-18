@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ -->
+
+<resources>
+    <string-array name="entries_statusbar_preference">
+        <item>显示状态栏</item>
+        <item>隐藏状态栏</item>
+    </string-array>
+
+    <string-array name="entries_actionbar_preference">
+        <!-- <item>Action bar disabled</item> -->
+        <item>显示操作栏</item>
+        <item>隐藏操作栏 (点击屏幕上方或按菜单键显示)</item>
+    </string-array>
+
+    <string-array name="entries_orientation_preference">
+        <item>自动</item>
+        <item>横屏</item>
+        <item>竖屏</item>
+    </string-array>
+
+    <string-array name="entries_cursorblink_preference">
+        <item>非闪烁光标</item>
+        <item>闪烁光标</item>
+    </string-array>
+
+    <string-array name="entries_cursorstyle_preference">
+        <item>方块</item>
+        <item>下划线</item>
+        <item>竖线</item>
+    </string-array>
+
+    <string-array name="entries_fontsize_preference">
+        <item>4 x 8 像素</item>
+        <item>6 磅</item>
+        <item>7 磅</item>
+        <item>8 磅</item>
+        <item>9 磅</item>
+        <item>10 磅</item>
+        <item>12 磅</item>
+        <item>14 磅</item>
+        <item>16 磅</item>
+        <item>20 磅</item>
+        <item>24 磅</item>
+        <item>28 磅</item>
+        <item>32 磅</item>
+        <item>36 磅</item>
+        <item>42 磅</item>
+        <item>48 磅</item>
+        <item>64 磅</item>
+        <item>72 磅</item>
+        <item>96 磅</item>
+        <item>144 磅</item>
+        <item>288 磅</item>
+    </string-array>
+
+    <string-array name="entries_color_preference">
+        <item>白底黑字</item>
+        <item>黑底白字</item>
+        <item>蓝底白字</item>
+        <item>黑底绿字</item>
+        <item>黑底黄字</item>
+        <item>黑底红字</item>
+        <item>Holo 风格</item>
+        <item>爆光过度</item>
+        <item>爆光不足</item>
+        <item>Linux 终端</item>
+    </string-array>
+
+    <string-array name="entries_backaction_preference">
+        <item>关闭所有窗口</item>
+        <item>关闭当前窗口</item>
+        <item>关闭当前实例，保留正在运行的会话</item>
+        <item>给终端发送 ESC</item>
+        <item>给终端发送 TAB</item>
+    </string-array>
+
+    <string-array name="entries_controlkey_preference">
+        <item>轨迹球</item>
+        <item>\@ 键</item>
+        <item>左 Alt 键</item>
+        <item>右 Alt 键</item>
+        <item>提升音量键</item>
+        <item>降低音量键</item>
+        <item>相机快门键</item>
+        <item>无</item>
+    </string-array>
+
+    <string-array name="entries_fnkey_preference">
+        <item>轨迹球</item>
+        <item>\@ 键</item>
+        <item>左 Alt 键</item>
+        <item>右 Alt 键</item>
+        <item>提升音量键</item>
+        <item>降低音量键</item>
+        <item>相机快门键</item>
+        <item>无</item>
+    </string-array>
+
+    <string-array name="entries_ime_preference">
+        <item>字本</item>
+        <item>词本</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
+    <string-array name="control_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Left-Alt</item>
+        <item>Right-Alt</item>
+        <item>Vol-Up</item>
+        <item>Vol-Dn</item>
+        <item>Camera</item>
+        <item>None</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
+    <string-array name="fn_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Left-Alt</item>
+        <item>Right-Alt</item>
+        <item>Vol-Up</item>
+        <item>Vol-Dn</item>
+        <item>Camera</item>
+        <item>None</item>
+    </string-array>
+</resources>
