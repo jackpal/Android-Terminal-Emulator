@@ -155,4 +155,11 @@
   <string name="alt_sends_esc">Az Alt billentyű ESC-et küld</string>
   <string name="alt_sends_esc_summary_on">Az Alt billentyű ESC-et küld.</string>
   <string name="alt_sends_esc_summary_off">Az Alt billentyű nem ESC-et küld.</string>
+
+  <string name="title_mouse_tracking_preference">Egér események küldése</string>
+  <string name="summary_mouse_tracking_preference">Érintés és görgetés események küldése a terminálra escape szekvenciaként.</string>
+
+  <string name="title_use_keyboard_shortcuts">Billentyű-parancsok használata</string>
+  <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: váltás az ablakok között, Ctrl-Shift-N: új ablak, Ctrl-Shift-V: beillesztés.</string>
+  <string name="use_keyboard_shortcuts_summary_off">Billentyű-parancsok letiltva.</string>
 </resources>
