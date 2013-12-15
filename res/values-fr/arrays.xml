@@ -26,7 +26,13 @@
         <item>Toujours afficher la barre d\'actions</item>
         <item>Cacher la barre d\'actions (Touche Haut de l\'écran ou la touche Menu de l\'appareil pour afficher)</item>
     </string-array>
-
+    
+    <string-array name="entries_orientation_preference">
+        <item>Automatique</item>
+        <item>Paysage</item>
+        <item>Portrait</item>
+    </string-array>
+    
     <string-array name="entries_cursorblink_preference">
         <item>Curseur non clignotant</item>
         <item>Curseur clignotant</item>
@@ -81,5 +87,29 @@
     <string-array name="entries_ime_preference">
         <item>Par caractère</item>
         <item>Par mot</item>
+    </string-array>
+    
+    <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
+    <string-array name="control_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Left-Alt</item>
+        <item>Right-Alt</item>
+        <item>Vol-Up</item>
+        <item>Vol-Dn</item>
+        <item>Camera</item>
+        <item>None</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
+    <string-array name="fn_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Left-Alt</item>
+        <item>Right-Alt</item>
+        <item>Vol-Up</item>
+        <item>Vol-Dn</item>
+        <item>Camera</item>
+        <item>None</item>
     </string-array>
 </resources>
