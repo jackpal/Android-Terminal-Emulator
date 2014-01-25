@@ -23,7 +23,7 @@ ANDROID_TARGET=android-11
 
 # Make sure the target SDK is installed and up-to-date.
 
-$ANDROID update sdk -a -u -t tools,platform-tools,build-tools-17.0.0,$ANDROID_TARGET
+$ANDROID update sdk -a -u -t tools,platform-tools,build-tools-19.0.1,$ANDROID_TARGET
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ATE_ROOT="$( cd $DIR/.. && pwd )"
