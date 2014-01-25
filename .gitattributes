@@ -1,0 +1,14 @@
+# Normalize line endings for text files.
+# This only affects how files are stored within the repo. Git will
+# automatically convert line endings to the platform choice when checking out,
+# and automatically convert them back to the normal form when checking in.
+
+* text=auto
+
+# Ensure XML files are treated a text files.
+
+*.xml text
+
+# Use java diff syntax for java files.
+
+*.java diff=java
