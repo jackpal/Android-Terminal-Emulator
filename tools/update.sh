@@ -2,6 +2,10 @@
 # You have to run this once in order for ant builds to work
 set -e
 
+# Check that the "ant" tool is installed. (It's not installed on OSX 10.9)
+
+command -v ant >/dev/null 2>&1 || { echo >&2 "Please install ant: sudo port install apache-ant"; exit 1; }
+
 if [ -z "${ANDROID_SDK_ROOT+xxx}" ]; then
 	echo "Please define ANDROID_SDK_ROOT to point to the Android SDK"
 	exit 1
