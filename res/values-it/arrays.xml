@@ -27,6 +27,12 @@
         <item>Nascondi barra di azione (tocca cima dello schermo o tasto Menu per mostrarla)</item>
     </string-array>
 
+    <string-array name="entries_orientation_preference">
+        <item>Automatico</item>
+        <item>Orizzontale</item>
+        <item>Verticale</item>
+    </string-array>
+
     <string-array name="entries_cursorblink_preference">
         <item>Cursore fisso</item>
         <item>Cursore lampeggiante</item>
@@ -69,9 +75,10 @@
         <item>Testo verde su nero</item>
         <item>Testo ambra su nero</item>
         <item>Testo rosso su nero</item>
-	<item>Testo blu brillante su nero</item>
+        <item>Testo blu brillante su nero</item>
         <item>Solarizzato Chiaro</item>
         <item>Solarizzato Scuro</item>
+        <item>Console Linux</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">

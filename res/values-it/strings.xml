@@ -58,6 +58,10 @@
    <string name="summary_actionbar_preference">Scegli il comportamento della barra di azione (da Android 3.0 in su).</string>
    <string name="dialog_title_actionbar_preference">Comportamento barra di azione</string>
 
+   <string name="title_orientation_preference">Orientamento schermo</string>
+   <string name="summary_orientation_preference">Scegli l\'orientamento dello schermo.</string>
+   <string name="dialog_title_orientation_preference">Orientamento schermo</string>
+
    <string name="title_cursorstyle_preference">Stile cursore</string>
    <string name="summary_cursorstyle_preference">Scegli lo stile del cursore.</string>
    <string name="dialog_title_cursorstyle_preference">Stile cursore</string>
@@ -122,6 +126,9 @@
    <string name="title_allow_prepend_path_preference">Anteposizione PATH</string>
    <string name="summary_allow_prepend_path_preference">Permetti ad altre applicazioni di sovrascrivere comandi esistenti (aggiungi all\'inizio di PATH).</string>
 
+   <string name="title_home_path_preference">Cartella HOME</string>
+   <string name="summary_home_path_preference">Inserisci il percorso di una cartella scrivibile da usare come HOME.</string>
+
    <string name="control_key_dialog_title">Tasti Control e Fn</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
         actual control key key name. -->
@@ -148,5 +155,12 @@
   <string name="alt_sends_esc">Tasto Alt invia ESC</string>
   <string name="alt_sends_esc_summary_on">Il tasto Alt invia ESC.</string>
   <string name="alt_sends_esc_summary_off">Il tasto Alt non invia ESC.</string>
+
+  <string name="title_mouse_tracking_preference">Invia eventi mouse</string>
+  <string name="summary_mouse_tracking_preference">Click e scorrimento vengono inviati al terminale come sequenze di escape.</string>
+
+  <string name="title_use_keyboard_shortcuts">Usa scorciatoie da tastiera</string>
+  <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: scorri finestre, Ctrl-Shift-N: nuova finestra, Ctrl-Shift-V: incolla.</string>
+  <string name="use_keyboard_shortcuts_summary_off">Scorciatoie da tastiera disabilitate.</string>
 
 </resources>
