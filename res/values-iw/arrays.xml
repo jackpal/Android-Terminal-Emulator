@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2010 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<resources>
+  <string-array name="entries_statusbar_preference">
+    <item>הצג שורת המצב</item>
+    <item>הסתר שורת מצב</item>
+  </string-array>
+  <string-array name="entries_actionbar_preference">
+    <item>הצג תמיד שורת מצב</item>
+    <item>הסתר בר פעולות (הקש בחלק עליון של המסך או על כפתור תפריט כדי להציג)</item>
+  </string-array>
+  <string-array name="entries_orientation_preference">
+    <item>אוטומטי</item>
+    <item>שוכב</item>
+    <item>עומד</item>
+  </string-array>
+  <string-array name="entries_cursorblink_preference">
+    <item>סמן לא מהבהב</item>
+    <item>סמן מהבהב</item>
+  </string-array>
+  <string-array name="entries_cursorstyle_preference">
+    <item>מלבן</item>
+    <item>קו תחתון</item>
+    <item>קו ניצב</item>
+  </string-array>
+  <string-array name="entries_fontsize_preference">
+    <item>4 * 8 פיקסלים</item>
+    <item>6 נק\'</item>
+    <item>7 נק\'</item>
+    <item>8 נק\'</item>
+    <item>9 נק\'</item>
+    <item>10 נק\'</item>
+    <item>12 נק\'</item>
+    <item>14 נק\'</item>
+    <item>16 נק\'</item>
+    <item>20 נק\'</item>
+    <item>24 נק\'</item>
+    <item>28 נק\'</item>
+    <item>32 נק\'</item>
+    <item>36 נק\'</item>
+    <item>42 נק\'</item>
+    <item>48 נק\'</item>
+    <item>64 נק\'</item>
+    <item>72 נק\'</item>
+    <item>96 נק\'</item>
+    <item>144 נק\'</item>
+    <item>288 נק\'</item>
+  </string-array>
+  <string-array name="entries_color_preference">
+    <item>טקסט שחור על לבן</item>
+    <item>טקסט לבן על שחור</item>
+    <item>טקסט לבן על כחול</item>
+    <item>טקסט ירוק על שחור</item>
+    <item>טקסט אמבר על שחור</item>
+    <item>טקסט אדום על שחור</item>
+    <item>טקסט כחול הולו על שחור</item>
+    <item>Solarized Light</item>
+    <item>Solarized Dark</item>
+    <item>מסוף לינוקס</item>
+  </string-array>
+  <string-array name="entries_backaction_preference">
+    <item>סוגר את חלונות מסוף</item>
+    <item>סוגר את חלון המסוף הנוכחי בלבד</item>
+    <item>סוגר פעילות, ומשאיר הפעלות רצות</item>
+    <item>שולח ESC למסוף</item>
+    <item>שולח TAB למסוף</item>
+  </string-array>
+  <string-array name="entries_controlkey_preference">
+    <item>רענון הכדור</item>
+    <item>\@ מפתח</item>
+    <item>מקש ALT שמאלי</item>
+    <item>מקש ALT ימני</item>
+    <item>מקש קול עליון</item>
+    <item>מקש קוך תחתון</item>
+    <item>לחצן מצלמה</item>
+    <item>ריק</item>
+  </string-array>
+  <string-array name="entries_fnkey_preference">
+    <item>רענון הכדור</item>
+    <item>\@ מפתח</item>
+    <item>מקש ALT שמאלי</item>
+    <item>מקש ALT ימני</item>
+    <item>מקש קול עליון</item>
+    <item>מקש קוך תחתון</item>
+    <item>לחצן מצלמה</item>
+    <item>ריק</item>
+  </string-array>
+  <string-array name="entries_ime_preference">
+    <item>מבוסס תווים</item>
+    <item>מבוסס מילים</item>
+  </string-array>
+  <string-array name="control_keys_short_names">
+    <item>כדור</item>
+    <item>\@</item>
+    <item>ALT-שמאלי</item>
+    <item>ALT-ימני</item>
+    <item>קול עליון</item>
+    <item>קול תחתון</item>
+    <item>מצלמה</item>
+    <item>ריק</item>
+  </string-array>
+  <string-array name="fn_keys_short_names">
+    <item>כדור</item>
+    <item>\@</item>
+    <item>ALT-שמאלי</item>
+    <item>ALT-ימני</item>
+    <item>קול עליון</item>
+    <item>קול תחתון</item>
+    <item>מצלמה</item>
+    <item>ריק</item>
+  </string-array>
+</resources>
