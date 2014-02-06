@@ -43,6 +43,7 @@
 #include <unistd.h>
 #include <termios.h>
 #include <signal.h>
+#include <dirent.h>
 
 #include "termExec.h"
 
@@ -121,8 +122,6 @@ static int create_subprocess(const char *cmd,
     }
 
     if(pid == 0){
-        close(ptm);
-
         int pts;
 
         setsid();
@@ -133,6 +132,25 @@ static int create_subprocess(const char *cmd,
         dup2(pts, 0);
         dup2(pts, 1);
         dup2(pts, 2);
+
+        DIR *dir = opendir("/proc/self/fd");
+        if(dir != NULL) {
+            int badfd = dirfd(dir);
+
+            while(true) {
+                struct dirent *entry = readdir(dir);
+                if(entry == NULL) {
+                    break;
+                }
+
+                int fd = atoi(entry->d_name);
+                if(fd > 2 && fd != badfd) {
+                    close(fd);
+                }
+            }
+
+            closedir(dir);
+        }
 
         if (envp) {
             for (; *envp; ++envp) {
