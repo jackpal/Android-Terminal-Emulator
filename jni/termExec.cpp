@@ -129,6 +129,8 @@ static int create_subprocess(const char *cmd,
         pts = open(devname, O_RDWR);
         if(pts < 0) exit(-1);
 
+        ioctl(pts, TIOCSCTTY, 0);
+
         dup2(pts, 0);
         dup2(pts, 1);
         dup2(pts, 2);
