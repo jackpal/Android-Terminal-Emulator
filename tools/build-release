@@ -1,9 +1,14 @@
 #!/bin/bash
 # command line build script for building release version
 # This will only work on my (Jack Palevich) computer, because it
-# requires the private key store used o sign the release version
+# requires the private key store used to sign the release version
 # of Android Terminal Emulator.
 set -e
+
+if [ ! -f "$HOME/Documents/workspace/keystore/jackpal.keystore" ]; then
+    echo "Release keystore file is missing. Cannot build release build."
+    exit 1
+fi
 
 if [ -z "${ANDROID_NDK_ROOT+xxx}" ]; then
 	echo "Please define ANDROID_NDK_ROOT to point to the Android NDK"
