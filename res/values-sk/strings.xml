@@ -26,6 +26,8 @@
   <string name="send_email">Poslať e-mailom</string>
   <string name="special_keys">Špeciálne klávesy</string>
   <string name="toggle_soft_keyboard">Prepnúť softvérovú klávesnicu</string>
+  
+  <string name="reset_toast_notification">Stav terminálu pre toto okno bol obnovený.</string>
 
   <string name="enable_wakelock">Zabrániť uspaniu</string>
   <string name="disable_wakelock">Povoliť uspanie</string>
@@ -36,8 +38,14 @@
   <string name="select_text">Vybrať text</string>
   <string name="copy_all">Kopírovať vše</string>
   <string name="paste">Prilepiť</string>
+  <string name="send_control_key">Poslať ovládaciu klávesu</string>
+  <string name="send_fn_key">Poslať funkčnú klávesu</string>
+
+  <string name="window_title">Okno %1$d</string>
 
   <string name="service_notify_text">Terminálová relácia je spustená</string>
+  
+  <string name="process_exit_message">Terminálová relácia bola ukončená</string>
 
   <!-- Preference dialog -->
   <string name="screen_preferences">Obrazovka</string>
