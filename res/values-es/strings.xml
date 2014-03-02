@@ -58,6 +58,10 @@
    <string name="summary_actionbar_preference">Elije el comportamiente de la barra de tareas (Android 3.0+).</string>
    <string name="dialog_title_actionbar_preference">Barra de tareas</string>
 
+   <string name="title_orientation_preference">Orientación de pantalla</string>
+   <string name="summary_orientation_preference">Elije el comportamiento de la orientación de pantalla.</string>
+   <string name="dialog_title_orientation_preference">Comportamiento de orientación de pantalla</string>
+
    <string name="title_cursorstyle_preference">Diseño del cursor</string>
    <string name="summary_cursorstyle_preference">Selecciona el diseño del cursor.</string>
    <string name="dialog_title_cursorstyle_preference">Diseño del cursor</string>
@@ -122,6 +126,9 @@
    <string name="title_allow_prepend_path_preference">Permitir anteponer adiciones</string>
    <string name="summary_allow_prepend_path_preference">Otras aplicaciones pueden sobreescribir entradas ya existentes del PATH</string>
 
+   <string name="title_home_path_preference">Carpeta HOME</string>
+   <string name="summary_home_path_preference">Ruta a una carpeta con permisos de escritura para usar como HOME.</string>
+
    <string name="control_key_dialog_title">Teclas FN y Ctrl</string>
    <!-- The word CTRLKEY should be left un-translated. It will be replaced at run-time with the
         actual control key key name. -->
@@ -148,5 +155,12 @@
   <string name="alt_sends_esc">Tecla Alt como ESC</string>
   <string name="alt_sends_esc_summary_on">La tecla Alt funciona como ESC.</string>
   <string name="alt_sends_esc_summary_off">La tecla Alt no funciona como ESC.</string>
+
+  <string name="title_mouse_tracking_preference">Enviar eventos de ratón</string>
+  <string name="summary_mouse_tracking_preference">Cuando los eventos de pulsación y desplazamiento deben mandarse como secuencias de escape al terminal.</string>
+
+  <string name="title_use_keyboard_shortcuts">Usar Atajos de Teclado</string>
+  <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: cambiar ventana, Ctrl-Shift-N: nueva ventana, Ctrl-Shift-V: pegar.</string>
+  <string name="use_keyboard_shortcuts_summary_off">Atajos de teclado desactivados.</string>
 
 </resources>
