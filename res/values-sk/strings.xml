@@ -36,7 +36,7 @@
 
   <string name="edit_text">Upraviť text</string>
   <string name="select_text">Vybrať text</string>
-  <string name="copy_all">Kopírovať vše</string>
+  <string name="copy_all">Kopírovať všetko</string>
   <string name="paste">Prilepiť</string>
   <string name="send_control_key">Poslať ovládaciu klávesu</string>
   <string name="send_fn_key">Poslať funkčnú klávesu</string>
@@ -140,9 +140,9 @@
   <string name="perm_run_script">Spustiť ľubovoľné príkazy</string>
   <string name="permdesc_run_script">Umožniť aplikáciám otvoriť nové okno v Emulátori terminálu Android a spustiť príkazy v tomto okne so všetkými povoleniami terminálu a to vrátane prístupu na Internet a ku karte SD.</string>
   <string name="perm_append_to_path">Pridať príkazy do Emulátora terminálu Android</string>
-  <string name="permdesc_append_to_path">Umožní aplikáciám poskytnúť ďalšie príkazy (pridať priečinky do PATH) v Emulátori terminálu Android.</string>
+  <string name="permdesc_append_to_path">Umožňuje aplikáciám poskytnúť ďalšie príkazy (pridať priečinky do PATH) v Emulátori terminálu Android.</string>
   <string name="perm_prepend_to_path">Prepísať príkazy v Emulátori terminálu Android</string>
-  <string name="permdesc_prepend_to_path">Umožní aplikáciám prepísať existujúce príkazy so svojimi vlastnými verziami (podradiť priečinky v PATH) v Emulátori terminálu Android.</string>
+  <string name="permdesc_prepend_to_path">Umožňuje aplikáciám prepísať existujúce príkazy so svojimi vlastnými verziami (podradiť priečinky v PATH) v Emulátori terminálu Android.</string>
   
   <string name="email_transcript_subject">Prepis z Emulátora terminálu Android</string>
   <string name="email_transcript_chooser_title">Odoslať prepis prostredníctvom</string>
