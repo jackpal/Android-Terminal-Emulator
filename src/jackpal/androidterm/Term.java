@@ -140,7 +140,6 @@ public class Term extends Activity implements UpdateCallback {
         }
     };
     // Available on API 12 and later
-    private static final String FAQ_URL = "http://github.com/jackpal/Android-Terminal-Emulator/wiki/Frequently-Asked-Questions";
     private static final int FLAG_INCLUDE_STOPPED_PACKAGES = 0x20;
 
     private TermService mTermService;
@@ -704,7 +703,7 @@ public class Term extends Activity implements UpdateCallback {
         } else if (id == R.id.menu_close_window) {
             confirmCloseWindow();
         } else if  (id == R.id.action_view_faq) {
-	    Intent openFaq = new Intent(Intent.ACTION_VIEW, Uri.parse(FAQ_URL));
+	    Intent openFaq = new Intent(Intent.ACTION_VIEW, Uri.parse("http://github.com/jackpal/Android-Terminal-Emulator/wiki/Frequently-Asked-Questions"));
 	    startActivity(openFaq);
         } else if (id == R.id.menu_window_list) {
             startActivityForResult(new Intent(this, WindowList.class), REQUEST_CHOOSE_WINDOW);
