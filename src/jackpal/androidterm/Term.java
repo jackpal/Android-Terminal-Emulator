@@ -690,8 +690,8 @@ public class Term extends Activity implements UpdateCallback {
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_new_window), MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
         MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_close_window), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-	MenuItemCompat.setShowAsAction(menu.findItem(R.id.action_view_faq), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-	return true;
+        MenuItemCompat.setShowAsAction(menu.findItem(R.id.action_view_faq), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        return true;
     }
 
     @Override
