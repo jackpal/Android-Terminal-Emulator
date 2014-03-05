@@ -163,4 +163,5 @@
   <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: cycle window, Ctrl-Shift-N: new window, Ctrl-Shift-V: paste.</string>
   <string name="use_keyboard_shortcuts_summary_off">Keyboard shortcuts disabled.</string>
 
+  <string name="view_faq">View FAQ</string>
 </resources>

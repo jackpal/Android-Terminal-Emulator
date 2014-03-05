@@ -689,6 +689,7 @@ public class Term extends Activity implements UpdateCallback {
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_new_window), MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
         MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_close_window), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        MenuItemCompat.setShowAsAction(menu.findItem(R.id.action_view_faq), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 
@@ -701,6 +702,9 @@ public class Term extends Activity implements UpdateCallback {
             doCreateNewWindow();
         } else if (id == R.id.menu_close_window) {
             confirmCloseWindow();
+        } else if  (id == R.id.action_view_faq) {
+	    Intent openFaq = new Intent(Intent.ACTION_VIEW, Uri.parse("http://github.com/jackpal/Android-Terminal-Emulator/wiki/Frequently-Asked-Questions"));
+	    startActivity(openFaq);
         } else if (id == R.id.menu_window_list) {
             startActivityForResult(new Intent(this, WindowList.class), REQUEST_CHOOSE_WINDOW);
         } else if (id == R.id.menu_reset) {
