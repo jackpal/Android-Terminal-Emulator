@@ -40,4 +40,8 @@
         android:title="@string/enable_wakelock" />
     <item android:id="@+id/menu_toggle_wifilock"
         android:title="@string/enable_wifilock" />
+    <item android:id="@+id/action_view_faq"
+	android:icon="@drawable/ic_action_help"
+	android:showAsAction="ifRoom"
+	android:title="@string/view_faq"/>
 </menu>
