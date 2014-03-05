@@ -22,6 +22,9 @@
     <item android:id="@+id/menu_close_window"
         android:title="@string/close_window"
         android:icon="@drawable/ic_menu_close_clear_cancel" />
+    <item android:id="@+id/action_view_faq"
+        android:icon="@drawable/ic_action_help"
+        android:title="@string/view_faq" />
     <item android:id="@+id/menu_window_list"
         android:title="@string/window_list"
         android:icon="@drawable/ic_menu_windows" />
@@ -40,8 +43,4 @@
         android:title="@string/enable_wakelock" />
     <item android:id="@+id/menu_toggle_wifilock"
         android:title="@string/enable_wifilock" />
-    <item android:id="@+id/action_view_faq"
-	android:icon="@drawable/ic_action_help"
-	android:showAsAction="ifRoom"
-	android:title="@string/view_faq"/>
 </menu>
