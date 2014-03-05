@@ -701,9 +701,9 @@ public class Term extends Activity implements UpdateCallback {
             doPreferences();
         } else if (id == R.id.menu_new_window) {
             doCreateNewWindow();
-	} else if (id == R.id.menu_close_window) {
+        } else if (id == R.id.menu_close_window) {
             confirmCloseWindow();
-	} else if  (id == R.id.action_view_faq) {
+        } else if  (id == R.id.action_view_faq) {
 	    Intent openFaq = new Intent(Intent.ACTION_VIEW, Uri.parse(FAQ_URL));
 	    startActivity(openFaq);
         } else if (id == R.id.menu_window_list) {
