@@ -34,6 +34,10 @@ ul {
   list-style: none;
 }
 
+li {
+  padding: 3px 0;
+}
+
 a {
   color: #245dc1;
   text-decoration: none;
