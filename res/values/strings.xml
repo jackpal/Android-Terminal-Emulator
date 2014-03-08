@@ -164,4 +164,5 @@
   <string name="use_keyboard_shortcuts_summary_off">Keyboard shortcuts disabled.</string>
 
   <string name="help">Help</string>
+  <string name="help_url">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
 </resources>

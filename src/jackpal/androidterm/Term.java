@@ -704,7 +704,7 @@ public class Term extends Activity implements UpdateCallback {
             confirmCloseWindow();
         } else if  (id == R.id.action_help) {
 	        Intent openHelp = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://jackpal.github.com/Android-Terminal-Emulator/help/index.html"));
+                Uri.parse(getString(R.string.help_url)));
 	        startActivity(openHelp);
         } else if (id == R.id.menu_window_list) {
             startActivityForResult(new Intent(this, WindowList.class), REQUEST_CHOOSE_WINDOW);
