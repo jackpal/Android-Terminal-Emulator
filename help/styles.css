@@ -50,13 +50,13 @@ a:visited {
   padding: 30px 0 72px;
 }
 
-@media (max-width: 1043px) {
+@media all and (max-width: 1043px) {
   .page-width-container {
     margin-left: 30px;
   }
 }
 
-@media (max-width: 770px) {
+@media all and (max-width: 770px) {
   .page-width-container {
     margin: 0 10px;
     padding: 0;
