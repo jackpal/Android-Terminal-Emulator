@@ -44,6 +44,17 @@ a:visited {
   color: #7759ae;
 }
 
+@media (max-width: 770px)
+.page-width-container {
+  margin: 0 10px;
+  padding: 0;
+}
+
+@media (max-width: 1043px)
+.page-width-container {
+  margin-left: 30px;
+}
+
 .page-width-container {
   margin: 0 auto;
   max-width: 978px;
