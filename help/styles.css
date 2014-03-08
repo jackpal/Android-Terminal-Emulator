@@ -44,6 +44,24 @@ a:visited {
   color: #7759ae;
 }
 
+p {
+  margin: 13px 0;
+  margin-top: 13px;
+  margin-right: 0px;
+  margin-bottom: 13px;
+  margin-left: 0px;
+}
+
+pre {
+  margin: 13px 0;
+  margin-top: 13px;
+  margin-right: 0px;
+  margin-bottom: 13px;
+  margin-left: 10px;
+  background-color:#f0f0f0;
+  line-height: 15px;
+}
+
 .page-width-container {
   margin: 0 auto;
   max-width: 978px;
@@ -60,6 +78,9 @@ a:visited {
   .page-width-container {
     margin: 0 10px;
     padding: 0;
+  }
+  p {
+    margin: 5px 0;
   }
 }
 
