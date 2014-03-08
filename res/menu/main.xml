@@ -22,9 +22,9 @@
     <item android:id="@+id/menu_close_window"
         android:title="@string/close_window"
         android:icon="@drawable/ic_menu_close_clear_cancel" />
-    <item android:id="@+id/action_view_faq"
+    <item android:id="@+id/action_help"
         android:icon="@drawable/ic_action_help"
-        android:title="@string/view_faq" />
+        android:title="@string/help" />
     <item android:id="@+id/menu_window_list"
         android:title="@string/window_list"
         android:icon="@drawable/ic_menu_windows" />
