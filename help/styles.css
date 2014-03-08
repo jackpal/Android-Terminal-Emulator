@@ -1,0 +1,32 @@
+body {
+  font-family: 'Helvetica Neue', HelveticaNeue, Helvetica, sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+h1, h2, h3 {
+  font-family: "open sans",sans-serif;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: 300;
+  line-height: 44px;
+  margin-bottom: 30px;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  color: #245dc1;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #7759ae;
+}
