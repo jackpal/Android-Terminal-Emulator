@@ -43,3 +43,10 @@ a {
 a:visited {
   color: #7759ae;
 }
+
+.page-width-container {
+  margin: 0 auto;
+  max-width: 978px;
+  padding: 30px 0 72px;
+}
+
