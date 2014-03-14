@@ -158,4 +158,7 @@
   <string name="title_use_keyboard_shortcuts">Používať klávesové skratky</string>
   <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: prepnúť okno, Ctrl-Shift-N: nové okno, Ctrl-Shift-V: prilepiť.</string>
   <string name="use_keyboard_shortcuts_summary_off">Klávesové skratky sú zakázané.</string>
+  
+  <string name="help">Pomocník</string>
+  <string name="help_url">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
 </resources>
