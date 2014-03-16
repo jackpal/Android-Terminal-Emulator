@@ -689,7 +689,6 @@ public class Term extends Activity implements UpdateCallback {
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_new_window), MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
         MenuItemCompat.setShowAsAction(menu.findItem(R.id.menu_close_window), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        MenuItemCompat.setShowAsAction(menu.findItem(R.id.action_help), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 
@@ -702,10 +701,6 @@ public class Term extends Activity implements UpdateCallback {
             doCreateNewWindow();
         } else if (id == R.id.menu_close_window) {
             confirmCloseWindow();
-        } else if  (id == R.id.action_help) {
-	        Intent openHelp = new Intent(Intent.ACTION_VIEW,
-                Uri.parse(getString(R.string.help_url)));
-	        startActivity(openHelp);
         } else if (id == R.id.menu_window_list) {
             startActivityForResult(new Intent(this, WindowList.class), REQUEST_CHOOSE_WINDOW);
         } else if (id == R.id.menu_reset) {
@@ -723,6 +718,10 @@ public class Term extends Activity implements UpdateCallback {
             doToggleWakeLock();
         } else if (id == R.id.menu_toggle_wifilock) {
             doToggleWifiLock();
+        } else if  (id == R.id.action_help) {
+                Intent openHelp = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(getString(R.string.help_url)));
+                startActivity(openHelp);
         }
         // Hide the action bar if appropriate
         if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {

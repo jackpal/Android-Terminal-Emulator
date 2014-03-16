@@ -23,7 +23,6 @@
         android:title="@string/close_window"
         android:icon="@drawable/ic_menu_close_clear_cancel" />
     <item android:id="@+id/action_help"
-        android:icon="@drawable/ic_action_help"
         android:title="@string/help" />
     <item android:id="@+id/menu_window_list"
         android:title="@string/window_list"
