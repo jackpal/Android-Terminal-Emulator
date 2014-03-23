@@ -121,7 +121,8 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
         }
     }
 
-    public void drawCursor(Canvas canvas, float x, float y, int lineOffset, int cursorMode) {
+    public void drawCursor(Canvas canvas, float x, float y, int lineOffset,
+            int width, int cursorMode) {
         int destX = (int) x + kCharacterWidth * lineOffset;
         int destY = (int) y;
         drawCursorImp(canvas, destX, destY, kCharacterWidth, kCharacterHeight, cursorMode);

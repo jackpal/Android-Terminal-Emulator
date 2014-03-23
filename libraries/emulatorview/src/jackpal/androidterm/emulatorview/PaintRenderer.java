@@ -91,9 +91,10 @@ class PaintRenderer extends BaseTextRenderer {
         }
     }
 
-    public void drawCursor(Canvas canvas, float x, float y, int lineOffset, int cursorMode) {
+    public void drawCursor(Canvas canvas, float x, float y, int lineOffset,
+            int width, int cursorMode) {
         float left = x + lineOffset * mCharWidth;
-        drawCursorImp(canvas, left, y, mCharWidth, mCharHeight, cursorMode);
+        drawCursorImp(canvas, left, y, mCharWidth * width, mCharHeight, cursorMode);
     }
 
     public int getCharacterHeight() {

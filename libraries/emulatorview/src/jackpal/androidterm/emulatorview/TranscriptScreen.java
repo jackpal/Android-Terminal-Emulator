@@ -43,7 +43,7 @@ class TranscriptScreen implements Screen {
     private int mScreenRows;
 
     private UnicodeTranscript mData;
-    
+
     /**
      * Create a transcript screen.
      *
@@ -167,6 +167,7 @@ class TranscriptScreen implements Screen {
             TextRenderer renderer, int cx, int selx1, int selx2, String imeText, int cursorMode) {
         char[] line;
         StyleRow color;
+        int cursorWidth = 1;
         try {
             line = mData.getLine(row);
             color = mData.getLineColor(row);
@@ -190,7 +191,7 @@ class TranscriptScreen implements Screen {
                                 blank, 0, 1, true, defaultStyle);
             } else if (cx != -1) {
                 // We need to draw the cursor
-                renderer.drawCursor(canvas, x, y, cx, cursorMode);
+                renderer.drawCursor(canvas, x, y, cx, cursorWidth, cursorMode);
             }
 
             return;
@@ -236,6 +237,9 @@ class TranscriptScreen implements Screen {
                 lastRunStartIndex = index;
                 forceFlushRun = false;
             }
+            if (cx == column) {
+                cursorWidth = width;
+            }
             runWidth += width;
             column += width;
             index += incr;
@@ -263,7 +267,7 @@ class TranscriptScreen implements Screen {
         }
 
         if (cx >= 0) {
-            renderer.drawCursor(canvas,  x, y, cx, cursorMode);
+            renderer.drawCursor(canvas,  x, y, cx, cursorWidth, cursorMode);
         }
      }
 
@@ -409,9 +413,9 @@ class TranscriptScreen implements Screen {
     public void resize(int columns, int rows, int style) {
         init(columns, mTotalRows, rows, style);
     }
-    
+
     /**
-     * 
+     *
      * Return the UnicodeTranscript line at this row index.
      * @param row The row index to be queried
      * @return The line of text at this row index
@@ -431,7 +435,7 @@ class TranscriptScreen implements Screen {
     		return null;
     	}
     }
-    
+
     /**
      * Get the line wrap status of the row provided.
      * @param row The row to check for line-wrap status
