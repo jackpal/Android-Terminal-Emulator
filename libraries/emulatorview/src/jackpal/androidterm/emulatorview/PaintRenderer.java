@@ -38,7 +38,7 @@ class PaintRenderer extends BaseTextRenderer {
 
     public void drawTextRun(Canvas canvas, float x, float y, int lineOffset,
             int runWidth, char[] text, int index, int count,
-            boolean cursor, int textStyle) {
+            boolean selectionStyle, int textStyle) {
         int foreColor = TextStyle.decodeForeColor(textStyle);
         int backColor = TextStyle.decodeBackColor(textStyle);
         int effect = TextStyle.decodeEffect(textStyle);
@@ -51,7 +51,7 @@ class PaintRenderer extends BaseTextRenderer {
             backColor = temp;
         }
 
-        if (cursor) {
+        if (selectionStyle) {
             backColor = TextStyle.ciCursor;
         }
 

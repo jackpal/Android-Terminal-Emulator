@@ -199,7 +199,7 @@ class TranscriptScreen implements Screen {
 
         int columns = mColumns;
         int lastStyle = 0;
-        boolean lastCursorStyle = false;
+        boolean lastSelectionStyle = false;
         int runWidth = 0;
         int lastRunStart = -1;
         int lastRunStartIndex = -1;
@@ -208,7 +208,7 @@ class TranscriptScreen implements Screen {
         int index = 0;
         while (column < columns) {
             int style = color.get(column);
-            boolean cursorStyle = false;
+            boolean selectionStyle = false;
             int incr = 1;
             int width;
             if (Character.isHighSurrogate(line[index])) {
@@ -218,20 +218,20 @@ class TranscriptScreen implements Screen {
                 width = UnicodeTranscript.charWidth(line[index]);
             }
             if (column >= selx1 && column <= selx2) {
-                // Set cursor background color:
-                cursorStyle = true;
+                // Draw selection:
+                selectionStyle = true;
             }
             if (style != lastStyle
-                    || cursorStyle != lastCursorStyle
+                    || selectionStyle != lastSelectionStyle
                     || (width > 0 && forceFlushRun)) {
                 if (lastRunStart >= 0) {
                     renderer.drawTextRun(canvas, x, y, lastRunStart, runWidth,
                             line,
                             lastRunStartIndex, index - lastRunStartIndex,
-                            lastCursorStyle, lastStyle);
+                            lastSelectionStyle, lastStyle);
                 }
                 lastStyle = style;
-                lastCursorStyle = cursorStyle;
+                lastSelectionStyle = selectionStyle;
                 runWidth = 0;
                 lastRunStart = column;
                 lastRunStartIndex = index;
@@ -255,7 +255,7 @@ class TranscriptScreen implements Screen {
             renderer.drawTextRun(canvas, x, y, lastRunStart, runWidth,
                     line,
                     lastRunStartIndex, index - lastRunStartIndex,
-                    lastCursorStyle, lastStyle);
+                    lastSelectionStyle, lastStyle);
         }
 
         if (cx >= 0 && imeText.length() > 0) {
@@ -422,18 +422,18 @@ class TranscriptScreen implements Screen {
      */
     public char[] getScriptLine(int row)
     {
-    	try
-    	{
-    		return mData.getLine(row);
-    	}
-    	catch (IllegalArgumentException e)
-    	{
-    		return null;
-    	}
-    	catch (NullPointerException e)
-    	{
-    		return null;
-    	}
+        try
+        {
+            return mData.getLine(row);
+        }
+        catch (IllegalArgumentException e)
+        {
+            return null;
+        }
+        catch (NullPointerException e)
+        {
+            return null;
+        }
     }
 
     /**
@@ -443,6 +443,6 @@ class TranscriptScreen implements Screen {
      */
     public boolean getScriptLineWrap(int row)
     {
-    	return mData.getLineWrap(row);
+        return mData.getLineWrap(row);
     }
 }

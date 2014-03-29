@@ -38,9 +38,22 @@ interface TextRenderer {
     int getCharacterHeight();
     /** @return pixels above top row of text to avoid looking cramped. */
     int getTopMargin();
+    /**
+     * Draw a run of text
+     * @param canvas The canvas to draw into.
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @param lineOffset
+     * @param runWidth
+     * @param text
+     * @param index
+     * @param count
+     * @param selectionStyle True to draw the text using the "selected" style (for clipboard copy)
+     * @param textStyle
+     */
     void drawTextRun(Canvas canvas, float x, float y,
             int lineOffset, int runWidth, char[] text,
-            int index, int count, boolean cursor, int textStyle);
+            int index, int count, boolean selectionStyle, int textStyle);
     // width is width in characters. (1 for normal 2 for wide.)
     void drawCursor(Canvas canvas, float x, float y, int lineOffset,
             int width, int cursorMode);
