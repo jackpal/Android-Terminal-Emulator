@@ -22,6 +22,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
+import java.util.Locale;
 
 import android.util.Log;
 
@@ -245,13 +246,6 @@ class TerminalEmulator {
      * mode new characters are inserted, pushing existing text to the right.
      */
     private boolean mInsertMode;
-
-    /**
-     * Automatic newline mode. Configures whether pressing return on the
-     * keyboard automatically generates a return as well. Not currently
-     * implemented.
-     */
-    private boolean mAutomaticNewlineMode;
 
     /**
      * An array of tab stops. mTabStop[i] is true if there is a tab stop set for
@@ -1296,7 +1290,7 @@ class TerminalEmulator {
             case 6: // Cursor position report (CPR):
                     // Answer is ESC [ y ; x R, where x,y is
                     // the cursor location.
-                byte[] cpr = String.format("\033[%d;%dR",
+                byte[] cpr = String.format(Locale.US, "\033[%d;%dR",
                                  mCursorRow + 1, mCursorCol + 1).getBytes();
                 mSession.write(cpr, 0, cpr.length);
                 break;
@@ -1514,10 +1508,6 @@ class TerminalEmulator {
         switch (modeBit) {
         case 4:
             mInsertMode = newValue;
-            break;
-
-        case 20:
-            mAutomaticNewlineMode = newValue;
             break;
 
         default:
@@ -1791,10 +1781,10 @@ class TerminalEmulator {
 
         if (autoWrap) {
             mAboutToAutoWrap = (mCursorCol == mColumns - 1);
-            
+
             //Force line-wrap flag to trigger even for lines being typed
             if(mAboutToAutoWrap)
-            	mScreen.setLineWrap(mCursorRow);
+                mScreen.setLineWrap(mCursorRow);
         }
 
         mCursorCol = Math.min(mCursorCol + width, mColumns - 1);
@@ -1891,7 +1881,6 @@ class TerminalEmulator {
         mDecFlags |= K_SHOW_CURSOR_MASK;
         mSavedDecFlags = 0;
         mInsertMode = false;
-        mAutomaticNewlineMode = false;
         mTopMargin = 0;
         mBottomMargin = mRows;
         mAboutToAutoWrap = false;

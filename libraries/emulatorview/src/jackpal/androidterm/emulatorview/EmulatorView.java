@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Hashtable;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -106,7 +105,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     private int mTextSize = 10;
 
-    private int mCursorStyle;
     private int mCursorBlink;
 
     /**
@@ -159,8 +157,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mFnKeyCode;
     private boolean mIsControlKeySent = false;
     private boolean mIsFnKeySent = false;
-
-    private String mTermType;
 
     private boolean mMouseTracking;
 
@@ -948,22 +944,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     /**
-     * Sets style information about the cursor.
-     *
-     * @param style The style of the cursor.
-     * @param blink Whether the cursor should blink.
-     */
-    public void setCursorStyle(int style, int blink) {
-        mCursorStyle = style;
-        if (blink != 0 && mCursorBlink == 0) {
-            mHandler.postDelayed(mBlinkCursor, CURSOR_BLINK_PERIOD);
-        } else if (blink == 0 && mCursorBlink != 0) {
-            mHandler.removeCallbacks(mBlinkCursor);
-        }
-        mCursorBlink = blink;
-    }
-
-    /**
      * Sets the IME mode ("cooked" or "raw").
      *
      * @param useCookedIME Whether the IME should be used in cooked mode.
@@ -1555,7 +1535,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public void setTermType(String termType) {
          mKeyListener.setTermType(termType);
-         mTermType = termType;
     }
 
     /**

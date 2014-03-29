@@ -20,7 +20,6 @@ import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.compat.MenuItemCompat;
-import jackpal.androidterm.emulatorview.ColorScheme;
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.UpdateCallback;
@@ -30,7 +29,6 @@ import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
-import java.io.UnsupportedEncodingException;
 import java.text.Collator;
 import java.util.Arrays;
 import java.util.List;
@@ -223,11 +221,11 @@ public class Term extends Activity implements UpdateCallback {
             if (view.isMouseTrackingActive()) return false;
 
             //Check for link at tap location
-        	String link = view.getURLat(e.getX(), e.getY());
+            String link = view.getURLat(e.getX(), e.getY());
             if(link != null)
-            	execURL(link);
+                execURL(link);
             else
-            	doUIToggle((int) e.getX(), (int) e.getY(), view.getVisibleWidth(), view.getVisibleHeight());
+                doUIToggle((int) e.getX(), (int) e.getY(), view.getVisibleWidth(), view.getVisibleHeight());
             return true;
         }
 
@@ -532,7 +530,6 @@ public class Term extends Activity implements UpdateCallback {
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        ColorScheme colorScheme = new ColorScheme(mSettings.getColorScheme());
 
         mViewFlipper.updatePrefs(mSettings);
 
@@ -1041,13 +1038,6 @@ public class Term extends Activity implements UpdateCallback {
         ClipboardManagerCompat clip = ClipboardManagerCompatFactory
                 .getManager(getApplicationContext());
         CharSequence paste = clip.getText();
-        byte[] utf8;
-        try {
-            utf8 = paste.toString().getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            Log.e(TermDebug.LOG_TAG, "UTF-8 encoding not found.");
-            return;
-        }
         getCurrentTermSession().write(paste.toString());
     }
 
@@ -1161,11 +1151,11 @@ public class Term extends Activity implements UpdateCallback {
      */
     private void execURL(String link)
     {
-    	Uri webLink = Uri.parse(link);
-    	Intent openLink = new Intent(Intent.ACTION_VIEW, webLink);
-    	PackageManager pm = getPackageManager();
-    	List<ResolveInfo> handlers = pm.queryIntentActivities(openLink, 0);
-    	if(handlers.size() > 0)
-    		startActivity(openLink);
+        Uri webLink = Uri.parse(link);
+        Intent openLink = new Intent(Intent.ACTION_VIEW, webLink);
+        PackageManager pm = getPackageManager();
+        List<ResolveInfo> handlers = pm.queryIntentActivities(openLink, 0);
+        if(handlers.size() > 0)
+            startActivity(openLink);
     }
 }

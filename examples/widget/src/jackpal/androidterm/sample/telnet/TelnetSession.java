@@ -85,7 +85,6 @@ public class TelnetSession extends TermSession
     /* Telnet command processor state */
     private boolean mInTelnetCommand = false;
     private int mTelnetCommand = 0;
-    private int mTelnetCommandArg = 0;
     private boolean mMultipleParameters = false;
     private int mLastInputByteProcessed = 0;
 

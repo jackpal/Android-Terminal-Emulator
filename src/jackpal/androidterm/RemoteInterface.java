@@ -34,7 +34,6 @@ import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
 public class RemoteInterface extends Activity {
-    private static final String ACTION_OPEN_NEW_WINDOW = "jackpal.androidterm.OPEN_NEW_WINDOW";
     private static final String ACTION_RUN_SCRIPT = "jackpal.androidterm.RUN_SCRIPT";
 
     static final String PRIVACT_OPEN_NEW_WINDOW = "jackpal.androidterm.private.OPEN_NEW_WINDOW";

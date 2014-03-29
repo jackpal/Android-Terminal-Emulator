@@ -56,7 +56,6 @@ public class ShellTermSession extends TermSession {
 
     public static final int PROCESS_EXIT_FINISHES_SESSION = 0;
     public static final int PROCESS_EXIT_DISPLAYS_MESSAGE = 1;
-    private int mProcessExitBehavior = PROCESS_EXIT_FINISHES_SESSION;
 
     private String mProcessExitMessage;
 
