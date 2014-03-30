@@ -25,7 +25,8 @@
                 android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
                 android:protectionLevel="dangerous" />
     <application android:icon="@drawable/ic_launcher"
-                android:label="@string/application_terminal">
+                android:label="@string/application_terminal"
+                android:hardwareAccelerated="true">
         <activity android:name="Term"
                 android:theme="@style/Theme"
                 android:launchMode="singleTask"
@@ -64,8 +65,7 @@
             </intent-filter>
         </activity-alias>
         <activity android:name="TermPreferences"
-                android:label="@string/preferences"
-                android:hardwareAccelerated="true"/>
+                android:label="@string/preferences"/>
         <activity android:name="WindowList"
                 android:label="@string/window_list" />
         <service android:name="TermService" />
