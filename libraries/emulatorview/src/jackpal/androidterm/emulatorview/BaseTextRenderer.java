@@ -16,7 +16,10 @@
 
 package jackpal.androidterm.emulatorview;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -294,10 +297,12 @@ abstract class BaseTextRenderer implements TextRenderer {
             0xffeeeeee
     };
 
-    private final static int sCursorColor = 0xff808080;
+    protected final static int sCursorColor = 0xff808080;
     static final ColorScheme defaultColorScheme =
             new ColorScheme(0xffcccccc, 0xff000000);
 
+    private final Paint mCursorScreenPaint;
+    private final Paint mCopyRedToAlphaPaint;
     private final Paint mCursorPaint;
     private final Paint mCursorStrokePaint;
     private final Path mShiftCursor;
@@ -311,6 +316,9 @@ abstract class BaseTextRenderer implements TextRenderer {
     private float mLastCharHeight;
     private static final Matrix.ScaleToFit mScaleType = Matrix.ScaleToFit.FILL;
 
+    private Bitmap mCursorBitmap;
+    private Bitmap mWorkBitmap;
+    private int mCursorBitmapCursorMode = -1;
 
     public BaseTextRenderer(ColorScheme scheme) {
         if (scheme == null) {
@@ -318,14 +326,25 @@ abstract class BaseTextRenderer implements TextRenderer {
         }
         setDefaultColors(scheme.getForeColor(), scheme.getBackColor());
 
+        mCursorScreenPaint = new Paint();
+        mCursorScreenPaint.setColor(sCursorColor);
+
         mCursorPaint = new Paint();
-        mCursorPaint.setColor(sCursorColor);
-        mCursorPaint.setXfermode(new PixelXorXfermode(~sCursorColor));
+        mCursorPaint.setColor(0xff000000); // Opaque black
         mCursorPaint.setAntiAlias(true);
 
         mCursorStrokePaint = new Paint(mCursorPaint);
         mCursorStrokePaint.setStrokeWidth(0.1f);
         mCursorStrokePaint.setStyle(Paint.Style.STROKE);
+
+        mCopyRedToAlphaPaint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.set(new float[] {
+                0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0,
+                1, 0, 0, 0, 0 });
+        mCopyRedToAlphaPaint.setColorFilter(new ColorMatrixColorFilter(cm));
 
         mShiftCursor = new Path();
         mShiftCursor.lineTo(0.5f, 0.33f);
@@ -373,25 +392,45 @@ abstract class BaseTextRenderer implements TextRenderer {
 
     protected void drawCursorImp(Canvas canvas, float x, float y, float charWidth, float charHeight,
             int cursorMode) {
+        if (cursorMode == 0) {
+            canvas.drawRect(x,  y - charHeight, x + charWidth, y, mCursorScreenPaint);
+            return;
+        }
+
+        // Fancy cursor. Draw an offscreen cursor shape, then blit it on screen.
+
+        // Has the character size changed?
+
         if (charWidth != mLastCharWidth || charHeight != mLastCharHeight) {
             mLastCharWidth = charWidth;
             mLastCharHeight = charHeight;
             mTempDst.set(0.0f, 0.0f, charWidth, charHeight);
             mScaleMatrix.setRectToRect(mTempSrc, mTempDst, mScaleType);
+            mCursorBitmap = Bitmap.createBitmap((int) charWidth, (int) charHeight,
+                    Bitmap.Config.ALPHA_8);
+            mWorkBitmap = Bitmap.createBitmap((int) charWidth, (int) charHeight,
+                    Bitmap.Config.ARGB_8888);
+            mCursorBitmapCursorMode = -1;
         }
-        canvas.save();
-        canvas.translate(x, y - charHeight);
-        canvas.clipRect(0, 0, charWidth, charHeight);
-        canvas.drawPaint(mCursorPaint);
 
-        if (cursorMode != 0) {
-            canvas.concat(mScaleMatrix);
-            drawCursorHelper(canvas, mShiftCursor, cursorMode, MODE_SHIFT_SHIFT);
-            drawCursorHelper(canvas, mAltCursor, cursorMode, MODE_ALT_SHIFT);
-            drawCursorHelper(canvas, mCtrlCursor, cursorMode, MODE_CTRL_SHIFT);
-            drawCursorHelper(canvas, mFnCursor, cursorMode, MODE_FN_SHIFT);
+        // Has the cursor mode changed ?
+
+        if (cursorMode != mCursorBitmapCursorMode) {
+            mCursorBitmapCursorMode = cursorMode;
+            mWorkBitmap.eraseColor(0xffffffff);
+            Canvas workCanvas = new Canvas(mWorkBitmap);
+            workCanvas.concat(mScaleMatrix);
+            drawCursorHelper(workCanvas, mShiftCursor, cursorMode, MODE_SHIFT_SHIFT);
+            drawCursorHelper(workCanvas, mAltCursor, cursorMode, MODE_ALT_SHIFT);
+            drawCursorHelper(workCanvas, mCtrlCursor, cursorMode, MODE_CTRL_SHIFT);
+            drawCursorHelper(workCanvas, mFnCursor, cursorMode, MODE_FN_SHIFT);
+
+            mCursorBitmap.eraseColor(0);
+            Canvas bitmapCanvas = new Canvas(mCursorBitmap);
+            bitmapCanvas.drawBitmap(mWorkBitmap, 0, 0, mCopyRedToAlphaPaint);
         }
-        canvas.restore();
+
+        canvas.drawBitmap(mCursorBitmap, x, y - charHeight, mCursorScreenPaint);
     }
 
     private void drawCursorHelper(Canvas canvas, Path path, int mode, int shift) {

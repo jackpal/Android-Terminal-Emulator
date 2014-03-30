@@ -17,6 +17,7 @@
 package jackpal.androidterm.emulatorview;
 
 import jackpal.androidterm.emulatorview.compat.AndroidCompat;
+
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -61,7 +62,8 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
 
     public void drawTextRun(Canvas canvas, float x, float y,
             int lineOffset, int runWidth, char[] text, int index, int count,
-            boolean selectionStyle, int textStyle) {
+            boolean selectionStyle, int textStyle,
+            int cursorOffset, int cursorWidth, int cursorMode) {
         int foreColor = TextStyle.decodeForeColor(textStyle);
         int backColor = TextStyle.decodeBackColor(textStyle);
         int effect = TextStyle.decodeEffect(textStyle);
@@ -95,6 +97,17 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
             foreColor = backColor;
         }
 
+        drawTextRunHelper(canvas, x, y, lineOffset, text, index, count, foreColor, backColor);
+
+        // The cursor is too small to show the cursor mode.
+        if (lineOffset <= cursorOffset && cursorOffset < (lineOffset + count)) {
+          drawTextRunHelper(canvas, x, y, cursorOffset, text, cursorOffset-lineOffset, 1,
+                  foreColor, TextStyle.ciCursor);
+        }
+    }
+
+    private void drawTextRunHelper(Canvas canvas, float x, float y, int lineOffset, char[] text,
+            int index, int count, int foreColor, int backColor) {
         setColorMatrix(mPalette[foreColor], mPalette[backColor]);
         int destX = (int) x + kCharacterWidth * lineOffset;
         int destY = (int) y;
@@ -119,13 +132,6 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
             }
             destX += kCharacterWidth;
         }
-    }
-
-    public void drawCursor(Canvas canvas, float x, float y, int lineOffset,
-            int width, int cursorMode) {
-        int destX = (int) x + kCharacterWidth * lineOffset;
-        int destY = (int) y;
-        drawCursorImp(canvas, destX, destY, kCharacterWidth, kCharacterHeight, cursorMode);
     }
 
     private void setColorMatrix(int foreColor, int backColor) {

@@ -38,7 +38,8 @@ class PaintRenderer extends BaseTextRenderer {
 
     public void drawTextRun(Canvas canvas, float x, float y, int lineOffset,
             int runWidth, char[] text, int index, int count,
-            boolean selectionStyle, int textStyle) {
+            boolean selectionStyle, int textStyle,
+            int cursorOffset, int cursorWidth, int cursorMode) {
         int foreColor = TextStyle.decodeForeColor(textStyle);
         int backColor = TextStyle.decodeBackColor(textStyle);
         int effect = TextStyle.decodeEffect(textStyle);
@@ -65,6 +66,12 @@ class PaintRenderer extends BaseTextRenderer {
         canvas.drawRect(left, y + mCharAscent - mCharDescent,
                 left + runWidth * mCharWidth, y,
                 mTextPaint);
+
+        if (index <= cursorOffset && cursorOffset < (index + count)) {
+            int cursorX = (int) (x + cursorOffset * mCharWidth);
+            drawCursorImp(canvas, cursorX, y, mCharWidth, mCharHeight, cursorMode);
+        }
+
         boolean invisible = (effect & TextStyle.fxInvisible) != 0;
         if (!invisible) {
             boolean bold = (effect & TextStyle.fxBold) != 0;

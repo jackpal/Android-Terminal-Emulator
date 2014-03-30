@@ -188,10 +188,14 @@ class TranscriptScreen implements Screen {
                 char[] blank = new char[selx2-selx1];
                 Arrays.fill(blank, ' ');
                 renderer.drawTextRun(canvas, x, y, selx1, selx2-selx1,
-                                blank, 0, 1, true, defaultStyle);
-            } else if (cx != -1) {
+                                blank, 0, 1, true, defaultStyle, cx, cursorWidth, cursorMode);
+            }
+            if (cx != -1) {
+                char[] blank = new char[1];
+                Arrays.fill(blank, ' ');
                 // We need to draw the cursor
-                renderer.drawCursor(canvas, x, y, cx, cursorWidth, cursorMode);
+                renderer.drawTextRun(canvas, x, y, cx, 1,
+                        blank, 0, 1, true, defaultStyle, cx, 1, cursorMode);
             }
 
             return;
@@ -228,7 +232,8 @@ class TranscriptScreen implements Screen {
                     renderer.drawTextRun(canvas, x, y, lastRunStart, runWidth,
                             line,
                             lastRunStartIndex, index - lastRunStartIndex,
-                            lastSelectionStyle, lastStyle);
+                            lastSelectionStyle, lastStyle,
+                            cx, cursorWidth, cursorMode);
                 }
                 lastStyle = style;
                 lastSelectionStyle = selectionStyle;
@@ -255,7 +260,8 @@ class TranscriptScreen implements Screen {
             renderer.drawTextRun(canvas, x, y, lastRunStart, runWidth,
                     line,
                     lastRunStartIndex, index - lastRunStartIndex,
-                    lastSelectionStyle, lastStyle);
+                    lastSelectionStyle, lastStyle,
+                    cx, cursorWidth, cursorMode);
         }
 
         if (cx >= 0 && imeText.length() > 0) {
@@ -263,11 +269,8 @@ class TranscriptScreen implements Screen {
             int imeOffset = imeText.length() - imeLength;
             int imePosition = Math.min(cx, columns - imeLength);
             renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
-                    imeOffset, imeLength, true, TextStyle.encode(0x0f, 0x00, TextStyle.fxNormal));
-        }
-
-        if (cx >= 0) {
-            renderer.drawCursor(canvas,  x, y, cx, cursorWidth, cursorMode);
+                    imeOffset, imeLength, true, TextStyle.encode(0x0f, 0x00, TextStyle.fxNormal),
+                    cx, cursorWidth, cursorMode);
         }
      }
 
