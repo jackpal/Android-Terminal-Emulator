@@ -14,9 +14,10 @@ public final class TextStyle {
     // Special color indices
     final static int ciForeground = 256; // VT100 text foreground color
     final static int ciBackground = 257; // VT100 text background color
-    final static int ciCursor = 258;     // VT100 text cursor color
+    final static int ciCursorForeground = 258;     // VT100 text cursor foreground color
+    final static int ciCursorBackground = 259;     // VT100 text cursor background color
 
-    final static int ciColorLength = ciCursor + 1;
+    final static int ciColorLength = ciCursorBackground + 1;
 
     final static int kNormalTextStyle = encode(ciForeground, ciBackground, fxNormal);
 

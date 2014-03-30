@@ -88,7 +88,7 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
         }
 
         if (selectionStyle) {
-            backColor = TextStyle.ciCursor;
+            backColor = TextStyle.ciCursorBackground;
         }
 
         boolean invisible = (effect & TextStyle.fxInvisible) != 0;
@@ -102,7 +102,7 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
         // The cursor is too small to show the cursor mode.
         if (lineOffset <= cursorOffset && cursorOffset < (lineOffset + count)) {
           drawTextRunHelper(canvas, x, y, cursorOffset, text, cursorOffset-lineOffset, 1,
-                  foreColor, TextStyle.ciCursor);
+                  TextStyle.ciCursorForeground, TextStyle.ciCursorBackground);
         }
     }
 

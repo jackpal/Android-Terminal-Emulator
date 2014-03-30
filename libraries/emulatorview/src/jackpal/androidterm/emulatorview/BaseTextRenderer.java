@@ -23,7 +23,6 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PixelXorXfermode;
 import android.graphics.RectF;
 
 abstract class BaseTextRenderer implements TextRenderer {
@@ -297,7 +296,6 @@ abstract class BaseTextRenderer implements TextRenderer {
             0xffeeeeee
     };
 
-    protected final static int sCursorColor = 0xff808080;
     static final ColorScheme defaultColorScheme =
             new ColorScheme(0xffcccccc, 0xff000000);
 
@@ -324,13 +322,15 @@ abstract class BaseTextRenderer implements TextRenderer {
         if (scheme == null) {
             scheme = defaultColorScheme;
         }
-        setDefaultColors(scheme.getForeColor(), scheme.getBackColor());
+        setDefaultColors(scheme);
 
         mCursorScreenPaint = new Paint();
-        mCursorScreenPaint.setColor(sCursorColor);
+        mCursorScreenPaint.setColor(scheme.getCursorBackColor());
 
+        // Cursor paint and cursor stroke paint are used to draw a grayscale mask that's converted
+        // to an alpha8 texture. Only the red channel's value matters.
         mCursorPaint = new Paint();
-        mCursorPaint.setColor(0xff000000); // Opaque black
+        mCursorPaint.setColor(0xff909090); // Opaque lightgray
         mCursorPaint.setAntiAlias(true);
 
         mCursorStrokePaint = new Paint(mCursorPaint);
@@ -376,11 +376,12 @@ abstract class BaseTextRenderer implements TextRenderer {
         mReverseVideo = reverseVideo;
     }
 
-    private void setDefaultColors(int forePaintColor, int backPaintColor) {
+    private void setDefaultColors(ColorScheme scheme) {
         mPalette = cloneDefaultColors();
-        mPalette[TextStyle.ciForeground] = forePaintColor;
-        mPalette[TextStyle.ciBackground] = backPaintColor;
-        mPalette[TextStyle.ciCursor] = sCursorColor;
+        mPalette[TextStyle.ciForeground] = scheme.getForeColor();
+        mPalette[TextStyle.ciBackground] = scheme.getBackColor();
+        mPalette[TextStyle.ciCursorForeground] = scheme.getCursorForeColor();
+        mPalette[TextStyle.ciCursorBackground] = scheme.getCursorBackColor();
     }
 
     private static int[] cloneDefaultColors() {

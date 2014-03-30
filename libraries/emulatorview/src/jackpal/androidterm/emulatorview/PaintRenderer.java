@@ -53,7 +53,7 @@ class PaintRenderer extends BaseTextRenderer {
         }
 
         if (selectionStyle) {
-            backColor = TextStyle.ciCursor;
+            backColor = TextStyle.ciCursorBackground;
         }
 
         boolean blink = (effect & TextStyle.fxBlink) != 0;
@@ -67,7 +67,8 @@ class PaintRenderer extends BaseTextRenderer {
                 left + runWidth * mCharWidth, y,
                 mTextPaint);
 
-        if (index <= cursorOffset && cursorOffset < (index + count)) {
+        boolean cursorVisible = index <= cursorOffset && cursorOffset < (index + count);
+        if (cursorVisible) {
             int cursorX = (int) (x + cursorOffset * mCharWidth);
             drawCursorImp(canvas, cursorX, y, mCharWidth, mCharHeight, cursorMode);
         }
@@ -82,13 +83,38 @@ class PaintRenderer extends BaseTextRenderer {
             if (underline) {
                 mTextPaint.setUnderlineText(true);
             }
+            int textPaintColor;
             if (foreColor < 8 && bold) {
                 // In 16-color mode, bold also implies bright foreground colors
-                mTextPaint.setColor(mPalette[foreColor+8]);
+                textPaintColor = mPalette[foreColor+8];
             } else {
-                mTextPaint.setColor(mPalette[foreColor]);
+                textPaintColor = mPalette[foreColor];
             }
-            canvas.drawText(text, index, count, left, y - mCharDescent, mTextPaint);
+            mTextPaint.setColor(textPaintColor);
+
+            float textOriginY = y - mCharDescent;
+
+            if (cursorVisible) {
+                // Text before cursor
+                int countBeforeCursor = cursorOffset - index;
+                int countAfterCursor = count - (countBeforeCursor + 1);
+                if (countBeforeCursor > 0){
+                    canvas.drawText(text, index, countBeforeCursor, left, textOriginY, mTextPaint);
+                }
+                // Text at cursor
+                mTextPaint.setColor(mPalette[TextStyle.ciCursorForeground]);
+                canvas.drawText(text, cursorOffset, 1, x + cursorOffset * mCharWidth,
+                        textOriginY, mTextPaint);
+                // Text after cursor
+                if (countAfterCursor > 0) {
+                    mTextPaint.setColor(textPaintColor);
+                    canvas.drawText(text, cursorOffset + 1, countAfterCursor,
+                            x + (cursorOffset + 1) * mCharWidth,
+                            textOriginY, mTextPaint);
+                }
+            } else {
+                canvas.drawText(text, index, count, left, textOriginY, mTextPaint);
+            }
             if (bold) {
                 mTextPaint.setFakeBoldText(false);
             }
@@ -96,12 +122,6 @@ class PaintRenderer extends BaseTextRenderer {
                 mTextPaint.setUnderlineText(false);
             }
         }
-    }
-
-    public void drawCursor(Canvas canvas, float x, float y, int lineOffset,
-            int width, int cursorMode) {
-        float left = x + lineOffset * mCharWidth;
-        drawCursorImp(canvas, left, y, mCharWidth * width, mCharHeight, cursorMode);
     }
 
     public int getCharacterHeight() {
