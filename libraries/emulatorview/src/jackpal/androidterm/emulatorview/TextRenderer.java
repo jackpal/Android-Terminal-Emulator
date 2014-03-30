@@ -51,11 +51,13 @@ interface TextRenderer {
      * @param selectionStyle True to draw the text using the "selected" style (for clipboard copy)
      * @param textStyle
      * @param cursorOffset The screen character offset of the cursor (or -1 if not on this line.)
-     * @param cursorWidth The width of the cursor in screen characters (1 or 2)
+     * @param cursorIndex The index of the cursor in text chars.
+     * @param cursorIncr The width of the cursor in text chars. (1 or 2)
+     * @param cursorWidth The width of the cursor in screen columns (1 or 2)
      * @param cursorMode The cursor mode (used to show state of shift/control/alt/fn locks.
      */
     void drawTextRun(Canvas canvas, float x, float y,
             int lineOffset, int runWidth, char[] text,
             int index, int count, boolean selectionStyle, int textStyle,
-            int cursorOffset, int cursorWidth, int cursorMode);
+            int cursorOffset, int cursorIndex, int cursorIncr, int cursorWidth, int cursorMode);
 }

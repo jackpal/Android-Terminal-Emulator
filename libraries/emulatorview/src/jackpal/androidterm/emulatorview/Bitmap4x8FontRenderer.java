@@ -63,7 +63,7 @@ class Bitmap4x8FontRenderer extends BaseTextRenderer {
     public void drawTextRun(Canvas canvas, float x, float y,
             int lineOffset, int runWidth, char[] text, int index, int count,
             boolean selectionStyle, int textStyle,
-            int cursorOffset, int cursorWidth, int cursorMode) {
+            int cursorOffset, int cursorIndex, int cursorIncr, int cursorWidth, int cursorMode) {
         int foreColor = TextStyle.decodeForeColor(textStyle);
         int backColor = TextStyle.decodeBackColor(textStyle);
         int effect = TextStyle.decodeEffect(textStyle);

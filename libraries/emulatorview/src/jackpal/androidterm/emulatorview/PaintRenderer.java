@@ -39,7 +39,7 @@ class PaintRenderer extends BaseTextRenderer {
     public void drawTextRun(Canvas canvas, float x, float y, int lineOffset,
             int runWidth, char[] text, int index, int count,
             boolean selectionStyle, int textStyle,
-            int cursorOffset, int cursorWidth, int cursorMode) {
+            int cursorOffset, int cursorIndex, int cursorIncr, int cursorWidth, int cursorMode) {
         int foreColor = TextStyle.decodeForeColor(textStyle);
         int backColor = TextStyle.decodeBackColor(textStyle);
         int effect = TextStyle.decodeEffect(textStyle);
@@ -70,7 +70,7 @@ class PaintRenderer extends BaseTextRenderer {
         boolean cursorVisible = index <= cursorOffset && cursorOffset < (index + count);
         if (cursorVisible) {
             int cursorX = (int) (x + cursorOffset * mCharWidth);
-            drawCursorImp(canvas, cursorX, y, mCharWidth, mCharHeight, cursorMode);
+            drawCursorImp(canvas, cursorX, y, cursorWidth * mCharWidth, mCharHeight, cursorMode);
         }
 
         boolean invisible = (effect & TextStyle.fxInvisible) != 0;
@@ -96,20 +96,20 @@ class PaintRenderer extends BaseTextRenderer {
 
             if (cursorVisible) {
                 // Text before cursor
-                int countBeforeCursor = cursorOffset - index;
+                int countBeforeCursor = cursorIndex - index;
                 int countAfterCursor = count - (countBeforeCursor + 1);
                 if (countBeforeCursor > 0){
                     canvas.drawText(text, index, countBeforeCursor, left, textOriginY, mTextPaint);
                 }
                 // Text at cursor
                 mTextPaint.setColor(mPalette[TextStyle.ciCursorForeground]);
-                canvas.drawText(text, cursorOffset, 1, x + cursorOffset * mCharWidth,
+                canvas.drawText(text, cursorIndex, cursorIncr, x + cursorOffset * mCharWidth,
                         textOriginY, mTextPaint);
                 // Text after cursor
                 if (countAfterCursor > 0) {
                     mTextPaint.setColor(textPaintColor);
-                    canvas.drawText(text, cursorOffset + 1, countAfterCursor,
-                            x + (cursorOffset + 1) * mCharWidth,
+                    canvas.drawText(text, cursorIndex + cursorIncr, countAfterCursor,
+                            x + (cursorOffset + cursorWidth) * mCharWidth,
                             textOriginY, mTextPaint);
                 }
             } else {
