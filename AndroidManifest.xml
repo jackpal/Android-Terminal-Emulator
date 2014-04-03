@@ -35,6 +35,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
             </intent-filter>
         </activity>
         <activity-alias android:name="TermInternal"
@@ -69,5 +70,9 @@
         <activity android:name="WindowList"
                 android:label="@string/window_list" />
         <service android:name="TermService" />
+        <meta-data
+            android:name="com.sec.android.support.multiwindow"
+            android:value="true">
+        </meta-data>
     </application>
 </manifest>
