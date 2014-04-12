@@ -26,17 +26,17 @@
    <string name="reset">Terminal par défaut</string>
    <string name="send_email">Envoyer un e-mail</string>
    <string name="special_keys">Touches spéciales</string>
-   <string name="toggle_soft_keyboard">Afficher/Masquer Clavier</string>
+   <string name="toggle_soft_keyboard">Afficher/Masquer clavier</string>
 
    <string name="reset_toast_notification">État de cette fenêtre par défaut.</string>
 
    <string name="enable_wakelock">Bloquer la mise en veille</string>
    <string name="disable_wakelock">Débloquer la mise en veille</string>
-   <string name="enable_wifilock">Bloquer le Wifi</string>
-   <string name="disable_wifilock">Débloquer le Wifi</string>
+   <string name="enable_wifilock">Bloquer le WiFi</string>
+   <string name="disable_wifilock">Débloquer le WiFi</string>
 
    <string name="edit_text">Modifier le texte</string>
-   <string name="select_text">Selectionner le texte</string>
+   <string name="select_text">Sélectionner le texte</string>
    <string name="copy_all">Tout copier</string>
    <string name="paste">Coller</string>
    <string name="send_control_key">Touche Control</string>
@@ -115,7 +115,7 @@
 
    <string name="title_termtype_preference">Type de terminal</string>
    <string name="summary_termtype_preference">Type de terminal à reporter au shell</string>
-   <string name="dialog_title_termtype_preference">Type de Terminal</string>
+   <string name="dialog_title_termtype_preference">Type de terminal</string>
 
    <string name="title_close_window_on_process_exit_preference">Quitter avec exit</string>
    <string name="summary_close_window_on_process_exit_preference">Quitter la fenêtre en cours en exécutant la commande exit</string>
@@ -124,10 +124,13 @@
    <string name="summary_verify_path_preference">Les répertoires inaccessibles seront retirés de PATH</string>
 
    <string name="title_do_path_extensions_preference">Extensions de PATH</string>
-   <string name="summary_do_path_extensions_preference">D\'autres application sont autorisées à fournir des commandes supplémentaires (à ajouter au PATH)</string>
+   <string name="summary_do_path_extensions_preference">D\'autres applications sont autorisées à fournir des commandes supplémentaires (à ajouter au PATH)</string>
 
    <string name="title_allow_prepend_path_preference">Préfixe de PATH</string>
    <string name="summary_allow_prepend_path_preference">D\'autres applications sont autorisées à remplacer les commandes existantes (à ajouter au début de PATH)</string>
+   
+   <string name="title_home_path_preference">Dossier HOME</string>
+   <string name="summary_home_path_preference">Chemin à un dossier accessible en écriture pour être utilisé comme HOME.</string>
 
    <string name="control_key_dialog_title">Touches Control et Fonction</string>
    <!-- Le mot CTRLKEY ne doit pas être traduit. Il sera remplacé par la touche CTRL renseignée dans les paramètres -->
@@ -138,13 +141,23 @@
    <string name="control_key_dialog_fn_disabled_text">Touche fonction non paramètrée.</string>
 
    <string name="email_transcript_subject">Transcription depuis Terminal Emulator</string>
-   <string name="email_transcript_chooser_title">La transcription par email utilise:</string>
+   <string name="email_transcript_chooser_title">La transcription par email utilise :</string>
    <string name="email_transcript_no_email_activity_found">Impossible de choisir une activité de messagerie pour envoyer la transcription</string>
    
    <string name="perm_run_script">Lancer des commandes tierces</string>
-   <string name="permdesc_run_script">Permettre à une application d\'ouvrir une nouvelle fenêtre dans Terminal Emulator en exécutant des commandes avec les permissions de l\'application comme l\'accès à internet et à votre carte SD</string>
+   <string name="permdesc_run_script">Permettre à une application d\'ouvrir une nouvelle fenêtre dans Terminal Emulator en exécutant des commandes avec les permissions de l\'application comme l\'accès à Internet et à votre carte SD</string>
    <string name="perm_append_to_path">Ajouter des commandes</string>
    <string name="permdesc_append_to_path">Permettre à une application de fournir des commandes supplémentaires (ajouter le répertoire au PATH) pour Terminal Emulator</string>
    <string name="perm_prepend_to_path">Remplacer des commandes</string>
    <string name="permdesc_prepend_to_path">Permettre à une application de remplacer des commandes existantes avec ses versions (répertoire à ajouter en préfixe au PATH) dans Terminal Emulator</string>
+
+  <string name="title_mouse_tracking_preference">Envoyer des événements de souris</string>
+  <string name="summary_mouse_tracking_preference">Aussi bien les événements d\'appui et de scroll doivent être envoyés sous forme de séquences d'échappement au terminal.</string>
+   
+   <string name="title_use_keyboard_shortcuts">Utiliser les raccourcis clavier</string>
+  <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: cycle window, Ctrl-Shift-N: nouvelle fenêtre, Ctrl-Shift-V: coller.</string>
+  <string name="use_keyboard_shortcuts_summary_off">Raccourcis clavier désactivés.</string>
+
+  <string name="help">Aide</string>
+  <!--<string name="help_url">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>-->
 </resources>
