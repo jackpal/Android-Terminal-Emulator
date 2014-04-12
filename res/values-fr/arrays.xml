@@ -53,7 +53,7 @@
         <item>Texte rouge sur noir</item>
         <item>Solarized Light</item>
         <item>Solarized Dark</item>
-        <item>Linux Console</item>
+        <item>Console Linux</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
