@@ -16,6 +16,7 @@
 
 package jackpal.androidterm;
 
+import java.io.File;
 import java.util.UUID;
 
 import android.app.Activity;
@@ -23,6 +24,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -82,7 +84,8 @@ public class RemoteInterface extends Activity {
         }
 
         Intent myIntent = getIntent();
-        if (myIntent.getAction().equals(ACTION_RUN_SCRIPT)) {
+        String action=    myIntent.getAction();
+        if (action.equals(ACTION_RUN_SCRIPT)) {
             /* Someone with the appropriate permissions has asked us to
                run a script */
             String handle = myIntent.getStringExtra(EXTRA_WINDOW_HANDLE);
@@ -96,6 +99,16 @@ public class RemoteInterface extends Activity {
             Intent result = new Intent();
             result.putExtra(EXTRA_WINDOW_HANDLE, handle);
             setResult(RESULT_OK, result);
+        }
+        else if(
+           action.equals(Intent.ACTION_SEND)
+        && myIntent.hasExtra(Intent.EXTRA_STREAM)
+        )
+        {
+          Uri    uri=(Uri)((Bundle)myIntent.getExtras()).get(Intent.EXTRA_STREAM);
+          String path=uri.getPath();
+          File   file=new File(path);
+          openNewWindow("cd "+(file.isDirectory()?path:file.getParent()));
         } else {
             // Intent sender may not have permissions, ignore any extras
             openNewWindow(null);
