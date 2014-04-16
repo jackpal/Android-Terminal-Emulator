@@ -57,7 +57,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity-alias android:name="RunScript"
+        <activity-alias
+                android:name="TermHere"
+                android:label="Term here"
+                android:targetActivity="RemoteInterface"
+                android:exported="true"
+        >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="*/*" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity-alias>
+       <activity-alias android:name="RunScript"
                 android:targetActivity="RemoteInterface"
                 android:permission="jackpal.androidterm.permission.RUN_SCRIPT">
             <intent-filter>
