@@ -448,7 +448,9 @@ class TerminalEmulator {
         // Try to resize the screen without getting the transcript
         int[] cursor = { mCursorCol, mCursorRow };
         boolean fastResize = mMainBuffer.fastResize(columns, rows, cursor);
-        mAltBuffer.resize(columns, rows, getStyle());
+        if (mAltBuffer != null) {
+            mAltBuffer.resize(columns, rows, getStyle());
+        }
 
         GrowableIntArray cursorColor = null;
         String charAtCursor = null;
@@ -872,7 +874,9 @@ class TerminalEmulator {
             case 47:
             case 1047:
             case 1049:
-                mScreen = mAltBuffer;
+                if (mAltBuffer != null) {
+                    mScreen = mAltBuffer;
+                }
                 break;
             }
             if (arg >= 1000 && arg <= 1003) {
@@ -1933,7 +1937,9 @@ class TerminalEmulator {
         mDefaultForeColor = TextStyle.ciForeground;
         mDefaultBackColor = TextStyle.ciBackground;
         mMainBuffer.setColorScheme(scheme);
-        mAltBuffer.setColorScheme(scheme);
+        if (mAltBuffer != null) {
+            mAltBuffer.setColorScheme(scheme);
+        }
     }
 
     public String getSelectedText(int x1, int y1, int x2, int y2) {
