@@ -35,6 +35,13 @@ import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
+/*
+ * New procedure for launching a command in ATE.
+ * Build the path and arguments into a Uri and set that into Intent.data.
+ * intent.data(new Uri.Builder().setScheme("file").setPath(path).setFragment(arguments))
+ * 
+ * The old procedure of using Intent.Extra is still available but is discouraged.
+ */
 public class RemoteInterface extends Activity {
     private static final String ACTION_RUN_SCRIPT = "jackpal.androidterm.RUN_SCRIPT";
 
@@ -89,12 +96,38 @@ public class RemoteInterface extends Activity {
             /* Someone with the appropriate permissions has asked us to
                run a script */
             String handle = myIntent.getStringExtra(EXTRA_WINDOW_HANDLE);
+            String command=null;
+            /*
+             * First look in Intent.data for the path; if not there, revert to
+             * the EXTRA_INITIAL_COMMAND location.
+             */
+            Uri uri=myIntent.getData();
+            if(uri!=null)
+            {
+              String s=uri.getScheme();
+              if(s!=null && s.toLowerCase().equals("file"))
+              {
+                command=uri.getPath();
+                if(command!=null)
+                {
+                  // Append any arguments.
+                  if(null!=(s=uri.getFragment())) command+=" "+s;
+                }
+              }
+            }
+            if(command==null) command=myIntent.getStringExtra(EXTRA_INITIAL_COMMAND);
+            if(command==null)
+            {
+              // The calling application failed to provide a script path but apparently wants a terminal,
+              // so open a terminal without an initial command.
+              command="";
+            }
             if (handle != null) {
                 // Target the request at an existing window if open
-                handle = appendToWindow(handle, myIntent.getStringExtra(EXTRA_INITIAL_COMMAND));
+                handle = appendToWindow(handle, command);
             } else {
                 // Open a new window
-                handle = openNewWindow(myIntent.getStringExtra(EXTRA_INITIAL_COMMAND));
+                handle = openNewWindow(command);
             }
             Intent result = new Intent();
             result.putExtra(EXTRA_WINDOW_HANDLE, handle);
