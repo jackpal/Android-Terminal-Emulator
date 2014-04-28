@@ -82,7 +82,7 @@
                 android:label="@string/window_list" />
         <service android:name="TermService" />
 	    <activity
-	     android:label="Script shortcut"
+	     android:label="Term shortcut"
 	     android:name="jackpal.androidterm.shortcuts.AddShortcut"
 	     android:launchMode="singleTop"
 	     android:theme="@android:style/Theme.Translucent.NoTitleBar"

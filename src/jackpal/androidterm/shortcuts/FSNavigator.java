@@ -1,5 +1,14 @@
 //From the desk of Frank P. Westlake; public domain.
 package jackpal.androidterm.shortcuts;
+/*
+ * This is from another program I wrote and is still being modified for this one,
+ * so some of the variables will be changed, removed, or replaced by constants.
+ * 
+ * A menu will be added to allow color theme change, font size change, root allow/disallow,
+ * and other features. I like this navigator more than others I've used so I hope to make it
+ * easily copied to other applications, perhaps also as a separate application.
+ * 
+ */
 
 import android.graphics.            Typeface;
 import android.net.                 Uri;
@@ -7,8 +16,8 @@ import android.os.Environment;
 import android.view.                Gravity;
 import android.view.                KeyEvent;
 import android.view.                View;
+import android.content.Context;
 import android.content.             SharedPreferences;
-import android.preference.          PreferenceManager;
 import android.widget.              HorizontalScrollView;
 import android.widget.              ImageView;
 import android.widget.              LinearLayout;
@@ -47,7 +56,7 @@ boolean setColors=false;//true;
     setTitle("File Selector");
     super.onCreate(savedInstanceState);
     getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    SP=            PreferenceManager.getDefaultSharedPreferences(context);
+    SP=getSharedPreferences("shortcuts", Context.MODE_PRIVATE);
 
     Intent intent= getIntent();
     if(null==(chdir(intent.getData().getPath()))) chdir(Environment.getRootDirectory());
@@ -56,6 +65,20 @@ boolean setColors=false;//true;
     if(intent.hasExtra("allowPathEntry"))  allowPathEntry=intent.getBooleanExtra("allowFileEntry", allowPathEntry);
     if(intent.hasExtra("colorScheme"))     colorScheme=intent.getStringExtra("colorScheme");
     setColorScheme();
+//    makeView();
+  }
+  ////////////////////////////////////////////////////////////
+  public void onPause()
+  {
+    super.onPause();
+    SP.edit().putString("lastDirectory", getCanonicalPath(cd)).commit();
+  }
+  ////////////////////////////////////////////////////////////
+  public void onResume()
+  {
+    super.onResume();
+    String lastDirectory=SP.getString("lastDirectory", null);
+    if(lastDirectory!=null) chdir(lastDirectory);
     makeView();
   }
   ////////////////////////////////////////////////////////////
@@ -122,6 +145,11 @@ boolean setColors=false;//true;
     if(newFile)
     {
       tv=new EditText(context);
+/*
+ * A future option will be the curent path mirrored in the input window, 
+ * but I don't have a menu built yet.
+      tv.setText(getCanonicalPath(cd));      tv.setSelectAllOnFocus(true);
+ */
            if(allowPathEntry) tv.setHint("Write in a path to go to.");
       else if(allowFileEntry) tv.setHint("Enter new file name here.");
 //      tv.setSingleLine();
