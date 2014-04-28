@@ -81,6 +81,34 @@
         <activity android:name="WindowList"
                 android:label="@string/window_list" />
         <service android:name="TermService" />
+	    <activity
+	     android:label="Script shortcut"
+	     android:name="jackpal.androidterm.shortcuts.AddShortcut"
+	     android:launchMode="singleTop"
+	     android:theme="@android:style/Theme.Translucent.NoTitleBar"
+	     android:configChanges="orientation|keyboard|keyboardHidden"
+	    >
+	      <intent-filter>
+	        <action android:name="android.intent.action.MAIN" />
+	      </intent-filter>
+	      <intent-filter>
+	        <action android:name="android.intent.action.CREATE_SHORTCUT" />
+	      </intent-filter>
+	      <intent-filter>
+	        <category android:name="android.intent.category.DEFAULT" />
+	        <data     android:mimeType="text/*" />
+	      </intent-filter>
+	    </activity>
+	    <activity
+	      android:name="jackpal.androidterm.shortcuts.FSNavigator"
+	      android:label="FSNavigator"
+	      android:launchMode="singleTop"
+	      android:configChanges="orientation|keyboardHidden"
+	    >
+	      <intent-filter>
+	        <action android:name="android.intent.action.MAIN" />
+	      </intent-filter>
+	    </activity>
         <meta-data
             android:name="com.sec.android.support.multiwindow"
             android:value="true">
