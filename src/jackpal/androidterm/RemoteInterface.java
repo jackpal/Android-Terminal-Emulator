@@ -110,6 +110,7 @@ public class RemoteInterface extends Activity {
                 command=uri.getPath();
                 if(command!=null)
                 {
+                  command=quoteForBash(command);
                   // Append any arguments.
                   if(null!=(s=uri.getFragment())) command+=" "+s;
                 }
