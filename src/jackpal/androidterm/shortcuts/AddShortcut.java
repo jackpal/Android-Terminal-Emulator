@@ -99,6 +99,7 @@ public class      AddShortcut
 android.net.Uri uri=new android.net.Uri.Builder()
                                    .scheme("File")
                                    .path(path)
+                                   .fragment(arguments)
                                    .build();
     int    shortcutColor=Long.decode(inputs[COLOR].getText().toString()).intValue();
     Intent target=  new Intent().setClassName(pkg_jackpal, pkg_jackpal+".RemoteInterface");
