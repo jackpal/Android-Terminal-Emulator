@@ -2,6 +2,7 @@
 package jackpal.androidterm.shortcuts;
 
 import android.app.        Activity;
+import android.app.AlertDialog;
 import android.content.    Context;
 import android.content.    DialogInterface;
 import android.content.    Intent;
@@ -11,6 +12,9 @@ import android.os.         Bundle;
 import android.os.         Environment;
 import android.preference. PreferenceManager;
 import android.widget.     EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import java.io.            File;
 import jackpal.androidterm.R;
@@ -52,41 +56,66 @@ public class      AddShortcut
     else
     {
       String name=path.replaceAll(".*/", "");
-      GetInput.get(
-        context
-        , OP_MAKE_SHORTCUT
-        , "ICON"
-        , new String[]
-            {
-              "Arguments", ""
-            , "Icon label; text appearing below the icon", name
-            , "Icon text; leave blank to use default icon",   ""
-            , "Icon color", SP.getString("colorShortcut", "0xFFFFFFFF")
-            }
-        , "OK"
-        , null
-        , "CANCEL"
-        , new GetInput.GetInputCallback()
+      final AlertDialog.Builder  alert=new AlertDialog.Builder(context);
+      LinearLayout   lv=new LinearLayout(context);
+                     lv.setOrientation(LinearLayout.VERTICAL);
+      final EditText et[]=new EditText[4];
+      for(int i=0, n=et.length; i<n; i++) {et[i]=new EditText(context); et[i].setSingleLine(true);}
+      et[0].setHint("--example=\"a\"");
+      et[1].setText(name);
+      et[2].setHint(name);
+      et[3].setHint("#FF00FF00");
+
+      lv.addView(layoutHorizontal("Arguments:", et[0]));
+      lv.addView(layoutHorizontal("Label:",     et[1]));
+      lv.addView(layoutHorizontal("For a text icon fill in text and color value; leave empty to use the application's icon:", null));
+
+      LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+      LinearLayout   lh=new LinearLayout(context);
+                     lh.setOrientation(LinearLayout.HORIZONTAL);
+                     lh.addView(et[2], lp);
+                     lh.addView(et[3], lp);
+      lv.addView(lh);
+      ScrollView     sv=new ScrollView(context);
+                     sv.setFillViewport(true);
+                     sv.addView(lv);
+
+      alert.setView(sv);
+      alert.setTitle("ICON DATA");
+      alert.setPositiveButton(
+        android.R.string.yes
+      , new DialogInterface.OnClickListener()
         {
-          public void getInputCallback(int operation, int which, EditText[] edits)
+          public void onClick(DialogInterface dialog, int which)
           {
-            switch(which)
-            {
-              case DialogInterface.BUTTON_POSITIVE:
-                switch(operation)
-                {
-                  case OP_MAKE_SHORTCUT: buildShortcut(path, edits); break;
-                }
-                break;
-              case DialogInterface.BUTTON_NEUTRAL:
-              case DialogInterface.BUTTON_NEGATIVE:
-                finish();
-                break;
-            }
+             buildShortcut(path, et);
           }
         }
       );
+      alert.setNegativeButton(
+        android.R.string.no
+      , new DialogInterface.OnClickListener()
+        {
+          public void onClick(DialogInterface dialog, int which)
+          {
+            finish();
+          }
+        }
+      );
+      alert.show();
     }
+  }
+  //////////////////////////////////////////////////////////////////////
+  LinearLayout layoutHorizontal(String text, EditText et)
+  {
+      LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+      TextView     tv=new TextView(context);
+                   tv.setText(text);
+      LinearLayout lh=new LinearLayout(context);
+                   lh.setOrientation(LinearLayout.HORIZONTAL);
+                   lh.addView(tv, lp);
+      if(et!=null) lh.addView(et, lp);
+      return(lh);
   }
   //////////////////////////////////////////////////////////////////////
   void buildShortcut(final String path, EditText inputs[])
@@ -96,12 +125,14 @@ public class      AddShortcut
     String shortcutName= inputs[NAME].getText().toString();
     String shortcutText= inputs[TEXT].getText().toString();
     String arguments=    inputs[ARGS].getText().toString();
-android.net.Uri uri=new android.net.Uri.Builder()
-                                   .scheme("File")
-                                   .path(path)
-                                   .fragment(arguments)
-                                   .build();
-    int    shortcutColor=Long.decode(inputs[COLOR].getText().toString()).intValue();
+    android.net.Uri uri=new android.net.Uri.Builder()
+                                       .scheme("File")
+                                       .path(path)
+                                       .fragment(arguments)
+                                       .build();
+    int    shortcutColor=0xFFFFFFFF;
+    String s=inputs[COLOR].getText().toString();
+    if(s!=null && !s.equals("")) shortcutColor=Long.decode(s).intValue();
     Intent target=  new Intent().setClassName(pkg_jackpal, pkg_jackpal+".RemoteInterface");
            target.setAction(pkg_jackpal+".RUN_SCRIPT");
            target.setDataAndType(uri, "text/plain");
