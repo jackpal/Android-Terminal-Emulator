@@ -54,6 +54,8 @@ boolean setColors=false;//true;
   public void onCreate(android.os.Bundle savedInstanceState)
   {
     setTitle("File Selector");
+    setTheme(android.R.style.Theme);
+//    setTheme(android.R.style.Theme_Light);
     super.onCreate(savedInstanceState);
     getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     SP=getSharedPreferences("shortcuts", Context.MODE_PRIVATE);

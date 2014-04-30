@@ -81,7 +81,7 @@ public class      AddShortcut
                      sv.addView(lv);
 
       alert.setView(sv);
-      alert.setTitle("ICON DATA");
+      alert.setTitle(name);
       alert.setPositiveButton(
         android.R.string.yes
       , new DialogInterface.OnClickListener()
@@ -93,7 +93,7 @@ public class      AddShortcut
         }
       );
       alert.setNegativeButton(
-        android.R.string.no
+        android.R.string.cancel
       , new DialogInterface.OnClickListener()
         {
           public void onClick(DialogInterface dialog, int which)
@@ -128,11 +128,34 @@ public class      AddShortcut
     android.net.Uri uri=new android.net.Uri.Builder()
                                        .scheme("File")
                                        .path(path)
-                                       .fragment(arguments)
+                                       .fragment(arguments!=null?arguments:"")
                                        .build();
     int    shortcutColor=0xFFFFFFFF;
     String s=inputs[COLOR].getText().toString();
-    if(s!=null && !s.equals("")) shortcutColor=Long.decode(s).intValue();
+    if(s!=null && !s.equals("")) try
+    {
+      shortcutColor=Long.decode(s).intValue();
+    }
+    catch(NumberFormatException nfe)
+    {
+      AlertDialog.Builder ad=new AlertDialog.Builder(context)//, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
+                                 .setPositiveButton(
+                                   android.R.string.yes
+                                 , new DialogInterface.OnClickListener()
+                                   {
+                                     public void onClick(DialogInterface dialog, int which)
+                                     {
+                                       makeShortcut(path);
+                                     }
+                                   }
+                                 )
+                                 .setTitle(android.R.string.dialog_alert_title)
+                                 .setMessage(
+                                   nfe.getLocalizedMessage()
+                                 );
+      ad.show();
+      return;
+    }
     Intent target=  new Intent().setClassName(pkg_jackpal, pkg_jackpal+".RemoteInterface");
            target.setAction(pkg_jackpal+".RUN_SCRIPT");
            target.setDataAndType(uri, "text/plain");
