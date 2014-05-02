@@ -420,6 +420,10 @@ class TranscriptScreen implements Screen {
     }
 
     public void resize(int columns, int rows, int style) {
+        // Ensure backing store will be large enough to hold the whole screen 
+        if (rows > mTotalRows) {
+            mTotalRows = rows;
+        }
         init(columns, mTotalRows, rows, style);
     }
 
