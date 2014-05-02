@@ -15,6 +15,8 @@ import android.net.                 Uri;
 import android.os.Environment;
 import android.view.                Gravity;
 import android.view.                KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.                View;
 import android.content.Context;
 import android.content.             SharedPreferences;
@@ -28,10 +30,12 @@ import java.io.                     File;
 import java.io.                     IOException;
 import android.content.             Intent;
 import jackpal.androidterm.         R;
+import jackpal.androidterm.compat.AndroidCompat;
 
 public class      FSNavigator
        extends    android.app.Activity
 {
+  public final int                     ACTION_THEME_SWAP=           0x00000100;
   final   int                          BUTTON_SIZE=                 150;
   final   int                          VIEW_ID_LL=                  0;
   final   int                          VIEW_ID_TV=                  1;
@@ -48,17 +52,32 @@ public class      FSNavigator
   private boolean                      allowFileEntry=              false;
   private boolean                      allowPathEntry=              true;
   public SharedPreferences             SP=                          null;
-boolean setColors=false;//true;
+  private int                          theme=                       android.R.style.Theme_Light;
+  boolean setColors=false;//true;
+  private int                          build_version=               android.os.Build.VERSION.SDK_INT;
 
+  ////////////////////////////////////////////////////////////
+  private void swapTheme()
+  {
+    switch(theme)
+    {
+      case android.R.style.Theme_Light: theme=android.R.style.Theme;       break;
+      case android.R.style.Theme:       theme=android.R.style.Theme_Light; break;
+      default: return;
+    }
+    SP.edit().putInt("theme", theme).commit();
+    startActivityForResult(getIntent().addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT), -1);
+    finish();
+  }
   ////////////////////////////////////////////////////////////
   public void onCreate(android.os.Bundle savedInstanceState)
   {
-    setTitle("File Selector");
-    setTheme(android.R.style.Theme);
-//    setTheme(android.R.style.Theme_Light);
     super.onCreate(savedInstanceState);
-    getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    setTitle("File Selector");
     SP=getSharedPreferences("shortcuts", Context.MODE_PRIVATE);
+    theme=SP.getInt("theme", theme);
+    setTheme(theme);
+    getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
     Intent intent= getIntent();
     if(null==(chdir(intent.getData().getPath()))) chdir(Environment.getRootDirectory());
@@ -284,13 +303,19 @@ boolean setColors=false;//true;
     ll.setGravity(android.view.Gravity.FILL);
     if(setColors) ll.setBackgroundColor(color_back);
     ll.setId(0);
-    //ll.setTag(R.id.tag_filename, name);
     ll.setOnClickListener(directoryListener);
 // FILENAME
     TextView tv=new TextView(context);
-//    tv.setText(name+"\n");
-    //tv.setText(name.equals("..")?cd.getPath():name);
-    tv.setText(name.equals("..")?"["+cd.getPath()+"]":name);//"↖"
+    if(name.equals(".."))
+    {
+      tv.setText("["+cd.getPath()+"]");
+      tv.setGravity(Gravity.CENTER);
+    }
+    else
+    {
+      tv.setText(name);
+      tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+    }
     tv.setClickable(true);
     tv.setLongClickable(true);
     tv.setTag(R.id.tag_filename, name);
@@ -298,8 +323,6 @@ boolean setColors=false;//true;
     tv.setMaxLines(1);
     if(setColors) tv.setTextColor(color_text);
     tv.setTextSize(textLg);
-//    tv.setTag(entry.getName());
-    tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
     tv.setPadding(10, 5, 10, 5);
     tv.setLayoutParams(
       new LinearLayout.LayoutParams(
@@ -310,7 +333,6 @@ boolean setColors=false;//true;
     );
     HorizontalScrollView hv=new HorizontalScrollView(context);
     hv.addView(tv);
-//    hv.setTag(R.id.tag_filename, name);
     hv.setFillViewport(true);
     hv.setOnClickListener(directoryListener);
     hv.setLayoutParams(
@@ -424,6 +446,30 @@ boolean setColors=false;//true;
   String getCanonicalPath(File file)
   {
     try{return(file.getCanonicalPath());}catch(IOException e){return(file.getPath());}
+  }
+  //////////////////////////////////////////////////////////////////////
+  public boolean onCreateOptionsMenu(Menu menu)
+//  public boolean onPrepareOptionsMenu(Menu menu)
+  {
+    super.onCreateOptionsMenu(menu);
+//    super.onPrepareOptionsMenu(menu);    menu.clear();
+    menu.add(0, ACTION_THEME_SWAP,  0,  "Change theme");
+    return(true);
+  }
+  //////////////////////////////////////////////////////////////////////
+  public boolean onOptionsItemSelected(MenuItem item)
+  {
+    super.onOptionsItemSelected(item);
+    return(doOptionsItem(item.getItemId()));
+  }
+  //////////////////////////////////////////////////////////////////////
+  public boolean doOptionsItem(int itemId)
+  {
+    switch(itemId)
+    {
+      case ACTION_THEME_SWAP: swapTheme();  return(true);
+    }
+    return(false);
   }
   //////////////////////////////////////////////////////////////////////
 }
