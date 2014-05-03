@@ -134,7 +134,10 @@ class UnicodeTranscript {
      *
      * @param newColumns The number of columns the screen should have.
      * @param newRows The number of rows the screen should have.
-     * @param cursor An int[2] containing the cursor location.
+     * @param cursor An int[2] containing the current cursor location; if the
+     *        resize succeeds, this will be updated with the new cursor
+     *        location.  If null, don't do cursor-position-dependent tasks such
+     *        as trimming blank lines during the resize.
      * @return Whether or not the resize succeeded.  If the resize failed,
      *         the caller may "resize" the screen by copying out all the data
      *         and placing it into a new transcript of the correct size.
@@ -161,7 +164,7 @@ class UnicodeTranscript {
                 lineWrap[index] = false;
             }
             shift = -activeTranscriptRows;
-        } else if (shift > 0 && cursor[1] != screenRows - 1) {
+        } else if (shift > 0 && cursor != null && cursor[1] != screenRows - 1) {
             /* When shrinking the screen, we want to hide blank lines at the
                bottom in preference to lines at the top of the screen */
             Object[] lines = mLines;
@@ -225,7 +228,9 @@ class UnicodeTranscript {
         } else {
             mActiveTranscriptRows += shift;
         }
-        cursor[1] -= shift;
+        if (cursor != null) {
+            cursor[1] -= shift;
+        }
         mScreenRows = newRows;
 
         return true;
