@@ -1,6 +1,6 @@
 package jackpal.androidterm.emulatorview;
 
-public final class TextStyle {
+final class TextStyle {
     // Effect bitmasks:
     final static int fxNormal = 0;
     final static int fxBold = 1; // Originally Bright
@@ -35,5 +35,10 @@ public final class TextStyle {
 
     static int decodeEffect(int encodedColor) {
         return (encodedColor >> 18) & 0x3f;
+    }
+
+    private TextStyle() {
+        // Prevent instantiation
+        throw new UnsupportedOperationException();
     }
 }
