@@ -823,7 +823,11 @@ class TerminalEmulator {
                 mUTF8ToFollow = 0;
                 mUTF8ByteBuffer.clear();
                 emit(UNICODE_REPLACEMENT_CHAR);
-                return true;
+
+                /* The Unicode standard (section 3.9, definition D93) requires
+                 * that we now attempt to process this byte as though it were
+                 * the beginning of another possibly-valid sequence */
+                return handleUTF8Sequence(b);
             }
 
             mUTF8ByteBuffer.put(b);
