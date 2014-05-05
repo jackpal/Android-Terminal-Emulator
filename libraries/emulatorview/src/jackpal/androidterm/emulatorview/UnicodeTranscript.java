@@ -875,9 +875,25 @@ class FullUnicodeLine {
         int charWidth = UnicodeTranscript.charWidth(codePoint);
         int oldCharWidth = UnicodeTranscript.charWidth(text, pos);
 
+        if (charWidth == 2 && column == columns - 1) {
+            // A width 2 character doesn't fit in the last column.
+            codePoint = ' ';
+            charWidth = 1;
+        }
+
+        boolean wasExtraColForWideChar = false;
+        if (oldCharWidth == 2 && column > 0) {
+            /* If the previous screen column starts at the same offset in the
+             * array as this one, this column must be the second column used
+             * by an East Asian wide character */
+            wasExtraColForWideChar = (findStartOfColumn(column - 1) == pos);
+        }
+
         // Get the number of elements in the mText array this column uses now
         int oldLen;
-        if (column + oldCharWidth < columns) {
+        if (wasExtraColForWideChar && column + 1 < columns) {
+            oldLen = findStartOfColumn(column + 1) - pos;
+        } else if (column + oldCharWidth < columns) {
             oldLen = findStartOfColumn(column+oldCharWidth) - pos;
         } else {
             oldLen = spaceUsed - pos;
@@ -927,44 +943,72 @@ class FullUnicodeLine {
         }
 
         /*
-         * Handle cases where charWidth changes
-         * width 1 -> width 2: should clobber the contents of the next
-         * column (if next column contains wide char, need to pad with a space)
-         * width 2 -> width 1: pad with a space after the new character
+         * Handle cases where we need to pad with spaces to preserve column
+         * alignment
+         *
+         * width 2 -> width 1: pad with a space before or after the new
+         * character, depending on which of the two previously-occupied columns
+         * we wrote into
+         *
+         * inserting width 2 character into the second column of an existing
+         * width 2 character: pad with a space before the new character
          */
-        if (oldCharWidth == 2 && charWidth == 1) {
-            // Pad with a space
+        if (oldCharWidth == 2 && charWidth == 1 || wasExtraColForWideChar && charWidth == 2) {
             int nextPos = pos + newLen;
+            char[] newText = text;
             if (spaceUsed + 1 > text.length) {
                 // Array needs growing
-                char[] newText = new char[text.length + columns];
-                System.arraycopy(text, 0, newText, 0, nextPos);
-
-                System.arraycopy(text, nextPos, newText, nextPos + 1, spaceUsed - nextPos);
-                mText = text = newText;
-            } else {
-                System.arraycopy(text, nextPos, text, nextPos + 1, spaceUsed - nextPos);
+                newText = new char[text.length + columns];
+                System.arraycopy(text, 0, newText, 0, wasExtraColForWideChar ? pos : nextPos);
             }
-            text[nextPos] = ' ';
+
+            if (wasExtraColForWideChar) {
+                // Padding goes before the new character
+                System.arraycopy(text, pos, newText, pos + 1, spaceUsed - pos);
+                newText[pos] = ' ';
+            } else {
+                // Padding goes after the new character
+                System.arraycopy(text, nextPos, newText, nextPos + 1, spaceUsed - nextPos);
+                newText[nextPos] = ' ';
+            }
+
+            if (newText != text) {
+                // Update mText to point to the newly grown array
+                mText = text = newText;
+            }
 
             // Update space used
-            ++offset[0];
+            spaceUsed = ++offset[0];
 
-            // Correct the offset for the next column to reflect width change
-            if (column == 0) {
-                offset[1] = (short) (newLen - 1);
-            } else if (column + 1 < columns) {
-                offset[column + 1] = (short) (offset[column] + newLen - 1);
+            // Correct the offset for the just-modified column to reflect
+            // width change
+            if (wasExtraColForWideChar) {
+                ++offset[column];
+                ++pos;
+            } else {
+                if (column == 0) {
+                    offset[1] = (short) (newLen - 1);
+                } else if (column + 1 < columns) {
+                    offset[column + 1] = (short) (offset[column] + newLen - 1);
+                }
+                ++column;
             }
-            ++column;
+
             ++shift;
-        } else if (oldCharWidth == 1 && charWidth == 2) {
-            if (column == columns - 1) {
-                // A width 2 character doesn't fit in the last column.
-                text[pos] = ' ';
-                offset[0] = (short) (pos + 1);
-                shift = 0;
-            } else if (column == columns - 2) {
+        }
+        
+        /*
+         * Handle cases where we need to clobber the contents of the next
+         * column in order to preserve column alignment
+         *
+         * width 1 -> width 2: should clobber the contents of the next
+         * column (if next column contains wide char, need to pad with a space)
+         *
+         * inserting width 2 character into the second column of an existing
+         * width 2 character: same
+         */
+        if (oldCharWidth == 1 && charWidth == 2 || wasExtraColForWideChar && charWidth == 2) {
+            if (column == columns - 2) {
                 // Correct offset for the next column to reflect width change
                 offset[column + 1] = (short) (offset[column] - 1);
 
