@@ -1,0 +1,100 @@
+East Asian wide characters in the Supplementary Ideographic Plane (thanks to
+http://www.i18nguy.com/unicode/supplementary-test.html):
+
+𠜎𠜱𠝹𠱓𠱸
+
+Mixed East Asian wide characters from the BMP and SIP:
+
+中文：𠜎𠜱，你好，𠝹国。
+𠱸，中文：你好，𠝹国。
+
+Narrow characters and mixed east Asian wide characters from the BMP and SIP, in
+an 80-column line:
+xxxxxxxxxx中文:𠜎𠜱，你好，xx𠝹国。xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好xxxxxxxxxx
+xxxxxxxxxx𠱸,中文：你xx好，𠝹国。xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx好
+
+Overwriting an East Asian wide character from the SIP with a narrow character:
+
+中文：𠜎 ESC [ 2 D x:
+中文：𠜎[2Dx
+
+xxx中文：𠜎 ESC [ 2 D x:
+xxx中文：𠜎[2Dx
+
+Overwriting an East Asian wide character from the SIP with a narrow character,
+in the middle of an 80-column line with mixed narrow and wide chars:
+
+xxx[...]xxx中文：𠜎xxx[...]xxx你好xESC [ 27 G y:
+xxxxxxxxxxxxxxxxxxxx中文：𠜎xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[27Gy
+
+xxx[...]xxx中文：𠜎。xxx[...]xxx你好ESC [ 27 G y:
+xxxxxxxxxxxxxxxxxxxx中文：𠜎。xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好[27Gy
+
+Overwriting an East Asian wide character from the SIP with an East Asian wide
+character from the BMP:
+
+中文：𠜎 ESC [ 2 D 国:
+中文：𠜎[2D国
+
+xxx中文：𠜎 ESC [ 2 D 国:
+xxx中文：𠜎[2D国
+
+Overwriting an East Asian wide character from the SIP with an East Asian wide
+character from the BMP in the middle of an 80-column line with mixed narrow and
+wide chars:
+
+xxx[...]xxx中文：𠜎xxx[...]xxx你好xESC [ 27 G 国:
+xxxxxxxxxxxxxxxxxxxx中文：𠜎xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[27G国
+
+xxx[...]xxx中文：𠜎。xxx[...]xxx你好ESC [ 27 G 国:
+xxxxxxxxxxxxxxxxxxxx中文：𠜎。xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好[27G国
+
+Overwriting an East Asian wide character from the BMP with an East Asian wide
+character from the SIP:
+
+中文：国 ESC [ 2 D 𠜎:
+中文：国[2D𠜎
+
+xxx中文：国 ESC [ 2 D 𠜎:
+xxx中文：国[2D𠜎
+
+Overwriting an East Asian wide character from the BMP with an East Asian wide
+character from the SIP in the middle of an 80-column line with mixed narrow and
+wide chars:
+
+xxx[...]xxx中文：国xxx[...]xxx你好xESC [ 27 G 𠜎:
+xxxxxxxxxxxxxxxxxxxx中文：国xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[27G𠜎
+
+xxx[...]xxx中文：国。xxx[...]xxx你好ESC [ 27 G 𠜎:
+xxxxxxxxxxxxxxxxxxxx中文：国。xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好[27G𠜎
+
+Inserting a narrow character into the middle of an East Asian wide character
+from the SIP in the middle of an 80-column line with mixed narrow and wide
+chars:
+
+xxx[...]xxx中文：𠜎xxx[...]xxx你好xESC [ 28 G y:
+xxxxxxxxxxxxxxxxxxxx中文：𠜎xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[28Gy
+
+xxx[...]xxx中文：𠜎。xxx[...]xxx你好ESC [ 28 G y:
+xxxxxxxxxxxxxxxxxxxx中文：𠜎。xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好[28Gy
+
+Inserting an East Asian wide character from the SIP into the middle of an East
+Asian wide character from the BMP in the middle of an 80-column line with mixed
+narrow and wide chars:
+
+xxx[...]xxx中文：国xxx[...]xxx你好xESC [ 28 G 𠜎:
+xxxxxxxxxxxxxxxxxxxx中文：国xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[28G𠜎
+
+xxx[...]xxx中文：国。xxx[...]xxx你好ESC [ 28 G 𠜎:
+xxxxxxxxxxxxxxxxxxxx中文：国。xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好[28G𠜎
+
+Inserting an East Asian wide character from the BMP into the middle of an East
+Asian wide character from the SIP in the middle of an 80-column line with mixed
+narrow and wide chars:
+
+xxx[...]xxx中文：𠜎xxx[...]xxx你好xESC [ 28 G 国:
+xxxxxxxxxxxxxxxxxxxx中文：𠜎xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[28G国
+
+xxx[...]xxx中文：𠜎。xxx[...]xxx你好ESC [ 28 G 国:
+xxxxxxxxxxxxxxxxxxxx中文：𠜎。xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好[28G国
+

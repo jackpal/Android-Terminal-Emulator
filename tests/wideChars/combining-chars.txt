@@ -1,0 +1,57 @@
+East Asian wide characters with combining diacritics:
+
+中文 [combining low line]:
+中文̲
+
+xxx中[combining low line]文:
+xxx中̲文
+
+Overwriting an East Asian wide character with combining diacritic with an East
+Asian wide character without combining diacritic, in the middle of an 80-column
+line with mixed narrow and wide chars:
+
+xxx[...]xxx中文[combining low line]xxx[...]xxx你好ESC [ 23 G 国:
+xxxxxxxxxxxxxxxxxxxx中文̲xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好[23G国
+
+xxx[...]xxx中文[combining low line]。xxx[...]xxx你好xESC [ 23 G 国:
+xxxxxxxxxxxxxxxxxxxx中文̲。xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[23G国
+
+Overwriting an East Asian wide character with another one with a combining
+diacritic, in the middle of an 80-column line with mixed narrow and wide chars:
+
+xxx[...]xxx中文xxx[...]xxx你好ESC [ 23 G 国[combining low line]:
+xxxxxxxxxxxxxxxxxxxx中文xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好[23G国̲
+
+xxx[...]xxx中文。xxx[...]xxx你好xESC [ 23 G 国[combining low line]:
+xxxxxxxxxxxxxxxxxxxx中文。xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[23G国̲
+
+Overwriting a narrow character with an East Asian wide character with a
+combining diacritic, in the middle of an 80-column line with mixed narrow and
+wide chars:
+
+xxx[...]xxx中文xxx[...]xxx你好xESC [ 25 G 。[combining low line]:
+xxxxxxxxxxxxxxxxxxxx中文xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[25G。̲
+
+xxx[...]xxx中y文xxx[...]xxx你好ESC [ 23 G ，[combining low line]:
+xxxxxxxxxxxxxxxxxxxx中y文xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好[23G，̲
+
+Overwriting a narrow character with a combining diacritic with an East Asian
+wide character, in the middle of an 80-column line with mixed narrow and
+widechars:
+
+xxxxxxxxàxxx[...]xxx中文xxx[...]xxx你好xESC [ 9 G 中:
+xxxxxxxxàxxxxxxxxxxx中文xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[9G中
+
+xxxxxxxxàxxx[...]xxx中文xxx[...]xxx你好xESC [ 8 G 中:
+xxxxxxxxàxxxxxxxxxxx中文xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[8G中
+
+Overwriting an East Asian wide character with combining diacritic with a narrow
+character without combining diacritic, in the middle of an 80-column line with
+mixed narrow and wide chars:
+
+xxx[...]xxx中文[combining low line]xxx[...]xxx你好ESC [ 23 G y:
+xxxxxxxxxxxxxxxxxxxx中文̲xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好[23Gy
+
+xxx[...]xxx中文[combining low line]。xxx[...]xxx你好xESC [ 23 G y:
+xxxxxxxxxxxxxxxxxxxx中文̲。xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[23Gy
+

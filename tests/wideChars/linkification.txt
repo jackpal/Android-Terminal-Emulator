@@ -1,0 +1,6 @@
+A link on a line with East Asian wide characters:
+中国国际航空公司 http://www.airchina.com/
+
+A link on a long line with East Asian wide characters (the link should be
+wrapped across two lines on an 80-column terminal):
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 中国国际航空公司 http://www.airchina.com/

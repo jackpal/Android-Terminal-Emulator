@@ -1,0 +1,16 @@
+Inserting a narrow character into the middle of an East Asian wide character:
+
+中国 ESC [ D x:
+中国[Dx
+
+xxx中文 ESC [ D x:
+xxx中文[Dx
+
+Inserting a narrow character into the middle of an East Asian wide character,
+in the middle of an 80-column line with mixed narrow and wide chars:
+
+xxx[...]xxx中文xxx[...]xxx你好xESC [ 24 G y:
+xxxxxxxxxxxxxxxxxxxx中文xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[24Gy
+
+xxx[...]xxx中文。xxx[...]xxx你好ESC [ 24 G y:
+xxxxxxxxxxxxxxxxxxxx中文。xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好[24Gy

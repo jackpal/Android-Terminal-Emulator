@@ -1,0 +1,10 @@
+Overwriting a letter with combining diacritic with a letter without in an
+80-column line:
+
+xxxxxMu[combining diaeresis]nchenxxx[...] ESC [ 7 G u:
+xxxxxMünchenxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx[7Gu
+
+Overwriting a letter without combining diacritic with a letter with combining diacritic in an 80-column line:
+
+xxxxMunchenxxx[...] ESC [ 6 G u [combining diaeresis]:
+xxxxMunchenxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx[6Gü
