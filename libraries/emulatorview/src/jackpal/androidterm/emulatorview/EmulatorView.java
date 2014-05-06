@@ -266,14 +266,30 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int createLinks(int row)
     {
         TranscriptScreen transcriptScreen = mEmulator.getScreen();
-        char [] result = transcriptScreen.getScriptLine(row);
+        char [] line = transcriptScreen.getScriptLine(row);
         int lineCount = 1;
 
         //Nothing to do if there's no text.
-        if(result == null)
+        if(line == null)
             return lineCount;
 
-        SpannableStringBuilder textToLinkify = new SpannableStringBuilder(new String(result));
+        /* If this is not a basic line, the array returned from getScriptLine()
+         * could have arbitrary garbage at the end -- find the point at which
+         * the line ends and only include that in the text to linkify.
+         *
+         * XXX: The fact that the array returned from getScriptLine() on a
+         * basic line contains no garbage is an implementation detail -- the
+         * documented behavior explicitly allows garbage at the end! */
+        int lineLen;
+        boolean textIsBasic = transcriptScreen.isBasicLine(row);
+        if (textIsBasic) {
+            lineLen = line.length;
+        } else {
+            // The end of the valid data is marked by a NUL character
+            for (lineLen = 0; line[lineLen] != 0; ++lineLen);
+        }
+
+        SpannableStringBuilder textToLinkify = new SpannableStringBuilder(new String(line, 0, lineLen));
 
         boolean lineWrap = transcriptScreen.getScriptLineWrap(row);
 
@@ -281,16 +297,28 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         while (lineWrap)
         {
             //Get next line
-            result = transcriptScreen.getScriptLine(row + lineCount);
+            int nextRow = row + lineCount;
+            line = transcriptScreen.getScriptLine(nextRow);
 
             //If next line is blank, don't try and append
-            if(result == null)
+            if(line == null)
                 break;
 
-            textToLinkify.append(new String(result));
+            boolean lineIsBasic = transcriptScreen.isBasicLine(nextRow);
+            if (textIsBasic && !lineIsBasic) {
+                textIsBasic = lineIsBasic;
+            }
+            if (lineIsBasic) {
+                lineLen = line.length;
+            } else {
+                // The end of the valid data is marked by a NUL character
+                for (lineLen = 0; line[lineLen] != 0; ++lineLen);
+            }
+
+            textToLinkify.append(new String(line, 0, lineLen));
 
             //Check if line after next is wrapped
-            lineWrap = transcriptScreen.getScriptLineWrap(row + lineCount);
+            lineWrap = transcriptScreen.getScriptLineWrap(nextRow);
             ++lineCount;
         }
 
@@ -299,6 +327,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         URLSpan [] urls = textToLinkify.getSpans(0, textToLinkify.length(), URLSpan.class);
         if(urls.length > 0)
         {
+            int columns = mColumns;
+
             //re-index row to 0 if it is negative
             int screenRow = row - mTopRow;
 
@@ -306,7 +336,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             URLSpan [][] linkRows = new URLSpan[lineCount][];
             for(int i=0; i<lineCount; ++i)
             {
-                linkRows[i] = new URLSpan[mColumns];
+                linkRows[i] = new URLSpan[columns];
                 Arrays.fill(linkRows[i], null);
             }
 
@@ -317,11 +347,52 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 int spanStart = textToLinkify.getSpanStart(url);
                 int spanEnd = textToLinkify.getSpanEnd(url);
 
-                //Build accurate indices for multi-line links
-                int startRow = spanStart / mColumns;
-                int startCol = spanStart % mColumns;
-                int endRow   = spanEnd   / mColumns;
-                int endCol   = spanEnd   % mColumns;
+                // Build accurate indices for links
+                int startRow;
+                int startCol;
+                int endRow;
+                int endCol;
+                if (textIsBasic) {
+                    // Basic line -- can assume one char per column
+                    startRow = spanStart / mColumns;
+                    startCol = spanStart % mColumns;
+                    endRow   = spanEnd   / mColumns;
+                    endCol   = spanEnd   % mColumns;
+                } else {
+                    /* Iterate over the line to get starting and ending columns
+                     * for this span */
+                    startRow = 0;
+                    startCol = 0;
+                    for (int i = 0; i < spanStart; ++i) {
+                        char c = textToLinkify.charAt(i);
+                        if (Character.isHighSurrogate(c)) {
+                            ++i;
+                            startCol += UnicodeTranscript.charWidth(c, textToLinkify.charAt(i));
+                        } else {
+                            startCol += UnicodeTranscript.charWidth(c);
+                        }
+                        if (startCol >= columns) {
+                            ++startRow;
+                            startCol %= columns;
+                        }
+                    }
+
+                    endRow = startRow;
+                    endCol = startCol;
+                    for (int i = spanStart; i < spanEnd; ++i) {
+                        char c = textToLinkify.charAt(i);
+                        if (Character.isHighSurrogate(c)) {
+                            ++i;
+                            endCol += UnicodeTranscript.charWidth(c, textToLinkify.charAt(i));
+                        } else {
+                            endCol += UnicodeTranscript.charWidth(c);
+                        }
+                        if (endCol >= columns) {
+                            ++endRow;
+                            endCol %= columns;
+                        }
+                    }
+                }
 
                 //Fill linkRows with the URL where appropriate
                 for(int i=startRow; i <= endRow; ++i)
