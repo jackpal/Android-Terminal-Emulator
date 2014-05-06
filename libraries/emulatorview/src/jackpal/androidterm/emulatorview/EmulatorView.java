@@ -315,7 +315,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             {
                 URLSpan url = urls[urlNum];
                 int spanStart = textToLinkify.getSpanStart(url);
-                int spanEnd = textToLinkify.getSpanEnd(url) - 1;
+                int spanEnd = textToLinkify.getSpanEnd(url);
 
                 //Build accurate indices for multi-line links
                 int startRow = spanStart / mColumns;
