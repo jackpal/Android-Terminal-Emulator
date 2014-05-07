@@ -563,9 +563,10 @@ class UnicodeTranscript {
      * Get the contents of a line (or part of a line) of the transcript.
      *
      * The char[] array returned may be part of the internal representation
-     * of the line -- make a copy first if you want to modify it.  The last
-     * character requested will be followed by a NUL; the contents of the rest
-     * of the array could potentially be garbage.
+     * of the line -- make a copy first if you want to modify it.  The returned
+     * array may be longer than the requested portion of the transcript; in
+     * this case, the last character requested will be followed by a NUL, and
+     * the contents of the rest of the array could potentially be garbage.
      *
      * @param row The row number to get (-mActiveTranscriptRows..mScreenRows-1)
      * @param x1 The first screen position that's wanted
@@ -602,6 +603,17 @@ class UnicodeTranscript {
         // Figure out how long the array needs to be
         FullUnicodeLine line = (FullUnicodeLine) mLines[row];
         char[] rawLine = line.getLine();
+
+        if (x1 == 0 && x2 == columns) {
+            /* We can return the raw line after ensuring it's NUL-terminated at
+             * the appropriate place */
+            int spaceUsed = line.getSpaceUsed();
+            if (spaceUsed < rawLine.length) {
+                rawLine[spaceUsed] = 0;
+            }
+            return rawLine;
+        }
+
         x1 = line.findStartOfColumn(x1);
         if (x2 < columns) {
             x2 = line.findStartOfColumn(x2);
