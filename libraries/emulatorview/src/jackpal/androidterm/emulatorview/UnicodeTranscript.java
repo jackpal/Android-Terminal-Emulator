@@ -387,7 +387,7 @@ class UnicodeTranscript {
                 } else {
                     // XXX There has to be a faster way to do this ...
                     int extDstRow = dy + y;
-                    char[] tmp = getLine(sy + y, sx, sx + w);
+                    char[] tmp = getLine(sy + y, sx, sx + w, true);
                     if (tmp == null) {
                         // Source line was blank
                         blockSet(dx, extDstRow, w, 1, ' ', mDefaultStyle);
@@ -425,7 +425,7 @@ class UnicodeTranscript {
                     System.arraycopy(lines[srcRow], sx, lines[dstRow], dx, w);
                 } else {
                     int extDstRow = dy + y2;
-                    char[] tmp = getLine(sy + y2, sx, sx + w);
+                    char[] tmp = getLine(sy + y2, sx, sx + w, true);
                     if (tmp == null) {
                         // Source line was blank
                         blockSet(dx, extDstRow, w, 1, ' ', mDefaultStyle);
@@ -606,6 +606,17 @@ class UnicodeTranscript {
      * @return A char[] array containing the requested contents
      */
     public char[] getLine(int row, int x1, int x2) {
+        return getLine(row, x1, x2, false);
+    }
+
+    /**
+     * Get the whole contents of a line of the transcript.
+     */
+    public char[] getLine(int row) {
+        return getLine(row, 0, mColumns, true);
+    }
+
+    private char[] getLine(int row, int x1, int x2, boolean strictBounds) {
         if (row < -mActiveTranscriptRows || row > mScreenRows-1) {
             throw new IllegalArgumentException();
         }
@@ -648,7 +659,15 @@ class UnicodeTranscript {
 
         x1 = line.findStartOfColumn(x1);
         if (x2 < columns) {
-            x2 = line.findStartOfColumn(x2);
+            int endCol = x2;
+            x2 = line.findStartOfColumn(endCol);
+            if (!strictBounds && endCol > 0 && endCol < columns - 1) {
+                /* If the end column is the middle of an East Asian wide
+                 * character, include that character in the bounds */
+                if (x2 == line.findStartOfColumn(endCol - 1)) {
+                    x2 = line.findStartOfColumn(endCol + 1);
+                }
+            }
         } else {
             x2 = line.getSpaceUsed();
         }
@@ -662,16 +681,20 @@ class UnicodeTranscript {
         return tmpLine;
     }
 
-    public char[] getLine(int row) {
-        return getLine(row, 0, mColumns);
-    }
-
     /**
      * Get color/formatting information for a particular line.
      * The returned object may be a pointer to a temporary buffer, only good
      * until the next call to getLineColor.
      */
     public StyleRow getLineColor(int row, int x1, int x2) {
+        return getLineColor(row, x1, x2, false);
+    }
+
+    public StyleRow getLineColor(int row) {
+        return getLineColor(row, 0, mColumns, true);
+    }
+
+    private StyleRow getLineColor(int row, int x1, int x2, boolean strictBounds) {
         if (row < -mActiveTranscriptRows || row > mScreenRows-1) {
             throw new IllegalArgumentException();
         }
@@ -680,7 +703,21 @@ class UnicodeTranscript {
         StyleRow color = mColor[row];
         StyleRow tmp = tmpColor;
         if (color != null) {
-            if (x1 == 0 && x2 == mColumns) {
+            int columns = mColumns;
+            if (!strictBounds && mLines[row] != null &&
+                    mLines[row] instanceof FullUnicodeLine) {
+                FullUnicodeLine line = (FullUnicodeLine) mLines[row];
+                /* If either the start or the end column is in the middle of
+                 * an East Asian wide character, include the appropriate column
+                 * of style information */
+                if (x1 > 0 && line.findStartOfColumn(x1-1) == line.findStartOfColumn(x1)) {
+                    --x1;
+                }
+                if (x2 < columns - 1 && line.findStartOfColumn(x2+1) == line.findStartOfColumn(x2)) {
+                    ++x2;
+                }
+            }
+            if (x1 == 0 && x2 == columns) {
                 return color;
             }
             color.copy(x1, tmp, 0, x2-x1);
@@ -688,10 +725,6 @@ class UnicodeTranscript {
         } else {
             return null;
         }
-    }
-
-    public StyleRow getLineColor(int row) {
-        return getLineColor(row, 0, mColumns);
     }
 
     boolean isBasicLine(int row) {
