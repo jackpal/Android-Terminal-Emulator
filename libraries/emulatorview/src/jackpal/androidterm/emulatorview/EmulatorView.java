@@ -34,9 +34,11 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
+import android.text.util.Linkify.MatchFilter;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -228,6 +230,33 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private Hashtable<Integer,URLSpan[]> mLinkLayer = new Hashtable<Integer,URLSpan[]>();
 
     /**
+     * Accept links that start with http[s]:
+     */
+    private static class HttpMatchFilter implements MatchFilter {
+        public boolean acceptMatch(CharSequence s, int start, int end) {
+            return startsWith(s, start, end, "http:") ||
+                startsWith(s, start, end, "https:");
+        }
+
+        private boolean startsWith(CharSequence s, int start, int end,
+                String prefix) {
+            int prefixLen = prefix.length();
+            int fragmentLen = end - start;
+            if (prefixLen > fragmentLen) {
+                return false;
+            }
+            for (int i = 0; i < prefixLen; i++) {
+                if (s.charAt(start + i) != prefix.charAt(i)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    private static MatchFilter sHttpMatchFilter = new HttpMatchFilter();
+
+    /**
      * Convert any URLs in the current row into a URLSpan,
      * and store that result in a hash table of URLSpan entries.
      *
@@ -265,7 +294,8 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             ++lineCount;
         }
 
-        Linkify.addLinks(textToLinkify, Linkify.WEB_URLS);
+        Linkify.addLinks(textToLinkify, Patterns.WEB_URL,
+            null, sHttpMatchFilter, null);
         URLSpan [] urls = textToLinkify.getSpans(0, textToLinkify.length(), URLSpan.class);
         if(urls.length > 0)
         {
