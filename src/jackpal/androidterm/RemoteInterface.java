@@ -102,27 +102,24 @@ public class RemoteInterface extends Activity {
              * the EXTRA_INITIAL_COMMAND location.
              */
             Uri uri=myIntent.getData();
-            if(uri!=null)
+            if(uri!=null) // scheme[path][arguments]
             {
               String s=uri.getScheme();
               if(s!=null && s.toLowerCase().equals("file"))
               {
                 command=uri.getPath();
-                if(command!=null)
-                {
-                  command=quoteForBash(command);
-                  // Append any arguments.
-                  if(null!=(s=uri.getFragment())) command+=" "+s;
-                }
+                // Allow for the command to be contained within the arguments string.
+                if(command==null) command="";
+                if(!command.equals("")) command=quoteForBash(command);
+                // Append any arguments.
+                if(null!=(s=uri.getFragment())) command+=" "+s;
               }
             }
+            // If Intent.data not used then fall back to old method.
             if(command==null) command=myIntent.getStringExtra(EXTRA_INITIAL_COMMAND);
-            if(command==null)
-            {
-              // The calling application failed to provide a script path but apparently wants a terminal,
-              // so open a terminal without an initial command.
-              command="";
-            }
+            // If still null the calling application failed to provide a script path but
+            // apparently wants a terminal, so open a terminal without an initial command.
+            if(command==null) command="";
             if (handle != null) {
                 // Target the request at an existing window if open
                 handle = appendToWindow(handle, command);
@@ -136,6 +133,7 @@ public class RemoteInterface extends Activity {
         }
         else if (action.equals(Intent.ACTION_SEND)
                 && myIntent.hasExtra(Intent.EXTRA_STREAM)) {
+          /* "permission.RUN_SCRIPT" not required as this is merely opening a new window. */
             Object extraStream = myIntent.getExtras().get(Intent.EXTRA_STREAM);
             if (extraStream instanceof Uri) {
                 String path = ((Uri) extraStream).getPath();
