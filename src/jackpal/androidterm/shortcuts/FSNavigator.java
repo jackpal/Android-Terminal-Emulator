@@ -290,7 +290,7 @@ public class      FSNavigator
     b1.setClickable(true);
     // b1.setLongClickable(true);
     b1.setLayoutParams(btn_params);
-    b1.setImageResource(name.equals("..")?R.drawable.ic_folder:R.drawable.ic_folderup);
+    b1.setImageResource(name.equals("..")?R.drawable.ic_folderup:R.drawable.ic_folder);
     b1.setOnClickListener(directoryListener);
     b1.setTag(R.id.tag_filename, name);
     b1.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
