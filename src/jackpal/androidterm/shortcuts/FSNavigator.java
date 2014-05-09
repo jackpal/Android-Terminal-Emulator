@@ -56,36 +56,6 @@ public class      FSNavigator
   private String                       extSdCard;
 
   ////////////////////////////////////////////////////////////
-  private void swapTheme()
-  {
-    switch(theme)
-    {
-      case android.R.style.Theme:       theme=android.R.style.Theme_Light; break;
-      case android.R.style.Theme_Light: theme=android.R.style.Theme;       break;
-      default: return;
-    }
-    SP.edit().putInt("theme", theme).commit();
-    startActivityForResult(getIntent().addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT), -1);
-    finish();
-  }
-  ////////////////////////////////////////////////////////////
-  private String ifAvailable(String goTo)
-  {
-    if(goTo.startsWith(extSdCard))
-    {
-      String s=Environment.getExternalStorageState();
-      if(s.equals(Environment.MEDIA_MOUNTED)
-      || s.equals(Environment.MEDIA_MOUNTED_READ_ONLY)
-      )
-      {
-        return(goTo);
-      }
-      toast("External storage not available", 1);
-      return(extSdCard);
-    }
-    return(goTo);
-  }
-  ////////////////////////////////////////////////////////////
   public void onCreate(android.os.Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
@@ -135,6 +105,36 @@ public class      FSNavigator
   //{
   //  super.onDestroy();
   //}
+  ////////////////////////////////////////////////////////////
+  private void swapTheme()
+  {
+    switch(theme)
+    {
+      case android.R.style.Theme:       theme=android.R.style.Theme_Light; break;
+      case android.R.style.Theme_Light: theme=android.R.style.Theme;       break;
+      default: return;
+    }
+    SP.edit().putInt("theme", theme).commit();
+    startActivityForResult(getIntent().addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT), -1);
+    finish();
+  }
+  ////////////////////////////////////////////////////////////
+  private String ifAvailable(String goTo)
+  {
+    if(goTo.startsWith(extSdCard))
+    {
+      String s=Environment.getExternalStorageState();
+      if(s.equals(Environment.MEDIA_MOUNTED)
+      || s.equals(Environment.MEDIA_MOUNTED_READ_ONLY)
+      )
+      {
+        return(goTo);
+      }
+      toast("External storage not available", 1);
+      return(extSdCard);
+    }
+    return(goTo);
+  }
   ////////////////////////////////////////////////////////////
   void setColorScheme()
   {
