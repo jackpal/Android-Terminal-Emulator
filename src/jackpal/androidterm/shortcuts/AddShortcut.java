@@ -124,6 +124,13 @@ public class      AddShortcut
                         }
                       }
                     );
+    lv.addView(
+      layoutTextViewH(
+        "Optionally create a text icon:"
+      , null
+      , false
+      )
+    );
     lv.addView(layoutViewViewH(btn_color, img));
     final ScrollView sv=new ScrollView(context);
                      sv.setFillViewport(true);
