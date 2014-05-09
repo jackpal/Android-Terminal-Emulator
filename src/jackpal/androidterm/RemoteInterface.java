@@ -117,9 +117,6 @@ public class RemoteInterface extends Activity {
             }
             // If Intent.data not used then fall back to old method.
             if(command==null) command=myIntent.getStringExtra(EXTRA_INITIAL_COMMAND);
-            // If still null the calling application failed to provide a script path but
-            // apparently wants a terminal, so open a terminal without an initial command.
-            if(command==null) command="";
             if (handle != null) {
                 // Target the request at an existing window if open
                 handle = appendToWindow(handle, command);
