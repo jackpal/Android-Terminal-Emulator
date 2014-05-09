@@ -14,6 +14,7 @@ import android.os.         Environment;
 import android.preference. PreferenceManager;
 import android.view.       Gravity;
 import android.view.       View;
+import android.view.       View.OnFocusChangeListener;
 import android.widget.     Button;
 import android.widget.     ImageView;
 import android.widget.     LinearLayout;
@@ -71,8 +72,25 @@ public class      AddShortcut
     for(int i=0, n=et.length; i<n; i++) {et[i]=new EditText(context); et[i].setSingleLine(true);}
     if(!path.equals("")) et[0].setText(path);
     et[PATH].setHint("command");
-    et[ARGS].setHint("--example=\"a\"");
     et[NAME].setText(name);
+    et[ARGS].setHint("--example=\"a\"");
+    et[ARGS].setOnFocusChangeListener(
+      new OnFocusChangeListener()
+      {
+        public void onFocusChange(View view, boolean focus)
+        {
+          if(!focus)
+          {
+            String s;
+            if(
+              et[NAME].getText().toString().equals("")
+            && !(s=et[ARGS].getText().toString()).equals("")
+            )
+              et[NAME].setText(s.split("\\s")[0]);
+          }
+        }
+      }
+    );
 
     Button         btn_path=new Button(context);
     btn_path.setText("Find command");

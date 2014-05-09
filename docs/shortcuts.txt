@@ -1,6 +1,0 @@
-                                                                           I
-A shortcut is a desktop icon which contains an Intent shich may contain 
-information for a specific application. 
-
-Work in progress.
-
