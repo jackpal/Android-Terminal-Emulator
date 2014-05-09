@@ -95,6 +95,13 @@ public class      AddShortcut
         }
       }
     );
+    lv.addView(
+      layoutTextViewH(
+        "Command window requires full path, no arguments. For other commands use Arguments window (ex: cd /sdcard)."
+      , null
+      , false
+      )
+    );
     lv.addView(layoutViewViewH(btn_path,          et[PATH]));
     lv.addView(layoutTextViewH("Arguments:",      et[ARGS]));
     lv.addView(layoutTextViewH("Shortcut label:", et[NAME]));
@@ -155,16 +162,20 @@ public class      AddShortcut
   //////////////////////////////////////////////////////////////////////
   LinearLayout layoutTextViewH(String text, View vw)
   {
+    return(layoutTextViewH(text, vw, true));
+  }
+  LinearLayout layoutTextViewH(String text, View vw, boolean attributes)
+  {
       LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-      TextView     tv=new TextView(context);
-                   tv.setText(text);
-                   tv.setTypeface(Typeface.DEFAULT_BOLD);
-                   tv.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
-                   tv.setPadding(10, tv.getPaddingTop(), 10, tv.getPaddingBottom());
-      LinearLayout lh=new LinearLayout(context);
-                   lh.setOrientation(LinearLayout.HORIZONTAL);
-                   lh.addView(tv, lp);
-      if(vw!=null) lh.addView(vw, lp);
+      TextView                  tv=new TextView(context);
+                                tv.setText(text);
+      if(attributes)            tv.setTypeface(Typeface.DEFAULT_BOLD);
+      if(attributes)            tv.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+                                tv.setPadding(10, tv.getPaddingTop(), 10, tv.getPaddingBottom());
+      LinearLayout              lh=new LinearLayout(context);
+                                lh.setOrientation(LinearLayout.HORIZONTAL);
+                                lh.addView(tv, lp);
+      if(vw!=null)              lh.addView(vw, lp);
       return(lh);
   }
   //////////////////////////////////////////////////////////////////////
