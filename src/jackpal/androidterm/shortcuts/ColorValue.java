@@ -56,6 +56,7 @@ public class      ColorValue
 //         if(build_version>=14) builder=new AlertDialog.Builder(context, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
 //    else if(build_version>=11) builder=new AlertDialog.Builder(context, AlertDialog.THEME_TRADITIONAL);
 //    else                       builder=new AlertDialog.Builder(context);
+    final TextView hexWindow[]=new TextView[4];
     builder=new AlertDialog.Builder(context);
     LinearLayout  lv=new LinearLayout(context);
                   lv.setOrientation(LinearLayout.VERTICAL);
@@ -116,6 +117,7 @@ public class      ColorValue
                 if(i==me || (barLock && locks[i]))
                 {
                   color[i]=progress;
+toHexWindow(hexWindow[i], color[i]);
                   sb[i].setBackgroundColor(0xFF<<24|(progress<<(24-i*8)));
                   sb[i].setProgress(progress);
                 }
@@ -141,6 +143,17 @@ public class      ColorValue
       lh.addView(lk[i]);
       lv.addView(lh, FP, WC);
     }
+{//Evaluating hex windows.
+  LinearLayout    lh=new LinearLayout(context);
+  lh.setGravity(Gravity.CENTER);
+  for(int i=0; i<4; i++)
+  {
+    hexWindow[i]=new TextView(context);
+    toHexWindow(hexWindow[i], color[i]);
+    lh.addView(hexWindow[i]);
+  }
+  lv.addView(lh);
+}//Evaluating hex windows.
     ScrollView    sv=new ScrollView(context);
                   sv.addView(lv);
     builder.setView(sv);
@@ -156,6 +169,16 @@ public class      ColorValue
     builder.setNegativeButton(android.R.string.cancel, ocl);
     alert=builder.show();
     started=true;
+  }
+  //////////////////////////////////////////////////////////////////////
+  public void toHexWindow(TextView tv, int k)
+  {
+    String  HEX="0123456789ABCDEF";
+    String  s="";
+    int   n=8;
+    k&=(1L<<8)-1L;
+    for(n-=4; n>=0; n-=4) s+=HEX.charAt((k>>n)&0xF);
+    tv.setText(s);
   }
   ////////////////////////////////////////////////////////////
   public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
