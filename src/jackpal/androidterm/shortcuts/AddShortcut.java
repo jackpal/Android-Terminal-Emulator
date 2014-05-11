@@ -20,6 +20,8 @@ import android.widget.     LinearLayout;
 import android.widget.     ScrollView;
 import android.widget.     TextView;
 import android.widget.     EditText;
+import jackpal.androidterm.R;
+
 import java.io.            File;
 
 public class      AddShortcut
@@ -56,9 +58,9 @@ public class      AddShortcut
                    lv.setOrientation(LinearLayout.VERTICAL);
     for(int i=0, n=et.length; i<n; i++) {et[i]=new EditText(context); et[i].setSingleLine(true);}
     if(!path.equals("")) et[0].setText(path);
-    et[PATH].setHint("command");
+    et[PATH].setHint(getString(R.string.addshortcut_command_hint));//"command");
     et[NAME].setText(name);
-    et[ARGS].setHint("--example=\"a\"");
+    et[ARGS].setHint(getString(R.string.addshortcut_example_hint));//"--example=\"a\"");
     et[ARGS].setOnFocusChangeListener(
       new OnFocusChangeListener()
       {
@@ -78,7 +80,7 @@ public class      AddShortcut
     );
 
     Button  btn_path=new Button(context);
-            btn_path.setText("Find command");
+            btn_path.setText(getString(R.string.addshortcut_button_find_command));//"Find command");
             btn_path.setOnClickListener(
               new View.OnClickListener()
               {
@@ -92,7 +94,7 @@ public class      AddShortcut
                     new Intent()
                     .setClass(getApplicationContext(), jackpal.androidterm.shortcuts.FSNavigator.class)
                     .setData(Uri.fromFile(get))
-                    .putExtra("title", "SELECT SHORTCUT TARGET")
+                    .putExtra("title", getString(R.string.addshortcut_navigator_title))//"SELECT SHORTCUT TARGET")
                   , OP_MAKE_SHORTCUT
                   );
                 }
@@ -100,14 +102,14 @@ public class      AddShortcut
             );
     lv.addView(
       layoutTextViewH(
-        "Command window requires full path, no arguments. For other commands use Arguments window (ex: cd /sdcard)."
+        getString(R.string.addshortcut_command_window_instructions)//"Command window requires full path, no arguments. For other commands use Arguments window (ex: cd /sdcard)."
       , null
       , false
       )
     );
     lv.addView(layoutViewViewH(btn_path,          et[PATH]));
-    lv.addView(layoutTextViewH("Arguments:",      et[ARGS]));
-    lv.addView(layoutTextViewH("Shortcut label:", et[NAME]));
+    lv.addView(layoutTextViewH(getString(R.string.addshortcut_arguments_label), et[ARGS]));
+    lv.addView(layoutTextViewH(getString(R.string.addshortcut_shortcut_label),  et[NAME]));
 
     final ImageView img=new ImageView(context);
                     img.setImageResource(jackpal.androidterm.R.drawable.ic_launcher);
@@ -117,21 +119,19 @@ public class      AddShortcut
                     img.setAdjustViewBounds(true);
                     img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
     final Button    btn_color=new Button(context);
-                    btn_color.setText("Text icon");
+                    btn_color.setText(getString(R.string.addshortcut_button_text_icon));//"Text icon");
                     btn_color.setOnClickListener(
                       new View.OnClickListener()
                       {
                         public void onClick(View p1)
                         {
-try{
                           new ColorValue(context, img, iconText);
-}catch(Exception e){android.widget.Toast.makeText(context, e.toString(), android.widget.Toast.LENGTH_LONG).show();}
                         }
                       }
                     );
     lv.addView(
       layoutTextViewH(
-        "Optionally create a text icon:"
+          getString(R.string.addshortcut_text_icon_instructions)//"Optionally create a text icon:"
       , null
       , false
       )
@@ -142,7 +142,7 @@ try{
                      sv.addView(lv);
 
     alert.setView(sv);
-    alert.setTitle("Term Shortcut");
+    alert.setTitle(getString(R.string.addshortcut_title));//"Term Shortcut");
     alert.setPositiveButton(
       android.R.string.yes
     , new DialogInterface.OnClickListener()

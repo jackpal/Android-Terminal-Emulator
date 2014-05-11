@@ -1,6 +1,7 @@
 //From the desk of Frank P. Westlake; public domain.
 package jackpal.androidterm.shortcuts;
 
+import jackpal.androidterm.R;
 import android.app.        AlertDialog;
 import android.content.    Context;
 import android.content.    DialogInterface;
@@ -48,7 +49,12 @@ public class      ColorValue
     builder=      new AlertDialog.Builder(context);
     LinearLayout  lv=new LinearLayout(context);
                   lv.setOrientation(LinearLayout.VERTICAL);
-    String  lab[]={"α ", "R ", "G ", "B "};
+    String  lab[]={
+      context.getString(R.string.colorvalue_letter_alpha)+" "  //"α "
+    , context.getString(R.string.colorvalue_letter_red)+" "    //"R "
+    , context.getString(R.string.colorvalue_letter_green)+" "  //"G "
+    , context.getString(R.string.colorvalue_letter_blue)+" "   //"B "
+    };
     int     clr[]={0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF};
     for(int i=0, n=(Integer)imgview.getTag(); i<arraySizes; i++)  color[i]=(n>>(24-i*8))&0xFF;
     TextView  lt=new TextView(context);

@@ -165,4 +165,27 @@
 
   <string name="help">Help</string>
   <string name="help_url">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
+  <!-- BEGIN SHORTCUT RELATED STRINGS -->
+  <!-- FSNavigator.java -->
+  <string name="fsnavigator_title">FILE SELECTOR</string>
+  <string name="fsnavigator_no_external_storage">External storage not available</string>
+  <string name="fsnavigator_optional_enter_path">Or enter path here.</string>
+  <string name="fsnavigator_change_theme">Change theme</string>
+  <!-- AddShortcut.java -->
+  <string name="addshortcut_command_hint">command</string>
+  <string name="addshortcut_example_hint">--example=\""a\"</string>
+  <string name="addshortcut_button_find_command">Find command</string>
+  <string name="addshortcut_navigator_title">SELECT SHORTCUT TARGET</string>
+  <string name="addshortcut_command_window_instructions">Command window requires full path, no arguments. For other commands use Arguments window (ex: cd /sdcard).</string>
+  <string name="addshortcut_arguments_label">Arguments\:</string>
+  <string name="addshortcut_shortcut_label">Shortcut label\:</string>
+  <string name="addshortcut_button_text_icon">Text icon</string>
+  <string name="addshortcut_text_icon_instructions"></string>
+  <string name="addshortcut_title">Term shortcut</string>
+  <!-- ColorValue.java -->
+  <string name="colorvalue_letter_alpha">α</string>
+  <string name="colorvalue_letter_red">R</string>
+  <string name="colorvalue_letter_green">G</string>
+  <string name="colorvalue_letter_blue">B</string>
+  <!-- END SHORTCUT RELATED STRINGS -->
 </resources>

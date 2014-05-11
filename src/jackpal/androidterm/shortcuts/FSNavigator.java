@@ -26,12 +26,12 @@ import jackpal.androidterm.         R;
 public class      FSNavigator
        extends    android.app.Activity
 {
-  public final int                     ACTION_THEME_SWAP=           0x00000100;
-  final   int                          BUTTON_SIZE=                 150;
+  private final int                    ACTION_THEME_SWAP=           0x00000100;
+  private final int                    BUTTON_SIZE=                 150;
   private android.content.Context      context=                     this;
   private File                         cd=                          null;
   private float                        textLg=                      24;
-  public SharedPreferences             SP=                          null;
+  private SharedPreferences            SP=                          null;
   private int                          theme=                       android.R.style.Theme;
   private File                         extSdCardFile;
   private String                       extSdCard;
@@ -40,7 +40,7 @@ public class      FSNavigator
   public void onCreate(android.os.Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
-    setTitle("File Selector");
+    setTitle(getString(R.string.fsnavigator_title));//"File Selector");
     SP=PreferenceManager.getDefaultSharedPreferences(context);
     theme=SP.getInt("theme", theme);
     setTheme(theme);
@@ -99,7 +99,7 @@ public class      FSNavigator
       {
         return(goTo);
       }
-      toast("External storage not available", 1);
+      toast(getString(R.string.fsnavigator_no_external_storage), 1);//"External storage not available", 1);
       return(extSdCard);
     }
     return(goTo);
@@ -157,7 +157,7 @@ public class      FSNavigator
     if(newFile)
     {
       tv=new EditText(context);
-      tv.setHint("Or enter path here.");
+      tv.setHint(getString(R.string.fsnavigator_optional_enter_path));//"Or enter path here.");
       tv.setLayoutParams(
         new LinearLayout.LayoutParams(
           LinearLayout.LayoutParams.FILL_PARENT
@@ -412,7 +412,7 @@ public class      FSNavigator
   {
     super.onCreateOptionsMenu(menu);
 //    super.onPrepareOptionsMenu(menu);    menu.clear();
-    menu.add(0, ACTION_THEME_SWAP,  0,  "Change theme");
+    menu.add(0, ACTION_THEME_SWAP,  0,  getString(R.string.fsnavigator_change_theme));//"Change theme");
     return(true);
   }
   //////////////////////////////////////////////////////////////////////
