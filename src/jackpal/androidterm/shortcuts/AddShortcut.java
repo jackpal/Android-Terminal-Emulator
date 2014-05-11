@@ -1,7 +1,6 @@
 //From the desk of Frank P. Westlake; public domain.
 package jackpal.androidterm.shortcuts;
 
-import android.app.        Activity;
 import android.app.        AlertDialog;
 import android.content.    Context;
 import android.content.    DialogInterface;
@@ -24,44 +23,30 @@ import android.widget.     EditText;
 import java.io.            File;
 
 public class      AddShortcut
-       extends    Activity
+       extends    android.app.Activity
 {
   private final int                    OP_MAKE_SHORTCUT=            1;
-  private Intent                       intent;
-  private Context                      context=                     this;
-  private SharedPreferences            SP;
-  private String                       pkg_jackpal=                 "jackpal.androidterm";
-//  private int                          build_version=               android.os.Build.VERSION.SDK_INT;
-  private int ix=0;
-  private int PATH=ix++, ARGS=ix++, NAME=ix++;//, TEXT=ix++, COLOR=ix++;
-  private final EditText et[]=new EditText[5];
-  private String                       path;
-  private String                       name="";
-//  private String                       lastPath="";
-  private String                       iconText[]=                   {"", null};
+  private final Context                context=                     this;
+  private       SharedPreferences      SP;
+  private final String                 pkg_jackpal=                 "jackpal.androidterm";
+  private       int                    ix=                          0;
+  private final int                    PATH=                        ix++
+  ,                                    ARGS=                        ix++
+  ,                                    NAME=                        ix++;
+  private final EditText               et[]=                        new EditText[5];
+  private       String                 path;
+  private       String                 name="";
+  private       String                 iconText[]=                  {"", null};
 
   //////////////////////////////////////////////////////////////////////
   protected void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     SP=PreferenceManager.getDefaultSharedPreferences(context);
-    intent=getIntent();
-    String action=intent.getAction();
+    String action=getIntent().getAction();
     if(action!=null && action.equals("android.intent.action.CREATE_SHORTCUT")) makeShortcut();
     else finish();
   }
-  //////////////////////////////////////////////////////////////////////
-//  public void onResume()
-//  {
-//    super.onResume();
-//    if(path==null)
-//    {
-//      intent=getIntent();
-//      String action=intent.getAction();
-//      if(action!=null && action.equals("android.intent.action.CREATE_SHORTCUT")) makeShortcut();
-//      else finish();
-//    }
-//  }
   //////////////////////////////////////////////////////////////////////
   void makeShortcut()
   {
@@ -92,27 +77,27 @@ public class      AddShortcut
       }
     );
 
-    Button         btn_path=new Button(context);
-    btn_path.setText("Find command");
-    btn_path.setOnClickListener(
-      new View.OnClickListener()
-      {
-        public void onClick(View p1)
-        {
-          String lastPath=SP.getString("lastPath", null);
-          File get= (lastPath==null)
-                    ?Environment.getExternalStorageDirectory()
-                    :new File(lastPath).getParentFile();
-          startActivityForResult(
-            new Intent()
-            .setClass(getApplicationContext(), jackpal.androidterm.shortcuts.FSNavigator.class)
-            .setData(Uri.fromFile(get))
-            .putExtra("title", "SELECT SHORTCUT TARGET")
-          , OP_MAKE_SHORTCUT
-          );
-        }
-      }
-    );
+    Button  btn_path=new Button(context);
+            btn_path.setText("Find command");
+            btn_path.setOnClickListener(
+              new View.OnClickListener()
+              {
+                public void onClick(View p1)
+                {
+                  String lastPath=SP.getString("lastPath", null);
+                  File get= (lastPath==null)
+                            ?Environment.getExternalStorageDirectory()
+                            :new File(lastPath).getParentFile();
+                  startActivityForResult(
+                    new Intent()
+                    .setClass(getApplicationContext(), jackpal.androidterm.shortcuts.FSNavigator.class)
+                    .setData(Uri.fromFile(get))
+                    .putExtra("title", "SELECT SHORTCUT TARGET")
+                  , OP_MAKE_SHORTCUT
+                  );
+                }
+              }
+            );
     lv.addView(
       layoutTextViewH(
         "Command window requires full path, no arguments. For other commands use Arguments window (ex: cd /sdcard)."
@@ -138,7 +123,9 @@ public class      AddShortcut
                       {
                         public void onClick(View p1)
                         {
+try{
                           new ColorValue(context, img, iconText);
+}catch(Exception e){android.widget.Toast.makeText(context, e.toString(), android.widget.Toast.LENGTH_LONG).show();}
                         }
                       }
                     );
@@ -229,7 +216,6 @@ public class      AddShortcut
       Intent target=  new Intent().setClassName(pkg_jackpal, pkg_jackpal+".RemoteInterface");
              target.setAction(pkg_jackpal+".RUN_SCRIPT");
              target.setDataAndType(uri, "text/plain");
-//               target.putExtra(pkg_jackpal+".iInitialCommand", path);
              target.putExtra(pkg_jackpal+".window_handle", shortcutName);
              target.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
       Intent wrapper= new Intent();

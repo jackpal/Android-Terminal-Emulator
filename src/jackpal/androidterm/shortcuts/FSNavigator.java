@@ -1,4 +1,4 @@
-//From the desk of Frank P. Westlake.
+//From the desk of Frank P. Westlake; public domain.
 package jackpal.androidterm.shortcuts;
 
 import android.content.             Intent;
@@ -26,32 +26,13 @@ import jackpal.androidterm.         R;
 public class      FSNavigator
        extends    android.app.Activity
 {
-  public final   String                       strings[]=
-  {
-    "File Selector"       // Window title.
-  , "Or enter path here." // Input box hint.
-  };
   public final int                     ACTION_THEME_SWAP=           0x00000100;
-  final   int                          WINDOW_TITLE=                0;
-  final   int                          INPUT_BOX=                   1;
   final   int                          BUTTON_SIZE=                 150;
-  final   int                          VIEW_ID_LL=                  0;
-  final   int                          VIEW_ID_TV=                  1;
-  final   int                          VIEW_ID_HIGH=                VIEW_ID_TV;
-  final   int                          COLOR_LIGHT=                 0xFFAAAAAA;
-  final   int                          COLOR_DARK=                  0xFF000000;
-  String                               colorScheme=                 COLOR_LIGHT+" "+COLOR_DARK;
-  int                                  color_text=                  COLOR_DARK;
-  int                                  color_back=                  COLOR_LIGHT;
   private android.content.Context      context=                     this;
   private File                         cd=                          null;
   private float                        textLg=                      24;
-  //private File                         zipDir=                      null;
-  private boolean                      allowFileEntry=              false;
-  private boolean                      allowPathEntry=              true;
   public SharedPreferences             SP=                          null;
   private int                          theme=                       android.R.style.Theme;
-  boolean setColors=false;//true;
   private File                         extSdCardFile;
   private String                       extSdCard;
 
@@ -59,7 +40,7 @@ public class      FSNavigator
   public void onCreate(android.os.Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
-    setTitle(strings[WINDOW_TITLE]);
+    setTitle("File Selector");
     SP=PreferenceManager.getDefaultSharedPreferences(context);
     theme=SP.getInt("theme", theme);
     setTheme(theme);
@@ -70,11 +51,6 @@ public class      FSNavigator
     extSdCard=getCanonicalPath(extSdCardFile);
     if(null==(chdir(intent.getData().getPath()))) chdir(extSdCard);
     if(intent.hasExtra("title"))           setTitle(intent.getStringExtra("title"));
-    if(intent.hasExtra("allowFileEntry"))  allowFileEntry=intent.getBooleanExtra("allowFileEntry", allowFileEntry);
-    if(intent.hasExtra("allowPathEntry"))  allowPathEntry=intent.getBooleanExtra("allowFileEntry", allowPathEntry);
-    if(intent.hasExtra("colorScheme"))     colorScheme=intent.getStringExtra("colorScheme");
-    setColorScheme();
-    //makeView();
   }
   ////////////////////////////////////////////////////////////
   public void onPause()
@@ -96,15 +72,8 @@ public class      FSNavigator
   ////////////////////////////////////////////////////////////
   private void doResume()
   {
-    //String lastDirectory=SP.getString("lastDirectory", null);
-    //if(lastDirectory!=null) chdir(lastDirectory);
     makeView();
   }
-  ////////////////////////////////////////////////////////////
-  //public void onDestroy()
-  //{
-  //  super.onDestroy();
-  //}
   ////////////////////////////////////////////////////////////
   private void swapTheme()
   {
@@ -136,14 +105,6 @@ public class      FSNavigator
     return(goTo);
   }
   ////////////////////////////////////////////////////////////
-  void setColorScheme()
-  {
-    colorScheme=SP.getString("colorScheme", colorScheme);
-    String ss[]=colorScheme.split("\\s+");
-    color_back=Integer.decode(ss[0]);
-    color_text=Integer.decode(ss[1]);
-  }
-  ////////////////////////////////////////////////////////////
   private File chdir(File file)
   {
     String path=ifAvailable(getCanonicalPath(file));
@@ -163,8 +124,7 @@ public class      FSNavigator
     , 1
     );
     TextView b1=new TextView(context);
-    if(setColors) b1.setBackgroundColor(color_text);
-                  b1.setLayoutParams(btn_params);
+             b1.setLayoutParams(btn_params);
     return(b1);
   }
   ////////////////////////////////////////////////////////////
@@ -179,10 +139,9 @@ public class      FSNavigator
   ////////////////////////////////////////////////////////////
   public View fileEntry(final String entry)
   {
-    boolean newFile=entry==null && (allowFileEntry || allowPathEntry);
+    boolean newFile=entry==null;
 // LAYOUT
     LinearLayout ll=new LinearLayout(context);
-    //ll.setBackgroundColor(colorBackground);
     ll.setLayoutParams(
       new LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.FILL_PARENT
@@ -192,18 +151,13 @@ public class      FSNavigator
     );
     ll.setOrientation(LinearLayout.HORIZONTAL);
     ll.setGravity(android.view.Gravity.FILL);
-    if(setColors) ll.setBackgroundColor(color_back);
     ll.setId(0);
 // FILENAME
     final TextView tv;
     if(newFile)
     {
       tv=new EditText(context);
-           if(allowPathEntry) tv.setHint(strings[INPUT_BOX]);
-      else if(allowFileEntry) tv.setHint("Enter new file name here.");
-//      tv.setSingleLine();
-      if(setColors) tv.setTextColor(color_back);
-      if(setColors) tv.setBackgroundColor(color_text);
+      tv.setHint("Or enter path here.");
       tv.setLayoutParams(
         new LinearLayout.LayoutParams(
           LinearLayout.LayoutParams.FILL_PARENT
@@ -246,7 +200,6 @@ public class      FSNavigator
       tv.setClickable(true);
       tv.setLongClickable(true);
       tv.setOnClickListener(fileListener);
-      if(setColors) tv.setTextColor(color_text);
       tv.setLayoutParams(
         new LinearLayout.LayoutParams(
           LinearLayout.LayoutParams.FILL_PARENT
@@ -259,7 +212,7 @@ public class      FSNavigator
       hv.setLayoutParams(
         new LinearLayout.LayoutParams(
           LinearLayout.LayoutParams.FILL_PARENT
-        , BUTTON_SIZE//LinearLayout.LayoutParams.WRAP_CONTENT
+        , BUTTON_SIZE
         , 7
         )
       );
@@ -267,9 +220,7 @@ public class      FSNavigator
       ll.addView(hv);
     }
     tv.setSingleLine();
-//    tv.setMaxLines(1);
     tv.setTextSize(textLg);
-//    tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
     tv.setTypeface(Typeface.SERIF, Typeface.BOLD);
     tv.setTag(R.id.tag_filename, entry);
     tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
@@ -282,20 +233,17 @@ public class      FSNavigator
   private ImageView entryFolder(String name)
   {
     LinearLayout.LayoutParams btn_params=new LinearLayout.LayoutParams(
-      120//BUTTON_SIZE//LinearLayout.LayoutParams.WRAP_CONTENT
-    , 120//BUTTON_SIZE//LinearLayout.LayoutParams.FILL_PARENT
+      120
+    , 120
     , 1
     );
     ImageView b1=new ImageView(context);
     b1.setClickable(true);
-    // b1.setLongClickable(true);
     b1.setLayoutParams(btn_params);
     b1.setImageResource(name.equals("..")?R.drawable.ic_folderup:R.drawable.ic_folder);
     b1.setOnClickListener(directoryListener);
     b1.setTag(R.id.tag_filename, name);
     b1.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-//      b1.setMaxHeight(10);
-//      b1.setMaxWidth(10);
     return(b1);
   }
   ////////////////////////////////////////////////////////////
@@ -310,7 +258,6 @@ public class      FSNavigator
         finish();
       }
       else chdir(file);
-      //else chdir((String)view.getTag(R.id.tag_filename));
       makeView();
     }
   };
@@ -319,19 +266,16 @@ public class      FSNavigator
   {
 // LAYOUT
     LinearLayout ll=new LinearLayout(context);
-    //ll.setBackgroundColor(colorBackground);
     ll.setLayoutParams(
       new LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.FILL_PARENT
-      , BUTTON_SIZE//LinearLayout.LayoutParams.WRAP_CONTENT
+      , BUTTON_SIZE
       , 2
       )
     );
     ll.setOrientation(LinearLayout.HORIZONTAL);
     ll.setGravity(android.view.Gravity.FILL);
-    if(setColors) ll.setBackgroundColor(color_back);
     ll.setId(0);
-    //ll.setTag(R.id.tag_filename, name);
     ll.setOnClickListener(directoryListener);
 // FILENAME
     TextView tv=new TextView(context);
@@ -350,13 +294,12 @@ public class      FSNavigator
     tv.setTag(R.id.tag_filename, name);
     tv.setOnClickListener(directoryListener);
     tv.setMaxLines(1);
-    if(setColors) tv.setTextColor(color_text);
     tv.setTextSize(textLg);
     tv.setPadding(10, 5, 10, 5);
     tv.setLayoutParams(
       new LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.FILL_PARENT
-      , BUTTON_SIZE//LinearLayout.LayoutParams.FILL_PARENT
+      , BUTTON_SIZE
       , 1
       )
     );
@@ -367,11 +310,11 @@ public class      FSNavigator
     hv.setLayoutParams(
       new LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.FILL_PARENT
-      , BUTTON_SIZE//LinearLayout.LayoutParams.WRAP_CONTENT
+      , BUTTON_SIZE
       , 7
       )
     );
-    ImageView b1=entryFolder(name);//U+2681, U+2687, U+2689
+    ImageView b1=entryFolder(name);
     ll.addView(b1);
     ll.addView(hv);
 
@@ -388,10 +331,7 @@ public class      FSNavigator
   {
     if(cd == null) chdir("/");
     String path=getCanonicalPath(cd);
-    //chdir(path);
-    //setTitle(path);
     final LinearLayout bg=new LinearLayout(context);
-    if(setColors) bg.setBackgroundColor(color_back);
     bg.setLayoutParams(
       new LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.FILL_PARENT
@@ -401,11 +341,8 @@ public class      FSNavigator
     );
     bg.setOrientation(LinearLayout.VERTICAL);
     bg.setGravity(android.view.Gravity.FILL);
-    // ll.addView(makeActionBarView());
-
 
     final LinearLayout ll=new LinearLayout(context);
-    if(setColors) ll.setBackgroundColor(color_back);
     ll.setLayoutParams(
       new LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.FILL_PARENT
@@ -415,10 +352,7 @@ public class      FSNavigator
     );
     ll.setOrientation(LinearLayout.VERTICAL);
     ll.setGravity(android.view.Gravity.FILL);
-    // ll.addView(makeActionBarView());
     final ScrollView sv=new ScrollView(context);
-    if(setColors) sv.setBackgroundColor(color_back);
-    //sv.setFillViewport(true);
     sv.setLayoutParams(
       new LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.FILL_PARENT
@@ -426,13 +360,10 @@ public class      FSNavigator
       , 1
       )
     );
-    //sv.setBackgroundColor(colorBackground);
     if(path.equals("")) {chdir(path="/");}
     if(!path.equals("/"))
     {
       bg.addView(directoryEntry(".."), android.view.ViewGroup.LayoutParams.FILL_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-      //bg.addView(entryDividerH(),      android.view.ViewGroup.LayoutParams.FILL_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-      //bg.addView(entryDividerH());
     }
     sv.addView(ll);
     bg.addView(sv);
@@ -459,7 +390,6 @@ public class      FSNavigator
       }
     }
     bg.addView(fileEntry(null), android.view.ViewGroup.LayoutParams.FILL_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-    //ll.addView(entryDividerH());
     setContentView(bg);
   }
   //////////////////////////////////////////////////////////////////////

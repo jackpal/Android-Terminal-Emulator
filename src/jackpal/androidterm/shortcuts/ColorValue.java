@@ -1,3 +1,4 @@
+//From the desk of Frank P. Westlake; public domain.
 package jackpal.androidterm.shortcuts;
 
 import android.app.        AlertDialog;
@@ -16,31 +17,21 @@ import android.widget.     EditText;
 
 //////////////////////////////////////////////////////////////////////
 public class      ColorValue
-       //implements View.OnKeyListener
-       //,          CompoundButton.OnCheckedChangeListener
        implements CompoundButton.OnCheckedChangeListener
 {
-  Context     context;
-  SeekBar[]   sb=         {null, null, null, null, null};
-  EditText[]  value=      {null, null, null};
-  int[]       start=      {0,    0, 0};
-  int[]       current=    {0,    0, 0};
-  int[]       color=      {0xFF, 0, 0, 0};
-//  int         which=      0;
-  boolean     started=    false;
-  AlertDialog alert;
-  AlertDialog.Builder     builder;
-  TextView    lt=         null;
-  boolean     barLock=    false;
-  CheckBox[]  lk=         {null, null, null, null};
-  String      Title=      "MAKE TEXT ICON";
-  boolean[]   locks=      {false, false, false, false};
-  final int   FP=         LinearLayout.LayoutParams.FILL_PARENT;
-  final int   WC=         LinearLayout.LayoutParams.WRAP_CONTENT;
-  final ImageView imgview;
-  final String result[];
-  private String imgtext="";
-//  private int build_version=               android.os.Build.VERSION.SDK_INT;
+  private final Context             context;
+  private       EditText            value;
+  private final int[]               color=      {0xFF, 0, 0, 0};
+  private       boolean             started=    false;
+  private       AlertDialog.Builder builder;
+  private       boolean             barLock=    false;
+  private final String              Title=      "MAKE TEXT ICON";
+  private final boolean[]           locks=      {false, false, false, false};
+  private final int                 FP=         LinearLayout.LayoutParams.FILL_PARENT;
+  private final int                 WC=         LinearLayout.LayoutParams.WRAP_CONTENT;
+  private final ImageView           imgview;
+  private final String              result[];
+  private       String              imgtext="";
 
   ////////////////////////////////////////////////////////////
   public ColorValue(Context context, final ImageView imgview, final String result[])
@@ -53,34 +44,34 @@ public class      ColorValue
   }
   public void colorValue()
   {
-//         if(build_version>=14) builder=new AlertDialog.Builder(context, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-//    else if(build_version>=11) builder=new AlertDialog.Builder(context, AlertDialog.THEME_TRADITIONAL);
-//    else                       builder=new AlertDialog.Builder(context);
-    final TextView hexWindow[]=new TextView[4];
-    builder=new AlertDialog.Builder(context);
+    final int     arraySizes=  4;
+    builder=      new AlertDialog.Builder(context);
     LinearLayout  lv=new LinearLayout(context);
                   lv.setOrientation(LinearLayout.VERTICAL);
     String  lab[]={"α ", "R ", "G ", "B "};
     int     clr[]={0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF};
-    for(int i=0, n=(Integer)imgview.getTag(); i<4; i++)  color[i]=(n>>(24-i*8))&0xFF;
-    lt=new TextView(context);
-    lt.setText("LOCK");
-    lt.setPadding(lt.getPaddingLeft(), lt.getPaddingTop(), 5, lt.getPaddingBottom());
-    lt.setGravity(Gravity.RIGHT);
-    for(int i=0, n=value.length; i<n; i++) {value[i]=new EditText(context);}
-    value[0].setText(imgtext);
-    value[0].setSingleLine(true);
-    value[0].setGravity(Gravity.CENTER);
-    value[0].setTextColor((Integer)imgview.getTag());
-    value[0].setBackgroundColor((0xFF<<24)|0x007799);
+    for(int i=0, n=(Integer)imgview.getTag(); i<arraySizes; i++)  color[i]=(n>>(24-i*8))&0xFF;
+    TextView  lt=new TextView(context);
+              lt.setText("LOCK");
+              lt.setPadding(lt.getPaddingLeft(), lt.getPaddingTop(), 5, lt.getPaddingBottom());
+              lt.setGravity(Gravity.RIGHT);
+    value=new EditText(context);
+    value.setText(imgtext);
+    value.setSingleLine(true);
+    value.setGravity(Gravity.CENTER);
+    value.setTextColor((Integer)imgview.getTag());
+    value.setBackgroundColor((0xFF<<24)|0x007799);
     LinearLayout  vh=new LinearLayout(context);
                   vh.setOrientation(LinearLayout.HORIZONTAL);
                   vh.setGravity(Gravity.CENTER_HORIZONTAL);
-                  vh.addView(value[0]);
-                  value[0].setHint("Enter icon text");
+                  vh.addView(value);
+                  value.setHint("Enter icon text");
     lv.addView(vh);
     lv.addView(lt);
-    for(int i=0, n=sb.length-1;    i<n; i++)
+    final SeekBar     sb[]=        new SeekBar[arraySizes+1];
+    final CheckBox    lk[]=        new CheckBox[arraySizes];
+    final TextView    hexWindow[]= new TextView[arraySizes];
+    for(int i=0; i<arraySizes; i++)
     {
       LinearLayout    lh=new LinearLayout(context);
                       lh.setGravity(Gravity.CENTER_VERTICAL);
@@ -108,16 +99,16 @@ public class      ColorValue
             {
               int  me=(Integer)seekBar.getTag();
               int  k=(color[0]<<24)|(color[1]<<16)|(color[2]<<8)|color[3];
-              value[0].setTextColor(k);
+              value.setTextColor(k);
               int  start, end;
-              if(barLock && locks[me])  {start=0;  end=3;}
+              if(barLock && locks[me])  {start=0;  end=arraySizes-1;}
               else  start=end=(Integer)seekBar.getTag();
               for(int  i=start; i<=end; i++)
               {
                 if(i==me || (barLock && locks[i]))
                 {
                   color[i]=progress;
-toHexWindow(hexWindow[i], color[i]);
+                  toHexWindow(hexWindow[i], color[i]);
                   sb[i].setBackgroundColor(0xFF<<24|(progress<<(24-i*8)));
                   sb[i].setProgress(progress);
                 }
@@ -146,7 +137,7 @@ toHexWindow(hexWindow[i], color[i]);
 {//Evaluating hex windows.
   LinearLayout    lh=new LinearLayout(context);
   lh.setGravity(Gravity.CENTER);
-  for(int i=0; i<4; i++)
+  for(int i=0; i<arraySizes; i++)
   {
     hexWindow[i]=new TextView(context);
     toHexWindow(hexWindow[i], color[i]);
@@ -167,7 +158,7 @@ toHexWindow(hexWindow[i], color[i]);
     builder.setTitle(Title);
     builder.setPositiveButton(android.R.string.yes,    ocl);
     builder.setNegativeButton(android.R.string.cancel, ocl);
-    alert=builder.show();
+    builder.show();
     started=true;
   }
   //////////////////////////////////////////////////////////////////////
@@ -196,7 +187,7 @@ toHexWindow(hexWindow[i], color[i]);
       case AlertDialog.BUTTON_NEGATIVE:  //  CANCEL
         return;
       case AlertDialog.BUTTON_POSITIVE:  //  OK == set
-        imgtext=value[0].getText().toString();
+        imgtext=value.getText().toString();
         result[1]=imgtext;
         imgview.setTag(color);
         if(!imgtext.equals(""))
