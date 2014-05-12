@@ -166,6 +166,8 @@
   <string name="help">Help</string>
   <string name="help_url">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
   <!-- BEGIN SHORTCUT RELATED STRINGS -->
+  <!-- AndroidManifest.xml -->
+  <string name="activity_shortcut_create">"Term shortcut"</string>
   <!-- FSNavigator.java -->
   <string name="fsnavigator_title">FILE SELECTOR</string>
   <string name="fsnavigator_no_external_storage">External storage not available</string>
@@ -187,5 +189,7 @@
   <string name="colorvalue_letter_red">R</string>
   <string name="colorvalue_letter_green">G</string>
   <string name="colorvalue_letter_blue">B</string>
+  <string name="colorvalue_label_lock_button_column">LOCK</string>
+  <string name="colorvalue_icon_text_entry_hint">Enter icon text</string>
   <!-- END SHORTCUT RELATED STRINGS -->
 </resources>

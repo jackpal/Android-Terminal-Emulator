@@ -50,15 +50,15 @@ public class      ColorValue
     LinearLayout  lv=new LinearLayout(context);
                   lv.setOrientation(LinearLayout.VERTICAL);
     String  lab[]={
-      context.getString(R.string.colorvalue_letter_alpha)+" "  //"α "
-    , context.getString(R.string.colorvalue_letter_red)+" "    //"R "
-    , context.getString(R.string.colorvalue_letter_green)+" "  //"G "
-    , context.getString(R.string.colorvalue_letter_blue)+" "   //"B "
+      context.getString(R.string.colorvalue_letter_alpha) +" " //"α "
+    , context.getString(R.string.colorvalue_letter_red)   +" " //"R "
+    , context.getString(R.string.colorvalue_letter_green) +" " //"G "
+    , context.getString(R.string.colorvalue_letter_blue)  +" " //"B "
     };
     int     clr[]={0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF};
     for(int i=0, n=(Integer)imgview.getTag(); i<arraySizes; i++)  color[i]=(n>>(24-i*8))&0xFF;
     TextView  lt=new TextView(context);
-              lt.setText("LOCK");
+              lt.setText(context.getString(R.string.colorvalue_label_lock_button_column));//"LOCK");
               lt.setPadding(lt.getPaddingLeft(), lt.getPaddingTop(), 5, lt.getPaddingBottom());
               lt.setGravity(Gravity.RIGHT);
     value=new EditText(context);
@@ -71,7 +71,7 @@ public class      ColorValue
                   vh.setOrientation(LinearLayout.HORIZONTAL);
                   vh.setGravity(Gravity.CENTER_HORIZONTAL);
                   vh.addView(value);
-                  value.setHint("Enter icon text");
+                  value.setHint(context.getString(R.string.colorvalue_icon_text_entry_hint));//"Enter icon text");
     lv.addView(vh);
     lv.addView(lt);
     final SeekBar     sb[]=        new SeekBar[arraySizes+1];
