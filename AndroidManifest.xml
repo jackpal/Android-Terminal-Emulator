@@ -61,7 +61,7 @@
         </activity>
         <activity-alias
                 android:name="TermHere"
-                android:label="Term here"
+                android:label="@string/activity_term_here_title"
                 android:targetActivity="RemoteInterface"
                 android:exported="true"
         >
