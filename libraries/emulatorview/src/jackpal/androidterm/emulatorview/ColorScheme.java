@@ -17,26 +17,16 @@
 package jackpal.androidterm.emulatorview;
 
 /**
- * A class describing a color scheme for a 16-color VT100 terminal.
+ * A class describing a color scheme for an {@link EmulatorView}.
  * <p>
- * A 16-color VT100 has two separate color maps, one for foreground colors and
- * one for background colors.  Each one contains eight colors, which are
- * traditionally found in the following order:
- * <p>
- * <code>{ black, red, green, yellow, blue, magenta, cyan, white }</code>
- * <p>
- * In addition, each of the foreground colors has a corresponding "bright"
- * version.  Traditionally, the "dim" white is actually a light gray, while
- * the "bright" black is a dark gray color.
- * <p>
- * {@link EmulatorView} supports limited changes to the default color maps
- * via the color scheme mechanism.  Passing a <code>ColorScheme</code> to
+ * <code>EmulatorView</code> supports changing its default foreground,
+ * background, and cursor colors.  Passing a <code>ColorScheme</code> to
  * {@link EmulatorView#setColorScheme setColorScheme} will cause the
- * foreground color with map index <code>foreColorIndex</code> to be replaced
- * with the provided <code>foreColor</code>, and the background color with map
- * index <code>backColorIndex</code> to be replaced with the provided
- * <code>backColor</code>.  The provided colors will then become the default
- * foreground and background colors for the <code>EmulatorView</code>.
+ * <code>EmulatorView</code> to use the specified colors as its defaults.
+ * <p>
+ * Cursor colors can be omitted when specifying a color scheme; if no cursor
+ * colors are specified, <code>ColorScheme</code> will automatically select
+ * suitable cursor colors for you.
  *
  * @see EmulatorView#setColorScheme
  */

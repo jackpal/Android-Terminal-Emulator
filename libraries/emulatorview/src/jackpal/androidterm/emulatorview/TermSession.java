@@ -412,8 +412,6 @@ public class TermSession {
     /**
      * Notify the UpdateCallback registered for title changes, if any, that the
      * terminal session's title has changed.
-     *
-     * @param title The terminal's new title.
      */
     protected void notifyTitleChanged() {
         UpdateCallback listener = mTitleChangedListener;

@@ -1,8 +1,0 @@
-#!/bin/bash
-work="/home/frank/a/Android-Terminal-Emulator"
-note="/note3/storage/extSdCard/java/a/Android-Terminal-Emulator"
-
-chown -R frank:programmer "$work"
-
-mirror "$work/*" "$note"
-tonote3 "$note"

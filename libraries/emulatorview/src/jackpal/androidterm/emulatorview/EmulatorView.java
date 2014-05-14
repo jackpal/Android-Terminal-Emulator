@@ -1647,11 +1647,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
 
     /**
+     * Get the URL for the link displayed at the specified screen coordinates.
      *
-     * Get the URL at the specified screen coordinates and return its string value
      * @param x The x coordinate being queried (from 0 to screen width)
      * @param y The y coordinate being queried (from 0 to screen height)
-     * @return
+     * @return The URL for the link at the specified screen coordinates, or
+     *         null if no link exists there.
      */
     public String getURLat(float x, float y)
     {
