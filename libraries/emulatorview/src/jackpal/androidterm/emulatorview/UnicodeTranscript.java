@@ -650,6 +650,14 @@ class UnicodeTranscript {
         return getLineColor(row, 0, mColumns);
     }
 
+    boolean isBasicLine(int row) {
+        if (row < -mActiveTranscriptRows || row > mScreenRows-1) {
+            throw new IllegalArgumentException();
+        }
+
+        return (mLines[externalToInternalRow(row)] instanceof char[]);
+    }
+
     public boolean getChar(int row, int column) {
         return getChar(row, column, 0);
     }
