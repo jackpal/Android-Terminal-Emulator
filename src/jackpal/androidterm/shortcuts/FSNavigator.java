@@ -375,8 +375,8 @@ public class      FSNavigator
 
     TextView     tv=((TextView)ll.findViewById(R.id.textview));
                  tv.setTag(name);
-                 tv.setText(up? "["+cd.getPath().trim()+"]"
-                              : name
+                 tv.setText(up  ? "["+cd.getPath()+"]"
+                                : name
                  );
     ((ImageView)ll.findViewById(R.id.imageview)).setTag(name);
     return(ll);
@@ -451,6 +451,7 @@ public class      FSNavigator
     else
     {
       titleView.setVisibility(View.VISIBLE);
+      titleView.requestLayout();
       ((TextView)titleView.findViewById(R.id.textview)).setText("["+cd.getPath()+"]");
     }
 
@@ -477,7 +478,7 @@ public class      FSNavigator
     }
     ((TextView)pathEntryView.findViewById(R.id.textview)).setText("");
     sv.scrollTo(0, 0);
-    titleView.setSelected(true);
+//    titleView.setSelected(true);
     setContentView(contentView);
   }
   //////////////////////////////////////////////////////////////////////
