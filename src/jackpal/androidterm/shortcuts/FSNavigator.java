@@ -1,68 +1,103 @@
 //From the desk of Frank P. Westlake; public domain.
 package jackpal.androidterm.shortcuts;
-/*
- * This is from another program I wrote and is still being modified for this one,
- * so some of the variables will be changed, removed, or replaced by constants.
- * 
- * A menu will be added to allow color theme change, font size change, root allow/disallow,
- * and other features. I like this navigator more than others I've used so I hope to make it
- * easily copied to other applications, perhaps also as a separate application.
- * 
- */
 
+import android.content.             Intent;
+import android.content.             SharedPreferences;
 import android.graphics.            Typeface;
 import android.net.                 Uri;
-import android.os.Environment;
+import android.os.                  Environment;
+import android.preference.          PreferenceManager;
 import android.view.                Gravity;
 import android.view.                KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.                Menu;
+import android.view.                MenuItem;
 import android.view.                View;
-import android.content.Context;
-import android.content.             SharedPreferences;
+import android.widget.              EditText;
 import android.widget.              HorizontalScrollView;
 import android.widget.              ImageView;
 import android.widget.              LinearLayout;
 import android.widget.              ScrollView;
-import android.widget.              EditText;
 import android.widget.              TextView;
+import android.widget.              Toast;
 import java.io.                     File;
 import java.io.                     IOException;
-import android.content.             Intent;
+import java.util.                   HashMap;
 import jackpal.androidterm.         R;
-import jackpal.androidterm.compat.AndroidCompat;
 
 public class      FSNavigator
        extends    android.app.Activity
 {
-  public final int                     ACTION_THEME_SWAP=           0x00000100;
-  final   int                          BUTTON_SIZE=                 150;
-  final   int                          VIEW_ID_LL=                  0;
-  final   int                          VIEW_ID_TV=                  1;
-  final   int                          VIEW_ID_HIGH=                VIEW_ID_TV;
-  final   int                          COLOR_LIGHT=                 0xFFAAAAAA;
-  final   int                          COLOR_DARK=                  0xFF000000;
-  String                               colorScheme=                 COLOR_LIGHT+" "+COLOR_DARK;
-  int                                  color_text=                  COLOR_DARK;
-  int                                  color_back=                  COLOR_LIGHT;
-  private android.content.Context      context=                     this;
-  private File                         cd=                          null;
-  float                                textLg=                      24;
-  File                                 zipDir=                      null;
-  private boolean                      allowFileEntry=              false;
-  private boolean                      allowPathEntry=              true;
-  public SharedPreferences             SP=                          null;
-  private int                          theme=                       android.R.style.Theme_Light;
-  boolean setColors=false;//true;
-  private int                          build_version=               android.os.Build.VERSION.SDK_INT;
+  private final int                      ACTION_THEME_SWAP=           0x00000100;
+  private final int                      BUTTON_SIZE=                 150;
+  private android.content.Context        context=                     this;
+  private float                          textLg=                      24;
+  private int                            theme=                       android.R.style.Theme;
+  private SharedPreferences              SP;
+  private File                           cd;
+  private File                           extSdCardFile;
+  private String                         extSdCard;
+  private HashMap<Integer, LinearLayout> cachedFileView;
+  private HashMap<Integer, LinearLayout> cachedDirectoryView;
+  private HashMap<Integer, TextView>     cachedDividerView;
+  private int                            countFileView;
+  private int                            countDirectoryView;
+  private int                            countDividerView;
+  private LinearLayout                   contentView;
+  private LinearLayout                   titleView;
+  private LinearLayout                   pathEntryView;
 
+  ////////////////////////////////////////////////////////////
+  public void onCreate(android.os.Bundle savedInstanceState)
+  {
+    super.onCreate(savedInstanceState);
+    setTitle(getString(R.string.fsnavigator_title));//"File Selector");
+    SP=PreferenceManager.getDefaultSharedPreferences(context);
+    theme=SP.getInt("theme", theme);
+    setTheme(theme);
+    getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+    Intent intent= getIntent();
+    extSdCardFile=Environment.getExternalStorageDirectory();
+    extSdCard=getCanonicalPath(extSdCardFile);
+    if(null==(chdir(intent.getData().getPath()))) chdir(extSdCard);
+    if(intent.hasExtra("title"))           setTitle(intent.getStringExtra("title"));
+
+    titleView=           directoryEntry("..");
+    pathEntryView=       fileEntry(null);
+    contentView=         makeContentView();
+    cachedDirectoryView= new HashMap<Integer, LinearLayout>();
+    cachedFileView=      new HashMap<Integer, LinearLayout>();
+    cachedDividerView=   new HashMap<Integer, TextView>();
+  }
+  ////////////////////////////////////////////////////////////
+  public void onPause()
+  {
+    super.onPause();
+    doPause();
+  }
+  ////////////////////////////////////////////////////////////
+  private void doPause()
+  {
+    SP.edit().putString("lastDirectory", getCanonicalPath(cd)).commit();
+  }
+  ////////////////////////////////////////////////////////////
+  public void onResume()
+  {
+    super.onResume();
+    doResume();
+  }
+  ////////////////////////////////////////////////////////////
+  private void doResume()
+  {
+    makeView();
+  }
   ////////////////////////////////////////////////////////////
   private void swapTheme()
   {
     switch(theme)
     {
-      case android.R.style.Theme_Light: theme=android.R.style.Theme;       break;
       case android.R.style.Theme:       theme=android.R.style.Theme_Light; break;
+      case android.R.style.Theme_Light: theme=android.R.style.Theme;       break;
       default: return;
     }
     SP.edit().putInt("theme", theme).commit();
@@ -70,50 +105,26 @@ public class      FSNavigator
     finish();
   }
   ////////////////////////////////////////////////////////////
-  public void onCreate(android.os.Bundle savedInstanceState)
+  private String ifAvailable(String goTo)
   {
-    super.onCreate(savedInstanceState);
-    setTitle("File Selector");
-    SP=getSharedPreferences("shortcuts", Context.MODE_PRIVATE);
-    theme=SP.getInt("theme", theme);
-    setTheme(theme);
-    getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-    Intent intent= getIntent();
-    if(null==(chdir(intent.getData().getPath()))) chdir(Environment.getRootDirectory());
-    if(intent.hasExtra("title"))           setTitle(intent.getStringExtra("title"));
-    if(intent.hasExtra("allowFileEntry"))  allowFileEntry=intent.getBooleanExtra("allowFileEntry", allowFileEntry);
-    if(intent.hasExtra("allowPathEntry"))  allowPathEntry=intent.getBooleanExtra("allowFileEntry", allowPathEntry);
-    if(intent.hasExtra("colorScheme"))     colorScheme=intent.getStringExtra("colorScheme");
-    setColorScheme();
-//    makeView();
-  }
-  ////////////////////////////////////////////////////////////
-  public void onPause()
-  {
-    super.onPause();
-    SP.edit().putString("lastDirectory", getCanonicalPath(cd)).commit();
-  }
-  ////////////////////////////////////////////////////////////
-  public void onResume()
-  {
-    super.onResume();
-    String lastDirectory=SP.getString("lastDirectory", null);
-    if(lastDirectory!=null) chdir(lastDirectory);
-    makeView();
-  }
-  ////////////////////////////////////////////////////////////
-  void setColorScheme()
-  {
-    colorScheme=SP.getString("colorScheme", colorScheme);
-    String ss[]=colorScheme.split("\\s+");
-    color_back=Integer.decode(ss[0]);
-    color_text=Integer.decode(ss[1]);
+    if(goTo.startsWith(extSdCard))
+    {
+      String s=Environment.getExternalStorageState();
+      if(s.equals(Environment.MEDIA_MOUNTED)
+      || s.equals(Environment.MEDIA_MOUNTED_READ_ONLY)
+      )
+      {
+        return(goTo);
+      }
+      toast(getString(R.string.fsnavigator_no_external_storage), 1);//"External storage not available", 1);
+      return(extSdCard);
+    }
+    return(goTo);
   }
   ////////////////////////////////////////////////////////////
   private File chdir(File file)
   {
-    String path=getCanonicalPath(file);
+    String path=ifAvailable(getCanonicalPath(file));
     System.setProperty("user.dir", path);
     return(cd=new File(path));
   }
@@ -124,58 +135,57 @@ public class      FSNavigator
   ////////////////////////////////////////////////////////////
   private TextView entryDividerH()
   {
-    LinearLayout.LayoutParams btn_params=new LinearLayout.LayoutParams(
-      LinearLayout.LayoutParams.FILL_PARENT
-    , 1
-    , 1
-    );
-    TextView b1=new TextView(context);
-    if(setColors) b1.setBackgroundColor(color_text);
-                  b1.setLayoutParams(btn_params);
-    return(b1);
+    TextView tv;
+    if(countDividerView<cachedDividerView.size())
+    {
+      tv=cachedDividerView.get(countDividerView);
+    }
+    else
+    {
+      tv=new TextView(context);
+      tv.setLayoutParams(
+        new LinearLayout.LayoutParams(
+          LinearLayout.LayoutParams.FILL_PARENT
+        , 1
+        , 1
+        )
+      );
+      cachedDividerView.put(countDividerView, tv);
+    }
+    ++countDividerView;
+    return(tv);
   }
   ////////////////////////////////////////////////////////////
   View.OnClickListener fileListener=new View.OnClickListener()
   {
     public void onClick(View view)
     {
-      setResult(RESULT_OK, getIntent().setData(Uri.fromFile(new File(cd, (String)view.getTag(R.id.tag_filename)))));
-      finish();
+      String path=(String)view.getTag();
+      if(path!=null)
+      {
+        setResult(RESULT_OK, getIntent().setData(Uri.fromFile(new File(cd, path))));
+        finish();
+      }
     }
   };
   ////////////////////////////////////////////////////////////
-  public View fileEntry(final String entry)
+  private LinearLayout fileView(boolean entryWindow)
   {
-    boolean newFile=entry==null && (allowFileEntry || allowPathEntry);
-// LAYOUT
-    LinearLayout ll=new LinearLayout(context);
-    //ll.setBackgroundColor(colorBackground);
-    ll.setLayoutParams(
-      new LinearLayout.LayoutParams(
-        LinearLayout.LayoutParams.FILL_PARENT
-      , LinearLayout.LayoutParams.WRAP_CONTENT
-      , 1
-      )
-    );
-    ll.setOrientation(LinearLayout.HORIZONTAL);
-    ll.setGravity(android.view.Gravity.FILL);
-    if(setColors) ll.setBackgroundColor(color_back);
-    ll.setId(0);
-// FILENAME
+    LinearLayout  ll=new LinearLayout(context);
+                  ll.setLayoutParams(
+                    new LinearLayout.LayoutParams(
+                      LinearLayout.LayoutParams.FILL_PARENT
+                    , LinearLayout.LayoutParams.WRAP_CONTENT
+                    , 1
+                    )
+                  );
+                  ll.setOrientation(LinearLayout.HORIZONTAL);
+                  ll.setGravity(android.view.Gravity.FILL);
     final TextView tv;
-    if(newFile)
+    if(entryWindow)
     {
       tv=new EditText(context);
-/*
- * A future option will be the curent path mirrored in the input window, 
- * but I don't have a menu built yet.
-      tv.setText(getCanonicalPath(cd));      tv.setSelectAllOnFocus(true);
- */
-           if(allowPathEntry) tv.setHint("Write in a path to go to.");
-      else if(allowFileEntry) tv.setHint("Enter new file name here.");
-//      tv.setSingleLine();
-      if(setColors) tv.setTextColor(color_back);
-      if(setColors) tv.setBackgroundColor(color_text);
+      tv.setHint(getString(R.string.fsnavigator_optional_enter_path));
       tv.setLayoutParams(
         new LinearLayout.LayoutParams(
           LinearLayout.LayoutParams.FILL_PARENT
@@ -214,60 +224,71 @@ public class      FSNavigator
     else
     {
       tv=new TextView(context);
-      tv.setText(entry);
       tv.setClickable(true);
       tv.setLongClickable(true);
       tv.setOnClickListener(fileListener);
-      if(setColors) tv.setTextColor(color_text);
       tv.setLayoutParams(
-          new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.FILL_PARENT
-          , LinearLayout.LayoutParams.FILL_PARENT
-          , 1
-          )
-        );
-        HorizontalScrollView hv=new HorizontalScrollView(context);
-        hv.setFillViewport(true);
-        hv.setLayoutParams(
-          new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.FILL_PARENT
-          , BUTTON_SIZE//LinearLayout.LayoutParams.WRAP_CONTENT
-          , 7
-          )
-        );
-        hv.addView(tv);
-        ll.addView(hv);
+        new LinearLayout.LayoutParams(
+          LinearLayout.LayoutParams.FILL_PARENT
+        , LinearLayout.LayoutParams.FILL_PARENT
+        , 1
+        )
+      );
+      HorizontalScrollView hv=new HorizontalScrollView(context);
+      hv.setFillViewport(true);
+      hv.setLayoutParams(
+        new LinearLayout.LayoutParams(
+          LinearLayout.LayoutParams.FILL_PARENT
+        , BUTTON_SIZE
+        , 7
+        )
+      );
+      hv.addView(tv);
+      ll.addView(hv);
     }
+    tv.setFocusable(true);
     tv.setSingleLine();
-//  tv.setMaxLines(1);
-  tv.setTextSize(textLg);
-//  tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-  tv.setTypeface(Typeface.SERIF, Typeface.BOLD);
-  tv.setTag(R.id.tag_filename, entry);
-  tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-  tv.setPadding(10, 5, 10, 5);
-  tv.setId(1);
+    tv.setTextSize(textLg);
+    tv.setTypeface(Typeface.SERIF, Typeface.BOLD);
+    tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+    tv.setPadding(10, 5, 10, 5);
+    tv.setId(R.id.textview);//1);
 
-  return(ll);
+    return(ll);
   }
   ////////////////////////////////////////////////////////////
-  private ImageView entryFolder(String name)
+  private LinearLayout fileEntry(final String entry)
   {
-    LinearLayout.LayoutParams btn_params=new LinearLayout.LayoutParams(
-      120//BUTTON_SIZE//LinearLayout.LayoutParams.WRAP_CONTENT
-    , 120//BUTTON_SIZE//LinearLayout.LayoutParams.MATCH_PARENT
-    , 1
-    );
+    LinearLayout ll;
+    if(entry==null)                           ll=fileView(entry==null);
+    else
+    {
+      if(countFileView<cachedFileView.size()) ll=cachedFileView.get(countFileView);
+      else                                    cachedFileView.put(countFileView, ll=fileView(entry==null));
+      ++countFileView;
+    }
+    TextView     tv=(TextView)ll.findViewById(R.id.textview);
+                 tv.setText(entry==null?"":entry);
+                 tv.setTag(entry==null?"":entry);
+    return(ll);
+  }
+  ////////////////////////////////////////////////////////////
+  private ImageView imageViewFolder(boolean up)
+  {
     ImageView b1=new ImageView(context);
-    b1.setClickable(true);
-    // b1.setLongClickable(true);
-    b1.setLayoutParams(btn_params);
-    b1.setImageResource(name.equals("..")?R.drawable.ic_folderup:R.drawable.ic_folder);
-    b1.setOnClickListener(directoryListener);
-    b1.setTag(R.id.tag_filename, name);
-    b1.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-//      b1.setMaxHeight(10);
-//      b1.setMaxWidth(10);
+              b1.setClickable(true);
+              b1.setFocusable(true);
+              b1.setId(R.id.imageview);
+              b1.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                  120
+                , 120
+                , 1
+                )
+              );
+              b1.setImageResource(up?R.drawable.ic_folderup:R.drawable.ic_folder);
+              b1.setOnClickListener(directoryListener);
+              b1.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
     return(b1);
   }
   ////////////////////////////////////////////////////////////
@@ -275,77 +296,89 @@ public class      FSNavigator
   {
     public void onClick(View view)
     {
-      File file=new File((String)view.getTag(R.id.tag_filename));
-      if(file.isFile())
+      String path=(String)view.getTag();
+      if(path!=null)
       {
-        setResult(RESULT_OK, getIntent().setData(Uri.fromFile(file)));
-        finish();
+        File file=new File(path);
+        if(file.isFile())
+        {
+          setResult(RESULT_OK, getIntent().setData(Uri.fromFile(file)));
+          finish();
+        }
+        else chdir(file);
+        makeView();
       }
-      else chdir(file);
-      //else chdir((String)view.getTag(R.id.tag_filename));
-      makeView();
     }
   };
   ////////////////////////////////////////////////////////////
-  public View directoryEntry(final String name)
+  private LinearLayout directoryView(boolean up)
   {
-// LAYOUT
-    LinearLayout ll=new LinearLayout(context);
-    //ll.setBackgroundColor(colorBackground);
-    ll.setLayoutParams(
-      new LinearLayout.LayoutParams(
-        LinearLayout.LayoutParams.FILL_PARENT
-      , BUTTON_SIZE//LinearLayout.LayoutParams.WRAP_CONTENT
-      , 2
-      )
-    );
-    ll.setOrientation(LinearLayout.HORIZONTAL);
-    ll.setGravity(android.view.Gravity.FILL);
-    if(setColors) ll.setBackgroundColor(color_back);
-    ll.setId(0);
-    ll.setOnClickListener(directoryListener);
-// FILENAME
-    TextView tv=new TextView(context);
-    if(name.equals(".."))
-    {
-      tv.setText("["+cd.getPath()+"]");
-      tv.setGravity(Gravity.CENTER);
-    }
+    ImageView             b1=imageViewFolder(up);
+    TextView              tv=new TextView(context);
+    if(up)                tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);//Gravity.CENTER);
+    else                  tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+                          tv.setClickable(true);
+                          tv.setLongClickable(true);
+                          tv.setFocusable(true);
+                          tv.setOnClickListener(directoryListener);
+                          tv.setMaxLines(1);
+                          tv.setTextSize(textLg);
+                          tv.setPadding(10, 5, 10, 5);
+                          tv.setId(R.id.textview);
+                          tv.setLayoutParams(
+                            new LinearLayout.LayoutParams(
+                              LinearLayout.LayoutParams.FILL_PARENT
+                            , BUTTON_SIZE
+                            , 1
+                            )
+                          );
+    HorizontalScrollView  hv=new HorizontalScrollView(context);
+                          hv.addView(tv);
+                          hv.setFillViewport(true);
+                          hv.setFocusable(true);
+                          hv.setOnClickListener(directoryListener);
+                          hv.setLayoutParams(
+                            new LinearLayout.LayoutParams(
+                              LinearLayout.LayoutParams.FILL_PARENT
+                            , BUTTON_SIZE
+                            , 7
+                            )
+                          );
+    LinearLayout          ll=new LinearLayout(context);
+                          ll.setLayoutParams(
+                            new LinearLayout.LayoutParams(
+                              LinearLayout.LayoutParams.FILL_PARENT
+                            , BUTTON_SIZE
+                            , 2
+                            )
+                          );
+                          ll.setOrientation(LinearLayout.HORIZONTAL);
+                          ll.setGravity(android.view.Gravity.FILL);
+                          ll.setOnClickListener(directoryListener);
+                          ll.addView(b1);
+                          ll.addView(hv);
+
+    return(ll);
+  }
+  ////////////////////////////////////////////////////////////
+  private LinearLayout directoryEntry(final String name)
+  {
+    boolean up=name.equals("..");
+    LinearLayout ll;
+    if(up)                                              {ll=directoryView(up);}
     else
     {
-      tv.setText(name);
-      tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+      if(countDirectoryView<cachedDirectoryView.size()) {ll=                   cachedDirectoryView.get(countDirectoryView);}
+      else                                              {ll=directoryView(up); cachedDirectoryView.put(countDirectoryView, ll);}
+      ++countDirectoryView;
     }
-    tv.setClickable(true);
-    tv.setLongClickable(true);
-    tv.setTag(R.id.tag_filename, name);
-    tv.setOnClickListener(directoryListener);
-    tv.setMaxLines(1);
-    if(setColors) tv.setTextColor(color_text);
-    tv.setTextSize(textLg);
-    tv.setPadding(10, 5, 10, 5);
-    tv.setLayoutParams(
-      new LinearLayout.LayoutParams(
-        LinearLayout.LayoutParams.FILL_PARENT
-      , BUTTON_SIZE//LinearLayout.LayoutParams.MATCH_PARENT
-      , 1
-      )
-    );
-    HorizontalScrollView hv=new HorizontalScrollView(context);
-    hv.addView(tv);
-    hv.setFillViewport(true);
-    hv.setOnClickListener(directoryListener);
-    hv.setLayoutParams(
-      new LinearLayout.LayoutParams(
-        LinearLayout.LayoutParams.FILL_PARENT
-      , BUTTON_SIZE//LinearLayout.LayoutParams.WRAP_CONTENT
-      , 7
-      )
-    );
-    ImageView b1=entryFolder(name);//U+2681, U+2687, U+2689
-    ll.addView(b1);
-    ll.addView(hv);
 
+    TextView     tv=((TextView)ll.findViewById(R.id.textview));
+                 tv.setTag(name);
+                 tv.setText(up  ? "["+cd.getPath()+"]"
+                                : name
+                 );
+    ((ImageView)ll.findViewById(R.id.imageview)).setTag(name);
     return(ll);
   }
   ////////////////////////////////////////////////////////////
@@ -355,66 +388,80 @@ public class      FSNavigator
     else return(super.onKeyUp(keyCode, event));
   }
   ////////////////////////////////////////////////////////////
-  public void makeView()
+  private LinearLayout makeContentView()
   {
+    final LinearLayout  ll=new LinearLayout(context);
+                        ll.setLayoutParams(
+                          new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.FILL_PARENT
+                          , LinearLayout.LayoutParams.WRAP_CONTENT
+                          , 1
+                          )
+                        );
+                        ll.setId(R.id.mainview);
+                        ll.setOrientation(LinearLayout.VERTICAL);
+                        ll.setGravity(android.view.Gravity.FILL);
+    final ScrollView    sv=new ScrollView(context);
+                        sv.setId(R.id.scrollview);
+                        sv.setLayoutParams(
+                          new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.FILL_PARENT
+                          , LinearLayout.LayoutParams.WRAP_CONTENT
+                          , 1
+                          )
+                        );
+                        sv.addView(ll);
+    final LinearLayout  bg=new LinearLayout(context);
+                        bg.setLayoutParams(
+                          new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.FILL_PARENT
+                          , LinearLayout.LayoutParams.WRAP_CONTENT
+                          , 1
+                          )
+                        );
+                        bg.setOrientation(LinearLayout.VERTICAL);
+                        bg.setGravity(android.view.Gravity.FILL);
+                        bg.setTag(ll);
+                        bg.addView(
+                          titleView
+                        , android.view.ViewGroup.LayoutParams.FILL_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+                        );
+                        bg.addView(sv);
+                        bg.addView(
+                          pathEntryView
+                        , android.view.ViewGroup.LayoutParams.FILL_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+                        );
+    return(bg);
+  }
+  ////////////////////////////////////////////////////////////
+  private void makeView()
+  {
+    countDirectoryView=countFileView=0;
+    ScrollView   sv=(ScrollView)contentView.findViewById(R.id.scrollview);
+    LinearLayout ll=(LinearLayout)sv.findViewById(R.id.mainview);
+                 ll.removeAllViews();
     if(cd == null) chdir("/");
     String path=getCanonicalPath(cd);
-    //chdir(path);
-    //setTitle(path);
-    final LinearLayout bg=new LinearLayout(context);
-    if(setColors) bg.setBackgroundColor(color_back);
-    bg.setLayoutParams(
-      new LinearLayout.LayoutParams(
-        LinearLayout.LayoutParams.FILL_PARENT
-      , LinearLayout.LayoutParams.WRAP_CONTENT
-      , 1
-      )
-    );
-    bg.setOrientation(LinearLayout.VERTICAL);
-    bg.setGravity(android.view.Gravity.FILL);
-    // ll.addView(makeActionBarView());
-    
-    
-    final LinearLayout ll=new LinearLayout(context);
-    if(setColors) ll.setBackgroundColor(color_back);
-    ll.setLayoutParams(
-      new LinearLayout.LayoutParams(
-        LinearLayout.LayoutParams.FILL_PARENT
-      , LinearLayout.LayoutParams.WRAP_CONTENT
-      , 1
-      )
-    );
-    ll.setOrientation(LinearLayout.VERTICAL);
-    ll.setGravity(android.view.Gravity.FILL);
-    // ll.addView(makeActionBarView());
-    final ScrollView sv=new ScrollView(context);
-    if(setColors) ll.setBackgroundColor(color_back);
-    //sv.setFillViewport(true);
-    sv.setLayoutParams(
-      new LinearLayout.LayoutParams(
-        LinearLayout.LayoutParams.FILL_PARENT
-      , LinearLayout.LayoutParams.WRAP_CONTENT
-      , 1
-      )
-    );
-    //sv.setBackgroundColor(colorBackground);
+
     if(path.equals("")) {chdir(path="/");}
-    if(!path.equals("/"))
+    if(path.equals("/"))
     {
-      bg.addView(directoryEntry(".."), android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-      //bg.addView(entryDividerH(),      android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-      //bg.addView(entryDividerH());
+      titleView.setVisibility(View.GONE);
     }
-    sv.addView(ll);
-    bg.addView(sv);
-    
+    else
+    {
+      titleView.setVisibility(View.VISIBLE);
+      titleView.requestLayout();
+      ((TextView)titleView.findViewById(R.id.textview)).setText("["+cd.getPath()+"]");
+    }
+
     String zd[]=cd.list(new java.io.FilenameFilter(){public boolean accept(File file, String name){return(  new File(file, name).isDirectory() );}});
     if(zd!=null)
     {
       java.util.Arrays.sort(zd, 0, zd.length, stringSortComparator);
       for(int i=0, n=zd.length; i<n; i++)
       {
-        if(zd[i].equals(".")) continue;
+        if(zd[i].equals("."))  continue;
         ll.addView(directoryEntry(zd[i]));
         ll.addView(entryDividerH());
       }
@@ -429,9 +476,10 @@ public class      FSNavigator
         ll.addView(entryDividerH());
       }
     }
-    bg.addView(fileEntry(null), android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-    //ll.addView(entryDividerH());
-    setContentView(bg);
+    ((TextView)pathEntryView.findViewById(R.id.textview)).setText("");
+    sv.scrollTo(0, 0);
+//    titleView.setSelected(true);
+    setContentView(contentView);
   }
   //////////////////////////////////////////////////////////////////////
   java.util.Comparator<String> stringSortComparator=new java.util.Comparator<String>()
@@ -453,7 +501,7 @@ public class      FSNavigator
   {
     super.onCreateOptionsMenu(menu);
 //    super.onPrepareOptionsMenu(menu);    menu.clear();
-    menu.add(0, ACTION_THEME_SWAP,  0,  "Change theme");
+    menu.add(0, ACTION_THEME_SWAP,  0,  getString(R.string.fsnavigator_change_theme));//"Change theme");
     return(true);
   }
   //////////////////////////////////////////////////////////////////////
@@ -463,13 +511,27 @@ public class      FSNavigator
     return(doOptionsItem(item.getItemId()));
   }
   //////////////////////////////////////////////////////////////////////
-  public boolean doOptionsItem(int itemId)
+  private boolean doOptionsItem(int itemId)
   {
     switch(itemId)
     {
       case ACTION_THEME_SWAP: swapTheme();  return(true);
     }
     return(false);
+  }
+  //////////////////////////////////////////////////////////////////////
+//  private void toast(final String message){toast(message, 0);}
+  private void toast(final String message, final int duration)
+  {
+    runOnUiThread(
+      new Runnable()
+      {
+        public void run()
+        {
+          Toast.makeText(context, message, duration == 0 ?Toast.LENGTH_SHORT: Toast.LENGTH_LONG).show();
+        }
+      }
+    );
   }
   //////////////////////////////////////////////////////////////////////
 }
