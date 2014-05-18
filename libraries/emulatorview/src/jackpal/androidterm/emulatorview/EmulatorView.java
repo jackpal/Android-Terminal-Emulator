@@ -141,6 +141,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private int mVisibleColumns;
 
+    /*
+     * The number of rows that are visible on the view
+     */
+    private int mVisibleRows;
+
     /**
      * The top row of text to display. Ranges from -activeTranscriptRows to 0
      */
@@ -1008,6 +1013,26 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     /**
+     * Gets the visible number of rows for the view, useful when updating Ptysize with the correct number of rows/columns
+     * @return The rows for the visible number of rows, this is calculate in updateSize(int w, int h), please call
+     * updateSize(true) if the view changed, to get the correct calculation before calling this.
+     */
+    public int getVisibleRows()
+    {
+      return mVisibleRows;
+    }
+
+    /**
+     * Gets the visible number of columns for the view, again useful to get when updating PTYsize
+     * @return the columns for the visisble view, please call updateSize(true) to re-calculate this if the view has changed
+     */
+    public int getVisibleColumns()
+    {
+      return mVisibleColumns;
+    }
+
+
+    /**
      * Page the terminal view (scroll it up or down by <code>delta</code>
      * screenfuls).
      *
@@ -1441,10 +1466,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private void updateSize(int w, int h) {
         mColumns = Math.max(1, (int) (((float) w) / mCharacterWidth));
-        mVisibleColumns = (int) (((float) mVisibleWidth) / mCharacterWidth);
+        mVisibleColumns = Math.max(1, (int) (((float) mVisibleWidth) / mCharacterWidth));
 
         mTopOfScreenMargin = mTextRenderer.getTopMargin();
         mRows = Math.max(1, (h - mTopOfScreenMargin) / mCharacterHeight);
+        mVisibleRows = Math.max(1, (mVisibleHeight - mTopOfScreenMargin) / mCharacterHeight);
         mTermSession.updateSize(mColumns, mRows);
 
         // Reset our paging:
