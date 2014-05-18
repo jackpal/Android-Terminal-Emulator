@@ -433,7 +433,7 @@ class TranscriptScreen implements Screen {
      * @param row The row index to be queried
      * @return The line of text at this row index
      */
-    public char[] getScriptLine(int row)
+    char[] getScriptLine(int row)
     {
         try
         {
@@ -454,8 +454,20 @@ class TranscriptScreen implements Screen {
      * @param row The row to check for line-wrap status
      * @return The line wrap status of the row provided
      */
-    public boolean getScriptLineWrap(int row)
+    boolean getScriptLineWrap(int row)
     {
         return mData.getLineWrap(row);
+    }
+
+    /**
+     * Get whether the line at this index is "basic" (contains only BMP
+     * characters of width 1).
+     */
+    boolean isBasicLine(int row) {
+        if (mData != null) {
+            return mData.isBasicLine(row);
+        } else {
+            return true;
+        }
     }
 }
