@@ -166,7 +166,7 @@
   <string name="activity_shortcut_create">Skratka terminálu</string>
   <string name="fsnavigator_title">VYBERTE SÚBOR</string>
   <string name="fsnavigator_no_external_storage">Nedostupný externý ukladací priestor</string>
-  <string name="fsnavigator_optional_enter_path">Alebo zadajte umiestnenie sem.<string>
+  <string name="fsnavigator_optional_enter_path">Alebo zadajte umiestnenie sem.</string>
   <string name="fsnavigator_change_theme">Zmeniť tému</string>
   
   <string name="addshortcut_command_hint">príkaz</string>
