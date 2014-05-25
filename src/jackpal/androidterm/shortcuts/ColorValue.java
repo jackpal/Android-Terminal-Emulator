@@ -26,7 +26,6 @@ public class      ColorValue
   private       boolean             started=    false;
   private       AlertDialog.Builder builder;
   private       boolean             barLock=    false;
-  private final String              Title=      "MAKE TEXT ICON";
   private final boolean[]           locks=      {false, false, false, false};
   private final int                 FP=         LinearLayout.LayoutParams.FILL_PARENT;
   private final int                 WC=         LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -161,6 +160,7 @@ public class      ColorValue
         buttonHit(which, (color[0]<<24)|(color[1]<<16)|(color[2]<<8)|color[3]);
       }
     };
+    String Title = context.getString(R.string.addshortcut_make_text_ikon);
     builder.setTitle(Title);
     builder.setPositiveButton(android.R.string.yes,    ocl);
     builder.setNegativeButton(android.R.string.cancel, ocl);
