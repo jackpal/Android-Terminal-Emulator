@@ -183,6 +183,7 @@
   <string name="addshortcut_arguments_label">Arguments\:</string>
   <string name="addshortcut_shortcut_label">Shortcut label\:</string>
   <string name="addshortcut_button_text_icon">Text icon</string>
+  <string name="addshortcut_make_text_icon">MAKE TEXT ICON</string>
   <string name="addshortcut_text_icon_instructions"></string>
   <string name="addshortcut_title">Term shortcut</string>
   <!-- ColorValue.java -->
