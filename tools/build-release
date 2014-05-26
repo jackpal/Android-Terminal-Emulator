@@ -5,8 +5,10 @@
 # of Android Terminal Emulator.
 set -e
 
-if [ ! -f "$HOME/Documents/workspace/keystore/jackpal.keystore" ]; then
-    echo "Release keystore file is missing. Cannot build release build."
+export ANDROID_TERMINAL_EMULATOR_KEYSTORE="$HOME/Documents/workspace/keystore/jackpal.keystore"
+
+if [ ! -f "$ANDROID_TERMINAL_EMULATOR_KEYSTORE" ]; then
+    echo "Release keystore file is missing at ${ANDROID_TERMINAL_EMULATOR_KEYSTORE}. Cannot build release build."
     exit 1
 fi
 
@@ -16,7 +18,7 @@ if [ -z "${ANDROID_NDK_ROOT+xxx}" ]; then
 fi
 
 if [ ! -d "$ANDROID_NDK_ROOT" ]; then
-    echo "The directory $ANDROID_NDK_ROOT = ${ANDROID_NDK_ROOT} does not exist."
+    echo "The directory ANDROID_NDK_ROOT = ${ANDROID_NDK_ROOT} does not exist."
     exit 1
 fi
 
@@ -26,7 +28,7 @@ if [ -z "${ANDROID_SDK_ROOT+xxx}" ]; then
 fi
 
 if [ ! -d "$ANDROID_SDK_ROOT" ]; then
-    echo "The directory $ANDROID_SDK_ROOT = ${ANDROID_NDK_ROOT} does not exist."
+    echo "The directory ANDROID_SDK_ROOT = ${ANDROID_SDK_ROOT} does not exist."
     exit 1
 fi
 

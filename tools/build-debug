@@ -8,7 +8,7 @@ if [ -z "${ANDROID_NDK_ROOT+xxx}" ]; then
 fi
 
 if [ ! -d "$ANDROID_NDK_ROOT" ]; then
-    echo "The directory $ANDROID_NDK_ROOT = ${ANDROID_NDK_ROOT} does not exist."
+    echo "The directory ANDROID_NDK_ROOT = ${ANDROID_NDK_ROOT} does not exist."
     exit 1
 fi
 
@@ -18,7 +18,7 @@ if [ -z "${ANDROID_SDK_ROOT+xxx}" ]; then
 fi
 
 if [ ! -d "$ANDROID_SDK_ROOT" ]; then
-    echo "The directory $ANDROID_SDK_ROOT = ${ANDROID_NDK_ROOT} does not exist."
+    echo "The directory ANDROID_SDK_ROOT = ${ANDROID_SDK_ROOT} does not exist."
     exit 1
 fi
 

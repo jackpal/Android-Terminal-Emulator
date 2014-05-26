@@ -43,7 +43,7 @@ class TranscriptScreen implements Screen {
     private int mScreenRows;
 
     private UnicodeTranscript mData;
-    
+
     /**
      * Create a transcript screen.
      *
@@ -167,6 +167,7 @@ class TranscriptScreen implements Screen {
             TextRenderer renderer, int cx, int selx1, int selx2, String imeText, int cursorMode) {
         char[] line;
         StyleRow color;
+        int cursorWidth = 1;
         try {
             line = mData.getLine(row);
             color = mData.getLineColor(row);
@@ -187,10 +188,16 @@ class TranscriptScreen implements Screen {
                 char[] blank = new char[selx2-selx1];
                 Arrays.fill(blank, ' ');
                 renderer.drawTextRun(canvas, x, y, selx1, selx2-selx1,
-                                blank, 0, 1, true, defaultStyle);
-            } else if (cx != -1) {
+                                blank, 0, 1, true, defaultStyle,
+                                cx, 0, 1, 1, cursorMode);
+            }
+            if (cx != -1) {
+                char[] blank = new char[1];
+                Arrays.fill(blank, ' ');
                 // We need to draw the cursor
-                renderer.drawCursor(canvas, x, y, cx, cursorMode);
+                renderer.drawTextRun(canvas, x, y, cx, 1,
+                        blank, 0, 1, true, defaultStyle,
+                        cx, 0, 1, 1, cursorMode);
             }
 
             return;
@@ -198,16 +205,18 @@ class TranscriptScreen implements Screen {
 
         int columns = mColumns;
         int lastStyle = 0;
-        boolean lastCursorStyle = false;
+        boolean lastSelectionStyle = false;
         int runWidth = 0;
         int lastRunStart = -1;
         int lastRunStartIndex = -1;
         boolean forceFlushRun = false;
         int column = 0;
         int index = 0;
+        int cursorIndex = 0;
+        int cursorIncr = 0;
         while (column < columns) {
             int style = color.get(column);
-            boolean cursorStyle = false;
+            boolean selectionStyle = false;
             int incr = 1;
             int width;
             if (Character.isHighSurrogate(line[index])) {
@@ -217,24 +226,30 @@ class TranscriptScreen implements Screen {
                 width = UnicodeTranscript.charWidth(line[index]);
             }
             if (column >= selx1 && column <= selx2) {
-                // Set cursor background color:
-                cursorStyle = true;
+                // Draw selection:
+                selectionStyle = true;
             }
             if (style != lastStyle
-                    || cursorStyle != lastCursorStyle
+                    || selectionStyle != lastSelectionStyle
                     || (width > 0 && forceFlushRun)) {
                 if (lastRunStart >= 0) {
                     renderer.drawTextRun(canvas, x, y, lastRunStart, runWidth,
                             line,
                             lastRunStartIndex, index - lastRunStartIndex,
-                            lastCursorStyle, lastStyle);
+                            lastSelectionStyle, lastStyle,
+                            cx, cursorIndex, cursorIncr, cursorWidth, cursorMode);
                 }
                 lastStyle = style;
-                lastCursorStyle = cursorStyle;
+                lastSelectionStyle = selectionStyle;
                 runWidth = 0;
                 lastRunStart = column;
                 lastRunStartIndex = index;
                 forceFlushRun = false;
+            }
+            if (cx == column) {
+                cursorIndex = index;
+                cursorIncr = incr;
+                cursorWidth = width;
             }
             runWidth += width;
             column += width;
@@ -251,7 +266,8 @@ class TranscriptScreen implements Screen {
             renderer.drawTextRun(canvas, x, y, lastRunStart, runWidth,
                     line,
                     lastRunStartIndex, index - lastRunStartIndex,
-                    lastCursorStyle, lastStyle);
+                    lastSelectionStyle, lastStyle,
+                    cx, cursorIndex, cursorIncr, cursorWidth, cursorMode);
         }
 
         if (cx >= 0 && imeText.length() > 0) {
@@ -259,11 +275,8 @@ class TranscriptScreen implements Screen {
             int imeOffset = imeText.length() - imeLength;
             int imePosition = Math.min(cx, columns - imeLength);
             renderer.drawTextRun(canvas, x, y, imePosition, imeLength, imeText.toCharArray(),
-                    imeOffset, imeLength, true, TextStyle.encode(0x0f, 0x00, TextStyle.fxNormal));
-        }
-
-        if (cx >= 0) {
-            renderer.drawCursor(canvas,  x, y, cx, cursorMode);
+                    imeOffset, imeLength, true, TextStyle.encode(0x0f, 0x00, TextStyle.fxNormal),
+                    -1, 0, 0, 0, 0);
         }
      }
 
@@ -407,38 +420,54 @@ class TranscriptScreen implements Screen {
     }
 
     public void resize(int columns, int rows, int style) {
+        // Ensure backing store will be large enough to hold the whole screen 
+        if (rows > mTotalRows) {
+            mTotalRows = rows;
+        }
         init(columns, mTotalRows, rows, style);
     }
-    
+
     /**
-     * 
+     *
      * Return the UnicodeTranscript line at this row index.
      * @param row The row index to be queried
      * @return The line of text at this row index
      */
-    public char[] getScriptLine(int row)
+    char[] getScriptLine(int row)
     {
-    	try
-    	{
-    		return mData.getLine(row);
-    	}
-    	catch (IllegalArgumentException e)
-    	{
-    		return null;
-    	}
-    	catch (NullPointerException e)
-    	{
-    		return null;
-    	}
+        try
+        {
+            return mData.getLine(row);
+        }
+        catch (IllegalArgumentException e)
+        {
+            return null;
+        }
+        catch (NullPointerException e)
+        {
+            return null;
+        }
     }
-    
+
     /**
      * Get the line wrap status of the row provided.
      * @param row The row to check for line-wrap status
      * @return The line wrap status of the row provided
      */
-    public boolean getScriptLineWrap(int row)
+    boolean getScriptLineWrap(int row)
     {
-    	return mData.getLineWrap(row);
+        return mData.getLineWrap(row);
+    }
+
+    /**
+     * Get whether the line at this index is "basic" (contains only BMP
+     * characters of width 1).
+     */
+    boolean isBasicLine(int row) {
+        if (mData != null) {
+            return mData.isBasicLine(row);
+        } else {
+            return true;
+        }
     }
 }

@@ -22,6 +22,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
+import java.util.Locale;
 
 import android.util.Log;
 
@@ -247,13 +248,6 @@ class TerminalEmulator {
     private boolean mInsertMode;
 
     /**
-     * Automatic newline mode. Configures whether pressing return on the
-     * keyboard automatically generates a return as well. Not currently
-     * implemented.
-     */
-    private boolean mAutomaticNewlineMode;
-
-    /**
      * An array of tab stops. mTabStop[i] is true if there is a tab stop set for
      * column i.
      */
@@ -451,10 +445,17 @@ class TerminalEmulator {
             throw new IllegalArgumentException("rows:" + rows);
         }
 
+        TranscriptScreen screen = mScreen;
+        TranscriptScreen altScreen;
+        if (screen != mMainBuffer) {
+            altScreen = mMainBuffer;
+        } else {
+            altScreen = mAltBuffer;
+        }
+
         // Try to resize the screen without getting the transcript
         int[] cursor = { mCursorCol, mCursorRow };
-        boolean fastResize = mMainBuffer.fastResize(columns, rows, cursor);
-        mAltBuffer.resize(columns, rows, getStyle());
+        boolean fastResize = screen.fastResize(columns, rows, cursor);
 
         GrowableIntArray cursorColor = null;
         String charAtCursor = null;
@@ -466,13 +467,25 @@ class TerminalEmulator {
              * This is an epic hack that lets us restore the cursor later...
              */
             cursorColor = new GrowableIntArray(1);
-            charAtCursor = mScreen.getSelectedText(cursorColor, mCursorCol, mCursorRow, mCursorCol, mCursorRow);
-            mScreen.set(mCursorCol, mCursorRow, 27, 0);
+            charAtCursor = screen.getSelectedText(cursorColor, mCursorCol, mCursorRow, mCursorCol, mCursorRow);
+            screen.set(mCursorCol, mCursorRow, 27, 0);
 
             colors = new GrowableIntArray(1024);
-            transcriptText = mMainBuffer.getTranscriptText(colors);
+            transcriptText = screen.getTranscriptText(colors);
+            screen.resize(columns, rows, getStyle());
+        }
 
-            mMainBuffer.resize(columns, rows, getStyle());
+        boolean altFastResize = true;
+        GrowableIntArray altColors = null;
+        String altTranscriptText = null;
+        if (altScreen != null) {
+            altFastResize = altScreen.fastResize(columns, rows, null);
+
+            if (!altFastResize) {
+                altColors = new GrowableIntArray(1024);
+                altTranscriptText = altScreen.getTranscriptText(altColors);
+                altScreen.resize(columns, rows, getStyle());
+            }
         }
 
         if (mRows != rows) {
@@ -487,6 +500,41 @@ class TerminalEmulator {
             mTabStop = new boolean[mColumns];
             int toTransfer = Math.min(oldColumns, columns);
             System.arraycopy(oldTabStop, 0, mTabStop, 0, toTransfer);
+        }
+
+        if (!altFastResize) {
+            boolean wasAboutToAutoWrap = mAboutToAutoWrap;
+
+            // Restore the contents of the inactive screen's buffer
+            mScreen = altScreen;
+            mCursorRow = 0;
+            mCursorCol = 0;
+            mAboutToAutoWrap = false;
+
+            int end = altTranscriptText.length()-1;
+            /* Unlike for the main transcript below, don't trim off trailing
+             * newlines -- the alternate transcript lacks a cursor marking, so
+             * we might introduce an unwanted vertical shift in the screen
+             * contents this way */
+            char c, cLow;
+            int colorOffset = 0;
+            for (int i = 0; i <= end; i++) {
+                c = altTranscriptText.charAt(i);
+                int style = altColors.at(i-colorOffset);
+                if (Character.isHighSurrogate(c)) {
+                    cLow = altTranscriptText.charAt(++i);
+                    emit(Character.toCodePoint(c, cLow), style);
+                    ++colorOffset;
+                } else if (c == '\n') {
+                    setCursorCol(0);
+                    doLinefeed();
+                } else {
+                    emit(c, style);
+                }
+            }
+
+            mScreen = screen;
+            mAboutToAutoWrap = wasAboutToAutoWrap;
         }
 
         if (fastResize) {
@@ -531,7 +579,7 @@ class TerminalEmulator {
                    is the place to restore the cursor to */
                 newCursorRow = mCursorRow;
                 newCursorCol = mCursorCol;
-                newCursorTranscriptPos = mMainBuffer.getActiveRows();
+                newCursorTranscriptPos = screen.getActiveRows();
                 if (charAtCursor != null && charAtCursor.length() > 0) {
                     // Emit the real character that was in this spot
                     int encodedCursorColor = cursorColor.at(0);
@@ -549,7 +597,7 @@ class TerminalEmulator {
 
             /* Adjust for any scrolling between the time we marked the cursor
                location and now */
-            int scrollCount = mMainBuffer.getActiveRows() - newCursorTranscriptPos;
+            int scrollCount = screen.getActiveRows() - newCursorTranscriptPos;
             if (scrollCount > 0 && scrollCount <= newCursorRow) {
                 mCursorRow -= scrollCount;
             } else if (scrollCount > newCursorRow) {
@@ -878,7 +926,9 @@ class TerminalEmulator {
             case 47:
             case 1047:
             case 1049:
-                mScreen = mAltBuffer;
+                if (mAltBuffer != null) {
+                    mScreen = mAltBuffer;
+                }
                 break;
             }
             if (arg >= 1000 && arg <= 1003) {
@@ -1296,7 +1346,7 @@ class TerminalEmulator {
             case 6: // Cursor position report (CPR):
                     // Answer is ESC [ y ; x R, where x,y is
                     // the cursor location.
-                byte[] cpr = String.format("\033[%d;%dR",
+                byte[] cpr = String.format(Locale.US, "\033[%d;%dR",
                                  mCursorRow + 1, mCursorCol + 1).getBytes();
                 mSession.write(cpr, 0, cpr.length);
                 break;
@@ -1514,10 +1564,6 @@ class TerminalEmulator {
         switch (modeBit) {
         case 4:
             mInsertMode = newValue;
-            break;
-
-        case 20:
-            mAutomaticNewlineMode = newValue;
             break;
 
         default:
@@ -1791,10 +1837,10 @@ class TerminalEmulator {
 
         if (autoWrap) {
             mAboutToAutoWrap = (mCursorCol == mColumns - 1);
-            
+
             //Force line-wrap flag to trigger even for lines being typed
             if(mAboutToAutoWrap)
-            	mScreen.setLineWrap(mCursorRow);
+                mScreen.setLineWrap(mCursorRow);
         }
 
         mCursorCol = Math.min(mCursorCol + width, mColumns - 1);
@@ -1891,7 +1937,6 @@ class TerminalEmulator {
         mDecFlags |= K_SHOW_CURSOR_MASK;
         mSavedDecFlags = 0;
         mInsertMode = false;
-        mAutomaticNewlineMode = false;
         mTopMargin = 0;
         mBottomMargin = mRows;
         mAboutToAutoWrap = false;
@@ -1944,7 +1989,9 @@ class TerminalEmulator {
         mDefaultForeColor = TextStyle.ciForeground;
         mDefaultBackColor = TextStyle.ciBackground;
         mMainBuffer.setColorScheme(scheme);
-        mAltBuffer.setColorScheme(scheme);
+        if (mAltBuffer != null) {
+            mAltBuffer.setColorScheme(scheme);
+        }
     }
 
     public String getSelectedText(int x1, int y1, int x2, int y2) {

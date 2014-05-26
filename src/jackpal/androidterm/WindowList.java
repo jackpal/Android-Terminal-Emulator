@@ -45,8 +45,10 @@ public class WindowList extends ListActivity {
      * pressed.  This allows the window's entry to be pressed without the close
      * button being triggered.
      * Idea and code shamelessly borrowed from the Android browser's tabs list.
+     *
+     * Used by layout xml.
      */
-    private static class CloseButton extends ImageView {
+    public static class CloseButton extends ImageView {
         public CloseButton(Context context) {
             super(context);
         }

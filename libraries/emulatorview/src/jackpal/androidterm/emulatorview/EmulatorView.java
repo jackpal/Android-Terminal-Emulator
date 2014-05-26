@@ -19,12 +19,12 @@ package jackpal.androidterm.emulatorview;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompat;
 import jackpal.androidterm.emulatorview.compat.ClipboardManagerCompatFactory;
 import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
+import jackpal.androidterm.emulatorview.compat.Patterns;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Hashtable;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -35,6 +35,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
+import android.text.util.Linkify.MatchFilter;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -106,7 +107,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      */
     private int mTextSize = 10;
 
-    private int mCursorStyle;
     private int mCursorBlink;
 
     /**
@@ -141,6 +141,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private int mVisibleColumns;
 
+    /*
+     * The number of rows that are visible on the view
+     */
+    private int mVisibleRows;
+
     /**
      * The top row of text to display. Ranges from -activeTranscriptRows to 0
      */
@@ -159,8 +164,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int mFnKeyCode;
     private boolean mIsControlKeySent = false;
     private boolean mIsFnKeySent = false;
-
-    private String mTermType;
 
     private boolean mMouseTracking;
 
@@ -232,6 +235,33 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private Hashtable<Integer,URLSpan[]> mLinkLayer = new Hashtable<Integer,URLSpan[]>();
 
     /**
+     * Accept links that start with http[s]:
+     */
+    private static class HttpMatchFilter implements MatchFilter {
+        public boolean acceptMatch(CharSequence s, int start, int end) {
+            return startsWith(s, start, end, "http:") ||
+                startsWith(s, start, end, "https:");
+        }
+
+        private boolean startsWith(CharSequence s, int start, int end,
+                String prefix) {
+            int prefixLen = prefix.length();
+            int fragmentLen = end - start;
+            if (prefixLen > fragmentLen) {
+                return false;
+            }
+            for (int i = 0; i < prefixLen; i++) {
+                if (s.charAt(start + i) != prefix.charAt(i)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    private static MatchFilter sHttpMatchFilter = new HttpMatchFilter();
+
+    /**
      * Convert any URLs in the current row into a URLSpan,
      * and store that result in a hash table of URLSpan entries.
      *
@@ -241,14 +271,30 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private int createLinks(int row)
     {
         TranscriptScreen transcriptScreen = mEmulator.getScreen();
-        char [] result = transcriptScreen.getScriptLine(row);
+        char [] line = transcriptScreen.getScriptLine(row);
         int lineCount = 1;
 
         //Nothing to do if there's no text.
-        if(result == null)
+        if(line == null)
             return lineCount;
 
-        SpannableStringBuilder textToLinkify = new SpannableStringBuilder(new String(result));
+        /* If this is not a basic line, the array returned from getScriptLine()
+         * could have arbitrary garbage at the end -- find the point at which
+         * the line ends and only include that in the text to linkify.
+         *
+         * XXX: The fact that the array returned from getScriptLine() on a
+         * basic line contains no garbage is an implementation detail -- the
+         * documented behavior explicitly allows garbage at the end! */
+        int lineLen;
+        boolean textIsBasic = transcriptScreen.isBasicLine(row);
+        if (textIsBasic) {
+            lineLen = line.length;
+        } else {
+            // The end of the valid data is marked by a NUL character
+            for (lineLen = 0; line[lineLen] != 0; ++lineLen);
+        }
+
+        SpannableStringBuilder textToLinkify = new SpannableStringBuilder(new String(line, 0, lineLen));
 
         boolean lineWrap = transcriptScreen.getScriptLineWrap(row);
 
@@ -256,23 +302,38 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
         while (lineWrap)
         {
             //Get next line
-            result = transcriptScreen.getScriptLine(row + lineCount);
+            int nextRow = row + lineCount;
+            line = transcriptScreen.getScriptLine(nextRow);
 
             //If next line is blank, don't try and append
-            if(result == null)
+            if(line == null)
                 break;
 
-            textToLinkify.append(new String(result));
+            boolean lineIsBasic = transcriptScreen.isBasicLine(nextRow);
+            if (textIsBasic && !lineIsBasic) {
+                textIsBasic = lineIsBasic;
+            }
+            if (lineIsBasic) {
+                lineLen = line.length;
+            } else {
+                // The end of the valid data is marked by a NUL character
+                for (lineLen = 0; line[lineLen] != 0; ++lineLen);
+            }
+
+            textToLinkify.append(new String(line, 0, lineLen));
 
             //Check if line after next is wrapped
-            lineWrap = transcriptScreen.getScriptLineWrap(row + lineCount);
+            lineWrap = transcriptScreen.getScriptLineWrap(nextRow);
             ++lineCount;
         }
 
-        Linkify.addLinks(textToLinkify, Linkify.WEB_URLS);
+        Linkify.addLinks(textToLinkify, Patterns.WEB_URL,
+            null, sHttpMatchFilter, null);
         URLSpan [] urls = textToLinkify.getSpans(0, textToLinkify.length(), URLSpan.class);
         if(urls.length > 0)
         {
+            int columns = mColumns;
+
             //re-index row to 0 if it is negative
             int screenRow = row - mTopRow;
 
@@ -280,7 +341,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             URLSpan [][] linkRows = new URLSpan[lineCount][];
             for(int i=0; i<lineCount; ++i)
             {
-                linkRows[i] = new URLSpan[mColumns];
+                linkRows[i] = new URLSpan[columns];
                 Arrays.fill(linkRows[i], null);
             }
 
@@ -289,13 +350,54 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             {
                 URLSpan url = urls[urlNum];
                 int spanStart = textToLinkify.getSpanStart(url);
-                int spanEnd = textToLinkify.getSpanEnd(url) - 1;
+                int spanEnd = textToLinkify.getSpanEnd(url);
 
-                //Build accurate indices for multi-line links
-                int startRow = spanStart / mColumns;
-                int startCol = spanStart % mColumns;
-                int endRow   = spanEnd   / mColumns;
-                int endCol   = spanEnd   % mColumns;
+                // Build accurate indices for links
+                int startRow;
+                int startCol;
+                int endRow;
+                int endCol;
+                if (textIsBasic) {
+                    // Basic line -- can assume one char per column
+                    startRow = spanStart / mColumns;
+                    startCol = spanStart % mColumns;
+                    endRow   = spanEnd   / mColumns;
+                    endCol   = spanEnd   % mColumns;
+                } else {
+                    /* Iterate over the line to get starting and ending columns
+                     * for this span */
+                    startRow = 0;
+                    startCol = 0;
+                    for (int i = 0; i < spanStart; ++i) {
+                        char c = textToLinkify.charAt(i);
+                        if (Character.isHighSurrogate(c)) {
+                            ++i;
+                            startCol += UnicodeTranscript.charWidth(c, textToLinkify.charAt(i));
+                        } else {
+                            startCol += UnicodeTranscript.charWidth(c);
+                        }
+                        if (startCol >= columns) {
+                            ++startRow;
+                            startCol %= columns;
+                        }
+                    }
+
+                    endRow = startRow;
+                    endCol = startCol;
+                    for (int i = spanStart; i < spanEnd; ++i) {
+                        char c = textToLinkify.charAt(i);
+                        if (Character.isHighSurrogate(c)) {
+                            ++i;
+                            endCol += UnicodeTranscript.charWidth(c, textToLinkify.charAt(i));
+                        } else {
+                            endCol += UnicodeTranscript.charWidth(c);
+                        }
+                        if (endCol >= columns) {
+                            ++endRow;
+                            endCol %= columns;
+                        }
+                    }
+                }
 
                 //Fill linkRows with the URL where appropriate
                 for(int i=startRow; i <= endRow; ++i)
@@ -911,6 +1013,26 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     }
 
     /**
+     * Gets the visible number of rows for the view, useful when updating Ptysize with the correct number of rows/columns
+     * @return The rows for the visible number of rows, this is calculate in updateSize(int w, int h), please call
+     * updateSize(true) if the view changed, to get the correct calculation before calling this.
+     */
+    public int getVisibleRows()
+    {
+      return mVisibleRows;
+    }
+
+    /**
+     * Gets the visible number of columns for the view, again useful to get when updating PTYsize
+     * @return the columns for the visisble view, please call updateSize(true) to re-calculate this if the view has changed
+     */
+    public int getVisibleColumns()
+    {
+      return mVisibleColumns;
+    }
+
+
+    /**
      * Page the terminal view (scroll it up or down by <code>delta</code>
      * screenfuls).
      *
@@ -945,22 +1067,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     public void setTextSize(int fontSize) {
         mTextSize = (int) (fontSize * mDensity);
         updateText();
-    }
-
-    /**
-     * Sets style information about the cursor.
-     *
-     * @param style The style of the cursor.
-     * @param blink Whether the cursor should blink.
-     */
-    public void setCursorStyle(int style, int blink) {
-        mCursorStyle = style;
-        if (blink != 0 && mCursorBlink == 0) {
-            mHandler.postDelayed(mBlinkCursor, CURSOR_BLINK_PERIOD);
-        } else if (blink == 0 && mCursorBlink != 0) {
-            mHandler.removeCallbacks(mBlinkCursor);
-        }
-        mCursorBlink = blink;
     }
 
     /**
@@ -1360,10 +1466,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     private void updateSize(int w, int h) {
         mColumns = Math.max(1, (int) (((float) w) / mCharacterWidth));
-        mVisibleColumns = (int) (((float) mVisibleWidth) / mCharacterWidth);
+        mVisibleColumns = Math.max(1, (int) (((float) mVisibleWidth) / mCharacterWidth));
 
         mTopOfScreenMargin = mTextRenderer.getTopMargin();
         mRows = Math.max(1, (h - mTopOfScreenMargin) / mCharacterHeight);
+        mVisibleRows = Math.max(1, (mVisibleHeight - mTopOfScreenMargin) / mCharacterHeight);
         mTermSession.updateSize(mColumns, mRows);
 
         // Reset our paging:
@@ -1555,7 +1662,6 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
     public void setTermType(String termType) {
          mKeyListener.setTermType(termType);
-         mTermType = termType;
     }
 
     /**
@@ -1567,11 +1673,12 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
 
 
     /**
+     * Get the URL for the link displayed at the specified screen coordinates.
      *
-     * Get the URL at the specified screen coordinates and return its string value
      * @param x The x coordinate being queried (from 0 to screen width)
      * @param y The y coordinate being queried (from 0 to screen height)
-     * @return
+     * @return The URL for the link at the specified screen coordinates, or
+     *         null if no link exists there.
      */
     public String getURLat(float x, float y)
     {

@@ -1,11 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jackpal.androidterm"
-      android:versionName="1.0.56"
-      android:versionCode="57"
+      android:versionName="1.0.60"
+      android:versionCode="61"
       android:installLocation="auto">
     <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="11" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -25,7 +27,8 @@
                 android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
                 android:protectionLevel="dangerous" />
     <application android:icon="@drawable/ic_launcher"
-                android:label="@string/application_terminal">
+                android:label="@string/application_terminal"
+                android:hardwareAccelerated="true">
         <activity android:name="Term"
                 android:theme="@style/Theme"
                 android:launchMode="singleTask"
@@ -34,6 +37,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
             </intent-filter>
         </activity>
         <activity-alias android:name="TermInternal"
@@ -55,6 +59,18 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity-alias
+                android:name="TermHere"
+                android:label="@string/activity_term_here_title"
+                android:targetActivity="RemoteInterface"
+                android:exported="true"
+        >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="*/*" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity-alias>
         <activity-alias android:name="RunScript"
                 android:targetActivity="RemoteInterface"
                 android:permission="jackpal.androidterm.permission.RUN_SCRIPT">
@@ -64,10 +80,40 @@
             </intent-filter>
         </activity-alias>
         <activity android:name="TermPreferences"
-                android:label="@string/preferences"
-                android:hardwareAccelerated="true"/>
+                android:label="@string/preferences"/>
         <activity android:name="WindowList"
                 android:label="@string/window_list" />
         <service android:name="TermService" />
+    <activity
+      android:label="@string/activity_shortcut_create"
+      android:name="jackpal.androidterm.shortcuts.AddShortcut"
+      android:launchMode="singleTop"
+      android:configChanges="orientation|keyboard|keyboardHidden"
+    >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.CREATE_SHORTCUT" />
+      </intent-filter>
+      <intent-filter>
+        <category android:name="android.intent.category.DEFAULT" />
+        <data     android:mimeType="text/*" />
+      </intent-filter>
+    </activity>
+    <activity
+      android:name="jackpal.androidterm.shortcuts.FSNavigator"
+      android:label="FSNavigator"
+      android:launchMode="singleTop"
+      android:configChanges="orientation|keyboardHidden"
+    >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+      </intent-filter>
+    </activity>
+    <meta-data
+      android:name="com.sec.android.support.multiwindow"
+      android:value="true">
+        </meta-data>
     </application>
 </manifest>

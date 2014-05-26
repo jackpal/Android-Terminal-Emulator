@@ -25,13 +25,12 @@
         <!-- <item>Action bar disabled</item> -->
         <item>Mostrar</item>
         <item>Ocultar (Pulsa MENÚ para mostrarla)</item>
-	</string-array>
+    </string-array>
 
     <string-array name="entries_orientation_preference">
         <item>Automática</item>
         <item>Horizontal</item>
         <item>Vertical</item>
-    </string-array>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
