@@ -163,4 +163,37 @@
   <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: cambiar ventana, Ctrl-Shift-N: nueva ventana, Ctrl-Shift-V: pegar.</string>
   <string name="use_keyboard_shortcuts_summary_off">Atajos de teclado desactivados.</string>
 
+  <string name="help">Ayuda</string>
+  <string name="help_url">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
+  <string name="activity_term_here_title">Terminal aquí</string>
+  
+  <!-- BEGIN SHORTCUT RELATED STRINGS -->
+  <!-- AndroidManifest.xml -->
+  <string name="activity_shortcut_create">"Terminal (acceso directo)"</string>
+  <!-- FSNavigator.java -->
+  <string name="fsnavigator_title">EXPLORADOR DE ARCHIVOS</string>
+  <string name="fsnavigator_no_external_storage">Almacenamiento externo no disponible</string>
+  <string name="fsnavigator_optional_enter_path">O intruduce ruta aquí.</string>
+  <string name="fsnavigator_change_theme">Cambiar tema</string>
+  <!-- AddShortcut.java -->
+  <string name="addshortcut_command_hint">comando</string>
+  <string name="addshortcut_example_hint">--ejemplo=\""a\"</string>
+  <string name="addshortcut_button_find_command">Encontrar comando</string>
+  <string name="addshortcut_navigator_title">ELIJE DESTINO DEL ACCESO DIRECTO</string>
+  <string name="addshortcut_command_window_instructions">La ventana de comandos necesita la ruta completa, sin argumentos. Para otros comandos usa la ventana de Argumentos (ej: cd /sdcard).</string>
+  <string name="addshortcut_arguments_label">Argumentos\:</string>
+  <string name="addshortcut_shortcut_label">Etiqueta acceso directo\:</string>
+  <string name="addshortcut_button_text_icon">Texto del icono</string>
+  <string name="addshortcut_make_text_icon">HACER ICONO DE TEXTO</string>
+  <string name="addshortcut_text_icon_instructions"></string>
+  <string name="addshortcut_title">Acceso directo a terminal</string>
+  <!-- ColorValue.java -->
+  <string name="colorvalue_letter_alpha">α</string>
+  <string name="colorvalue_letter_red">R</string>
+  <string name="colorvalue_letter_green">G</string>
+  <string name="colorvalue_letter_blue">B</string>
+  <string name="colorvalue_label_lock_button_column">BLOQUEAR</string>
+  <string name="colorvalue_icon_text_entry_hint">Introduce texto del icono</string>
+  
+  <!-- END SHORTCUT RELATED STRINGS -->
 </resources>
