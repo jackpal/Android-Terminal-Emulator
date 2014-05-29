@@ -1,7 +1,6 @@
 //From the desk of Frank P. Westlake; public domain.
 package jackpal.androidterm.shortcuts;
 
-import android.app.        AlertDialog;
 import android.content.    Context;
 import android.content.    DialogInterface;
 import android.content.    Intent;
@@ -21,6 +20,7 @@ import android.widget.     ScrollView;
 import android.widget.     TextView;
 import android.widget.     EditText;
 import jackpal.androidterm.R;
+import jackpal.androidterm.compat.AlertDialogCompat;
 
 import java.io.            File;
 
@@ -53,7 +53,7 @@ public class      AddShortcut
   void makeShortcut()
   {
     if(path==null) path="";
-    final AlertDialog.Builder  alert=new AlertDialog.Builder(context);
+    final AlertDialogCompat.Builder  alert=new AlertDialogCompat.Builder(context, AlertDialogCompat.THEME_HOLO_DARK);
     LinearLayout   lv=new LinearLayout(context);
                    lv.setOrientation(LinearLayout.VERTICAL);
     for(int i=0, n=et.length; i<n; i++) {et[i]=new EditText(context); et[i].setSingleLine(true);}

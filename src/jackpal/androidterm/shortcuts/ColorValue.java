@@ -2,6 +2,7 @@
 package jackpal.androidterm.shortcuts;
 
 import jackpal.androidterm.R;
+import jackpal.androidterm.compat.AlertDialogCompat;
 import android.app.        AlertDialog;
 import android.content.    Context;
 import android.content.    DialogInterface;
@@ -24,7 +25,7 @@ public class      ColorValue
   private       EditText            value;
   private final int[]               color=      {0xFF, 0, 0, 0};
   private       boolean             started=    false;
-  private       AlertDialog.Builder builder;
+  private       AlertDialogCompat.Builder builder;
   private       boolean             barLock=    false;
   private final boolean[]           locks=      {false, false, false, false};
   private final int                 FP=         LinearLayout.LayoutParams.FILL_PARENT;
@@ -45,7 +46,7 @@ public class      ColorValue
   public void colorValue()
   {
     final int     arraySizes=  4;
-    builder=      new AlertDialog.Builder(context);
+    builder=      new AlertDialogCompat.Builder(context, AlertDialogCompat.THEME_HOLO_DARK);
     LinearLayout  lv=new LinearLayout(context);
                   lv.setOrientation(LinearLayout.VERTICAL);
     String  lab[]={
