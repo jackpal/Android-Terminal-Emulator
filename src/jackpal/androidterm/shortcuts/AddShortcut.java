@@ -210,7 +210,10 @@ public class      AddShortcut
     , int    shortcutColor
     )
     {
-      android.net.Uri.Builder urib=new android.net.Uri.Builder().scheme("File");
+      Uri.Builder urib=new Uri.Builder().scheme("file");
+      // Explicitly setting these unused fields to null avoids a NPE when writing to Parcel for Android SDK level 3.
+      urib.authority(null).query(null).fragment(null);
+
       if(path!=null      && !path.equals(""))      urib.path(path);
       if(arguments!=null && !arguments.equals("")) urib.fragment(arguments!=null?arguments:"");
       android.net.Uri uri=urib.build();
