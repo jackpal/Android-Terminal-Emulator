@@ -53,7 +53,8 @@ public class      AddShortcut
   void makeShortcut()
   {
     if(path==null) path="";
-    final AlertDialogCompat.Builder  alert=new AlertDialogCompat.Builder(context, AlertDialogCompat.THEME_HOLO_DARK);
+    final AlertDialogCompat.Builder alert =
+        AlertDialogCompat.newInstanceBuilder(context, AlertDialogCompat.THEME_HOLO_DARK);
     LinearLayout   lv=new LinearLayout(context);
                    lv.setOrientation(LinearLayout.VERTICAL);
     for(int i=0, n=et.length; i<n; i++) {et[i]=new EditText(context); et[i].setSingleLine(true);}

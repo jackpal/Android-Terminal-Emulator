@@ -46,7 +46,7 @@ public class      ColorValue
   public void colorValue()
   {
     final int     arraySizes=  4;
-    builder=      new AlertDialogCompat.Builder(context, AlertDialogCompat.THEME_HOLO_DARK);
+    builder=      AlertDialogCompat.newInstanceBuilder(context, AlertDialogCompat.THEME_HOLO_DARK);
     LinearLayout  lv=new LinearLayout(context);
                   lv.setOrientation(LinearLayout.VERTICAL);
     String  lab[]={
