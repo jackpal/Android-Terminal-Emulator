@@ -20,6 +20,6 @@ If you are unable to use the Play Store, you can download a copy of
 Android Terminal Emulator here:
 [Download Prebuilt version for side-loading](http://jackpal.github.com/Android-Terminal-Emulator/downloads/Term.apk)
 
-Notice: Android Terminal Emulator development is complete. I am still accepting new language translations and bug fixes, but I am not accepting new features. See [[Wrapping up Development on Android Terminal Emulator]
-https://github.com/jackpal/Android-Terminal-Emulator/wiki/Wrapping-up-Development-on-Android-Terminal-Emulator]
+Notice: Android Terminal Emulator development is complete. I am still accepting new language translations and bug fixes, but I am not accepting new features. See [Wrapping up Development on Android Terminal Emulator]
+(https://github.com/jackpal/Android-Terminal-Emulator/wiki/Wrapping-up-Development-on-Android-Terminal-Emulator)
 for details of the wrapping-up process.
