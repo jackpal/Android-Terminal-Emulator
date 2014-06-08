@@ -67,10 +67,11 @@ class PaintRenderer extends BaseTextRenderer {
                 left + runWidth * mCharWidth, y,
                 mTextPaint);
 
-        boolean cursorVisible = index <= cursorOffset && cursorOffset < (index + count);
+        boolean cursorVisible = lineOffset <= cursorOffset && cursorOffset < (lineOffset + runWidth);
+        float cursorX = 0;
         if (cursorVisible) {
-            int cursorX = (int) (x + cursorOffset * mCharWidth);
-            drawCursorImp(canvas, cursorX, y, cursorWidth * mCharWidth, mCharHeight, cursorMode);
+            cursorX = x + cursorOffset * mCharWidth;
+            drawCursorImp(canvas, (int) cursorX, y, cursorWidth * mCharWidth, mCharHeight, cursorMode);
         }
 
         boolean invisible = (effect & TextStyle.fxInvisible) != 0;
@@ -97,19 +98,19 @@ class PaintRenderer extends BaseTextRenderer {
             if (cursorVisible) {
                 // Text before cursor
                 int countBeforeCursor = cursorIndex - index;
-                int countAfterCursor = count - (countBeforeCursor + 1);
+                int countAfterCursor = count - (countBeforeCursor + cursorIncr);
                 if (countBeforeCursor > 0){
                     canvas.drawText(text, index, countBeforeCursor, left, textOriginY, mTextPaint);
                 }
                 // Text at cursor
                 mTextPaint.setColor(mPalette[TextStyle.ciCursorForeground]);
-                canvas.drawText(text, cursorIndex, cursorIncr, x + cursorOffset * mCharWidth,
+                canvas.drawText(text, cursorIndex, cursorIncr, cursorX,
                         textOriginY, mTextPaint);
                 // Text after cursor
                 if (countAfterCursor > 0) {
                     mTextPaint.setColor(textPaintColor);
                     canvas.drawText(text, cursorIndex + cursorIncr, countAfterCursor,
-                            x + (cursorOffset + cursorWidth) * mCharWidth,
+                            cursorX + cursorWidth * mCharWidth,
                             textOriginY, mTextPaint);
                 }
             } else {

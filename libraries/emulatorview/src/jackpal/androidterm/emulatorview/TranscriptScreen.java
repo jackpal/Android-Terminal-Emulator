@@ -256,9 +256,14 @@ class TranscriptScreen implements Screen {
                 forceFlushRun = false;
             }
             if (cx == column) {
-                cursorIndex = index;
-                cursorIncr = incr;
-                cursorWidth = width;
+                if (width > 0) {
+                    cursorIndex = index;
+                    cursorIncr = incr;
+                    cursorWidth = width;
+                } else {
+                    // Combining char attaching to the char under the cursor
+                    cursorIncr += incr;
+                }
             }
             runWidth += width;
             nextColumn += width;
