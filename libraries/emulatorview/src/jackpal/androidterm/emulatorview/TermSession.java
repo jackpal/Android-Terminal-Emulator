@@ -290,8 +290,16 @@ public class TermSession {
      * @param codePoint The Unicode code point to write to the terminal.
      */
     public void write(int codePoint) {
-        CharBuffer charBuf = mWriteCharBuffer;
         ByteBuffer byteBuf = mWriteByteBuffer;
+        if (codePoint < 128) {
+            // Fast path for ASCII characters
+            byte[] buf = byteBuf.array();
+            buf[0] = (byte) codePoint;
+            write(buf, 0, 1);
+            return;
+        }
+
+        CharBuffer charBuf = mWriteCharBuffer;
         CharsetEncoder encoder = mUTF8Encoder;
 
         charBuf.clear();

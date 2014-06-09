@@ -19,6 +19,7 @@ package jackpal.androidterm.emulatorview;
 import android.util.Log;
 
 import jackpal.androidterm.emulatorview.compat.AndroidCharacterCompat;
+import jackpal.androidterm.emulatorview.compat.AndroidCompat;
 
 /**
  * A backing store for a TranscriptScreen.
@@ -386,7 +387,7 @@ class UnicodeTranscript {
                 } else {
                     // XXX There has to be a faster way to do this ...
                     int extDstRow = dy + y;
-                    char[] tmp = getLine(sy + y, sx, sx + w);
+                    char[] tmp = getLine(sy + y, sx, sx + w, true);
                     if (tmp == null) {
                         // Source line was blank
                         blockSet(dx, extDstRow, w, 1, ' ', mDefaultStyle);
@@ -424,7 +425,7 @@ class UnicodeTranscript {
                     System.arraycopy(lines[srcRow], sx, lines[dstRow], dx, w);
                 } else {
                     int extDstRow = dy + y2;
-                    char[] tmp = getLine(sy + y2, sx, sx + w);
+                    char[] tmp = getLine(sy + y2, sx, sx + w, true);
                     if (tmp == null) {
                         // Source line was blank
                         blockSet(dx, extDstRow, w, 1, ' ', mDefaultStyle);
@@ -481,6 +482,16 @@ class UnicodeTranscript {
     }
 
     /**
+     * Minimum API version for which we're willing to let Android try
+     * rendering conjoining Hangul jamo as composed syllable blocks.
+     *
+     * This appears to work on Android 4.1.2, 4.3, and 4.4 (real devices only;
+     * the emulator's broken for some reason), but not on 4.0.4 -- hence the
+     * choice of API 16 as the minimum.
+     */
+    static final int HANGUL_CONJOINING_MIN_SDK = 16;
+
+    /**
      * Gives the display width of the code point in a monospace font.
      *
      * Nonspacing combining marks, format characters, and control characters
@@ -489,12 +500,12 @@ class UnicodeTranscript {
      *
      * Known issues:
      * - Proper support for East Asian wide characters requires API >= 8.
-     * - Results are incorrect for individual Hangul jamo (a syllable block
-     *   of jamo should be one unit with width 2).  This does not affect
-     *   precomposed Hangul syllables.
      * - Assigning all East Asian "ambiguous" characters a width of 1 may not
      *   be correct if Android renders those characters as wide in East Asian
      *   context (as the Unicode standard permits).
+     * - Isolated Hangul conjoining medial vowels and final consonants are
+     *   treated as combining characters (they should only be combining when
+     *   part of a Korean syllable block).
      *
      * @param codePoint A Unicode code point.
      * @return The display width of the Unicode code point.
@@ -519,6 +530,27 @@ class UnicodeTranscript {
             return 0;
         }
 
+        if ((codePoint >= 0x1160 && codePoint <= 0x11FF) ||
+            (codePoint >= 0xD7B0 && codePoint <= 0xD7FF)) {
+            if (AndroidCompat.SDK >= HANGUL_CONJOINING_MIN_SDK) {
+                /* Treat Hangul jamo medial vowels and final consonants as
+                 * combining characters with width 0 to make jamo composition
+                 * work correctly.
+                 *
+                 * XXX: This is wrong for medials/finals outside a Korean
+                 * syllable block, but there's no easy solution to that
+                 * problem, and we may as well at least get the common case
+                 * right. */
+                return 0;
+            } else {
+                /* Older versions of Android didn't compose Hangul jamo, but
+                 * instead rendered them as individual East Asian wide
+                 * characters (despite Unicode defining medial vowels and final
+                 * consonants as East Asian neutral/narrow).  Treat them as
+                 * width 2 characters to match the rendering. */
+                return 2;
+            }
+        }
         if (Character.charCount(codePoint) == 1) {
             // Android's getEastAsianWidth() only works for BMP characters
             switch (AndroidCharacterCompat.getEastAsianWidth((char) codePoint)) {
@@ -563,9 +595,10 @@ class UnicodeTranscript {
      * Get the contents of a line (or part of a line) of the transcript.
      *
      * The char[] array returned may be part of the internal representation
-     * of the line -- make a copy first if you want to modify it.  The last
-     * character requested will be followed by a NUL; the contents of the rest
-     * of the array could potentially be garbage.
+     * of the line -- make a copy first if you want to modify it.  The returned
+     * array may be longer than the requested portion of the transcript; in
+     * this case, the last character requested will be followed by a NUL, and
+     * the contents of the rest of the array could potentially be garbage.
      *
      * @param row The row number to get (-mActiveTranscriptRows..mScreenRows-1)
      * @param x1 The first screen position that's wanted
@@ -573,6 +606,17 @@ class UnicodeTranscript {
      * @return A char[] array containing the requested contents
      */
     public char[] getLine(int row, int x1, int x2) {
+        return getLine(row, x1, x2, false);
+    }
+
+    /**
+     * Get the whole contents of a line of the transcript.
+     */
+    public char[] getLine(int row) {
+        return getLine(row, 0, mColumns, true);
+    }
+
+    private char[] getLine(int row, int x1, int x2, boolean strictBounds) {
         if (row < -mActiveTranscriptRows || row > mScreenRows-1) {
             throw new IllegalArgumentException();
         }
@@ -602,9 +646,28 @@ class UnicodeTranscript {
         // Figure out how long the array needs to be
         FullUnicodeLine line = (FullUnicodeLine) mLines[row];
         char[] rawLine = line.getLine();
+
+        if (x1 == 0 && x2 == columns) {
+            /* We can return the raw line after ensuring it's NUL-terminated at
+             * the appropriate place */
+            int spaceUsed = line.getSpaceUsed();
+            if (spaceUsed < rawLine.length) {
+                rawLine[spaceUsed] = 0;
+            }
+            return rawLine;
+        }
+
         x1 = line.findStartOfColumn(x1);
         if (x2 < columns) {
-            x2 = line.findStartOfColumn(x2);
+            int endCol = x2;
+            x2 = line.findStartOfColumn(endCol);
+            if (!strictBounds && endCol > 0 && endCol < columns - 1) {
+                /* If the end column is the middle of an East Asian wide
+                 * character, include that character in the bounds */
+                if (x2 == line.findStartOfColumn(endCol - 1)) {
+                    x2 = line.findStartOfColumn(endCol + 1);
+                }
+            }
         } else {
             x2 = line.getSpaceUsed();
         }
@@ -618,16 +681,20 @@ class UnicodeTranscript {
         return tmpLine;
     }
 
-    public char[] getLine(int row) {
-        return getLine(row, 0, mColumns);
-    }
-
     /**
      * Get color/formatting information for a particular line.
      * The returned object may be a pointer to a temporary buffer, only good
      * until the next call to getLineColor.
      */
     public StyleRow getLineColor(int row, int x1, int x2) {
+        return getLineColor(row, x1, x2, false);
+    }
+
+    public StyleRow getLineColor(int row) {
+        return getLineColor(row, 0, mColumns, true);
+    }
+
+    private StyleRow getLineColor(int row, int x1, int x2, boolean strictBounds) {
         if (row < -mActiveTranscriptRows || row > mScreenRows-1) {
             throw new IllegalArgumentException();
         }
@@ -636,7 +703,21 @@ class UnicodeTranscript {
         StyleRow color = mColor[row];
         StyleRow tmp = tmpColor;
         if (color != null) {
-            if (x1 == 0 && x2 == mColumns) {
+            int columns = mColumns;
+            if (!strictBounds && mLines[row] != null &&
+                    mLines[row] instanceof FullUnicodeLine) {
+                FullUnicodeLine line = (FullUnicodeLine) mLines[row];
+                /* If either the start or the end column is in the middle of
+                 * an East Asian wide character, include the appropriate column
+                 * of style information */
+                if (x1 > 0 && line.findStartOfColumn(x1-1) == line.findStartOfColumn(x1)) {
+                    --x1;
+                }
+                if (x2 < columns - 1 && line.findStartOfColumn(x2+1) == line.findStartOfColumn(x2)) {
+                    ++x2;
+                }
+            }
+            if (x1 == 0 && x2 == columns) {
                 return color;
             }
             color.copy(x1, tmp, 0, x2-x1);
@@ -644,10 +725,6 @@ class UnicodeTranscript {
         } else {
             return null;
         }
-    }
-
-    public StyleRow getLineColor(int row) {
-        return getLineColor(row, 0, mColumns);
     }
 
     boolean isBasicLine(int row) {
@@ -875,9 +952,25 @@ class FullUnicodeLine {
         int charWidth = UnicodeTranscript.charWidth(codePoint);
         int oldCharWidth = UnicodeTranscript.charWidth(text, pos);
 
+        if (charWidth == 2 && column == columns - 1) {
+            // A width 2 character doesn't fit in the last column.
+            codePoint = ' ';
+            charWidth = 1;
+        }
+
+        boolean wasExtraColForWideChar = false;
+        if (oldCharWidth == 2 && column > 0) {
+            /* If the previous screen column starts at the same offset in the
+             * array as this one, this column must be the second column used
+             * by an East Asian wide character */
+            wasExtraColForWideChar = (findStartOfColumn(column - 1) == pos);
+        }
+
         // Get the number of elements in the mText array this column uses now
         int oldLen;
-        if (column + oldCharWidth < columns) {
+        if (wasExtraColForWideChar && column + 1 < columns) {
+            oldLen = findStartOfColumn(column + 1) - pos;
+        } else if (column + oldCharWidth < columns) {
             oldLen = findStartOfColumn(column+oldCharWidth) - pos;
         } else {
             oldLen = spaceUsed - pos;
@@ -927,44 +1020,72 @@ class FullUnicodeLine {
         }
 
         /*
-         * Handle cases where charWidth changes
-         * width 1 -> width 2: should clobber the contents of the next
-         * column (if next column contains wide char, need to pad with a space)
-         * width 2 -> width 1: pad with a space after the new character
+         * Handle cases where we need to pad with spaces to preserve column
+         * alignment
+         *
+         * width 2 -> width 1: pad with a space before or after the new
+         * character, depending on which of the two previously-occupied columns
+         * we wrote into
+         *
+         * inserting width 2 character into the second column of an existing
+         * width 2 character: pad with a space before the new character
          */
-        if (oldCharWidth == 2 && charWidth == 1) {
-            // Pad with a space
+        if (oldCharWidth == 2 && charWidth == 1 || wasExtraColForWideChar && charWidth == 2) {
             int nextPos = pos + newLen;
+            char[] newText = text;
             if (spaceUsed + 1 > text.length) {
                 // Array needs growing
-                char[] newText = new char[text.length + columns];
-                System.arraycopy(text, 0, newText, 0, nextPos);
-
-                System.arraycopy(text, nextPos, newText, nextPos + 1, spaceUsed - nextPos);
-                mText = text = newText;
-            } else {
-                System.arraycopy(text, nextPos, text, nextPos + 1, spaceUsed - nextPos);
+                newText = new char[text.length + columns];
+                System.arraycopy(text, 0, newText, 0, wasExtraColForWideChar ? pos : nextPos);
             }
-            text[nextPos] = ' ';
+
+            if (wasExtraColForWideChar) {
+                // Padding goes before the new character
+                System.arraycopy(text, pos, newText, pos + 1, spaceUsed - pos);
+                newText[pos] = ' ';
+            } else {
+                // Padding goes after the new character
+                System.arraycopy(text, nextPos, newText, nextPos + 1, spaceUsed - nextPos);
+                newText[nextPos] = ' ';
+            }
+
+            if (newText != text) {
+                // Update mText to point to the newly grown array
+                mText = text = newText;
+            }
 
             // Update space used
-            ++offset[0];
+            spaceUsed = ++offset[0];
 
-            // Correct the offset for the next column to reflect width change
-            if (column == 0) {
-                offset[1] = (short) (newLen - 1);
-            } else if (column + 1 < columns) {
-                offset[column + 1] = (short) (offset[column] + newLen - 1);
+            // Correct the offset for the just-modified column to reflect
+            // width change
+            if (wasExtraColForWideChar) {
+                ++offset[column];
+                ++pos;
+            } else {
+                if (column == 0) {
+                    offset[1] = (short) (newLen - 1);
+                } else if (column + 1 < columns) {
+                    offset[column + 1] = (short) (offset[column] + newLen - 1);
+                }
+                ++column;
             }
-            ++column;
+
             ++shift;
-        } else if (oldCharWidth == 1 && charWidth == 2) {
-            if (column == columns - 1) {
-                // A width 2 character doesn't fit in the last column.
-                text[pos] = ' ';
-                offset[0] = (short) (pos + 1);
-                shift = 0;
-            } else if (column == columns - 2) {
+        }
+        
+        /*
+         * Handle cases where we need to clobber the contents of the next
+         * column in order to preserve column alignment
+         *
+         * width 1 -> width 2: should clobber the contents of the next
+         * column (if next column contains wide char, need to pad with a space)
+         *
+         * inserting width 2 character into the second column of an existing
+         * width 2 character: same
+         */
+        if (oldCharWidth == 1 && charWidth == 2 || wasExtraColForWideChar && charWidth == 2) {
+            if (column == columns - 2) {
                 // Correct offset for the next column to reflect width change
                 offset[column + 1] = (short) (offset[column] - 1);
 

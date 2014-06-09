@@ -1,0 +1,16 @@
+Overwriting a narrow character with an East Asian wide character:
+
+xxx ESC [ D 中:
+xxx[D中
+
+xxx ESC [ 3 D 中:
+xxx[3D中
+
+Overwriting a narrow character with an East Asian wide character, in the middle
+of an 80-column line with mixed narrow and wide chars:
+
+xxx[...]xxx中文xxx[...]xxx你好xESC [ 25 G 版:
+xxxxxxxxxxxxxxxxxxxx中文xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好x[25G版
+
+xxx[...]xxx中文y。xxx[...]xxx你好ESC [ 25 G 版:
+xxxxxxxxxxxxxxxxxxxx中文y。xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好[25G版

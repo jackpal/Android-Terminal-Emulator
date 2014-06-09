@@ -204,6 +204,7 @@ class TranscriptScreen implements Screen {
         }
 
         int columns = mColumns;
+        int lineLen = line.length;
         int lastStyle = 0;
         boolean lastSelectionStyle = false;
         int runWidth = 0;
@@ -211,12 +212,12 @@ class TranscriptScreen implements Screen {
         int lastRunStartIndex = -1;
         boolean forceFlushRun = false;
         int column = 0;
+        int nextColumn = 0;
+        int displayCharWidth = 0;
         int index = 0;
         int cursorIndex = 0;
         int cursorIncr = 0;
-        while (column < columns) {
-            int style = color.get(column);
-            boolean selectionStyle = false;
+        while (column < columns && index < lineLen && line[index] != '\0') {
             int incr = 1;
             int width;
             if (Character.isHighSurrogate(line[index])) {
@@ -225,7 +226,15 @@ class TranscriptScreen implements Screen {
             } else {
                 width = UnicodeTranscript.charWidth(line[index]);
             }
-            if (column >= selx1 && column <= selx2) {
+            if (width > 0) {
+                // We've moved on to the next column
+                column = nextColumn;
+                displayCharWidth = width;
+            }
+            int style = color.get(column);
+            boolean selectionStyle = false;
+            if ((column >= selx1 || (displayCharWidth == 2 && column == selx1 - 1)) &&
+                    column <= selx2) {
                 // Draw selection:
                 selectionStyle = true;
             }
@@ -247,12 +256,17 @@ class TranscriptScreen implements Screen {
                 forceFlushRun = false;
             }
             if (cx == column) {
-                cursorIndex = index;
-                cursorIncr = incr;
-                cursorWidth = width;
+                if (width > 0) {
+                    cursorIndex = index;
+                    cursorIncr = incr;
+                    cursorWidth = width;
+                } else {
+                    // Combining char attaching to the char under the cursor
+                    cursorIncr += incr;
+                }
             }
             runWidth += width;
-            column += width;
+            nextColumn += width;
             index += incr;
             if (width > 1) {
                 /* We cannot draw two or more East Asian wide characters in the
@@ -357,13 +371,24 @@ class TranscriptScreen implements Screen {
             int lastPrintingChar = -1;
             int lineLen = line.length;
             int i;
-            int width = x2 - x1;
             int column = 0;
-            for (i = 0; i < lineLen && column < width; ++i) {
+            for (i = 0; i < lineLen; ++i) {
                 char c = line[i];
                 if (c == 0) {
                     break;
-                } else if (c != ' ' || ((rowColorBuffer != null) && (rowColorBuffer.get(column) != defaultColor))) {
+                }
+                
+                int style = defaultColor;
+                try {
+                    if (rowColorBuffer != null) {
+                        style = rowColorBuffer.get(column);
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    // XXX This probably shouldn't happen ...
+                    style = defaultColor;
+                }
+
+                if (c != ' ' || style != defaultColor) {
                     lastPrintingChar = i;
                 }
                 if (!Character.isLowSurrogate(c)) {

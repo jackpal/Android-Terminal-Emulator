@@ -1,0 +1,4 @@
+A line taking 81 screen columns, with an East Asian wide character at column 79
+(should be truncated or wrapped on an 80-column terminal):
+
+xxxxxxxxxxxxxxxxxxxx中文xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx你好
