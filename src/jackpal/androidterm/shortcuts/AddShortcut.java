@@ -100,7 +100,9 @@ public class      AddShortcut
                     }
                     else
                     {
-                      pickerIntent.setAction(Intent.ACTION_PICK);
+                      pickerIntent
+                      .putExtra("CONTENT_TYPE", "text/*")
+                      .setAction(Intent.ACTION_PICK);
                     }
                     startActivityForResult(pickerIntent, OP_MAKE_SHORTCUT);
                 }

@@ -59,7 +59,9 @@ public class      FSNavigator
     Intent intent= getIntent();
     extSdCardFile=Environment.getExternalStorageDirectory();
     extSdCard=getCanonicalPath(extSdCardFile);
-    if(null==(chdir(intent.getData().getPath()))) chdir(extSdCard);
+    Uri    uri=intent.getData();
+    String path=uri==null?null:uri.getPath();
+    if(null == path || null==(chdir(path))) chdir(extSdCard);
     if(intent.hasExtra("title"))           setTitle(intent.getStringExtra("title"));
 
     titleView=           directoryEntry("..");

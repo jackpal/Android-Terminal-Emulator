@@ -107,10 +107,17 @@
       android:label="FSNavigator"
       android:launchMode="singleTop"
       android:configChanges="orientation|keyboardHidden"
+      android:exported="true"
     >
       <intent-filter>
         <action android:name="android.intent.action.PICK" />
-        <data android:mimeType="text/*" />
+        <category android:name="android.intent.category.DEFAULT"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.GET_CONTENT" />
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.OPENABLE"/>
+        <data android:mimeType="*/*" />
       </intent-filter>
     </activity>
     <meta-data
