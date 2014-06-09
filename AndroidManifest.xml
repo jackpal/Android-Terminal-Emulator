@@ -109,7 +109,8 @@
       android:configChanges="orientation|keyboardHidden"
     >
       <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
+        <action android:name="android.intent.action.PICK" />
+        <data android:mimeType="text/*" />
       </intent-filter>
     </activity>
     <meta-data
