@@ -91,13 +91,20 @@ public class      AddShortcut
                   File get= (lastPath==null)
                             ?Environment.getExternalStorageDirectory()
                             :new File(lastPath).getParentFile();
-                  startActivityForResult(
-                    new Intent()
-                    .setClass(getApplicationContext(), jackpal.androidterm.shortcuts.FSNavigator.class)
-                    .setData(Uri.fromFile(get))
-                    .putExtra("title", getString(R.string.addshortcut_navigator_title))//"SELECT SHORTCUT TARGET")
-                  , OP_MAKE_SHORTCUT
-                  );
+                    Intent pickerIntent=new Intent();
+                    if(SP.getBoolean("useInternalScriptFinder", false))
+                    {
+                      pickerIntent.setClass(getApplicationContext(), jackpal.androidterm.shortcuts.FSNavigator.class)
+                      .setData(Uri.fromFile(get))
+                      .putExtra("title", getString(R.string.addshortcut_navigator_title));//"SELECT SHORTCUT TARGET")
+                    }
+                    else
+                    {
+                      pickerIntent
+                      .putExtra("CONTENT_TYPE", "*/*")
+                      .setAction(Intent.ACTION_PICK);
+                    }
+                    startActivityForResult(pickerIntent, OP_MAKE_SHORTCUT);
                 }
               }
             );
