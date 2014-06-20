@@ -358,11 +358,14 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 int endRow;
                 int endCol;
                 if (textIsBasic) {
+                    /* endRow/endCol must be the last character of the link,
+                     * not one after -- otherwise endRow might be too large */
+                    int spanLastPos = spanEnd - 1;
                     // Basic line -- can assume one char per column
                     startRow = spanStart / mColumns;
                     startCol = spanStart % mColumns;
-                    endRow   = spanEnd   / mColumns;
-                    endCol   = spanEnd   % mColumns;
+                    endRow   = spanLastPos / mColumns;
+                    endCol   = spanLastPos % mColumns;
                 } else {
                     /* Iterate over the line to get starting and ending columns
                      * for this span */
@@ -403,9 +406,9 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
                 for(int i=startRow; i <= endRow; ++i)
                 {
                     int runStart = (i == startRow) ? startCol: 0;
-                    int runEnd = (i == endRow) ? endCol : mColumns;
+                    int runEnd = (i == endRow) ? endCol : mColumns - 1;
 
-                    Arrays.fill(linkRows[i], runStart, runEnd, url);
+                    Arrays.fill(linkRows[i], runStart, runEnd + 1, url);
                 }
             }
 
