@@ -104,7 +104,7 @@
     </activity>
     <activity
       android:name="jackpal.androidterm.shortcuts.FSNavigator"
-      android:label="FSNavigator"
+      android:label="@string/addshortcut_button_find_command"
       android:launchMode="singleTop"
       android:configChanges="orientation|keyboardHidden"
       android:exported="true"
