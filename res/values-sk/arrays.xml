@@ -22,7 +22,6 @@
   </string-array>
 
   <string-array name="entries_actionbar_preference">
-      <!-- <item>Action bar disabled</item> -->
       <item>Vždy zobraziť panel akcií</item>
       <item>Skryť panel akcií (pre zobrazenie sa dotknite vrchu obrazovky alebo tlačidla Ponuka)</item>
   </string-array>
@@ -91,24 +90,24 @@
 
   <string-array name="entries_controlkey_preference">
     <item>Gulička</item>
-    <item>Klávesa \@</item>
-    <item>Klávesa Ľavý Alt</item>
-    <item>Klávesa Pravý Alt</item>
-    <item>Klávesa Hlasitosť+</item>
-    <item>Klávesa Hlasitosť-</item>
-    <item>Klávesa Fotoaparát</item>
-    <item>Žiadna</item>
+    <item>Kláves \@</item>
+    <item>Kláves Ľavý Alt</item>
+    <item>Kláves Pravý Alt</item>
+    <item>Kláves Hlasitosť+</item>
+    <item>Kláves Hlasitosť-</item>
+    <item>Kláves Fotoaparát</item>
+    <item>Žiadny</item>
   </string-array>
 
   <string-array name="entries_fnkey_preference">
     <item>Gulička</item>
-    <item>Klávesa \@</item>
-    <item>Klávesa Ľavý Alt</item>
-    <item>Klávesa Pravý Alt</item>
-    <item>Klávesa Hlasitosť+</item>
-    <item>Klávesa Hlasitosť-</item>
-    <item>Klávesa Fotoaparát</item>
-    <item>Žiadna</item>
+    <item>Kláves \@</item>
+    <item>Kláves Ľavý Alt</item>
+    <item>Kláves Pravý Alt</item>
+    <item>Kláves Hlasitosť+</item>
+    <item>Kláves Hlasitosť-</item>
+    <item>Kláves Fotoaparát</item>
+    <item>Žiadny</item>
   </string-array>
 
   <string-array name="entries_ime_preference">
@@ -125,7 +124,7 @@
     <item>Hlasitosť+</item>
     <item>Hlasitosť-</item>
     <item>Fotoaparát</item>
-    <item>Žiadna</item>
+    <item>Žiadny</item>
   </string-array>
 
   <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
@@ -137,6 +136,6 @@
     <item>Hlasitosť+</item>
     <item>Hlasitosť-</item>
     <item>Fotoaparát</item>
-    <item>Žiadna</item>
+    <item>Žiadny</item>
   </string-array>
 </resources>
