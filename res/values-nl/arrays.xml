@@ -22,14 +22,19 @@
     </string-array>
 
     <string-array name="entries_actionbar_preference">
-        <!-- <item>Action bar disabled</item> -->
-        <item>Always show action bar</item>
-        <item>Hide action bar (touch top of screen or Menu key to show)</item>
+        <item>Menubalk altijd tonen</item>
+        <item>Menubalk verbergen (op bovenkant scherm of menuknop tikken om te tonen)</item>
+    </string-array>
+
+    <string-array name="entries_orientation_preference">
+        <item>Automatisch</item>
+        <item>Liggend</item>
+        <item>Staand</item>
     </string-array>
 
     <string-array name="entries_cursorblink_preference">
-        <item>Geen blinkende cursor</item>
-        <item>Blinkende cursor</item>
+        <item>Geen knipperende cursor</item>
+        <item>Knipperende cursor</item>
     </string-array>
 
     <string-array name="entries_cursorstyle_preference">
@@ -69,18 +74,18 @@
         <item>Groene tekst op zwart</item>
         <item>Oranje tekst op zwart</item>
         <item>Rode tekst op zwart</item>
-        <item>Holo blauw tekst op zwart</item>
-        <item>Solarized Light</item>
-        <item>Solarized Dark</item>
-        <item>Linux Console</item>
+        <item>Holo-blauwe tekst op zwart</item>
+        <item>Gesolariseerd licht</item>
+        <item>Gesolariseerd donker</item>
+        <item>Linux console</item>
     </string-array>
 
     <string-array name="entries_backaction_preference">
-        <item>Closes all terminal windows</item>
-        <item>Closes this terminal window only</item>
-        <item>Closes activity, leaving sessions running</item>
-        <item>Sends ESC to terminal</item>
-        <item>Sends TAB to terminal</item>
+        <item>Alle terminalvensters sluiten</item>
+        <item>Alleen huidige terminalvensters sluiten</item>
+        <item>App sluiten, sessies open laten</item>
+        <item>ESC naar terminal sturen</item>
+        <item>TAB naar terminal sturen</item>
     </string-array>
 
     <string-array name="entries_controlkey_preference">
