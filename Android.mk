@@ -26,11 +26,11 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := $(call all-subdir-java-files)
 
-LOCAL_PACKAGE_NAME := AndroidTerm
+LOCAL_PACKAGE_NAME := ChameleonTerm
 
 LOCAL_MODULE_TAGS := optional
 
-LOCAL_REQUIRED_MODULES := libjackpal-androidterm4
+LOCAL_REQUIRED_MODULES := libjackpal-chameleonterm4
 
 include $(BUILD_PACKAGE)
 

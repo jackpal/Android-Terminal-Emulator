@@ -36,7 +36,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp" />
-    <view class="jackpal.androidterm.WindowList$CloseButton" android:id="@+id/window_list_close"
+    <view class="jackpal.chameleonterm.WindowList$CloseButton" android:id="@+id/window_list_close"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:paddingLeft="15dp"

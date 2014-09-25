@@ -6,7 +6,7 @@ that programs like "vi", "Emacs" and "NetHack" will display properly.
 
 This code is based on the "Term" application which is included in the Android Open Source Project. (Which I also wrote. :-) )
 
-[Download the Chameleon Terminal Emulator from Google Play](https://play.google.com/store/apps/details?id=jackpal.androidterm)
+[Download the Chameleon Terminal Emulator from Google Play](https://play.google.com/store/apps/details?id=jackpal.chameleonterm)
 
 If you are unable to use the Play Store, you can also
 [download from GitHub](http://jackpal.github.com/Android-Terminal-Emulator/downloads/Term.apk)

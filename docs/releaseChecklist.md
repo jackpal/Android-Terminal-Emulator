@@ -66,7 +66,7 @@ The Android Developer Console Publishing UI is error prone:
 10) Verify that Google Play Store is serving the new version
 (check the "What's New" portion.)
 
-https://play.google.com/store/apps/details?id=jackpal.androidterm
+https://play.google.com/store/apps/details?id=jackpal.chameleonterm
 
 (Note, it can take several hours for the app to appear in the store.)
 

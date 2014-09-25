@@ -13,4 +13,4 @@ get_property() {
 TARGET_API=`get_property target "$DOCDIR/../project.properties"`
 SDK_DIR=`get_property 'sdk\.dir' "$DOCDIR/../local.properties"`
 
-exec javadoc -d "$DOCDIR" -classpath "${SDK_DIR}/platforms/$TARGET_API/android.jar" -linkoffline http://developer.android.com/reference file:"${SDK_DIR}/docs/reference" -sourcepath "$DOCDIR/../src" jackpal.androidterm.emulatorview
+exec javadoc -d "$DOCDIR" -classpath "${SDK_DIR}/platforms/$TARGET_API/android.jar" -linkoffline http://developer.android.com/reference file:"${SDK_DIR}/docs/reference" -sourcepath "$DOCDIR/../src" jackpal.chameleonterm.emulatorview
