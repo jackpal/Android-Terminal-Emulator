@@ -1,6 +1,6 @@
 #!/bin/bash
 # A script to merge selected translations from the CyanogenMOD version of
-# Android Terminal Emulator to the upstream version.
+# Chameleon Terminal Emulator to the upstream version.
 
 set -e
 

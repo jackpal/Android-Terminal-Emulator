@@ -142,13 +142,13 @@
   <string name="confirm_window_close_message">Close this window?</string>
 
   <string name="perm_run_script">Run arbitrary commands in Terminal Emulator</string>
-  <string name="permdesc_run_script">Allows application to open new windows in Android Terminal Emulator and run commands in those windows with all of Android Terminal Emulator\'s permissions, including access to the Internet and your SD Card.</string>
+  <string name="permdesc_run_script">Allows application to open new windows in Chameleon Terminal Emulator and run commands in those windows with all of Chameleon Terminal Emulator\'s permissions, including access to the Internet and your SD Card.</string>
   <string name="perm_append_to_path">Add commands to Terminal Emulator</string>
-  <string name="permdesc_append_to_path">Allows application to provide additional commands (add directories to the PATH) for Android Terminal Emulator.</string>
+  <string name="permdesc_append_to_path">Allows application to provide additional commands (add directories to the PATH) for Chameleon Terminal Emulator.</string>
   <string name="perm_prepend_to_path">Override commands in Terminal Emulator</string>
-  <string name="permdesc_prepend_to_path">Allows application to override existing commands with its own versions (prepend directories to the PATH) in Android Terminal Emulator.</string>
+  <string name="permdesc_prepend_to_path">Allows application to override existing commands with its own versions (prepend directories to the PATH) in Chameleon Terminal Emulator.</string>
 
-  <string name="email_transcript_subject">Transcript from Android Terminal Emulator</string>
+  <string name="email_transcript_subject">Transcript from Chameleon Terminal Emulator</string>
   <string name="email_transcript_chooser_title">Mail transcript using:</string>
   <string name="email_transcript_no_email_activity_found">Could not choose an email activity to send transcript.</string>
 

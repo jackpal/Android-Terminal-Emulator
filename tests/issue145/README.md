@@ -18,10 +18,10 @@ On a PC:
 adb shell mkdir /data/local
 adb push issue145repro.txt /data/local/issue145repro.txt
 
-Run ATE
+Run CTE
 
-Configure ATE's preferences for UTF8
+Configure CTE's preferences for UTF8
 
-On ATE:
+On CTE:
 
 cat /data/local/issue145repro.txt

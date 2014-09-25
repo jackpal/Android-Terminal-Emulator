@@ -2,7 +2,7 @@
 # command line build script for building release version
 # This will only work on my (Jack Palevich) computer, because it
 # requires the private key store used to sign the release version
-# of Android Terminal Emulator.
+# of Chameleon Terminal Emulator.
 set -e
 
 export ANDROID_TERMINAL_EMULATOR_KEYSTORE="$HOME/Documents/workspace/keystore/jackpal.keystore"
@@ -33,9 +33,9 @@ if [ ! -d "$ANDROID_SDK_ROOT" ]; then
 fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ATE_ROOT="$( cd $DIR/.. && pwd )"
+CTE_ROOT="$( cd $DIR/.. && pwd )"
 
-cd "$ATE_ROOT"
+cd "$CTE_ROOT"
 
 if [ ! -f "local.properties" ]; then
 	echo "local.properties does not exist. Please run tools/update.sh"

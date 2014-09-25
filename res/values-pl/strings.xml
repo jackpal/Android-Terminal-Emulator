@@ -135,13 +135,13 @@
   <string name="confirm_window_close_message">Zamknąć to okno?</string>
 
   <string name="perm_run_script">Uruchamiaj komendy w Terminal Emulator</string>
-  <string name="permdesc_run_script">Pozwalaj na otwieranie okien w Android Terminal Emulator i wykonywanie komend w tych oknach z wszystkimi prawami Android Terminal Emulator, wliczając dostęp do internetu i karty SD.</string>
+  <string name="permdesc_run_script">Pozwalaj na otwieranie okien w Chameleon Terminal Emulator i wykonywanie komend w tych oknach z wszystkimi prawami Chameleon Terminal Emulator, wliczając dostęp do internetu i karty SD.</string>
   <string name="perm_append_to_path">Dodawanie komend w Terminal Emulator</string>
-  <string name="permdesc_append_to_path">Pozwól aplikacjom na dodawanie dodatkowych komend (odawanie katalogów do PATH) w Android Terminal Emulator.</string>
+  <string name="permdesc_append_to_path">Pozwól aplikacjom na dodawanie dodatkowych komend (odawanie katalogów do PATH) w Chameleon Terminal Emulator.</string>
   <string name="perm_prepend_to_path">Nadpisuj komendy Terminal Emulator</string>
-  <string name="permdesc_prepend_to_path">Pozwól aplikacjom na nadpisywanie istniejących komend ich własnymi wersjami (dodawanie katalogów na początku PATH) w Android Terminal Emulator.</string>
+  <string name="permdesc_prepend_to_path">Pozwól aplikacjom na nadpisywanie istniejących komend ich własnymi wersjami (dodawanie katalogów na początku PATH) w Chameleon Terminal Emulator.</string>
 
-  <string name="email_transcript_subject">Transkrypt z Android Terminal Emulator</string>
+  <string name="email_transcript_subject">Transkrypt z Chameleon Terminal Emulator</string>
   <string name="email_transcript_chooser_title">Wyślij transkrypt używając:</string>
   <string name="email_transcript_no_email_activity_found">Nie można wybrać aktywności e-mail żeby wysłać transkrypt.</string>
 

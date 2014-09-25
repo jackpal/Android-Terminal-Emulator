@@ -1,8 +1,8 @@
 This example requires a few manual build steps.
 
-# Build the regular Android Terminal Emulator
+# Build the regular Chameleon Terminal Emulator
 
-cd path-AndroidTerminalEmulator-root-directory
+cd path-to-ChameleonTerminalEmulator-root-directory
 tools/update.sh
 tools/build-debug
 

@@ -1,11 +1,11 @@
-Obtain the Software Needed to Build Android Terminal Emulator
--------------------------------------------------------------
+Obtain the Software Needed to Build Chameleon Terminal Emulator
+---------------------------------------------------------------
 
-To keep from typing "Android Terminal Emulator" over and over again, this
-document will use the abbreviation "ATE" to stand for "Android Terminal
+To keep from typing "Chameleon Terminal Emulator" over and over again, this
+document will use the abbreviation "CTE" to stand for "Chameleon Terminal
 Emulator".
 
-ATE is built using:
+CTE is built using:
 
    Android SDK ADT Bundle 20131030 or newer
    Android NDK r9b or newer
@@ -17,17 +17,17 @@ http://developer.android.com/sdk
 Note 1: Recent (2013+) versions of the Android ADT SDK Bundle include an
 Android-specific version of Eclipse.
 
-Note 2: Android Terminal Emulator can not currently be built using the new
+Note 2: CTE can not currently be built using the new
 Android Studio IDE. Android Studio does not currently support projects that
 use the NDK.
 
 After you install the SDK and the NDK, please build some of the samples that
 come with the SDK and NDK in order to get a feel for using the SDK and the NDK.
 
-Building ATE
+Building CTE
 ------------
 
-You can build ATE two ways
+You can build CTE two ways
 
     1) Using the "ant" command line tool
     2) Using the Eclipse IDE
@@ -35,7 +35,7 @@ You can build ATE two ways
 The "ant" way is convenient for automated builds. The Eclipse way is convenient
 for debugging.
 
-Building ATE using ant
+Building CTE using ant
 ----------------------
 
 The first time you build using Ant you must run a one-time setup script
@@ -43,18 +43,18 @@ to set up the local.properties files for all the ant projects:
 
     tools/update.sh
 
-After that, you can build ATE by:
+After that, you can build CTE by:
 
     tools/build-debug
 
-Then you can run ATE on your device or emulator by:
+Then you can run CTE on your device or emulator by:
 
     tools/pushAndRun
 
-Building ATE with Eclipse
+Building CTE with Eclipse
 --------------------------
 
-There are three steps to building ATE with Eclipse:
+There are three steps to building CTE with Eclipse:
 
     1) Build the project from the command line using "ant"
     2) Create the Eclipse Project for the Application
@@ -63,9 +63,9 @@ There are three steps to building ATE with Eclipse:
 Build the project from the command line using "ant":
 
 You need to build the project from the commmand line in order to generate the
-shared libraries and Java JAR files used by Android Terminal Emulator.
+shared libraries and Java JAR files used by CTE.
 
-Use the instructions in "Building ATE with ant", above.
+Use the instructions in "Building CTE with ant", above.
 
 Create the Eclipse projects:
 
@@ -102,7 +102,7 @@ Build the Java apk:
 Command Line Build Instructions
 -------------------------------
 
-You can build Android Terminal Emulator from the command line, instead of from
+You can build CTE from the command line, instead of from
 Eclipse. This is handy because it can be scripted.
 
 1) Install the "ant" build system.

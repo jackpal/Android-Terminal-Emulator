@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ATE Intent 예제</string>
+    <string name="app_name">CTE Intent 예제</string>
     <string name="open_new_window">새로운 창 열기</string>
     <string name="script_label">스크립트 : </string>
     <string name="run_script">스크립트 실행</string>

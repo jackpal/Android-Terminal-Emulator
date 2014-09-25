@@ -30,11 +30,11 @@ ANDROID_TARGET=android-11
 $ANDROID update sdk -a -u -t tools,platform-tools,build-tools-19.0.1,$ANDROID_TARGET
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ATE_ROOT="$( cd $DIR/.. && pwd )"
+CTE_ROOT="$( cd $DIR/.. && pwd )"
 
 echo "Updating android project files"
 
-PROJECT_FILES="$( find "$ATE_ROOT" -name project.properties )"
+PROJECT_FILES="$( find "$CTE_ROOT" -name project.properties )"
 
 for PROJECT_FILE in $PROJECT_FILES
 do

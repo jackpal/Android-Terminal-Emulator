@@ -23,9 +23,9 @@ if [ ! -d "$ANDROID_SDK_ROOT" ]; then
 fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ATE_ROOT="$( cd $DIR/.. && pwd )"
+CTE_ROOT="$( cd $DIR/.. && pwd )"
 
-cd "$ATE_ROOT"
+cd "$CTE_ROOT"
 
 if [ ! -f "local.properties" ]; then
 	echo "local.properties does not exist. Please run tools/update.sh"

@@ -36,10 +36,10 @@ import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
 /*
- * New procedure for launching a command in ATE.
+ * New procedure for launching a command in CTE.
  * Build the path and arguments into a Uri and set that into Intent.data.
  * intent.data(new Uri.Builder().setScheme("file").setPath(path).setFragment(arguments))
- * 
+ *
  * The old procedure of using Intent.Extra is still available but is discouraged.
  */
 public class RemoteInterface extends Activity {
