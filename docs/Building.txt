@@ -1,7 +1,7 @@
-Obtain the Software Needed to Build Android Terminal Emulator
+Obtain the Software Needed to Build Terminal Emulator for Android
 -------------------------------------------------------------
 
-To keep from typing "Android Terminal Emulator" over and over again, this
+To keep from typing "Terminal Emulator for Android" over and over again, this
 document will use the abbreviation "ATE" to stand for "Android Terminal
 Emulator".
 
@@ -17,7 +17,7 @@ http://developer.android.com/sdk
 Note 1: Recent (2013+) versions of the Android ADT SDK Bundle include an
 Android-specific version of Eclipse.
 
-Note 2: Android Terminal Emulator can not currently be built using the new
+Note 2: Terminal Emulator for Android can not currently be built using the new
 Android Studio IDE. Android Studio does not currently support projects that
 use the NDK.
 
@@ -63,7 +63,7 @@ There are three steps to building ATE with Eclipse:
 Build the project from the command line using "ant":
 
 You need to build the project from the commmand line in order to generate the
-shared libraries and Java JAR files used by Android Terminal Emulator.
+shared libraries and Java JAR files used by Terminal Emulator for Android.
 
 Use the instructions in "Building ATE with ant", above.
 
@@ -102,7 +102,7 @@ Build the Java apk:
 Command Line Build Instructions
 -------------------------------
 
-You can build Android Terminal Emulator from the command line, instead of from
+You can build Terminal Emulator for Android from the command line, instead of from
 Eclipse. This is handy because it can be scripted.
 
 1) Install the "ant" build system.

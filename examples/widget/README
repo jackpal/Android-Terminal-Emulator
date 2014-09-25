@@ -1,6 +1,6 @@
 This example requires a few manual build steps.
 
-# Build the regular Android Terminal Emulator
+# Build the regular Terminal Emulator for Android
 
 cd path-AndroidTerminalEmulator-root-directory
 tools/update.sh

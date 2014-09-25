@@ -1,4 +1,4 @@
-## Android Terminal Emulator Release Checklist
+## Terminal Emulator for Android Release Checklist
 
 # Test on 1.5
 
@@ -45,7 +45,7 @@ https://play.google.com/apps/publish
 
 The Android Developer Console Publishing UI is error prone:
 
-1) Click on the "Android Terminal Emulator" link.
+1) Click on the "Terminal Emulator for Android" link.
 
 2) Click on the APK files tab
 
@@ -70,7 +70,7 @@ https://play.google.com/store/apps/details?id=jackpal.androidterm
 
 (Note, it can take several hours for the app to appear in the store.)
 
-# Update the Android Terminal Emulator Wiki
+# Update the Terminal Emulator for Android Wiki
 
 https://github.com/jackpal/Android-Terminal-Emulator/wiki/Recent-Updates
 

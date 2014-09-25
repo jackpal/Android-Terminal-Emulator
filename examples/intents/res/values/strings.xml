@@ -6,7 +6,7 @@
     <string name="run_script">Run Script</string>
     <string name="run_script_save_window">Run Script and Save Window</string>
     <string name="run_script_existing_window">Run Script in Saved Window</string>
-    <string name="help">This sample shows how to send intents to Android Terminal Emulator.</string>
+    <string name="help">This sample shows how to send intents to Terminal Emulator for Android.</string>
 
     <!-- Do not translate: -->
     <string name="default_script">echo \'Hello, world!\'</string>

@@ -135,9 +135,9 @@
   <string name="confirm_window_close_message">გნებავთ ფანჯრის დახურვა?</string>
 
   <string name="perm_run_script">ტერმინალში სასურველი ბრძანებების გაშვება</string>
-  <string name="permdesc_run_script">Allows application to open new windows in Android Terminal Emulator and run commands in those windows with all of Android Terminal Emulator\'s permissions, including access to the Internet and your SD Card.</string>
+  <string name="permdesc_run_script">Allows application to open new windows in Terminal Emulator for Android and run commands in those windows with all of Terminal Emulator for Android\'s permissions, including access to the Internet and your SD Card.</string>
   <string name="perm_append_to_path">Terminal Emulator-სათვის ბრძანებების დამატება</string>
-  <string name="permdesc_append_to_path">Allows application to provide additional commands (add directories to the PATH) for Android Terminal Emulator.</string>
+  <string name="permdesc_append_to_path">Allows application to provide additional commands (add directories to the PATH) for Terminal Emulator for Android.</string>
   <string name="perm_prepend_to_path">Terminal Emulator-ის ბრძანებების უგულებელყოფა</string>
-  <string name="permdesc_prepend_to_path">Allows application to override existing commands with its own versions (prepend directories to the PATH) in Android Terminal Emulator.</string>
+  <string name="permdesc_prepend_to_path">Allows application to override existing commands with its own versions (prepend directories to the PATH) in Terminal Emulator for Android.</string>
 </resources>
