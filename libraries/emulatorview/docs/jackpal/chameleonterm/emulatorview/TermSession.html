@@ -37,7 +37,7 @@ function windowTitle()
 <A NAME="navbar_top_firstrow"><!-- --></A>
 <TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
   <TR ALIGN="center" VALIGN="top">
-  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../jackpal/androidterm/emulatorview/package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../jackpal/chameleonterm/emulatorview/package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
   <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
   <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
   <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
@@ -53,10 +53,10 @@ function windowTitle()
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../jackpal/androidterm/emulatorview/EmulatorView.html" title="class in jackpal.chameleonterm.emulatorview"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../jackpal/androidterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../jackpal/chameleonterm/emulatorview/EmulatorView.html" title="class in jackpal.chameleonterm.emulatorview"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-  <A HREF="../../../index.html?jackpal/androidterm/emulatorview/TermSession.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+  <A HREF="../../../index.html?jackpal/chameleonterm/emulatorview/TermSession.html" target="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="TermSession.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
 &nbsp;<SCRIPT type="text/javascript">
   <!--
@@ -107,18 +107,18 @@ A terminal session, consisting of a VT100 terminal emulator and its
  program, these would typically point to a tty; for a telnet program
  they might point to a network socket.  Reader and writer threads will be
  spawned to do I/O to these streams.  All other operations, including
- processing of input and output in <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#processInput(byte[], int, int)"><CODE>processInput</CODE></A> and
- <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#write(byte[], int, int)"><CODE>write</CODE></A>, will be performed on the main thread.
+ processing of input and output in <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#processInput(byte[], int, int)"><CODE>processInput</CODE></A> and
+ <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#write(byte[], int, int)"><CODE>write</CODE></A>, will be performed on the main thread.
  <p>
- Call <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#setTermIn(java.io.InputStream)"><CODE>setTermIn(java.io.InputStream)</CODE></A> and <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#setTermOut(java.io.OutputStream)"><CODE>setTermOut(java.io.OutputStream)</CODE></A> to connect the input and
+ Call <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#setTermIn(java.io.InputStream)"><CODE>setTermIn(java.io.InputStream)</CODE></A> and <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#setTermOut(java.io.OutputStream)"><CODE>setTermOut(java.io.OutputStream)</CODE></A> to connect the input and
  output streams to the emulator.  When all of your initialization is
  complete, your initial screen size is known, and you're ready to
- start VT100 emulation, call <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#initializeEmulator(int, int)"><CODE>initializeEmulator(int, int)</CODE></A> or <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#updateSize(int, int)"><CODE>updateSize(int, int)</CODE></A> with the number of rows and columns the terminal should
- initially have.  (If you attach the session to an <A HREF="../../../jackpal/androidterm/emulatorview/EmulatorView.html" title="class in jackpal.chameleonterm.emulatorview"><CODE>EmulatorView</CODE></A>,
+ start VT100 emulation, call <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#initializeEmulator(int, int)"><CODE>initializeEmulator(int, int)</CODE></A> or <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#updateSize(int, int)"><CODE>updateSize(int, int)</CODE></A> with the number of rows and columns the terminal should
+ initially have.  (If you attach the session to an <A HREF="../../../jackpal/chameleonterm/emulatorview/EmulatorView.html" title="class in jackpal.chameleonterm.emulatorview"><CODE>EmulatorView</CODE></A>,
  the view will take care of setting the screen size and initializing the
  emulator for you.)
  <p>
- When you're done with the session, you should call <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#finish()"><CODE>finish()</CODE></A> on it.
+ When you're done with the session, you should call <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#finish()"><CODE>finish()</CODE></A> on it.
  This frees emulator data from memory, stops the reader and writer threads,
  and closes the attached I/O streams.
 <P>
@@ -138,10 +138,10 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>static&nbsp;interface</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview">TermSession.FinishCallback</A></B></CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview">TermSession.FinishCallback</A></B></CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Callback to be invoked when a <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html" title="class in jackpal.chameleonterm.emulatorview"><CODE>TermSession</CODE></A> finishes.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Callback to be invoked when a <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html" title="class in jackpal.chameleonterm.emulatorview"><CODE>TermSession</CODE></A> finishes.</TD>
 </TR>
 </TABLE>
 &nbsp;
@@ -154,7 +154,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <B>Constructor Summary</B></FONT></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#TermSession()">TermSession</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#TermSession()">TermSession</A></B>()</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -172,19 +172,19 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>protected &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#appendToEmulator(byte[], int, int)">appendToEmulator</A></B>(byte[]&nbsp;data,
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#appendToEmulator(byte[], int, int)">appendToEmulator</A></B>(byte[]&nbsp;data,
                  int&nbsp;offset,
                  int&nbsp;count)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write something directly to the terminal emulator input, bypassing the
  emulation client, the session's <A HREF="http://developer.android.com/reference/java/io/InputStream.html?is-external=true" title="class or interface in java.io"><CODE>InputStream</CODE></A>, and any processing
- being done by <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#processInput(byte[], int, int)"><CODE>processInput</CODE></A>.</TD>
+ being done by <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#processInput(byte[], int, int)"><CODE>processInput</CODE></A>.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#finish()">finish</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#finish()">finish</A></B>()</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Finish this terminal session.</TD>
@@ -192,7 +192,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="http://developer.android.com/reference/java/io/InputStream.html?is-external=true" title="class or interface in java.io">InputStream</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#getTermIn()">getTermIn</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#getTermIn()">getTermIn</A></B>()</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get the <A HREF="http://developer.android.com/reference/java/io/InputStream.html?is-external=true" title="class or interface in java.io"><CODE>InputStream</CODE></A> associated with this session.</TD>
@@ -200,7 +200,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="http://developer.android.com/reference/java/io/OutputStream.html?is-external=true" title="class or interface in java.io">OutputStream</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#getTermOut()">getTermOut</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#getTermOut()">getTermOut</A></B>()</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get the <A HREF="http://developer.android.com/reference/java/io/OutputStream.html?is-external=true" title="class or interface in java.io"><CODE>OutputStream</CODE></A> associated with this session.</TD>
@@ -208,7 +208,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="http://developer.android.com/reference/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#getTranscriptText()">getTranscriptText</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#getTranscriptText()">getTranscriptText</A></B>()</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Retrieve the terminal's screen and scrollback buffer.</TD>
@@ -216,7 +216,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;boolean</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#getUTF8Mode()">getUTF8Mode</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#getUTF8Mode()">getUTF8Mode</A></B>()</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get whether the terminal emulator is currently in UTF-8 mode.</TD>
@@ -224,7 +224,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#initializeEmulator(int, int)">initializeEmulator</A></B>(int&nbsp;columns,
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#initializeEmulator(int, int)">initializeEmulator</A></B>(int&nbsp;columns,
                    int&nbsp;rows)</CODE>
 
 <BR>
@@ -233,7 +233,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;boolean</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#isRunning()">isRunning</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#isRunning()">isRunning</A></B>()</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -241,15 +241,15 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>protected &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#notifyUpdate()">notifyUpdate</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#notifyUpdate()">notifyUpdate</A></B>()</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Notify the <A HREF="../../../jackpal/androidterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> registered by <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#setUpdateCallback(jackpal.chameleonterm.emulatorview.UpdateCallback)"><CODE>setUpdateCallback</CODE></A> that the screen has changed.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Notify the <A HREF="../../../jackpal/chameleonterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> registered by <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#setUpdateCallback(jackpal.chameleonterm.emulatorview.UpdateCallback)"><CODE>setUpdateCallback</CODE></A> that the screen has changed.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>protected &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#processInput(byte[], int, int)">processInput</A></B>(byte[]&nbsp;data,
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#processInput(byte[], int, int)">processInput</A></B>(byte[]&nbsp;data,
              int&nbsp;offset,
              int&nbsp;count)</CODE>
 
@@ -259,7 +259,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#reset()">reset</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#reset()">reset</A></B>()</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reset the terminal emulator's state.</TD>
@@ -267,7 +267,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#setColorScheme(jackpal.chameleonterm.emulatorview.ColorScheme)">setColorScheme</A></B>(<A HREF="../../../jackpal/androidterm/emulatorview/ColorScheme.html" title="class in jackpal.chameleonterm.emulatorview">ColorScheme</A>&nbsp;scheme)</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#setColorScheme(jackpal.chameleonterm.emulatorview.ColorScheme)">setColorScheme</A></B>(<A HREF="../../../jackpal/chameleonterm/emulatorview/ColorScheme.html" title="class in jackpal.chameleonterm.emulatorview">ColorScheme</A>&nbsp;scheme)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set the terminal emulator's color scheme (default colors).</TD>
@@ -275,7 +275,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#setDefaultUTF8Mode(boolean)">setDefaultUTF8Mode</A></B>(boolean&nbsp;utf8ByDefault)</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#setDefaultUTF8Mode(boolean)">setDefaultUTF8Mode</A></B>(boolean&nbsp;utf8ByDefault)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set whether the terminal emulator should be in UTF-8 mode by default.</TD>
@@ -283,16 +283,16 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#setFinishCallback(jackpal.chameleonterm.emulatorview.TermSession.FinishCallback)">setFinishCallback</A></B>(<A HREF="../../../jackpal/androidterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview">TermSession.FinishCallback</A>&nbsp;callback)</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#setFinishCallback(jackpal.chameleonterm.emulatorview.TermSession.FinishCallback)">setFinishCallback</A></B>(<A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview">TermSession.FinishCallback</A>&nbsp;callback)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set a <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>TermSession.FinishCallback</CODE></A> to be invoked once this terminal session is
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set a <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>TermSession.FinishCallback</CODE></A> to be invoked once this terminal session is
  finished.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#setTermIn(java.io.InputStream)">setTermIn</A></B>(<A HREF="http://developer.android.com/reference/java/io/InputStream.html?is-external=true" title="class or interface in java.io">InputStream</A>&nbsp;termIn)</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#setTermIn(java.io.InputStream)">setTermIn</A></B>(<A HREF="http://developer.android.com/reference/java/io/InputStream.html?is-external=true" title="class or interface in java.io">InputStream</A>&nbsp;termIn)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set the <A HREF="http://developer.android.com/reference/java/io/InputStream.html?is-external=true" title="class or interface in java.io"><CODE>InputStream</CODE></A> associated with this session.</TD>
@@ -300,7 +300,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#setTermOut(java.io.OutputStream)">setTermOut</A></B>(<A HREF="http://developer.android.com/reference/java/io/OutputStream.html?is-external=true" title="class or interface in java.io">OutputStream</A>&nbsp;termOut)</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#setTermOut(java.io.OutputStream)">setTermOut</A></B>(<A HREF="http://developer.android.com/reference/java/io/OutputStream.html?is-external=true" title="class or interface in java.io">OutputStream</A>&nbsp;termOut)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set the <A HREF="http://developer.android.com/reference/java/io/OutputStream.html?is-external=true" title="class or interface in java.io"><CODE>OutputStream</CODE></A> associated with this session.</TD>
@@ -308,25 +308,25 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#setUpdateCallback(jackpal.chameleonterm.emulatorview.UpdateCallback)">setUpdateCallback</A></B>(<A HREF="../../../jackpal/androidterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview">UpdateCallback</A>&nbsp;notify)</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#setUpdateCallback(jackpal.chameleonterm.emulatorview.UpdateCallback)">setUpdateCallback</A></B>(<A HREF="../../../jackpal/chameleonterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview">UpdateCallback</A>&nbsp;notify)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set an <A HREF="../../../jackpal/androidterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> to be invoked when the terminal emulator's
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set an <A HREF="../../../jackpal/chameleonterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> to be invoked when the terminal emulator's
  screen is changed.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#setUTF8ModeUpdateCallback(jackpal.chameleonterm.emulatorview.UpdateCallback)">setUTF8ModeUpdateCallback</A></B>(<A HREF="../../../jackpal/androidterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview">UpdateCallback</A>&nbsp;utf8ModeNotify)</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#setUTF8ModeUpdateCallback(jackpal.chameleonterm.emulatorview.UpdateCallback)">setUTF8ModeUpdateCallback</A></B>(<A HREF="../../../jackpal/chameleonterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview">UpdateCallback</A>&nbsp;utf8ModeNotify)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set an <A HREF="../../../jackpal/androidterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> to be invoked when the terminal emulator
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set an <A HREF="../../../jackpal/chameleonterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> to be invoked when the terminal emulator
  goes into or out of UTF-8 mode.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#updateSize(int, int)">updateSize</A></B>(int&nbsp;columns,
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#updateSize(int, int)">updateSize</A></B>(int&nbsp;columns,
            int&nbsp;rows)</CODE>
 
 <BR>
@@ -335,7 +335,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#write(byte[], int, int)">write</A></B>(byte[]&nbsp;data,
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#write(byte[], int, int)">write</A></B>(byte[]&nbsp;data,
       int&nbsp;offset,
       int&nbsp;count)</CODE>
 
@@ -345,7 +345,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#write(int)">write</A></B>(int&nbsp;codePoint)</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#write(int)">write</A></B>(int&nbsp;codePoint)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write the UTF-8 representation of a single Unicode code point to the
@@ -354,7 +354,7 @@ A terminal session, consisting of a VT100 terminal emulator and its
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#write(java.lang.String)">write</A></B>(<A HREF="http://developer.android.com/reference/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;data)</CODE>
+<TD><CODE><B><A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#write(java.lang.String)">write</A></B>(<A HREF="http://developer.android.com/reference/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;data)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write the UTF-8 representation of a String to the terminal output.</TD>
@@ -446,9 +446,9 @@ public void <B>write</B>(<A HREF="http://developer.android.com/reference/java/la
  written data will be consumed by the emulation client as input.
  <p>
  This implementation encodes the String and then calls
- <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#write(byte[], int, int)"><CODE>write(byte[], int, int)</CODE></A> to do the actual writing.  It should
+ <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#write(byte[], int, int)"><CODE>write(byte[], int, int)</CODE></A> to do the actual writing.  It should
  therefore usually be unnecessary to override this method; override
- <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#write(byte[], int, int)"><CODE>write(byte[], int, int)</CODE></A> instead.
+ <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#write(byte[], int, int)"><CODE>write(byte[], int, int)</CODE></A> instead.
 <P>
 <DD><DL>
 <DT><B>Parameters:</B><DD><CODE>data</CODE> - The String to write to the terminal.</DL>
@@ -466,9 +466,9 @@ public void <B>write</B>(int&nbsp;codePoint)</PRE>
  client as input.
  <p>
  This implementation encodes the code point and then calls
- <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#write(byte[], int, int)"><CODE>write(byte[], int, int)</CODE></A> to do the actual writing.  It should
+ <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#write(byte[], int, int)"><CODE>write(byte[], int, int)</CODE></A> to do the actual writing.  It should
  therefore usually be unnecessary to override this method; override
- <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#write(byte[], int, int)"><CODE>write(byte[], int, int)</CODE></A> instead.
+ <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#write(byte[], int, int)"><CODE>write(byte[], int, int)</CODE></A> instead.
 <P>
 <DD><DL>
 <DT><B>Parameters:</B><DD><CODE>codePoint</CODE> - The Unicode code point to write to the terminal.</DL>
@@ -545,13 +545,13 @@ public boolean <B>isRunning</B>()</PRE>
 <A NAME="setUpdateCallback(jackpal.chameleonterm.emulatorview.UpdateCallback)"><!-- --></A><H3>
 setUpdateCallback</H3>
 <PRE>
-public void <B>setUpdateCallback</B>(<A HREF="../../../jackpal/androidterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview">UpdateCallback</A>&nbsp;notify)</PRE>
+public void <B>setUpdateCallback</B>(<A HREF="../../../jackpal/chameleonterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview">UpdateCallback</A>&nbsp;notify)</PRE>
 <DL>
-<DD>Set an <A HREF="../../../jackpal/androidterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> to be invoked when the terminal emulator's
+<DD>Set an <A HREF="../../../jackpal/chameleonterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> to be invoked when the terminal emulator's
  screen is changed.
 <P>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>notify</CODE> - The <A HREF="../../../jackpal/androidterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> to be invoked on changes.</DL>
+<DT><B>Parameters:</B><DD><CODE>notify</CODE> - The <A HREF="../../../jackpal/chameleonterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> to be invoked on changes.</DL>
 </DD>
 </DL>
 <HR>
@@ -561,7 +561,7 @@ notifyUpdate</H3>
 <PRE>
 protected void <B>notifyUpdate</B>()</PRE>
 <DL>
-<DD>Notify the <A HREF="../../../jackpal/androidterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> registered by <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#setUpdateCallback(jackpal.chameleonterm.emulatorview.UpdateCallback)"><CODE>setUpdateCallback</CODE></A> that the screen has changed.
+<DD>Notify the <A HREF="../../../jackpal/chameleonterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> registered by <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#setUpdateCallback(jackpal.chameleonterm.emulatorview.UpdateCallback)"><CODE>setUpdateCallback</CODE></A> that the screen has changed.
 <P>
 <DD><DL>
 </DL>
@@ -575,7 +575,7 @@ updateSize</H3>
 public void <B>updateSize</B>(int&nbsp;columns,
                        int&nbsp;rows)</PRE>
 <DL>
-<DD>Change the terminal's window size.  Will call <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#initializeEmulator(int, int)"><CODE>initializeEmulator(int, int)</CODE></A>
+<DD>Change the terminal's window size.  Will call <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#initializeEmulator(int, int)"><CODE>initializeEmulator(int, int)</CODE></A>
  if the emulator is not yet running.
  <p>
  You should override this method if your application needs to be notified
@@ -635,7 +635,7 @@ protected final void <B>appendToEmulator</B>(byte[]&nbsp;data,
 <DL>
 <DD>Write something directly to the terminal emulator input, bypassing the
  emulation client, the session's <A HREF="http://developer.android.com/reference/java/io/InputStream.html?is-external=true" title="class or interface in java.io"><CODE>InputStream</CODE></A>, and any processing
- being done by <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.html#processInput(byte[], int, int)"><CODE>processInput</CODE></A>.
+ being done by <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.html#processInput(byte[], int, int)"><CODE>processInput</CODE></A>.
 <P>
 <DD><DL>
 <DT><B>Parameters:</B><DD><CODE>data</CODE> - The data to be written to the terminal.<DD><CODE>offset</CODE> - The starting offset into the buffer of the data.<DD><CODE>count</CODE> - The length of the data to be written.</DL>
@@ -646,12 +646,12 @@ protected final void <B>appendToEmulator</B>(byte[]&nbsp;data,
 <A NAME="setColorScheme(jackpal.chameleonterm.emulatorview.ColorScheme)"><!-- --></A><H3>
 setColorScheme</H3>
 <PRE>
-public void <B>setColorScheme</B>(<A HREF="../../../jackpal/androidterm/emulatorview/ColorScheme.html" title="class in jackpal.chameleonterm.emulatorview">ColorScheme</A>&nbsp;scheme)</PRE>
+public void <B>setColorScheme</B>(<A HREF="../../../jackpal/chameleonterm/emulatorview/ColorScheme.html" title="class in jackpal.chameleonterm.emulatorview">ColorScheme</A>&nbsp;scheme)</PRE>
 <DL>
 <DD>Set the terminal emulator's color scheme (default colors).
 <P>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>scheme</CODE> - The <A HREF="../../../jackpal/androidterm/emulatorview/ColorScheme.html" title="class in jackpal.chameleonterm.emulatorview"><CODE>ColorScheme</CODE></A> to be used (use null for the
+<DT><B>Parameters:</B><DD><CODE>scheme</CODE> - The <A HREF="../../../jackpal/chameleonterm/emulatorview/ColorScheme.html" title="class in jackpal.chameleonterm.emulatorview"><CODE>ColorScheme</CODE></A> to be used (use null for the
                default scheme).</DL>
 </DD>
 </DL>
@@ -693,13 +693,13 @@ public boolean <B>getUTF8Mode</B>()</PRE>
 <A NAME="setUTF8ModeUpdateCallback(jackpal.chameleonterm.emulatorview.UpdateCallback)"><!-- --></A><H3>
 setUTF8ModeUpdateCallback</H3>
 <PRE>
-public void <B>setUTF8ModeUpdateCallback</B>(<A HREF="../../../jackpal/androidterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview">UpdateCallback</A>&nbsp;utf8ModeNotify)</PRE>
+public void <B>setUTF8ModeUpdateCallback</B>(<A HREF="../../../jackpal/chameleonterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview">UpdateCallback</A>&nbsp;utf8ModeNotify)</PRE>
 <DL>
-<DD>Set an <A HREF="../../../jackpal/androidterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> to be invoked when the terminal emulator
+<DD>Set an <A HREF="../../../jackpal/chameleonterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> to be invoked when the terminal emulator
  goes into or out of UTF-8 mode.
 <P>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>utf8ModeNotify</CODE> - The <A HREF="../../../jackpal/androidterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> to be invoked.</DL>
+<DT><B>Parameters:</B><DD><CODE>utf8ModeNotify</CODE> - The <A HREF="../../../jackpal/chameleonterm/emulatorview/UpdateCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>UpdateCallback</CODE></A> to be invoked.</DL>
 </DD>
 </DL>
 <HR>
@@ -720,13 +720,13 @@ public void <B>reset</B>()</PRE>
 <A NAME="setFinishCallback(jackpal.chameleonterm.emulatorview.TermSession.FinishCallback)"><!-- --></A><H3>
 setFinishCallback</H3>
 <PRE>
-public void <B>setFinishCallback</B>(<A HREF="../../../jackpal/androidterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview">TermSession.FinishCallback</A>&nbsp;callback)</PRE>
+public void <B>setFinishCallback</B>(<A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview">TermSession.FinishCallback</A>&nbsp;callback)</PRE>
 <DL>
-<DD>Set a <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>TermSession.FinishCallback</CODE></A> to be invoked once this terminal session is
+<DD>Set a <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>TermSession.FinishCallback</CODE></A> to be invoked once this terminal session is
  finished.
 <P>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>callback</CODE> - The <A HREF="../../../jackpal/androidterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>TermSession.FinishCallback</CODE></A> to be invoked on finish.</DL>
+<DT><B>Parameters:</B><DD><CODE>callback</CODE> - The <A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><CODE>TermSession.FinishCallback</CODE></A> to be invoked on finish.</DL>
 </DD>
 </DL>
 <HR>
@@ -757,7 +757,7 @@ public void <B>finish</B>()</PRE>
 <A NAME="navbar_bottom_firstrow"><!-- --></A>
 <TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
   <TR ALIGN="center" VALIGN="top">
-  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../jackpal/androidterm/emulatorview/package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../jackpal/chameleonterm/emulatorview/package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
   <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
   <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
   <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
@@ -773,10 +773,10 @@ public void <B>finish</B>()</PRE>
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../jackpal/androidterm/emulatorview/EmulatorView.html" title="class in jackpal.chameleonterm.emulatorview"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../jackpal/androidterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../jackpal/chameleonterm/emulatorview/EmulatorView.html" title="class in jackpal.chameleonterm.emulatorview"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../jackpal/chameleonterm/emulatorview/TermSession.FinishCallback.html" title="interface in jackpal.chameleonterm.emulatorview"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-  <A HREF="../../../index.html?jackpal/androidterm/emulatorview/TermSession.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+  <A HREF="../../../index.html?jackpal/chameleonterm/emulatorview/TermSession.html" target="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="TermSession.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
 &nbsp;<SCRIPT type="text/javascript">
   <!--

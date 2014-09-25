@@ -74,7 +74,7 @@ Create the Eclipse projects:
     From the menu choose File : New Project
     Choose Android:Android Project as a project type
     Press Next
-    Set Project Name: jackpal_androidterm_emulatorview
+    Set Project Name: jackpal_chameleonterm_emulatorview
     Choose "Create project from existing source"
     Browse to the location of the libraries/emulatorview directory.
     Press Finish
@@ -92,7 +92,7 @@ Edit the Eclipse project properties to include the emulatorview library:
     1) Right-click on the "Term" project in the "Package Explorer" window.
     2) Choose "Properties" from the drop-down menu.
     3) Navigate to "Project References"
-    4) Check the check box "jackpal_androidterm_emulatorview"
+    4) Check the check box "jackpal_chameleonterm_emulatorview"
     5) Click OK
 
 Build the Java apk:
