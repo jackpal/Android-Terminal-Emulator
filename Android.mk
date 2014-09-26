@@ -30,7 +30,7 @@ LOCAL_PACKAGE_NAME := AndroidTerm
 
 LOCAL_MODULE_TAGS := optional
 
-LOCAL_REQUIRED_MODULES := libjackpal-androidterm4
+LOCAL_REQUIRED_MODULES := libjackpal-androidterm5
 
 include $(BUILD_PACKAGE)
 
