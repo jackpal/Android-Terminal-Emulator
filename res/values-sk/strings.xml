@@ -138,15 +138,15 @@
   <string name="confirm_window_close_message">Zavrieť toto okno?</string>
  
   <string name="perm_run_script">Spustiť ľubovoľné príkazy</string>
-  <string name="permdesc_run_script">Umožniť aplikáciám otvoriť nové okno v Emulátori terminálu Android a spustiť príkazy v tomto okne so všetkými povoleniami terminálu a to vrátane prístupu na Internet a ku karte SD.</string>
+  <string name="permdesc_run_script">Umožniť aplikáciám otvoriť nové okno v Emulátori terminálu pre Android a spustiť príkazy v tomto okne so všetkými povoleniami terminálu a to vrátane prístupu na Internet a ku karte SD.</string>
   <string name="perm_append_to_path">Pridať príkazy do Emulátora terminálu Android</string>
-  <string name="permdesc_append_to_path">Umožňuje aplikáciám poskytnúť ďalšie príkazy (pridať priečinky do PATH) v Emulátori terminálu Android.</string>
+  <string name="permdesc_append_to_path">Umožňuje aplikáciám poskytnúť ďalšie príkazy (pridať priečinky do PATH) v Emulátori terminálu pre Android.</string>
   <string name="perm_prepend_to_path">Prepísať príkazy v Emulátori terminálu Android</string>
-  <string name="permdesc_prepend_to_path">Umožňuje aplikáciám prepísať existujúce príkazy so svojimi vlastnými verziami (podradiť priečinky v PATH) v Emulátori terminálu Android.</string>
+  <string name="permdesc_prepend_to_path">Umožňuje aplikáciám prepísať existujúce príkazy so svojimi vlastnými verziami (podradiť priečinky v PATH) v Emulátori terminálu pre Android.</string>
   
-  <string name="email_transcript_subject">Prepis z Emulátora terminálu Android</string>
+  <string name="email_transcript_subject">Prepis z Emulátora terminálu pre Android</string>
   <string name="email_transcript_chooser_title">Poslať prepis prostredníctvom</string>
-  <string name="email_transcript_no_email_activity_found">Nemožno vybrať e-mailovú aktivitu na poslanie prepisu.</string>
+  <string name="email_transcript_no_email_activity_found">Nie je možné vybrať e-mailovú aktivitu na poslanie prepisu.</string>
 
   <string name="alt_sends_esc">Posielať ESC pomocou klávesu Alt</string>
   <string name="alt_sends_esc_summary_on">Kláves Alt posiela ESC.</string>
