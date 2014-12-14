@@ -1,114 +1,77 @@
 Obtain the Software Needed to Build Terminal Emulator for Android
--------------------------------------------------------------
+-----------------------------------------------------------------
 
 To keep from typing "Terminal Emulator for Android" over and over again, this
-document will use the abbreviation "ATE" to stand for "Android Terminal
-Emulator".
+document will use the abbreviation "TEA" to stand for "Terminal
+Emulator for Android".
 
-ATE is built using:
+TEA is built using:
 
-   Android SDK ADT Bundle 20131030 or newer
-   Android NDK r9b or newer
+ + Android Studio 1.0 or newer
+ + Android NDK r10d or newer
 
-You can download them from:
+Download Android Studio from:
 
-http://developer.android.com/sdk
+  http://developer.android.com/sdk
 
-Note 1: Recent (2013+) versions of the Android ADT SDK Bundle include an
-Android-specific version of Eclipse.
+Download the NDK from:
 
-Note 2: Terminal Emulator for Android can not currently be built using the new
-Android Studio IDE. Android Studio does not currently support projects that
-use the NDK.
+  http://developer.android.com/tools/sdk/ndk/
 
-After you install the SDK and the NDK, please build some of the samples that
-come with the SDK and NDK in order to get a feel for using the SDK and the NDK.
 
-Building ATE
+Telling Gradle where to find the NDK
+------------------------------------
+
+Android Studio and the gradle build tool need manual help to find where the
+NDK is located on your computer. The easiest way to do this is to try building,
+wait for the build to fail, then fix the build by editing the file
+local.properties that was created by gradle as part of the failing build.
+
+When it exists, the file local.properties will be in the root directiory of
+the TEA source tree. Use a text editor to edit the file local.properties, and
+add a line that specifies where the NDK is located:
+
+  ndk.dir=path/to/ndk
+
+On my personal dev machine this line looks like this, but of course it will
+be different on your machine, depending upon your OS, user name, directory
+tree, and version of the NDK that you have installed.
+
+  ndk.dir=/Users/jack/code/android-ndk-r10d
+
+
+Building TEA
 ------------
 
-You can build ATE two ways
+You can build TEA two ways:
 
-    1) Using the "ant" command line tool
-    2) Using the Eclipse IDE
+  1. Using the Android Studio IDE
+  2. Using the "gradlew" command line tool
 
-The "ant" way is convenient for automated builds. The Eclipse way is convenient
-for debugging.
+Using Android Studio is convenient for development. Using "gradlew" is
+convenient for automated testing and publishing.
 
-Building ATE using ant
-----------------------
 
-The first time you build using Ant you must run a one-time setup script
-to set up the local.properties files for all the ant projects:
+Building TEA with Android Studio
+--------------------------------
 
-    tools/update.sh
+  1. Open Android Studio
+  2. Choose "Open an existing Android Studio project" from the "Quick Start"
+     wizard.
+  3. Choose the top-level TEA directory. (If you installed the source code from
+     github, this directory will be named Android-Terminal-Emulator).
+  4. Use the Android Studio menu "Run : Run 'term'" to build and run the app.
+       a. The first time you do this you will get an error message about
+          needing to define ndk.dir. See above for how to fix this.
 
-After that, you can build ATE by:
+Building TEA from the command line
+----------------------------------
 
-    tools/build-debug
+  1. Open a command line shell window and navigate to the main TEA directory.
+  2. Execute the gradlew build script:
 
-Then you can run ATE on your device or emulator by:
+      $ ./gradlew assembleDebug
 
-    tools/pushAndRun
+  3. To copy the built executable to a device:
 
-Building ATE with Eclipse
---------------------------
-
-There are three steps to building ATE with Eclipse:
-
-    1) Build the project from the command line using "ant"
-    2) Create the Eclipse Project for the Application
-    3) Build the Java apk.
-
-Build the project from the command line using "ant":
-
-You need to build the project from the commmand line in order to generate the
-shared libraries and Java JAR files used by Terminal Emulator for Android.
-
-Use the instructions in "Building ATE with ant", above.
-
-Create the Eclipse projects:
-
-    Start Eclipse
-
-    From the menu choose File : New Project
-    Choose Android:Android Project as a project type
-    Press Next
-    Set Project Name: jackpal_androidterm_emulatorview
-    Choose "Create project from existing source"
-    Browse to the location of the libraries/emulatorview directory.
-    Press Finish
-
-    From the menu choose File : New Project
-    Choose Android:Android Project as a project type
-    Press Next
-    Set Project Name: AndroidTerm
-    Choose "Create project from existing source"
-    Browse to the location of the AndroidTerm source directory.
-    Press Finish
-
-Edit the Eclipse project properties to include the emulatorview library:
-
-    1) Right-click on the "Term" project in the "Package Explorer" window.
-    2) Choose "Properties" from the drop-down menu.
-    3) Navigate to "Project References"
-    4) Check the check box "jackpal_androidterm_emulatorview"
-    5) Click OK
-
-Build the Java apk:
-
-    This should happen automatically once you've created the Eclipse project.
-
-Command Line Build Instructions
--------------------------------
-
-You can build Terminal Emulator for Android from the command line, instead of from
-Eclipse. This is handy because it can be scripted.
-
-1) Install the "ant" build system.
-2) cd <the-android-terminal-emulator-directory>
-3) ant clean
-4) ant debug
-5) Connect a device to your machine, or start the emulator
-6) adb install -r bin/Term.apk
-7) adb shell am start -n jackpal.androidterm/jackpal.androidterm.Term
+      $ .
