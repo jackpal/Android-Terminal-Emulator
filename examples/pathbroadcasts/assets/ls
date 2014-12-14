@@ -1,4 +1,0 @@
-#!/system/bin/sh
-
-echo "Hello, I'm pretending to be ls!"
-exec /system/bin/ls "$@"
