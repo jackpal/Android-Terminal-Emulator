@@ -1,12 +1,16 @@
 .classpath
+.gradle/
+.idea/
 .project
 .settings/
 bin/
-build.xml
+build/
+emulatorview/
 examples/
 gen/
 libraries/
 libs/
 local.properties
 obj/
+term/
 tests/
