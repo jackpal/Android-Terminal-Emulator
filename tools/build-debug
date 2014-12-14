@@ -1,0 +1,15 @@
+#!/bin/bash
+# command line build script for building debug version
+set -e
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ATE_ROOT="$( cd $DIR/.. && pwd )"
+
+cd "$ATE_ROOT"
+
+if [ ! -f "local.properties" ]; then
+    echo "local.properties does not exist. Please create it."
+    exit 1
+fi
+
+./gradlew assembleDebug

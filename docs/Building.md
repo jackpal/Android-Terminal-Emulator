@@ -68,10 +68,15 @@ Building TEA from the command line
 ----------------------------------
 
   1. Open a command line shell window and navigate to the main TEA directory.
-  2. Execute the gradlew build script:
+  2. Create a local.properties file with two lines in it:
 
-      $ ./gradlew assembleDebug
+     sdk.dir=/path/to/android/sdk
+     ndk.dir=/path/to/android/ndk
+
+  3. Build
+
+      $ ./tools/build-debug
 
   3. To copy the built executable to a device:
 
-      $ .
+      $ ./tools/push-and-run-debug

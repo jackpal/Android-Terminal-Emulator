@@ -17,6 +17,7 @@ Open Source Project. (Which I also wrote. :-) )
 If you are unable to use the Play Store, you can also
 [download from GitHub](http://jackpal.github.com/Android-Terminal-Emulator/downloads/Term.apk)
 
+See [Building](docs/Building.md) for build instructions.
 
 Got questions? Please check out the
 [FAQ](http://github.com/jackpal/Android-Terminal-Emulator/wiki/Frequently-Asked-Questions)

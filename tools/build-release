@@ -11,7 +11,7 @@ ATE_ROOT="$( cd $DIR/.. && pwd )"
 cd "$ATE_ROOT"
 
 if [ ! -f "local.properties" ]; then
-    echo "local.properties does not exist. Please run tools/update.sh"
+    echo "local.properties does not exist. Please create it."
     exit 1
 fi
 
