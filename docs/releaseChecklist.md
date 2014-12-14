@@ -18,7 +18,7 @@
 
 (Has to be on a real device, Swype beta won't run on an emulator.)
 
-# Update AndroidManifest.xml version number
+# Update ./term/src/main/AndroidManifest.xml version number
 
 Update both android:versionName and android:versionCode.
 
