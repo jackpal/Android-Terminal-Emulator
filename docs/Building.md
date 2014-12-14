@@ -11,16 +11,8 @@ Download the Software Needed to Build Terminal Emulator for Android
 
 TEA is built using:
 
- + Android Studio 1.0 or newer
- + Android NDK r10d or newer
-
-Download Android Studio from:
-
-  http://developer.android.com/sdk
-
-Download the NDK from:
-
-  http://developer.android.com/tools/sdk/ndk/
+ + [Android Studio](http://developer.android.com/sdk) 1.0 or newer
+ + [Android NDK](http://developer.android.com/tools/sdk/ndk/) r10d or newer
 
 
 Telling Gradle where to find the Android NDK and SDK
@@ -41,6 +33,14 @@ tree, and version of the NDK that you have installed.
 
     ndk.dir=/Users/jack/code/android-ndk-r10d
     sdk.dir=/Users/jack/Library/Android/sdk
+
+In addition, if you are building from the command line, the scripts in the
+"tools" directory expect the environment variable ANDROID_SDK_ROOT to be
+defined.
+
+On my personal dev machine I have this line in my .profile:
+
+    export ANDROID_SDK_ROOT=/Users/jack/Library/Android/sdk
 
 
 Building TEA
@@ -70,12 +70,11 @@ Building TEA from the command line
 ----------------------------------
 
   1. Open a command line shell window and navigate to the main TEA directory.
-  2. Define the environment variable ANDROID_SDK_ROOT to point to the root
-     of your Android SDK installation.
-  3. Build
+
+  2. Build
 
       $ ./tools/build-debug
 
-  4. Copy the built executable to a device:
+  3. Copy the built executable to a device:
 
       $ ./tools/push-and-run-debug
