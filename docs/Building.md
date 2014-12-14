@@ -71,6 +71,7 @@ Building TEA from the command line
   2. Create a local.properties file with two lines in it:
 
      sdk.dir=/path/to/android/sdk
+     
      ndk.dir=/path/to/android/ndk
 
   3. Build
