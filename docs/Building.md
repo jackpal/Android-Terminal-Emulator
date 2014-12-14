@@ -32,15 +32,15 @@ SDK on your computer.
 Create a file local.properties in the root directiory of the TEA project that
 contains this text:
 
-  ndk.dir=path/to/ndk
-  sdk.dir=path/to/sdk
+    ndk.dir=path/to/ndk
+    sdk.dir=path/to/sdk
 
 On my personal dev machine the file looks like this, but of course it will
 be different on your machine, depending upon your OS, user name, directory
 tree, and version of the NDK that you have installed.
 
-  ndk.dir=/Users/jack/code/android-ndk-r10d
-  sdk.dir=/Users/jack/Library/Android/sdk
+    ndk.dir=/Users/jack/code/android-ndk-r10d
+    sdk.dir=/Users/jack/Library/Android/sdk
 
 
 Building TEA
