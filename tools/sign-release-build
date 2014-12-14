@@ -10,10 +10,18 @@ set -e
 
 ANDROID_TERMINAL_EMULATOR_KEYSTORE="$HOME/Documents/workspace/keystore/jackpal.keystore"
 
+ZIPALIGN="/Users/jack/Library/Android/sdk/build-tools/21.1.2/zipalign"
+
 if [ ! -f "$ANDROID_TERMINAL_EMULATOR_KEYSTORE" ]; then
     echo "Release keystore file is missing at ${ANDROID_TERMINAL_EMULATOR_KEYSTORE}. Cannot build release build."
     exit 1
 fi
+
+if [ ! -f "$ZIPALIGN" ]; then
+    echo "Zipalign tool is missing at ${ZIPALIGN}. Cannot build release build."
+    exit 1
+fi
+
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
@@ -36,4 +44,9 @@ jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
 
 # Align for faster loading.
 
-zipalign -v 4 term-release-signed.apk Term.apk
+rm -f Term.apk
+"$ZIPALIGN" -v 4 term-release-signed.apk Term.apk
+
+echo "Signed-and-aligned APK:"
+echo `pwd`/Term.apk
+
