@@ -5,8 +5,9 @@ To keep from typing "Terminal Emulator for Android" over and over again, this
 document will use the abbreviation "TEA" to stand for "Terminal
 Emulator for Android".
 
-Obtain the Software Needed to Build Terminal Emulator for Android
------------------------------------------------------------------
+
+Download the Software Needed to Build Terminal Emulator for Android
+-------------------------------------------------------------------
 
 TEA is built using:
 
@@ -22,25 +23,24 @@ Download the NDK from:
   http://developer.android.com/tools/sdk/ndk/
 
 
-Telling Gradle where to find the NDK
-------------------------------------
+Telling Gradle where to find the Android NDK and SDK
+----------------------------------------------------
 
-Android Studio and the gradle build tool need manual help to find where the
-NDK is located on your computer. The easiest way to do this is to try building,
-wait for the build to fail, then fix the build by editing the file
-local.properties that was created by gradle as part of the failing build.
+Android Studio and the gradle build tool need to know where to find the NDK and
+SDK on your computer.
 
-When it exists, the file local.properties will be in the root directiory of
-the TEA source tree. Use a text editor to edit the file local.properties, and
-add a line that specifies where the NDK is located:
+Create a file local.properties in the root directiory of the TEA project that
+contains this text:
 
   ndk.dir=path/to/ndk
+  sdk.dir=path/to/sdk
 
-On my personal dev machine this line looks like this, but of course it will
+On my personal dev machine the file looks like this, but of course it will
 be different on your machine, depending upon your OS, user name, directory
 tree, and version of the NDK that you have installed.
 
   ndk.dir=/Users/jack/code/android-ndk-r10d
+  sdk.dir=/Users/jack/Library/Android/sdk
 
 
 Building TEA
@@ -64,22 +64,18 @@ Building TEA with Android Studio
   3. Choose the top-level TEA directory. (If you installed the source code from
      github, this directory will be named Android-Terminal-Emulator).
   4. Use the Android Studio menu "Run : Run 'term'" to build and run the app.
-       a. The first time you do this you will get an error message about
-          needing to define ndk.dir. See above for how to fix this.
+
 
 Building TEA from the command line
 ----------------------------------
 
   1. Open a command line shell window and navigate to the main TEA directory.
-  2. Create a local.properties file with two lines in it:
-
-    sdk.dir=/path/to/android/sdk
-    ndk.dir=/path/to/android/ndk
-
+  2. Define the environment variable ANDROID_SDK_ROOT to point to the root
+     of your Android SDK installation.
   3. Build
 
       $ ./tools/build-debug
 
-  3. To copy the built executable to a device:
+  4. Copy the built executable to a device:
 
       $ ./tools/push-and-run-debug
