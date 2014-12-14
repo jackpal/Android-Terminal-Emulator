@@ -1,9 +1,12 @@
-Obtain the Software Needed to Build Terminal Emulator for Android
------------------------------------------------------------------
+Building
+========
 
 To keep from typing "Terminal Emulator for Android" over and over again, this
 document will use the abbreviation "TEA" to stand for "Terminal
 Emulator for Android".
+
+Obtain the Software Needed to Build Terminal Emulator for Android
+-----------------------------------------------------------------
 
 TEA is built using:
 
@@ -70,8 +73,8 @@ Building TEA from the command line
   1. Open a command line shell window and navigate to the main TEA directory.
   2. Create a local.properties file with two lines in it:
 
-     sdk.dir=/path/to/android/sdk
-     ndk.dir=/path/to/android/ndk
+    sdk.dir=/path/to/android/sdk
+    ndk.dir=/path/to/android/ndk
 
   3. Build
 
