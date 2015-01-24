@@ -41,6 +41,8 @@ public class RemoteInterface extends Activity {
 
     protected static final String PRIVEXTRA_TARGET_WINDOW = "jackpal.androidterm.private.target_window";
 
+    protected static final String PRIVACT_ACTIVITY_ALIAS = "jackpal.androidterm.TermInternal";
+
     private TermSettings mSettings;
 
     private TermService mTermService;

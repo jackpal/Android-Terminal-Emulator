@@ -108,6 +108,7 @@ public class Term extends Activity implements UpdateCallback {
     public static final int REQUEST_CHOOSE_WINDOW = 1;
     public static final String EXTRA_WINDOW_ID = "jackpal.androidterm.window_id";
     private int onResumeSelectWindow = -1;
+    private ComponentName mPrivateAlias;
 
     private PowerManager.WakeLock mWakeLock;
     private WifiManager.WifiLock mWifiLock;
@@ -319,6 +320,7 @@ public class Term extends Activity implements UpdateCallback {
         Log.e(TermDebug.LOG_TAG, "onCreate");
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mSettings = new TermSettings(getResources(), mPrefs);
+        mPrivateAlias = new ComponentName(this, RemoteInterface.PRIVACT_ACTIVITY_ALIAS);
 
         Intent broadcast = new Intent(ACTION_PATH_BROADCAST);
         if (AndroidCompat.SDK >= 12) {
@@ -421,8 +423,9 @@ public class Term extends Activity implements UpdateCallback {
             Intent intent = getIntent();
             int flags = intent.getFlags();
             String action = intent.getAction();
+            ComponentName component = intent.getComponent();
             if ((flags & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0 &&
-                    action != null) {
+                    action != null && mPrivateAlias.equals(component)) {
                 if (action.equals(RemoteInterface.PRIVACT_OPEN_NEW_WINDOW)) {
                     mViewFlipper.setDisplayedChild(mTermSessions.size()-1);
                 } else if (action.equals(RemoteInterface.PRIVACT_SWITCH_WINDOW)) {
@@ -815,7 +818,7 @@ public class Term extends Activity implements UpdateCallback {
         }
 
         String action = intent.getAction();
-        if (action == null) {
+        if (action == null || !mPrivateAlias.equals(intent.getComponent())) {
             return;
         }
 
