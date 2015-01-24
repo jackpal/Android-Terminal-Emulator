@@ -71,14 +71,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:name="RunScript"
-                android:targetActivity="RemoteInterface"
+        <activity android:name="RunScript"
+                android:excludeFromRecents="true"
                 android:permission="jackpal.androidterm.permission.RUN_SCRIPT">
             <intent-filter>
                 <action android:name="jackpal.androidterm.RUN_SCRIPT" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity-alias>
+        </activity>
         <activity android:name="TermPreferences"
                 android:label="@string/preferences"/>
         <activity android:name="WindowList"

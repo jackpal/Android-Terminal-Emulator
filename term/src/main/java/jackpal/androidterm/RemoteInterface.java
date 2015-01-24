@@ -35,23 +35,11 @@ import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
-/*
- * New procedure for launching a command in ATE.
- * Build the path and arguments into a Uri and set that into Intent.data.
- * intent.data(new Uri.Builder().setScheme("file").setPath(path).setFragment(arguments))
- * 
- * The old procedure of using Intent.Extra is still available but is discouraged.
- */
 public class RemoteInterface extends Activity {
-    private static final String ACTION_RUN_SCRIPT = "jackpal.androidterm.RUN_SCRIPT";
+    protected static final String PRIVACT_OPEN_NEW_WINDOW = "jackpal.androidterm.private.OPEN_NEW_WINDOW";
+    protected static final String PRIVACT_SWITCH_WINDOW = "jackpal.androidterm.private.SWITCH_WINDOW";
 
-    static final String PRIVACT_OPEN_NEW_WINDOW = "jackpal.androidterm.private.OPEN_NEW_WINDOW";
-    static final String PRIVACT_SWITCH_WINDOW = "jackpal.androidterm.private.SWITCH_WINDOW";
-
-    private static final String EXTRA_WINDOW_HANDLE = "jackpal.androidterm.window_handle";
-    private static final String EXTRA_INITIAL_COMMAND = "jackpal.androidterm.iInitialCommand";
-
-    static final String PRIVEXTRA_TARGET_WINDOW = "jackpal.androidterm.private.target_window";
+    protected static final String PRIVEXTRA_TARGET_WINDOW = "jackpal.androidterm.private.target_window";
 
     private TermSettings mSettings;
 
@@ -83,8 +71,22 @@ public class RemoteInterface extends Activity {
         }
     }
 
-    private void handleIntent() {
-        TermService service = mTermService;
+    @Override
+    public void finish() {
+        ServiceConnection conn = mTSConnection;
+        if (conn != null) {
+            unbindService(conn);
+            mTSConnection = null;
+        }
+        super.finish();
+    }
+
+    protected TermService getTermService() {
+        return mTermService;
+    }
+
+    protected void handleIntent() {
+        TermService service = getTermService();
         if (service == null) {
             finish();
             return;
@@ -92,43 +94,7 @@ public class RemoteInterface extends Activity {
 
         Intent myIntent = getIntent();
         String action = myIntent.getAction();
-        if (action.equals(ACTION_RUN_SCRIPT)) {
-            /* Someone with the appropriate permissions has asked us to
-               run a script */
-            String handle = myIntent.getStringExtra(EXTRA_WINDOW_HANDLE);
-            String command=null;
-            /*
-             * First look in Intent.data for the path; if not there, revert to
-             * the EXTRA_INITIAL_COMMAND location.
-             */
-            Uri uri=myIntent.getData();
-            if(uri!=null) // scheme[path][arguments]
-            {
-              String s=uri.getScheme();
-              if(s!=null && s.toLowerCase().equals("file"))
-              {
-                command=uri.getPath();
-                // Allow for the command to be contained within the arguments string.
-                if(command==null) command="";
-                if(!command.equals("")) command=quoteForBash(command);
-                // Append any arguments.
-                if(null!=(s=uri.getFragment())) command+=" "+s;
-              }
-            }
-            // If Intent.data not used then fall back to old method.
-            if(command==null) command=myIntent.getStringExtra(EXTRA_INITIAL_COMMAND);
-            if (handle != null) {
-                // Target the request at an existing window if open
-                handle = appendToWindow(handle, command);
-            } else {
-                // Open a new window
-                handle = openNewWindow(command);
-            }
-            Intent result = new Intent();
-            result.putExtra(EXTRA_WINDOW_HANDLE, handle);
-            setResult(RESULT_OK, result);
-        }
-        else if (action.equals(Intent.ACTION_SEND)
+        if (action.equals(Intent.ACTION_SEND)
                 && myIntent.hasExtra(Intent.EXTRA_STREAM)) {
           /* "permission.RUN_SCRIPT" not required as this is merely opening a new window. */
             Object extraStream = myIntent.getExtras().get(Intent.EXTRA_STREAM);
@@ -143,14 +109,13 @@ public class RemoteInterface extends Activity {
             openNewWindow(null);
         }
 
-        unbindService(mTSConnection);
         finish();
     }
 
     /**
      *  Quote a string so it can be used as a parameter in bash and similar shells.
      */
-    private String quoteForBash(String s) {
+    protected String quoteForBash(String s) {
         StringBuilder builder = new StringBuilder();
         String specialChars = "\"\\$`!";
         builder.append('"');
@@ -166,8 +131,8 @@ public class RemoteInterface extends Activity {
         return builder.toString();
     }
 
-    private String openNewWindow(String iInitialCommand) {
-        TermService service = mTermService;
+    protected String openNewWindow(String iInitialCommand) {
+        TermService service = getTermService();
 
         String initialCommand = mSettings.getInitialCommand();
         if (iInitialCommand != null) {
@@ -193,8 +158,8 @@ public class RemoteInterface extends Activity {
         return handle;
     }
 
-    private String appendToWindow(String handle, String iInitialCommand) {
-        TermService service = mTermService;
+    protected String appendToWindow(String handle, String iInitialCommand) {
+        TermService service = getTermService();
 
         // Find the target window
         SessionList sessions = service.getSessions();
