@@ -77,7 +77,19 @@ https://github.com/jackpal/Android-Terminal-Emulator/wiki/Recent-Updates
 # Publish a new pre-compiled version of the APK for people who can't access Market.
 
 Github serves pages out of branch gh-pages , directory downloads/Term.apk
+Also update the version number in index.html
+
+  cp ./term/build/outputs/apk/Term.apk /tmp
+  git checkout gh-pages
+  mv /tmp/Term.apk downloads/Term.apk
+  git add downloads/Term.apk
+  subl index.html
+  # Update versio save index.html
+  git add index.html
+  git commit -m "Update to version v1.0.xx"
+  git push
+  git checkout master
+
 Public URL is http://jackpal.github.com/Android-Terminal-Emulator/downloads/Term.apk
 
-Also update the version number in index.html
 
