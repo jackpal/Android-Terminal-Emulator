@@ -69,6 +69,14 @@ Building TEA with Android Studio
 Building TEA from the command line
 ----------------------------------
 
+  0. Make sure a file local.properties exists at the root of the TEA source
+     tree. Android Studio will create this file automaticaly. If you don't
+     want to run Android Studio, you can create this file manually with the
+     paths of your local sdk and ndk installations. For my machine that's:
+
+     sdk.dir=/Users/jack/Library/Android/sdk
+     ndk.dir=/Users/jack/code/android-ndk-r10d
+
   1. Open a command line shell window and navigate to the main TEA directory.
 
   2. Build
