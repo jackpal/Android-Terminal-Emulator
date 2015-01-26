@@ -117,7 +117,7 @@ public class RemoteInterface extends Activity {
     /**
      *  Quote a string so it can be used as a parameter in bash and similar shells.
      */
-    protected String quoteForBash(String s) {
+    public static String quoteForBash(String s) {
         StringBuilder builder = new StringBuilder();
         String specialChars = "\"\\$`!";
         builder.append('"');

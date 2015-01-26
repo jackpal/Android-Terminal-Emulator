@@ -20,9 +20,13 @@ import android.widget.     ScrollView;
 import android.widget.     TextView;
 import android.widget.     EditText;
 import jackpal.androidterm.R;
+import jackpal.androidterm.RemoteInterface;
+import jackpal.androidterm.RunShortcut;
 import jackpal.androidterm.compat.AlertDialogCompat;
+import jackpal.androidterm.util.ShortcutEncryption;
 
 import java.io.            File;
+import java.security.      GeneralSecurityException;
 
 public class      AddShortcut
        extends    android.app.Activity
@@ -30,7 +34,6 @@ public class      AddShortcut
   private final int                    OP_MAKE_SHORTCUT=            1;
   private final Context                context=                     this;
   private       SharedPreferences      SP;
-  private final String                 pkg_jackpal=                 "jackpal.androidterm";
   private       int                    ix=                          0;
   private final int                    PATH=                        ix++
   ,                                    ARGS=                        ix++
@@ -217,17 +220,38 @@ public class      AddShortcut
     , int    shortcutColor
     )
     {
-      Uri.Builder urib=new Uri.Builder().scheme("file");
-      // Explicitly setting these unused fields to null avoids a NPE when writing to Parcel for Android SDK level 3.
-      urib.authority(null).query(null).fragment(null);
-
-      if(path!=null      && !path.equals(""))      urib.path(path);
-      if(arguments!=null && !arguments.equals("")) urib.fragment(arguments!=null?arguments:"");
-      android.net.Uri uri=urib.build();
-      Intent target=  new Intent().setClassName(pkg_jackpal, pkg_jackpal+".RemoteInterface");
-             target.setAction(pkg_jackpal+".RUN_SCRIPT");
-             target.setDataAndType(uri, "text/plain");
-             target.putExtra(pkg_jackpal+".window_handle", shortcutName);
+      ShortcutEncryption.Keys keys=ShortcutEncryption.getKeys(context);
+      if(keys==null)
+      {
+        try
+        {
+          keys=ShortcutEncryption.generateKeys();
+        }
+        catch (GeneralSecurityException e)
+        {
+          // XXX
+          throw new RuntimeException(e);
+        }
+        ShortcutEncryption.saveKeys(context, keys);
+      }
+      StringBuilder cmd=new StringBuilder();
+      if(path!=null      && !path.equals(""))      cmd.append(RemoteInterface.quoteForBash(path));
+      if(arguments!=null && !arguments.equals("")) cmd.append(" " + arguments);
+      String cmdStr=cmd.toString();
+      String cmdEnc=null;
+      try
+      {
+        cmdEnc=ShortcutEncryption.encrypt(cmdStr, keys);
+      }
+      catch (GeneralSecurityException e)
+      {
+        // XXX
+        throw new RuntimeException(e);
+      }
+      Intent target=  new Intent().setClass(context, RunShortcut.class);
+             target.setAction(RunShortcut.ACTION_RUN_SHORTCUT);
+             target.putExtra(RunShortcut.EXTRA_SHORTCUT_COMMAND, cmdEnc);
+             target.putExtra(RunShortcut.EXTRA_WINDOW_HANDLE, shortcutName);
              target.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
       Intent wrapper= new Intent();
              wrapper.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
