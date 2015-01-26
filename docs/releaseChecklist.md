@@ -84,7 +84,7 @@ Also update the version number in index.html
   mv /tmp/Term.apk downloads/Term.apk
   git add downloads/Term.apk
   subl index.html
-  # Update versio save index.html
+  # Update version save index.html
   git add index.html
   git commit -m "Update to version v1.0.xx"
   git push
