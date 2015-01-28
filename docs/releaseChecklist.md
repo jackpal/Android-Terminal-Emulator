@@ -20,9 +20,11 @@
 
 # Update ./term/src/main/AndroidManifest.xml version number
 
-Update both android:versionName and android:versionCode.
+tools/increment-version-number
 
 # Commit changes
+
+git commit -a -m "Increment version number to v1.0.xx"
 
 # Tag git branch with version number
 
