@@ -22,8 +22,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CoderResult;
+import java.nio.charset.CodingErrorAction;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
+import java.util.regex.Pattern;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
@@ -62,13 +69,16 @@ import javax.crypto.spec.SecretKeySpec;
  * in the application's private shared preferences.
  *
  * The encrypted string output by this scheme is of the form:
- *    mac + ":" + iv + ":" cipherText
+ *
+ *     mac + ":" + iv + ":" cipherText
+ *
  * where:
- *    - cipherText is the Base64-encoded output of encrypting the data
- *      using the key;
- *    - iv is a Base64-encoded, non-secret random number used as an
- *      initialization vector for the encryption algorithm;
- *    - mac is the Base64 encoding of MAC(key, iv + ":" + cipherText).
+ *
+ *   * cipherText is the Base64-encoded result of encrypting the data
+ *     using the encryption key;
+ *   * iv is a Base64-encoded, non-secret random number used as an
+ *     initialization vector for the encryption algorithm;
+ *   * mac is the Base64 encoding of MAC(MAC-key, iv + ":" + cipherText).
  */
 public final class ShortcutEncryption {
     public static final String ENC_ALGORITHM = "AES";
@@ -80,6 +90,8 @@ public final class ShortcutEncryption {
     public static final int BASE64_EFLAGS = Base64.NO_PADDING | Base64.NO_WRAP;
 
     private static final String SHORTCUT_KEYS_PREF = "shortcut_keys";
+
+    private static final Pattern COLON = Pattern.compile(":");
 
     public static final class Keys {
         private final SecretKey encKey;
@@ -98,19 +110,30 @@ public final class ShortcutEncryption {
             return macKey;
         }
 
+        /**
+         * Outputs the keys as a string of the form
+         *
+         *     encKey + ":" + macKey
+         *
+         * where encKey and macKey are the Base64-encoded encryption and MAC
+         * keys.
+         */
         public String encode() {
-            return Base64.encodeToString(encKey.getEncoded(), BASE64_EFLAGS) +
-                ":" + Base64.encodeToString(macKey.getEncoded(), BASE64_EFLAGS);
+            return encodeToBase64(encKey.getEncoded()) + ":" + encodeToBase64(macKey.getEncoded());
         }
 
+        /**
+         * Creates a new Keys object by decoding a string of the form output
+         * from encode().
+         */
         public static Keys decode(String encodedKeys) {
-            String[] keys = encodedKeys.split(":");
+            String[] keys = COLON.split(encodedKeys);
             if (keys.length != 2) {
                 throw new IllegalArgumentException("Invalid encoded keys!");
             }
 
-            SecretKey encKey = new SecretKeySpec(Base64.decode(keys[0], BASE64_DFLAGS), ENC_ALGORITHM);
-            SecretKey macKey = new SecretKeySpec(Base64.decode(keys[1], BASE64_DFLAGS), MAC_ALGORITHM);
+            SecretKey encKey = new SecretKeySpec(decodeBase64(keys[0]), ENC_ALGORITHM);
+            SecretKey macKey = new SecretKeySpec(decodeBase64(keys[1]), MAC_ALGORITHM);
             return new Keys(encKey, macKey);
         }
     }
@@ -154,8 +177,8 @@ public final class ShortcutEncryption {
         gen.init(KEYLEN);
         SecretKey encKey = gen.generateKey();
 
-        /* XXX: Probably unnecessary to create a new keygen for the MAC, but
-         * JSSE API design suggests we should just in case ... */
+        /* XXX: It's probably unnecessary to create a different keygen for the
+         * MAC, but JCA's API design suggests we should just in case ... */
         gen = KeyGenerator.getInstance(MAC_ALGORITHM);
         gen.init(KEYLEN);
         SecretKey macKey = gen.generateKey();
@@ -175,7 +198,7 @@ public final class ShortcutEncryption {
      */
     public static String decrypt(String encrypted, Keys keys) throws GeneralSecurityException {
         Cipher cipher = Cipher.getInstance(ENC_SYSTEM);
-        String[] data = encrypted.split(":");
+        String[] data = COLON.split(encrypted);
         if (data.length != 3) {
             throw new GeneralSecurityException("Invalid encrypted data!");
         }
@@ -190,10 +213,33 @@ public final class ShortcutEncryption {
         }
 
         // Decrypt the ciphertext
-        byte[] ivBytes = Base64.decode(iv, BASE64_DFLAGS);
+        byte[] ivBytes = decodeBase64(iv);
         cipher.init(Cipher.DECRYPT_MODE, keys.getEncKey(), new IvParameterSpec(ivBytes));
-        byte[] bytes = cipher.doFinal(Base64.decode(cipherText, BASE64_DFLAGS));
-        return new String(bytes);
+        byte[] bytes = cipher.doFinal(decodeBase64(cipherText));
+
+        // Decode the plaintext bytes into a String
+        CharsetDecoder decoder = Charset.defaultCharset().newDecoder();
+        decoder.onMalformedInput(CodingErrorAction.REPORT);
+        decoder.onUnmappableCharacter(CodingErrorAction.REPORT);
+        /*
+         * We are coding UTF-8 (guaranteed to be the default charset on
+         * Android) to Java chars (UTF-16, 2 bytes per char).  For valid UTF-8
+         * sequences, then:
+         *     1 byte in UTF-8 (US-ASCII) -> 1 char in UTF-16
+         *     2-3 bytes in UTF-8 (BMP)   -> 1 char in UTF-16
+         *     4 bytes in UTF-8 (non-BMP) -> 2 chars in UTF-16 (surrogate pair)
+         * The decoded output is therefore guaranteed to fit into a char
+         * array the same length as the input byte array.
+         */
+        CharBuffer out = CharBuffer.allocate(bytes.length);
+        CoderResult result = decoder.decode(ByteBuffer.wrap(bytes), out, true);
+        if (result.isError()) {
+            /* The input was supposed to be the result of encrypting a String,
+             * so something is very wrong if it cannot be decoded into one! */
+            throw new GeneralSecurityException("Corrupt decrypted data!");
+        }
+        decoder.flush(out);
+        return out.flip().toString();
     }
 
     /**
@@ -207,17 +253,17 @@ public final class ShortcutEncryption {
      */
     public static String encrypt(String data, Keys keys) throws GeneralSecurityException {
         Cipher cipher = Cipher.getInstance(ENC_SYSTEM);
-        SecureRandom rng = new SecureRandom();
 
         // Generate a random IV
+        SecureRandom rng = new SecureRandom();
         byte[] ivBytes = new byte[ENC_BLOCKSIZE];
         rng.nextBytes(ivBytes);
-        String iv = Base64.encodeToString(ivBytes, BASE64_EFLAGS);
+        String iv = encodeToBase64(ivBytes);
 
         // Encrypt
         cipher.init(Cipher.ENCRYPT_MODE, keys.getEncKey(), new IvParameterSpec(ivBytes));
         byte[] bytes = data.getBytes();
-        String cipherText = Base64.encodeToString(cipher.doFinal(bytes), BASE64_EFLAGS);
+        String cipherText = encodeToBase64(cipher.doFinal(bytes));
 
         // Calculate the MAC for the ciphertext and IV
         String dataToAuth = iv + ":" + cipherText;
@@ -236,7 +282,28 @@ public final class ShortcutEncryption {
         Mac mac = Mac.getInstance(MAC_ALGORITHM);
         mac.init(key);
         byte[] macBytes = mac.doFinal(data.getBytes());
-        return Base64.encodeToString(macBytes, BASE64_EFLAGS);
+        return encodeToBase64(macBytes);
+    }
+
+    /**
+     * Encodes binary data to Base64 using the settings specified by
+     * BASE64_EFLAGS.
+     *
+     * @return A String with the Base64-encoded data.
+     */
+    private static String encodeToBase64(byte[] data) {
+        return Base64.encodeToString(data, BASE64_EFLAGS);
+    }
+
+    /**
+     * Decodes Base64-encoded binary data using the settings specified by
+     * BASE64_DFLAGS.
+     *
+     * @param data A String with the Base64-encoded data.
+     * @return A newly-allocated byte[] array with the decoded data.
+     */
+    private static byte[] decodeBase64(String data) {
+        return Base64.decode(data, BASE64_DFLAGS);
     }
 
     // Prevent instantiation
