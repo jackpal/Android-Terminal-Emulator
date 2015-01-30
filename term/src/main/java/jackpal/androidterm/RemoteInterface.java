@@ -46,6 +46,7 @@ public class RemoteInterface extends Activity {
     private TermSettings mSettings;
 
     private TermService mTermService;
+    private Intent mTSIntent;
     private ServiceConnection mTSConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             TermService.TSBinder binder = (TermService.TSBinder) service;
@@ -66,6 +67,7 @@ public class RemoteInterface extends Activity {
         mSettings = new TermSettings(getResources(), prefs);
 
         Intent TSIntent = new Intent(this, TermService.class);
+        mTSIntent = TSIntent;
         startService(TSIntent);
         if (!bindService(TSIntent, mTSConnection, BIND_AUTO_CREATE)) {
             Log.e(TermDebug.LOG_TAG, "bind to service failed!");
@@ -78,7 +80,18 @@ public class RemoteInterface extends Activity {
         ServiceConnection conn = mTSConnection;
         if (conn != null) {
             unbindService(conn);
+
+            // Stop the service if no terminal sessions are running
+            TermService service = mTermService;
+            if (service != null) {
+                SessionList sessions = service.getSessions();
+                if (sessions == null || sessions.size() == 0) {
+                    stopService(mTSIntent);
+                }
+            }
+
             mTSConnection = null;
+            mTermService = null;
         }
         super.finish();
     }
