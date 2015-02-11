@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ATE Intent 예제</string>
+    <string name="open_new_window">새로운 창 열기</string>
+    <string name="script_label">스크립트 : </string>
+    <string name="run_script">스크립트 실행</string>
+    <string name="run_script_save_window">스크립트 실행 및 명령창 상태 저장</string>
+    <string name="run_script_existing_window">저장된 명령창에서 스크립트 실행</string>
+    <string name="help">이 예제는 터미널 에뮬레이터에서 어떻게 Intent를 전송하는지 보여줍니다.</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">텔넷</string>
+    <string name="launch_local_session">쉘 열기</string>
+    <string name="launch_telnet_session">연결</string>
+    <string name="host_label">텔넷 경로 : </string>
+    <string name="entry_send">전송</string>
+    <string name="help">이 예제는 EmulatorView 위젯과 TermSession 클래스를 통해 텔넷이 어떻게 작동하는지 보여줍니다.</string>
+
+    <!-- This is a better demo, but towel.blinkenlights.nl is more fun :) -->
+    <string name="default_telnet_hostname">telehack.com</string>
+</resources>

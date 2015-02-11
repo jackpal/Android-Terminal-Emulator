@@ -1,0 +1,15 @@
+This example requires a few manual build steps.
+
+# Build the regular Android Terminal Emulator
+
+cd path-AndroidTerminalEmulator-root-directory
+tools/update.sh
+tools/build-debug
+
+# Build and install the widget.
+
+cd examples/widget
+export PATH=path-to-ndk:$PATH
+make
+ant debug
+adb install -r bin/LaunchActivity-debug.apk

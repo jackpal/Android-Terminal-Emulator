@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <!-- Additional targets for the ant-driven Android project build -->
+    <target name="-pre-build">
+        <!-- Build the execpty binary via the makefile -->
+        <exec executable="make" searchpath="true" />
+    </target>
+    <target name="-pre-clean">
+        <exec executable="make" searchpath="true">
+            <arg value="clean" />
+        </exec>
+    </target>
+</project>
