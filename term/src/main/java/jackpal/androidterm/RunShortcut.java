@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Steven Luo
+ * Copyright (C) 2015 Steven Luo
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import jackpal.androidterm.util.ShortcutEncryption;
 import java.security.GeneralSecurityException;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 
 public final class RunShortcut extends RemoteInterface {
@@ -52,6 +51,7 @@ public final class RunShortcut extends RemoteInterface {
             ShortcutEncryption.Keys keys = ShortcutEncryption.getKeys(this);
             if (keys == null) {
                 // No keys -- no valid shortcuts can exist
+                Log.e(TermDebug.LOG_TAG, "No shortcut encryption keys found!");
                 finish();
                 return;
             }

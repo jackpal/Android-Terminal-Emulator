@@ -21,6 +21,8 @@ package jackpal.androidterm.compat;
  *
  * https://android.googlesource.com/platform/frameworks/base/+/android-5.0.0_r6/core/java/android/util/Base64.java
  *
+ * to provide a Base64 implementation on Android API < 8 (where Base64 is not
+ * a part of the public API).
  */
 
 import java.io.UnsupportedEncodingException;

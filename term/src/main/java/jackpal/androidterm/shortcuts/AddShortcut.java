@@ -10,6 +10,7 @@ import android.net.        Uri;
 import android.os.         Bundle;
 import android.os.         Environment;
 import android.preference. PreferenceManager;
+import android.util.       Log;
 import android.view.       Gravity;
 import android.view.       View;
 import android.view.       View.OnFocusChangeListener;
@@ -22,7 +23,9 @@ import android.widget.     EditText;
 import jackpal.androidterm.R;
 import jackpal.androidterm.RemoteInterface;
 import jackpal.androidterm.RunShortcut;
+import jackpal.androidterm.TermDebug;
 import jackpal.androidterm.compat.AlertDialogCompat;
+import jackpal.androidterm.compat.PRNGFixes;
 import jackpal.androidterm.util.ShortcutEncryption;
 
 import java.io.            File;
@@ -220,6 +223,8 @@ public class      AddShortcut
     , int    shortcutColor
     )
     {
+      // Apply workarounds for SecureRandom bugs in Android < 4.4
+      PRNGFixes.apply();
       ShortcutEncryption.Keys keys=ShortcutEncryption.getKeys(context);
       if(keys==null)
       {
@@ -229,7 +234,7 @@ public class      AddShortcut
         }
         catch (GeneralSecurityException e)
         {
-          // XXX
+          Log.e(TermDebug.LOG_TAG, "Generating shortcut encryption keys failed: " + e.toString());
           throw new RuntimeException(e);
         }
         ShortcutEncryption.saveKeys(context, keys);
@@ -245,7 +250,7 @@ public class      AddShortcut
       }
       catch (GeneralSecurityException e)
       {
-        // XXX
+        Log.e(TermDebug.LOG_TAG, "Shortcut encryption failed: " + e.toString());
         throw new RuntimeException(e);
       }
       Intent target=  new Intent().setClass(context, RunShortcut.class);
