@@ -14,6 +14,10 @@ fi
 
 ANDROID="$ANDROID_SDK_ROOT/tools/android"
 
-for i in android-11; do
-  $ANDROID update sdk -u -a -t "$i"
-done
+# The available SDK versions can be listed by:
+# $ANDROID list sdk --all -e
+
+# The update sdk command takes a comma-separated list of packages to install.
+# Installing them all at once may simplify the process of agreeing to licenses.
+
+$ANDROID update sdk -u -a -t android-11
