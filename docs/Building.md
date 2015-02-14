@@ -42,6 +42,19 @@ On my personal dev machine I have this line in my .profile:
 
     export ANDROID_SDK_ROOT=/Users/jack/Library/Android/sdk
 
+Installing required SDK Packages
+--------------------------------
+
+In order to build, in addition to a current SDK version,
+TEA requires the Android 3.0 (API 11) version of the Android SDK
+to be installed.
+
+You can install it by running the following command-line script:
+
+    tools/install-sdk-packages
+
+Or you can run Android Studio and choose Configure > SDK Manager, then
+choose the "Android 3.0 (API 11) > SDK Platform" package.
 
 Building TEA
 ------------
