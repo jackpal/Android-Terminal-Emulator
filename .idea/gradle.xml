@@ -10,6 +10,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/emulatorview" />
+            <option value="$PROJECT_DIR$/samples" />
+            <option value="$PROJECT_DIR$/samples/intents" />
+            <option value="$PROJECT_DIR$/samples/pathbroadcasts" />
+            <option value="$PROJECT_DIR$/samples/telnet" />
             <option value="$PROJECT_DIR$/term" />
           </set>
         </option>
