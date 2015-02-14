@@ -1,2 +1,3 @@
 include ':emulatorview'
+include ':examples:intents'
 include ':term'
