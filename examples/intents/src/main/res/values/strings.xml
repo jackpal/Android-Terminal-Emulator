@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ATE Intent Sample</string>
+    <string name="app_name">TEA Intent Sample</string>
     <string name="open_new_window">Open New Window</string>
     <string name="script_label">Script:</string>
     <string name="run_script">Run Script</string>
