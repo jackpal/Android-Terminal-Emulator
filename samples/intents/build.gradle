@@ -8,11 +8,6 @@ android {
         applicationId "jackpal.androidterm.sample.intents"
         minSdkVersion 3
         targetSdkVersion 11
-
-        ndk {
-            moduleName "libjackpal-androidterm4"
-            ldLibs "log"
-        }
     }
 
     buildTypes {
@@ -21,8 +16,4 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-}
-
-dependencies {
-    compile project(':emulatorview')
 }
