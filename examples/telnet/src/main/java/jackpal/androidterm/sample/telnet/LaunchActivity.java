@@ -48,9 +48,6 @@ public class LaunchActivity extends Activity
                 intent.putExtra("host", hostname);
                 startActivity(intent);
             }});
-
-        // Unpack the binary executable if not already done
-        setupBinDir();
     }
 
     private void addClickListener(int buttonId, OnClickListener onClickListener) {

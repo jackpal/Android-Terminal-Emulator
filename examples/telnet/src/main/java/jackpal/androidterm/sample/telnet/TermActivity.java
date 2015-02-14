@@ -169,9 +169,13 @@ public class TermActivity extends Activity
         TermSession session = new TermSession();
 
         /* ... create a process ... */
+        /* TODO:Make local session work without execpty.
         String execPath = LaunchActivity.getDataDir(this) + "/bin/execpty";
         ProcessBuilder execBuild =
                 new ProcessBuilder(execPath, "/system/bin/sh", "-");
+        */
+        ProcessBuilder execBuild =
+                new ProcessBuilder("/system/bin/sh", "-");
         execBuild.redirectErrorStream(true);
         Process exec = null;
         try {
