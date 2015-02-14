@@ -1,3 +1,4 @@
 include ':emulatorview'
-include ':examples:intents'
 include ':term'
+include ':examples:intents'
+include ':examples:pathbroadcasts'
