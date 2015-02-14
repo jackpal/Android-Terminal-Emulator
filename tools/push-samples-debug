@@ -15,10 +15,10 @@ fi
 ADB="$ANDROID_SDK_ROOT/platform-tools/adb"
 
 $ADB uninstall jackpal.androidterm.sample.intents
-$ADB install -r examples/intents/build/outputs/apk/intents-debug.apk
+$ADB install -r samples/intents/build/outputs/apk/intents-debug.apk
 
 $ADB uninstall jackpal.androidterm.sample.pathbroadcasts
-$ADB install -r examples/pathbroadcasts/build/outputs/apk/pathbroadcasts-debug.apk
+$ADB install -r samples/pathbroadcasts/build/outputs/apk/pathbroadcasts-debug.apk
 
 $ADB uninstall jackpal.androidterm.sample.telnet
-$ADB install -r examples/telnet/build/outputs/apk/telnet-debug.apk
+$ADB install -r samples/telnet/build/outputs/apk/telnet-debug.apk

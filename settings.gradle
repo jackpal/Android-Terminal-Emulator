@@ -1,5 +1,5 @@
 include ':emulatorview'
 include ':term'
-include ':examples:intents'
-include ':examples:pathbroadcasts'
-include ':examples:telnet'
+include ':samples:intents'
+include ':samples:pathbroadcasts'
+include ':samples:telnet'
