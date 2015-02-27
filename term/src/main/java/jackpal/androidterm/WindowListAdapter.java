@@ -17,6 +17,8 @@
 package jackpal.androidterm;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -63,7 +65,8 @@ public class WindowListAdapter extends BaseAdapter implements UpdateCallback {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        Activity act = (Activity) parent.getContext();
+        Context context = parent.getContext();
+        Activity act = findActivityFromContext(parent.getContext());
         View child = act.getLayoutInflater().inflate(R.layout.window_list_item, parent, false);
         View close = child.findViewById(R.id.window_list_close);
 
@@ -88,5 +91,17 @@ public class WindowListAdapter extends BaseAdapter implements UpdateCallback {
 
     public void onUpdate() {
         notifyDataSetChanged();
+    }
+
+    private static Activity findActivityFromContext(Context context) {
+        if (context == null) {
+            return null;
+        } else if (context instanceof Activity) {
+            return (Activity) context;
+        } else if (context instanceof ContextWrapper) {
+            ContextWrapper cw = (ContextWrapper) context;
+            return findActivityFromContext(cw.getBaseContext());
+        }
+        return null;
     }
 }
