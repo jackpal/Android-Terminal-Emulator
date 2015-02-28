@@ -37,14 +37,19 @@ public class WindowListAdapter extends BaseAdapter implements UpdateCallback {
     }
 
     public void setSessions(SessionList sessions) {
+        boolean needUpdate = (sessions != null) || (mSessions != null);
         mSessions = sessions;
-        if (sessions != null) {
+        if (needUpdate) {
             onUpdate();
         }
     }
 
     public int getCount() {
-        return mSessions.size();
+        if (mSessions != null) {
+            return mSessions.size();
+        } else {
+            return 0;
+        }
     }
 
     public Object getItem(int position) {
