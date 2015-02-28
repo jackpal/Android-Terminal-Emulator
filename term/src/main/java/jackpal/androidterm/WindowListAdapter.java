@@ -70,7 +70,6 @@ public class WindowListAdapter extends BaseAdapter implements UpdateCallback {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        Context context = parent.getContext();
         Activity act = findActivityFromContext(parent.getContext());
         View child = act.getLayoutInflater().inflate(R.layout.window_list_item, parent, false);
         View close = child.findViewById(R.id.window_list_close);
