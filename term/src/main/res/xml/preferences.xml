@@ -18,7 +18,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-            android:title="@string/screen_preferences">
+            android:title="@string/screen_preferences"
+            android:key="screen">
 
         <ListPreference
                 android:key="statusbar"

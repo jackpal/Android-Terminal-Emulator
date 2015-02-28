@@ -17,6 +17,8 @@
 package jackpal.androidterm.util;
 
 import jackpal.androidterm.R;
+import jackpal.androidterm.compat.AndroidCompat;
+
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.view.KeyEvent;
@@ -186,6 +188,11 @@ public class TermSettings {
         mPrefs = prefs;
         mStatusBar = readIntPref(STATUSBAR_KEY, mStatusBar, 1);
         mActionBarMode = readIntPref(ACTIONBAR_KEY, mActionBarMode, ACTION_BAR_MODE_MAX);
+        if (AndroidCompat.V21Up) {
+            // No way for user to make a hidden action bar visible on V21, so don't let them
+            // hide it.
+            mActionBarMode = ACTION_BAR_MODE_ALWAYS_VISIBLE;
+        }
         mOrientation = readIntPref(ORIENTATION_KEY, mOrientation, 2);
         // mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 2);
         // mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
