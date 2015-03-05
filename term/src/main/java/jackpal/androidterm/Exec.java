@@ -15,8 +15,14 @@
  */
 
 package jackpal.androidterm;
+import android.os.Build;
+import android.os.ParcelFileDescriptor;
+import android.util.Log;
 
+import java.io.File;
 import java.io.FileDescriptor;
+import java.io.IOException;
+import java.lang.reflect.Field;
 
 /**
  * Utility methods for creating and managing a subprocess.
@@ -33,56 +39,81 @@ public class Exec
         System.loadLibrary("jackpal-androidterm4");
     }
 
-    /**
-     * Create a subprocess. Differs from java.lang.ProcessBuilder in
-     * that a pty is used to communicate with the subprocess.
-     * <p>
-     * Callers are responsible for calling Exec.close() on the returned
-     * file descriptor.
-     *
-     * @param cmd The command to execute
-     * @param args An array of arguments to the command
-     * @param envVars An array of strings of the form "VAR=value" to be added
-     * to the environment of the process
-     * @param processId A one-element array to which the process ID of the
-     * started process will be written.
-     * @return the file descriptor of the started process.
-     *
-     */
-    public static native FileDescriptor createSubprocess(
-        String cmd, String[] args, String[] envVars, int[] processId);
-        
+    private static Field descriptorField;
+
+    private static void cacheDescField() throws NoSuchFieldException {
+        if (descriptorField != null)
+            return;
+
+        descriptorField = FileDescriptor.class.getDeclaredField("descriptor");
+        descriptorField.setAccessible(true);
+    }
+
+    private static int getIntFd(ParcelFileDescriptor parcelFd) throws IOException {
+        if (Build.VERSION.SDK_INT >= 12)
+            return parcelFd.getFd();
+        else {
+            try {
+                cacheDescField();
+
+                return descriptorField.getInt(parcelFd.getFileDescriptor());
+            } catch (IllegalAccessException | NoSuchFieldException e) {
+                throw new IOException("Unable to obtain file descriptor on this OS version: " +
+                        e.getLocalizedMessage());
+            }
+        }
+    }
+
     /**
      * Set the widow size for a given pty. Allows programs
      * connected to the pty learn how large their screen is.
      */
-    public static native void setPtyWindowSize(FileDescriptor fd,
-       int row, int col, int xpixel, int ypixel);
+    public static void setPtyWindowSize(ParcelFileDescriptor fd, int row, int col, int xpixel, int ypixel) {
+        if (!fd.getFileDescriptor().valid()) // TODO why is this called after the stream is closed?
+            return;
+
+        try {
+            setPtyWindowSizeInternal(getIntFd(fd), row, col, xpixel, ypixel);
+        } catch (IOException e) {
+            // pretend that everything is ok...
+            Log.e("exec", "Failed to set window size due to " + e.getLocalizedMessage());
+        }
+    }
 
     /**
      * Set or clear UTF-8 mode for a given pty.  Used by the terminal driver
      * to implement correct erase behavior in cooked mode (Linux >= 2.6.4).
      */
-    public static native void setPtyUTF8Mode(FileDescriptor fd,
-       boolean utf8Mode);
+    public static void setPtyUTF8Mode(ParcelFileDescriptor fd, boolean utf8Mode) {
+        if (!fd.getFileDescriptor().valid()) // TODO why is this called after the stream is closed?
+            return;
 
-    /**
-     * Causes the calling thread to wait for the process associated with the
-     * receiver to finish executing.
-     *
-     * @return The exit value of the Process being waited on
-     *
-     */
-    public static native int waitFor(int processId);
+        try {
+            setPtyUTF8ModeInternal(getIntFd(fd), utf8Mode);
+        } catch (IOException e) {
+            // pretend that everything is ok...
+            Log.e("exec", "Failed to set UTF mode due to " + e.getLocalizedMessage());
+        }
+    }
 
     /**
      * Close a given file descriptor.
      */
-    public static native void close(FileDescriptor fd);
+    public static void close(ParcelFileDescriptor fd) {
+        try {
+            fd.close();
+        } catch (IOException e) {
+            // ok
+        }
+    }
 
     /**
      * Send SIGHUP to a process group.
      */
     public static native void hangupProcessGroup(int processId);
+
+    private static native void setPtyWindowSizeInternal(int fd, int row, int col, int xpixel, int ypixel);
+
+    private static native void setPtyUTF8ModeInternal(int fd, boolean utf8Mode);
 }
 

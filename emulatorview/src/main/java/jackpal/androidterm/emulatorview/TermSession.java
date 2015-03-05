@@ -59,6 +59,7 @@ public class TermSession {
     public void setKeyListener(TermKeyListener l) {
         mKeyListener = l;
     }
+
     private TermKeyListener mKeyListener;
 
     private ColorScheme mColorScheme = BaseTextRenderer.defaultColorScheme;
@@ -92,6 +93,7 @@ public class TermSession {
     private static final int NEW_INPUT = 1;
     private static final int NEW_OUTPUT = 2;
     private static final int FINISH = 3;
+    private static final int EOF = 4;
 
     /**
      * Callback to be invoked when a {@link TermSession} finishes.
@@ -117,6 +119,13 @@ public class TermSession {
             }
             if (msg.what == NEW_INPUT) {
                 readFromProcess();
+            } else if (msg.what == EOF) {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        onProcessExit();
+                    }
+                });
             }
         }
     };
@@ -124,6 +133,10 @@ public class TermSession {
     private UpdateCallback mTitleChangedListener;
 
     public TermSession() {
+        this(false);
+    }
+
+    public TermSession(final boolean exitOnEOF) {
         mWriteCharBuffer = CharBuffer.allocate(2);
         mWriteByteBuffer = ByteBuffer.allocate(4);
         mUTF8Encoder = Charset.forName("UTF-8").newEncoder();
@@ -142,7 +155,7 @@ public class TermSession {
                         int read = mTermIn.read(mBuffer);
                         if (read == -1) {
                             // EOF -- process exited
-                            return;
+                            break;
                         }
                         int offset = 0;
                         while (read > 0) {
@@ -157,6 +170,8 @@ public class TermSession {
                 } catch (IOException e) {
                 } catch (InterruptedException e) {
                 }
+
+                if (exitOnEOF) mMsgHandler.sendMessage(mMsgHandler.obtainMessage(EOF));
             }
         };
         mReaderThread.setName("TermSession input reader");
@@ -206,11 +221,17 @@ public class TermSession {
                     // Ignore exception
                     // We don't really care if the receiver isn't listening.
                     // We just make a best effort to answer the query.
+                    e.printStackTrace();
                 } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         };
         mWriterThread.setName("TermSession output writer");
+    }
+
+    protected void onProcessExit() {
+        finish();
     }
 
     /**
