@@ -51,15 +51,14 @@ public class Exec
 
     private static int getIntFd(ParcelFileDescriptor parcelFd) throws IOException {
         if (Build.VERSION.SDK_INT >= 12)
-            return parcelFd.getFd();
+            return FdHelperHoneycomb.getFd(parcelFd);
         else {
             try {
                 cacheDescField();
 
                 return descriptorField.getInt(parcelFd.getFileDescriptor());
             } catch (IllegalAccessException | NoSuchFieldException e) {
-                throw new IOException("Unable to obtain file descriptor on this OS version: " +
-                        e.getLocalizedMessage());
+                throw new IOException("Unable to obtain file descriptor on this OS version: " + e.getMessage());
             }
         }
     }
@@ -76,7 +75,7 @@ public class Exec
             setPtyWindowSizeInternal(getIntFd(fd), row, col, xpixel, ypixel);
         } catch (IOException e) {
             // pretend that everything is ok...
-            Log.e("exec", "Failed to set window size due to " + e.getLocalizedMessage());
+            Log.e("exec", "Failed to set window size due to " + e.getMessage());
         }
     }
 
@@ -92,7 +91,7 @@ public class Exec
             setPtyUTF8ModeInternal(getIntFd(fd), utf8Mode);
         } catch (IOException e) {
             // pretend that everything is ok...
-            Log.e("exec", "Failed to set UTF mode due to " + e.getLocalizedMessage());
+            Log.e("exec", "Failed to set UTF mode due to " + e.getMessage());
         }
     }
 

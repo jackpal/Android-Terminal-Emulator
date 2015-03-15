@@ -85,8 +85,7 @@ public class TermExec {
 
                 integerFd = descriptorField.getInt(masterFd.getFileDescriptor());
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                throw new IOException("Unable to obtain file descriptor on this OS version: " +
-                        e.getLocalizedMessage());
+                throw new IOException("Unable to obtain file descriptor on this OS version: " + e.getMessage());
             }
         }
 
@@ -94,12 +93,12 @@ public class TermExec {
     }
 
     private static native int createSubprocessInternal(String cmd, String[] args, String[] envVars, int masterFd);
+}
 
-    // prevents runtime errors on old API versions with ruthless verifier
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
-    private static class FdHelperHoneycomb {
-        static int getFd(ParcelFileDescriptor descriptor) {
-            return descriptor.getFd();
-        }
+// prevents runtime errors on old API versions with ruthless verifier
+@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
+class FdHelperHoneycomb {
+    static int getFd(ParcelFileDescriptor descriptor) {
+        return descriptor.getFd();
     }
 }
