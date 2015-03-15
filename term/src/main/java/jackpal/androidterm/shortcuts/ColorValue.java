@@ -63,7 +63,7 @@ public class      ColorValue
               lt.setGravity(Gravity.RIGHT);
     value=new EditText(context);
     value.setText(imgtext);
-    value.setSingleLine(true);
+    value.setSingleLine(false);
     value.setGravity(Gravity.CENTER);
     value.setTextColor((Integer)imgview.getTag());
     value.setBackgroundColor((0xFF<<24)|0x007799);
