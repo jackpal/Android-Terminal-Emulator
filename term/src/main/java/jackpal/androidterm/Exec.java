@@ -57,7 +57,7 @@ public class Exec
                 cacheDescField();
 
                 return descriptorField.getInt(parcelFd.getFileDescriptor());
-            } catch (IllegalAccessException | NoSuchFieldException e) {
+            } catch (Exception e) {
                 throw new IOException("Unable to obtain file descriptor on this OS version: " + e.getMessage());
             }
         }

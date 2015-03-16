@@ -84,7 +84,7 @@ public class TermExec {
                 }
 
                 integerFd = descriptorField.getInt(masterFd.getFileDescriptor());
-            } catch (NoSuchFieldException | IllegalAccessException e) {
+            } catch (Exception e) {
                 throw new IOException("Unable to obtain file descriptor on this OS version: " + e.getMessage());
             }
         }
