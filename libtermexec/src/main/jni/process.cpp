@@ -114,7 +114,7 @@ static void closeNonstandardFileDescriptors() {
         }
 
         closedir(dir);
-        }
+    }
 }
 
 static int create_subprocess(JNIEnv *env, const char *cmd, char *const argv[], char *const envp[], int masterFd)
@@ -194,14 +194,14 @@ JNIEXPORT jint JNICALL Java_jackpal_androidterm_TermExec_createSubprocessInterna
         argv = (char **)malloc((size+1)*sizeof(char *));
         if (!argv) {
             throwOutOfMemoryError(env, "Couldn't allocate argv array");
-            return NULL;
+            return 0;
         }
         for (int i = 0; i < size; ++i) {
             jstring arg = reinterpret_cast<jstring>(env->GetObjectArrayElement(args, i));
             str = env->GetStringCritical(arg, 0);
             if (!str) {
                 throwOutOfMemoryError(env, "Couldn't get argument from array");
-                return NULL;
+                return 0;
             }
             tmp_8.set(str, env->GetStringLength(arg));
             env->ReleaseStringCritical(arg, str);
@@ -216,14 +216,14 @@ JNIEXPORT jint JNICALL Java_jackpal_androidterm_TermExec_createSubprocessInterna
         envp = (char **)malloc((size+1)*sizeof(char *));
         if (!envp) {
             throwOutOfMemoryError(env, "Couldn't allocate envp array");
-            return NULL;
+            return 0;
         }
         for (int i = 0; i < size; ++i) {
             jstring var = reinterpret_cast<jstring>(env->GetObjectArrayElement(envVars, i));
             str = env->GetStringCritical(var, 0);
             if (!str) {
                 throwOutOfMemoryError(env, "Couldn't get env var from array");
-                return NULL;
+                return 0;
             }
             tmp_8.set(str, env->GetStringLength(var));
             env->ReleaseStringCritical(var, str);
