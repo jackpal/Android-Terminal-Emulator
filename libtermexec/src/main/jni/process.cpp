@@ -19,6 +19,7 @@
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include <sys/wait.h>
+#include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdlib.h>
@@ -87,6 +88,35 @@ static int throwIOException(JNIEnv *env, int errnum, const char *message)
     return env->ThrowNew(exClass, message);
 }
 
+static void closeNonstandardFileDescriptors() {
+    // Android uses shared memory to communicate between processes. The file descriptor is passed
+    // to child processes using the environment variable ANDROID_PROPERTY_WORKSPACE, which is of
+    // the form "properties_fd,sizeOfSharedMemory"
+    int properties_fd = -1;
+    char* properties_fd_string = getenv("ANDROID_PROPERTY_WORKSPACE");
+    if (properties_fd_string != NULL) {
+        properties_fd = atoi(properties_fd_string);
+    }
+    DIR *dir = opendir("/proc/self/fd");
+    if(dir != NULL) {
+        int dir_fd = dirfd(dir);
+
+        while(true) {
+            struct dirent *entry = readdir(dir);
+            if(entry == NULL) {
+                break;
+            }
+
+            int fd = atoi(entry->d_name);
+            if(fd > STDERR_FILENO && fd != dir_fd && fd != properties_fd) {
+                close(fd);
+            }
+        }
+
+        closedir(dir);
+        }
+}
+
 static int create_subprocess(JNIEnv *env, const char *cmd, char *const argv[], char *const envp[], int masterFd)
 {
     char *devname;
@@ -107,8 +137,6 @@ static int create_subprocess(JNIEnv *env, const char *cmd, char *const argv[], c
     }
 
     if(pid == 0){
-        close(masterFd);
-
         int pts;
 
         setsid();
@@ -121,6 +149,8 @@ static int create_subprocess(JNIEnv *env, const char *cmd, char *const argv[], c
         dup2(pts, 0);
         dup2(pts, 1);
         dup2(pts, 2);
+
+        closeNonstandardFileDescriptors();
 
         if (envp) {
             for (; *envp; ++envp) {
