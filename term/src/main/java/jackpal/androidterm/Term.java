@@ -29,6 +29,7 @@ import jackpal.androidterm.emulatorview.compat.KeycodeConstants;
 import jackpal.androidterm.util.SessionList;
 import jackpal.androidterm.util.TermSettings;
 
+import java.io.IOException;
 import java.text.Collator;
 import java.util.Arrays;
 import java.util.List;
@@ -198,6 +199,9 @@ public class Term extends Activity implements UpdateCallback {
         public boolean onNavigationItemSelected(int position, long id) {
             int oldPosition = mViewFlipper.getDisplayedChild();
             if (position != oldPosition) {
+                if (position >= mViewFlipper.getChildCount()) {
+                    mViewFlipper.addView(createEmulatorView(mTermSessions.get(position)));
+                }
                 mViewFlipper.setDisplayedChild(position);
                 if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {
                     mActionBar.hide();
@@ -410,7 +414,13 @@ public class Term extends Activity implements UpdateCallback {
             mTermSessions.addCallback(this);
 
             if (mTermSessions.size() == 0) {
-                mTermSessions.add(createTermSession());
+                try {
+                    mTermSessions.add(createTermSession());
+                } catch (IOException e) {
+                    Toast.makeText(this, "Failed to start terminal session", Toast.LENGTH_LONG).show();
+                    finish();
+                    return;
+                }
             }
 
             for (TermSession session : mTermSessions) {
@@ -488,15 +498,15 @@ public class Term extends Activity implements UpdateCallback {
         finish();
     }
 
-    protected static TermSession createTermSession(Context context, TermSettings settings, String initialCommand) {
-        ShellTermSession session = new ShellTermSession(settings, initialCommand);
+    protected static TermSession createTermSession(Context context, TermSettings settings, String initialCommand) throws IOException {
+        GenericTermSession session = new ShellTermSession(settings, initialCommand);
         // XXX We should really be able to fetch this from within TermSession
         session.setProcessExitMessage(context.getString(R.string.process_exit_message));
 
         return session;
     }
 
-    private TermSession createTermSession() {
+    private TermSession createTermSession() throws IOException {
         TermSettings settings = mSettings;
         TermSession session = createTermSession(this, settings, settings.getInitialCommand());
         session.setFinishCallback(mTermService);
@@ -543,7 +553,7 @@ public class Term extends Activity implements UpdateCallback {
 
         if (mTermSessions != null) {
             for (TermSession session : mTermSessions) {
-                ((ShellTermSession) session).updatePrefs(mSettings);
+                ((GenericTermSession) session).updatePrefs(mSettings);
             }
         }
 
@@ -736,14 +746,19 @@ public class Term extends Activity implements UpdateCallback {
             return;
         }
 
-        TermSession session = createTermSession();
-        mTermSessions.add(session);
+        try {
+            TermSession session = createTermSession();
 
-        TermView view = createEmulatorView(session);
-        view.updatePrefs(mSettings);
+            mTermSessions.add(session);
 
-        mViewFlipper.addView(view);
-        mViewFlipper.setDisplayedChild(mViewFlipper.getChildCount()-1);
+            TermView view = createEmulatorView(session);
+            view.updatePrefs(mSettings);
+
+            mViewFlipper.addView(view);
+            mViewFlipper.setDisplayedChild(mViewFlipper.getChildCount()-1);
+        } catch (IOException e) {
+            Toast.makeText(this, "Failed to create a session", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void confirmCloseWindow() {

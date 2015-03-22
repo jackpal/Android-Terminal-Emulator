@@ -171,8 +171,8 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         }
 
         String title = context.getString(R.string.window_title,getDisplayedChild()+1);
-        if (session instanceof ShellTermSession) {
-            title = ((ShellTermSession) session).getTitle(title);
+        if (session instanceof GenericTermSession) {
+            title = ((GenericTermSession) session).getTitle(title);
         }
 
         if (mToast == null) {

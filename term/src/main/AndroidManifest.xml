@@ -4,7 +4,6 @@
       android:versionName="1.0.65"
       android:versionCode="66"
       android:installLocation="auto">
-    <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="11" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -90,7 +89,12 @@
                 android:label="@string/preferences"/>
         <activity android:name="WindowList"
                 android:label="@string/window_list" />
-        <service android:name="TermService" />
+        <service android:name="TermService" >
+            <intent-filter>
+                <action android:name="jackpal.androidterm.action.START_TERM.v1"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
     <activity
       android:label="@string/activity_shortcut_create"
       android:name="jackpal.androidterm.shortcuts.AddShortcut"
