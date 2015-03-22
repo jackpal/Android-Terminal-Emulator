@@ -73,7 +73,8 @@ static int throwOutOfMemoryError(JNIEnv *env, const char *message)
 
 static int throwIOException(JNIEnv *env, int errnum, const char *message)
 {
-    __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, "%s", message);
+    __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, "%s errno %s(%d)",
+        message, strerror(errno), errno);
 
     if (errnum != 0) {
         const char *s = strerror(errnum);
@@ -119,14 +120,25 @@ static void closeNonstandardFileDescriptors() {
 
 static int create_subprocess(JNIEnv *env, const char *cmd, char *const argv[], char *const envp[], int masterFd)
 {
-    char *devname;
+    // same size as Android 1.6 libc/unistd/ptsname_r.c
+    char devname[64];
     pid_t pid;
 
     fcntl(masterFd, F_SETFD, FD_CLOEXEC);
 
     // grantpt is unnecessary, because we already assume devpts by using /dev/ptmx
-    if(unlockpt(masterFd) || ((devname = (char*) ptsname(masterFd)) == 0)){
+    if(unlockpt(masterFd)){
         throwIOException(env, errno, "trouble with /dev/ptmx");
+        return -1;
+    }
+    memset(devname, 0, sizeof(devname));
+    // Early (Android 1.6) bionic versions of ptsname_r had a bug where they returned the buffer
+    // instead of 0 on success.  A compatible way of telling whether ptsname_r
+    // succeeded is to zero out errno and check it after the call
+    errno = 0;
+    int ptsResult = ptsname_r(masterFd, devname, sizeof(devname));
+    if (ptsResult && errno) {
+        throwIOException(env, errno, "ptsname_r returned error");
         return -1;
     }
 
