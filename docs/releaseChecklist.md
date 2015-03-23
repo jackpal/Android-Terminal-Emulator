@@ -20,30 +20,30 @@
 
 # Update ./term/src/main/AndroidManifest.xml version number
 
-tools/increment-version-number
+    tools/increment-version-number
 
 # Commit changes
 
-git commit -a -m "Increment version number to v1.0.xx"
+    git commit -a -m "Increment version number to v1.0.xx"
 
 # Tag git branch with version number
 
-git tag v1.0.xx
+    git tag v1.0.xx
 
 # Push git to repository
 
-git push
-git push --tags
+    git push
+    git push --tags
 
 # Build release apk
 
-tools/build-release
+    tools/build-release
 
 (Will only work if you have the signing keys for the app.)
 
 # Publish to the Google Play Store
 
-https://play.google.com/apps/publish
+    open https://play.google.com/apps/publish
 
 The Android Developer Console Publishing UI is error prone:
 
@@ -74,23 +74,23 @@ https://play.google.com/store/apps/details?id=jackpal.androidterm
 
 # Update the Terminal Emulator for Android Wiki
 
-https://github.com/jackpal/Android-Terminal-Emulator/wiki/Recent-Updates
+    open https://github.com/jackpal/Android-Terminal-Emulator/wiki/Recent-Updates
 
 # Publish a new pre-compiled version of the APK for people who can't access Market.
 
 Github serves pages out of branch gh-pages , directory downloads/Term.apk
 Also update the version number in index.html
 
-  cp ./term/build/outputs/apk/Term.apk /tmp
-  git checkout gh-pages
-  mv /tmp/Term.apk downloads/Term.apk
-  git add downloads/Term.apk
-  subl index.html
-  # Update version save index.html
-  git add index.html
-  git commit -m "Update to version v1.0.xx"
-  git push
-  git checkout master
+    cp ./term/build/outputs/apk/Term.apk /tmp
+    git checkout gh-pages
+    mv /tmp/Term.apk downloads/Term.apk
+    git add downloads/Term.apk
+    subl index.html
+    # Update version save index.html
+    git add index.html
+    git commit -m "Update to version v1.0.xx"
+    git push
+    git checkout master
 
 Public URL is http://jackpal.github.com/Android-Terminal-Emulator/downloads/Term.apk
 
