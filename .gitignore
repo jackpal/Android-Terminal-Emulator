@@ -10,7 +10,10 @@ examples/
 gen/
 libraries/
 libs/
+libtermexec/
 local.properties
 obj/
+samples/
 term/
 tests/
+*.iml
