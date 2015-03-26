@@ -1,21 +1,5 @@
 /*
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/*
- * Copyright (C) 2007 The Android Open Source Project
+ * Copyright (C) 2007, 2008 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,24 +40,27 @@ static void android_os_Exec_setPtyWindowSize(JNIEnv *env, jobject clazz,
     sz.ws_xpixel = xpixel;
     sz.ws_ypixel = ypixel;
 
-    ioctl(fd, TIOCSWINSZ, &sz);
+    // TODO: handle the situation, when the file descriptor is incompatible with TIOCSWINSZ (e.g. not from /dev/ptmx)
+    if (ioctl(fd, TIOCSWINSZ, &sz) == -1)
+        env->ThrowNew(env->FindClass("java/io/IOException"), "Failed to issue TIOCSWINSZ ioctl");
 }
 
 static void android_os_Exec_setPtyUTF8Mode(JNIEnv *env, jobject clazz, jint fd, jboolean utf8Mode)
 {
     struct termios tios;
 
-    tcgetattr(fd, &tios);
+    // TODO: handle the situation, when the file descriptor is incompatible with tcgetattr (e.g. not from /dev/ptmx)
+    if (tcgetattr(fd, &tios) < 0)
+        env->ThrowNew(env->FindClass("java/io/IOException"), "Failed to get terminal attributes");
+
     if (utf8Mode) {
         tios.c_iflag |= IUTF8;
     } else {
         tios.c_iflag &= ~IUTF8;
     }
-    tcsetattr(fd, TCSANOW, &tios);
-}
 
-static void android_os_Exec_hangupProcessGroup(JNIEnv *env, jobject clazz, jint procId) {
-    kill(-procId, SIGHUP);
+    if (tcsetattr(fd, TCSANOW, &tios) < 0)
+        env->ThrowNew(env->FindClass("java/io/IOException"), "Failed to change terminal UTF-8 mode");
 }
 
 static const char *classPathName = "jackpal/androidterm/Exec";
@@ -81,9 +68,7 @@ static JNINativeMethod method_table[] = {
     { "setPtyWindowSizeInternal", "(IIIII)V",
         (void*) android_os_Exec_setPtyWindowSize},
     { "setPtyUTF8ModeInternal", "(IZ)V",
-        (void*) android_os_Exec_setPtyUTF8Mode},
-    { "hangupProcessGroup", "(I)V",
-        (void*) android_os_Exec_hangupProcessGroup}
+        (void*) android_os_Exec_setPtyUTF8Mode}
 };
 
 int init_Exec(JNIEnv *env) {

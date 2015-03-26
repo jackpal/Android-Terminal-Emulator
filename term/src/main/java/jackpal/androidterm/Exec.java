@@ -22,21 +22,18 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.lang.IllegalStateException;
+import java.lang.Process;
 import java.lang.reflect.Field;
 
 /**
- * Utility methods for creating and managing a subprocess.
- * <p>
- * Note: The native methods access a package-private
- * java.io.FileDescriptor field to get and set the raw Linux
- * file descriptor. This might break if the implementation of
- * java.io.FileDescriptor is changed.
+ * Utility methods for managing a pty file descriptor.
  */
-
 public class Exec
 {
+    // Warning: bump the library revision, when an incompatible change happens
     static {
-        System.loadLibrary("jackpal-androidterm4");
+        System.loadLibrary("jackpal-androidterm5");
     }
 
     private static Field descriptorField;
@@ -68,7 +65,8 @@ public class Exec
      * connected to the pty learn how large their screen is.
      */
     public static void setPtyWindowSize(ParcelFileDescriptor fd, int row, int col, int xpixel, int ypixel) {
-        if (!fd.getFileDescriptor().valid()) // TODO why is this called after the stream is closed?
+        // If the tty goes away too quickly, this may get called after it's descriptor is closed
+        if (!fd.getFileDescriptor().valid())
             return;
 
         try {
@@ -84,7 +82,8 @@ public class Exec
      * to implement correct erase behavior in cooked mode (Linux >= 2.6.4).
      */
     public static void setPtyUTF8Mode(ParcelFileDescriptor fd, boolean utf8Mode) {
-        if (!fd.getFileDescriptor().valid()) // TODO why is this called after the stream is closed?
+        // If the tty goes away too quickly, this may get called after it's descriptor is closed
+        if (!fd.getFileDescriptor().valid())
             return;
 
         try {
@@ -107,12 +106,18 @@ public class Exec
     }
 
     /**
-     * Send SIGHUP to a process group.
+     * Send SIGHUP to a process group, SIGHUP notifies a terminal client, that the terminal have been disconnected,
+     * and usually results in client's death, unless it's process is a daemon or have been somehow else detached
+     * from the terminal (for example, by the "nohup" utility).
      */
-    public static native void hangupProcessGroup(int processId);
+    public static void hangupProcessGroup(int processId) {
+        TermExec.sendSignal(-processId, 1);
+    }
 
-    private static native void setPtyWindowSizeInternal(int fd, int row, int col, int xpixel, int ypixel);
+    private static native void setPtyWindowSizeInternal(int fd, int row, int col, int xpixel, int ypixel)
+            throws IOException;
 
-    private static native void setPtyUTF8ModeInternal(int fd, boolean utf8Mode);
+    private static native void setPtyUTF8ModeInternal(int fd, boolean utf8Mode)
+            throws IOException;
 }
 

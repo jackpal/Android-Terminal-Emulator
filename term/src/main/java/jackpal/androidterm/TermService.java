@@ -168,6 +168,9 @@ public class TermService extends Service implements TermSession.FinishCallback
                                 session.setFinishCallback(new RBinderCleanupCallback(result, callback));
                                 session.setTitle("");
 
+                                // TODO: handle the situation, when supplied file descriptor does not originate from
+                                // /dev/ptmx (probably should be implemented by throwing IllegalStateEXception
+                                // when recognized specific errno values in native Exec methods)
                                 session.initializeEmulator(80, 24);
                             }
                         });
