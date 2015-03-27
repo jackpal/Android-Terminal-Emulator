@@ -15,7 +15,7 @@ Open Source Project. (Which I also wrote. :-) )
 [Download the Terminal Emulator for Android from Google Play](https://play.google.com/store/apps/details?id=jackpal.androidterm)
 
 If you are unable to use the Play Store, you can also
-[download from GitHub](http://jackpal.github.com/Android-Terminal-Emulator/downloads/Term.apk)
+[download from GitHub](https://jackpal.github.io/Android-Terminal-Emulator/)
 
 See [Building](docs/Building.md) for build instructions.
 
