@@ -10,7 +10,7 @@ android {
         targetSdkVersion 11
 
         ndk {
-            moduleName "libjackpal-androidterm4"
+            moduleName "libjackpal-androidterm5"
             abiFilters 'armeabi', 'mips', 'x86'
             ldLibs "log"
         }
