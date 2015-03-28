@@ -13,12 +13,12 @@ repositories {
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         minSdkVersion 4
-        targetSdkVersion 11
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
 
@@ -42,7 +42,7 @@ android {
     }
 }
 
-// by default recent plugin version does not  copy any AIDL files "to avoid publishing too much"
+// by default recent plugin version does not copy any AIDL files "to avoid publishing too much"
 android.libraryVariants.all { variant ->
     Sync packageAidl = project.tasks.create("addPublic${variant.name.capitalize()}Aidl", Sync) { sync ->
         from "$project.projectDir/src/main/aidl/"
