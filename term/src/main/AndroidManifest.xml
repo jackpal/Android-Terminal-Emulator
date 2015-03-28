@@ -86,7 +86,8 @@
             </intent-filter>
         </activity>
         <activity android:name="TermPreferences"
-                android:label="@string/preferences"/>
+                android:label="@string/preferences"
+                android:theme="@style/Theme" />
         <activity android:name="WindowList"
                 android:label="@string/window_list" />
         <service android:name="TermService" >
