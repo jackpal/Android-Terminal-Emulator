@@ -1,18 +1,24 @@
 ## Terminal Emulator for Android Release Checklist
 
-# Test on 1.5
+# Test on 1.6 Donut API 4
 
-# Test on 1.6
+(Lowest supported level -- will be dropped soon.)
 
-# Test on 2.1
+# Test on 2.1 Eclair API 7
 
-# Test on 2.2
+# Test on 2.2 Froyo API 8
 
-# Test on 2.3
+# Test on 2.3 Gingerbread API 10
 
-# Test on 4.0
+(Still popular with cheap phones.)
 
-# Test on 4.1
+# Test on 4.3 Jelly Bean API 18
+
+# Test on 4.4 Kit Kat API 19
+
+# Test on 5.1 Lollipop API 22
+
+(Or whatever latest is.)
 
 # Test with Swype
 
