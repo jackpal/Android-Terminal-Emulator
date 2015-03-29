@@ -164,8 +164,6 @@
   <string name="use_keyboard_shortcuts_summary_off">Billentyű-parancsok letiltva.</string>
 
   <string name="help">Súgó</string>
-  <string name="help_url">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
-  <string name="activity_term_here_title"></string>
   <!-- BEGIN SHORTCUT RELATED STRINGS -->
   <!-- AndroidManifest.xml -->
   <string name="activity_shortcut_create">"Terminál parancsikon"</string>
@@ -184,7 +182,6 @@
   <string name="addshortcut_shortcut_label">Ikon címkéje\:</string>
   <string name="addshortcut_button_text_icon">Szöveges ikon</string>
   <string name="addshortcut_make_text_icon">SZÖVEGES IKON LÉTREHOZÁSA</string>
-  <string name="addshortcut_text_icon_instructions"></string>
   <string name="addshortcut_title">Terminál parancsikon</string>
   <!-- ColorValue.java -->
   <string name="colorvalue_letter_alpha">α</string>

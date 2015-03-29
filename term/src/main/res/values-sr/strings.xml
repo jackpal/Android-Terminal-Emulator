@@ -164,8 +164,7 @@
   <string name="use_keyboard_shortcuts_summary_off">Пречице тастатуре су онемогућене.</string>
 
   <string name="help">Помоћ</string>
-  <string name="help_url">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
-  <string name="activity_term_here_title">Терминал овде</string>
+    <string name="activity_term_here_title">Терминал овде</string>
   <!-- BEGIN SHORTCUT RELATED STRINGS -->
   <!-- AndroidManifest.xml -->
   <string name="activity_shortcut_create">"Терминалска пречица"</string>
@@ -184,7 +183,6 @@
   <string name="addshortcut_shortcut_label">Етикета пречице\:</string>
   <string name="addshortcut_button_text_icon">Текстуална икона</string>
   <string name="addshortcut_make_text_icon">ТЕКСТУАЛНА ИКОНА</string>
-  <string name="addshortcut_text_icon_instructions"></string>
   <string name="addshortcut_title">Пречица терминала</string>
   <!-- ColorValue.java -->
   <string name="colorvalue_letter_alpha">α</string>

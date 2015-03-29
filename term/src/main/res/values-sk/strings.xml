@@ -160,8 +160,7 @@
   <string name="use_keyboard_shortcuts_summary_off">Klávesové skratky sú zakázané.</string>
   
   <string name="help">Pomocník</string>
-  <string name="help_url">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
-  <string name="activity_term_here_title">Otvoriť terminál</string>
+    <string name="activity_term_here_title">Otvoriť terminál</string>
   
   <string name="activity_shortcut_create">Skratka terminálu</string>
   <string name="fsnavigator_title">VYBERTE SÚBOR</string>
@@ -178,7 +177,6 @@
   <string name="addshortcut_shortcut_label">Názov skratky\:</string>
   <string name="addshortcut_button_text_icon">Text ikony</string>
   <string name="addshortcut_make_text_icon">Vytvoriť text ikony</string>
-  <string name="addshortcut_text_icon_instructions"></string>
   <string name="addshortcut_title">Skratka terminálu</string>
   
   <string name="colorvalue_letter_alpha">α</string>
