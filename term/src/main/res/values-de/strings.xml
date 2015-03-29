@@ -23,8 +23,7 @@
    <string name="prev_window">Vorh. Fenster</string>
    <string name="next_window">Nächst. Fenster</string>
    <string name="reset">Zurücksetzen</string>
-   <string name="send_email">Email schreiben</string>
-   <string name="special_keys">Spezialtasten</string>
+    <string name="special_keys">Spezialtasten</string>
    <string name="toggle_soft_keyboard">Tastatur an/aus</string>
 
    <string name="reset_toast_notification">Der Status dieses Terminalfensters wurde zurückgesetzt.</string>
@@ -124,4 +123,42 @@
 
   <string name="perm_run_script">Beliebige Scripte im Terminal Emulator ausführen</string>
   <string name="permdesc_run_script">Erlaubt Anwendungen, neue Fenster im Terminal Emulator for Android zu öffnen und in diesen Befehle auszuführen. Dies schließt alle Berechtigungen von Terminal Emulator for Android ein, inklusive Internetzugang und Schreib-/Leserechte auf der SD-Karte.</string>
+    <string name="activity_term_here_title">Terminal hier</string>
+    <string name="activity_shortcut_create">"Terminal Verknüpfung"</string>
+    <string name="addshortcut_arguments_label">Argumente\:</string>
+    <string name="alt_sends_esc">Alt Taste sendet ESC</string>
+    <string name="alt_sends_esc_summary_on">Alt Taste sendet ESC.</string>
+    <string name="alt_sends_esc_summary_off">Alt Taste sendet ESC nicht.</string>
+    <string name="colorvalue_letter_blue">B</string>
+    <string name="colorvalue_letter_green">G</string>
+    <string name="colorvalue_letter_red">R</string>
+    <string name="dialog_title_orientation_preference">Bildschirmausrichtung</string>
+    <string name="email_transcript_no_email_activity_found">Konnte keine App zum Verschicken der E-Mail finden</string>
+    <string name="email_transcript_chooser_title">E-Mail Verschicken mit:</string>
+    <string name="email_transcript_subject">Auszug von Terminal Emulator for Android</string>
+    <string name="fsnavigator_change_theme">Theme ändern</string>
+    <string name="fsnavigator_no_external_storage">Externer Speicher nicht verfügbar</string>
+    <string name="fsnavigator_optional_enter_path">Oder hier einen Pfad eingeben.</string>
+    <string name="fsnavigator_title">DATEI AUSWÄHLEN</string>
+    <string name="help">Hife</string>
+    <string name="perm_append_to_path">Befehle zum Terminal Emulator hinzufügen</string>
+    <string name="perm_prepend_to_path">Befehle im Terminal Emulator Überschreiben</string>
+    <string name="permdesc_append_to_path">Erlaubt es Applikationen dem Terminal Emulator für Android zusätzliche Befehle zur Verfügung zu stellen (fügt Verzeichnisse an die PATH Valriable an).</string>
+    <string name="permdesc_prepend_to_path">Erlaubt es Applikationen im Terminal Emulator für Android existierende Befehle mit eigenen Versionen zu überschreiben (Fügt Verzeichnisse am Anfang der PATH Variable ein).</string>
+    <string name="use_keyboard_shortcuts_summary_off">Tastenkombinationen deaktiviert.</string>
+    <string name="title_verify_path_preference">Überprüfe PATH Einträge</string>
+    <string name="title_use_keyboard_shortcuts">Nutze Tastenkombinationen</string>
+    <string name="title_orientation_preference">Bildschirmausrichtung</string>
+    <string name="title_mouse_tracking_preference">Sende Maus-Ereignisse</string>
+    <string name="title_home_path_preference">HOME Verzeichniss</string>
+    <string name="title_do_path_extensions_preference">Erlaube PATH Erweiterungen</string>
+    <string name="summary_verify_path_preference">Sollen Verzeichnisse, auf welche nicht zugegriffen werden kann, vom PATH entfernt werden?</string>
+    <string name="summary_orientation_preference">Wähle die Bilschirmausrichtung</string>
+    <string name="summary_mouse_tracking_preference">Sollen Tipp- und Scroll-Ereignisse als Escape-Sequenzen ans Terminal gesendet werden?</string>
+    <string name="summary_home_path_preference">Pfad zu einem beschreibbaren Verzeichniss welches als HOME genutzt werden soll.</string>
+    <string name="summary_do_path_extensions_preference">Soll es anderen Apps erlaubt sein zusätliche Befehle zur Verfügung zu stellen? (An PATH anfügen)</string>
+    <string name="summary_allow_prepend_path_preference">Soll es anderen Apps erlaubt sein, existierende Befehle zu überschreiben (Vor PATH einfügen).</string>
+    <string name="send_fn_key">Sende FN-Taste</string>
+    <string name="send_email">Teilen per E-Mail</string>
+    <string name="send_control_key">Sende Strg-Taste</string>
 </resources>
