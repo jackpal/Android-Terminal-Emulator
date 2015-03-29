@@ -20,11 +20,14 @@ import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
 import jackpal.androidterm.compat.AndroidCompat;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.view.MenuItem;
 
 public class TermPreferences extends PreferenceActivity {
     private static final String ACTIONBAR_KEY = "actionbar";
+    private static final String CATEGORY_SCREEN_KEY = "screen";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +36,19 @@ public class TermPreferences extends PreferenceActivity {
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
-        // Disable the action bar pref on older platforms without an action bar
-        if (AndroidCompat.SDK < 11) {
-            getPreferenceManager().findPreference(ACTIONBAR_KEY).setEnabled(false);
+        // Remove the action bar pref on non-Holo platforms.
+        // On pre and post holo platforms there is no action bar.
+        if (!AndroidCompat.V11ToV20) {
+            Preference actionBarPref = findPreference(ACTIONBAR_KEY);
+             PreferenceCategory screenCategory =
+                    (PreferenceCategory) findPreference(CATEGORY_SCREEN_KEY);
+             if ((actionBarPref != null) && (screenCategory != null)) {
+                 screenCategory.removePreference(actionBarPref);
+             }
         }
 
         // Display up indicator on action bar home button
-        if (AndroidCompat.SDK >= 11) {
+        if (AndroidCompat.V11ToV20) {
             ActionBarCompat bar = ActivityCompat.getActionBar(this);
             if (bar != null) {
                 bar.setDisplayOptions(ActionBarCompat.DISPLAY_HOME_AS_UP, ActionBarCompat.DISPLAY_HOME_AS_UP);

@@ -345,7 +345,7 @@ public class Term extends Activity implements UpdateCallback {
             Log.w(TermDebug.LOG_TAG, "bind to service failed!");
         }
 
-        if (AndroidCompat.SDK >= 11) {
+        if (AndroidCompat.V11ToV20) {
             int actionBarMode = mSettings.actionBarMode();
             mActionBarMode = actionBarMode;
             switch (actionBarMode) {
@@ -356,6 +356,8 @@ public class Term extends Activity implements UpdateCallback {
                 setTheme(R.style.Theme_Holo_ActionBarOverlay);
                 break;
             }
+        } else {
+            mActionBarMode = TermSettings.ACTION_BAR_MODE_ALWAYS_VISIBLE;
         }
 
         setContentView(R.layout.term_activity);
@@ -570,7 +572,9 @@ public class Term extends Activity implements UpdateCallback {
                 } else {
                     win.setFlags(desiredFlag, FULLSCREEN);
                     if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES) {
-                        mActionBar.hide();
+                        if (mActionBar != null) {
+                            mActionBar.hide();
+                        }
                     }
                 }
             }
