@@ -207,7 +207,16 @@ public class ShellTermSession extends GenericTermSession {
 
     @Override
     public void finish() {
-        Exec.hangupProcessGroup(mProcId);
+        hangupProcessGroup();
         super.finish();
+    }
+
+    /**
+     * Send SIGHUP to a process group, SIGHUP notifies a terminal client, that the terminal have been disconnected,
+     * and usually results in client's death, unless it's process is a daemon or have been somehow else detached
+     * from the terminal (for example, by the "nohup" utility).
+     */
+    void hangupProcessGroup() {
+        TermExec.sendSignal(-mProcId, 1);
     }
 }

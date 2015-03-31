@@ -165,27 +165,32 @@ public class TermService extends Service implements TermSession.FinishCallback
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                final TermSettings settings = new TermSettings(getResources(),
-                                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
+                                GenericTermSession session = null;
+                                try {
+                                    final TermSettings settings = new TermSettings(getResources(),
+                                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
 
-                                final GenericTermSession session = new BoundSession(pseudoTerminalMultiplexerFd,
-                                        settings, niceName);
+                                    session = new BoundSession(pseudoTerminalMultiplexerFd, settings, niceName);
 
-                                mTermSessions.add(session);
+                                    mTermSessions.add(session);
 
-                                session.setHandle(sessionHandle);
-                                session.setFinishCallback(new RBinderCleanupCallback(result, callback));
-                                session.setTitle("");
+                                    session.setHandle(sessionHandle);
+                                    session.setFinishCallback(new RBinderCleanupCallback(result, callback));
+                                    session.setTitle("");
 
-                                // TODO: handle the situation, when supplied file descriptor does not originate from
-                                // /dev/ptmx (probably should be implemented by throwing IllegalStateEXception
-                                // when recognized specific errno values in native Exec methods)
-                                session.initializeEmulator(80, 24);
+                                    session.initializeEmulator(80, 24);
+                                } catch (Exception whatWentWrong) {
+                                    Log.e("TermService", "Failed to bootstrap AIDL session: "
+                                            + whatWentWrong.getMessage());
+
+                                    if (session != null)
+                                        session.finish();
+                                }
                             }
                         });
-                    }
 
-                    return result.getIntentSender();
+                        return result.getIntentSender();
+                    }
                 } catch (PackageManager.NameNotFoundException ignore) {}
             }
 
