@@ -22,7 +22,7 @@
     <!-- This style is used for the main terminal window when the action bar
          is hidden. It is set programmatically at run time.
      -->
-    <style name="Theme.Holo.ActionBarOverlay" parent="style/Theme">
+    <style name="Theme.Holo.ActionBarOverlay" parent="@style/Theme.Holo">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:actionBarStyle">@style/Widget.ActionBarOverlay</item>
     </style>
