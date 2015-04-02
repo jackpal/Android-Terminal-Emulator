@@ -26,6 +26,12 @@
     <item>Blinkender Cursor</item>
   </string-array>
 
+    <string-array name="entries_orientation_preference">
+        <item>Automatisch</item>
+        <item>Querformat (Landscape)</item>
+        <item>Hochformat (Portrait)</item>
+    </string-array>
+
     <string-array name="entries_actionbar_preference">
         <!-- <item>Action bar disabled</item> -->
         <item>Aktionsleiste immer anzeigen</item>

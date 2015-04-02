@@ -164,8 +164,7 @@
   <string name="use_keyboard_shortcuts_summary_off">Atajos de teclado desactivados.</string>
 
   <string name="help">Ayuda</string>
-  <string name="help_url">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
-  <string name="activity_term_here_title">Terminal aquí</string>
+    <string name="activity_term_here_title">Terminal aquí</string>
   
   <!-- BEGIN SHORTCUT RELATED STRINGS -->
   <!-- AndroidManifest.xml -->
@@ -185,7 +184,6 @@
   <string name="addshortcut_shortcut_label">Etiqueta acceso directo\:</string>
   <string name="addshortcut_button_text_icon">Texto del icono</string>
   <string name="addshortcut_make_text_icon">HACER ICONO DE TEXTO</string>
-  <string name="addshortcut_text_icon_instructions"></string>
   <string name="addshortcut_title">Acceso directo a terminal</string>
   <!-- ColorValue.java -->
   <string name="colorvalue_letter_alpha">α</string>
@@ -194,6 +192,6 @@
   <string name="colorvalue_letter_blue">B</string>
   <string name="colorvalue_label_lock_button_column">BLOQUEAR</string>
   <string name="colorvalue_icon_text_entry_hint">Introduce texto del icono</string>
-  
-  <!-- END SHORTCUT RELATED STRINGS -->
+
+    <!-- END SHORTCUT RELATED STRINGS -->
 </resources>
