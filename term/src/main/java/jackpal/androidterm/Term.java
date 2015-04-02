@@ -305,7 +305,7 @@ public class Term extends Activity implements UpdateCallback {
          * Make sure the back button always leaves the application.
          */
         private boolean backkeyInterceptor(int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_BACK && mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES && mActionBar.isShowing()) {
+            if (keyCode == KeyEvent.KEYCODE_BACK && mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES && mActionBar != null && mActionBar.isShowing()) {
                 /* We need to intercept the key event before the view sees it,
                    otherwise the view will handle it before we get it */
                 onKeyUp(keyCode, event);
@@ -947,7 +947,7 @@ public class Term extends Activity implements UpdateCallback {
                 }
                 mBackKeyPressed = false;
             }
-            if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES && mActionBar.isShowing()) {
+            if (mActionBarMode == TermSettings.ACTION_BAR_MODE_HIDES && mActionBar != null && mActionBar.isShowing()) {
                 mActionBar.hide();
                 return true;
             }
