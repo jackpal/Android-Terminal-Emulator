@@ -20,4 +20,4 @@ ANDROID="$ANDROID_SDK_ROOT/tools/android"
 # The update sdk command takes a comma-separated list of packages to install.
 # Installing them all at once may simplify the process of agreeing to licenses.
 
-$ANDROID update sdk -u -a -t android-11
+$ANDROID update sdk -u -a -t android-11,extra-android-m2repository
