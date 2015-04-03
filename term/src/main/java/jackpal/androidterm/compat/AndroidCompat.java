@@ -23,13 +23,6 @@ public class AndroidCompat {
         V11ToV20 = (SDK >= 11) && (SDK <= 20);
     }
 
-    // The era of Material Design
-    public final static boolean V21Up;
-
-    static {
-        V21Up = SDK >= 21;
-    }
-
     private final static int getSDK() {
         int result;
         try {

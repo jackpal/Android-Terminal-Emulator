@@ -36,9 +36,8 @@ public class TermPreferences extends PreferenceActivity {
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
-        // Remove the action bar pref on non-Holo platforms.
-        // On pre and post holo platforms there is no action bar.
-        if (!AndroidCompat.V11ToV20) {
+        // Remove the action bar pref on older platforms without an action bar
+        if (AndroidCompat.SDK < 11) {
             Preference actionBarPref = findPreference(ACTIONBAR_KEY);
              PreferenceCategory screenCategory =
                     (PreferenceCategory) findPreference(CATEGORY_SCREEN_KEY);
