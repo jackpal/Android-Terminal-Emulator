@@ -39,6 +39,8 @@ public class GenericTermSession extends TermSession {
     //** Set to true to force into 80 x 24 for testing with vttest. */
     private static final boolean VTTEST_MODE = false;
 
+    private final long createdAt;
+
     // A cookie which uniquely identifies this session.
     private String mHandle;
 
@@ -61,6 +63,8 @@ public class GenericTermSession extends TermSession {
         super(exitOnEOF);
 
         this.mTermFd = mTermFd;
+
+        this.createdAt = System.currentTimeMillis();
 
         updatePrefs(settings);
     }
@@ -130,7 +134,7 @@ public class GenericTermSession extends TermSession {
      *     unset or an empty string.
      */
     public String getTitle(String defaultTitle) {
-        String title = super.getTitle();
+        String title = getTitle();
         if (title != null && title.length() > 0) {
             return title;
         } else {
@@ -147,5 +151,10 @@ public class GenericTermSession extends TermSession {
 
     public String getHandle() {
         return mHandle;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + '(' + createdAt + ',' + mHandle + ')';
     }
 }

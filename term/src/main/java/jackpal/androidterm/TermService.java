@@ -18,6 +18,7 @@ package jackpal.androidterm;
 
 import android.app.Service;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -81,6 +82,14 @@ public class TermService extends Service implements TermSession.FinishCallback
 
     @Override
     public void onCreate() {
+        // should really belong to the Application class, but we don't use one...
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        String defValue = getDir("HOME", MODE_PRIVATE).getAbsolutePath();
+        String homePath = prefs.getString("home_path", defValue);
+        editor.putString("home_path", homePath);
+        editor.commit();
+
         compat = new ServiceForegroundCompat(this);
         mTermSessions = new SessionList();
 
