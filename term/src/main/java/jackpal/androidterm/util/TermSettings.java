@@ -188,10 +188,6 @@ public class TermSettings {
         mPrefs = prefs;
         mStatusBar = readIntPref(STATUSBAR_KEY, mStatusBar, 1);
         mActionBarMode = readIntPref(ACTIONBAR_KEY, mActionBarMode, ACTION_BAR_MODE_MAX);
-        if (AndroidCompat.V21Up) {
-            // ActionBar replaced by Taskbar in Material Design. TODO: Implement scroll hiding.
-            mActionBarMode = ACTION_BAR_MODE_ALWAYS_VISIBLE;
-        }
         mOrientation = readIntPref(ORIENTATION_KEY, mOrientation, 2);
         // mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 2);
         // mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
