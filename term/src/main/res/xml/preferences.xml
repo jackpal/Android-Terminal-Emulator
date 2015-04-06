@@ -51,7 +51,7 @@
         <ListPreference
                 android:key="toast_position"
                 android:defaultValue="4"
-                android:title="notification position"
+                android:title="Notification position"
                 android:summary="Choose the position for the toast notification to show up."
                 android:entries="@array/entries_toast_position"
                 android:entryValues="@array/entryvalues_toast_position"
