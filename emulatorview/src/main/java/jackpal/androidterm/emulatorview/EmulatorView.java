@@ -1432,7 +1432,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private void updateText() {
         ColorScheme scheme = mColorScheme;
         if (mTextSize > 0) {
-            mTextRenderer = new PaintRenderer(mTextSize, scheme);
+            mTextRenderer = new CustomFontPaintRenderer(mTextSize, scheme);
         }
         else {
             mTextRenderer = new Bitmap4x8FontRenderer(getResources(), scheme);

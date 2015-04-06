@@ -21,7 +21,6 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.FloatMath;
 
-
 class PaintRenderer extends BaseTextRenderer {
     public PaintRenderer(int fontSize, ColorScheme scheme) {
         super(scheme);
@@ -34,6 +33,10 @@ class PaintRenderer extends BaseTextRenderer {
         mCharAscent = (int) FloatMath.ceil(mTextPaint.ascent());
         mCharDescent = mCharHeight + mCharAscent;
         mCharWidth = mTextPaint.measureText(EXAMPLE_CHAR, 0, 1);
+    }
+
+    protected PaintRenderer(ColorScheme scheme) {
+        super(scheme);
     }
 
     public void drawTextRun(Canvas canvas, float x, float y, int lineOffset,
@@ -137,10 +140,10 @@ class PaintRenderer extends BaseTextRenderer {
         return mCharDescent;
     }
 
-    private Paint mTextPaint;
-    private float mCharWidth;
-    private int mCharHeight;
-    private int mCharAscent;
-    private int mCharDescent;
-    private static final char[] EXAMPLE_CHAR = {'X'};
+    protected Paint mTextPaint;
+    protected float mCharWidth;
+    protected int mCharHeight;
+    protected int mCharAscent;
+    protected int mCharDescent;
+    protected static final char[] EXAMPLE_CHAR = {'X'};
 }
