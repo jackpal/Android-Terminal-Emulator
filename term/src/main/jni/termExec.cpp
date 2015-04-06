@@ -52,17 +52,16 @@ static __inline__ int my_tcgetattr(int fd, struct termios *s)
     return ioctl(fd, TCGETS, s);
 }
 
-static __inline__ int my_tcsetattr(int fd, int __opt, const struct termios *s)
+static __inline__ int my_tcsetattr(int fd, const struct termios *s)
 {
-    return ioctl(fd, __opt, (void *)s);
+    return ioctl(fd, TCSETS, (void *)s);
 }
 
 static void android_os_Exec_setPtyUTF8Mode(JNIEnv *env, jobject clazz, jint fd, jboolean utf8Mode)
 {
     struct termios tios;
 
-    // TODO: handle the situation, when the file descriptor is incompatible with tcgetattr (e.g. not from /dev/ptmx)
-    if (my_tcgetattr(fd, &tios) < 0)
+    if (my_tcgetattr(fd, &tios) != 0)
         env->ThrowNew(env->FindClass("java/io/IOException"), "Failed to get terminal attributes");
 
     if (utf8Mode) {
@@ -71,8 +70,8 @@ static void android_os_Exec_setPtyUTF8Mode(JNIEnv *env, jobject clazz, jint fd, 
         tios.c_iflag &= ~IUTF8;
     }
 
-    if (my_tcsetattr(fd, TCSANOW, &tios) < 0)
-        env->ThrowNew(env->FindClass("java/io/IOException"), "Failed to change terminal UTF-8 mode");
+    if (my_tcsetattr(fd, &tios) != 0)
+        env->ThrowNew(env->FindClass("java/io/IOException"), "Failed to set terminal UTF-8 mode");
 }
 
 static const char *classPathName = "jackpal/androidterm/Exec";
