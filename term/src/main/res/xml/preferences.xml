@@ -48,6 +48,15 @@
                 android:entryValues="@array/entryvalues_orientation_preference"
                 android:dialogTitle="@string/dialog_title_orientation_preference" />
 
+        <ListPreference
+                android:key="toast_position"
+                android:defaultValue="4"
+                android:title="notification position"
+                android:summary="Choose the position for the toast notification to show up."
+                android:entries="@array/entries_toast_position"
+                android:entryValues="@array/entryvalues_toast_position"
+                android:dialogTitle="Choose the toast notification position"
+            />
 <!--
         <ListPreference
                 android:key="cursorstyle"

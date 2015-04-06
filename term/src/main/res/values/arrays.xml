@@ -33,6 +33,20 @@
         <item>Portrait</item>
     </string-array>
 
+    <string-array name="entries_toast_position">
+        <item>Top-Left</item>
+        <item>Top-Center</item>
+        <item>Top-Right</item>
+
+        <item>Middle-Left</item>
+        <item>Middle-Center</item>
+        <item>Middle-Right</item>
+
+        <item>Bottom-Left</item>
+        <item>Bottom-Center</item>
+        <item>Bottom-Right</item>
+    </string-array>
+
     <string-array name="entries_cursorblink_preference">
         <item>Non-blinking cursor</item>
         <item>Blinking cursor</item>

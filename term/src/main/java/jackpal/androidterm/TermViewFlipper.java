@@ -19,10 +19,12 @@ package jackpal.androidterm;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -83,6 +85,9 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     public TermViewFlipper(Context context) {
         super(context);
         commonConstructor(context);
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        mSettings = new TermSettings(getResources(), mPrefs);
+
     }
 
     public TermViewFlipper(Context context, AttributeSet attrs) {
