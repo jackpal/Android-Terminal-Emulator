@@ -602,20 +602,7 @@ public class Term extends Activity implements UpdateCallback {
         }
         setRequestedOrientation(o);
 
-        int toastPosition=mSettings.getToastPosition();
-        switch (toastPosition) {
-            case 0: this.toastGravity = Gravity.TOP | Gravity.LEFT; break;
-            case 1: this.toastGravity = Gravity.TOP ; break;
-            case 2: this.toastGravity = Gravity.TOP | Gravity.RIGHT; break;
-
-            case 3: this.toastGravity = Gravity.LEFT; break;
-            case 4: this.toastGravity = Gravity.CENTER; break;
-            case 5: this.toastGravity = Gravity.RIGHT; break;
-
-            case 6: this.toastGravity = Gravity.BOTTOM | Gravity.LEFT; break;
-            case 7: this.toastGravity = Gravity.BOTTOM ; break;
-            case 8: this.toastGravity = Gravity.BOTTOM | Gravity.RIGHT; break;
-        }
+        this.toastGravity=mSettings.getToastGravity();
 
     }
 

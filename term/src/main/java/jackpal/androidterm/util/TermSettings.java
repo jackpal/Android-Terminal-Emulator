@@ -20,6 +20,7 @@ import jackpal.androidterm.R;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.view.Gravity;
 import android.view.KeyEvent;
 
 /**
@@ -217,7 +218,7 @@ public class TermSettings {
         mMouseTracking = readBooleanPref(MOUSE_TRACKING, mMouseTracking);
         mUseKeyboardShortcuts = readBooleanPref(USE_KEYBOARD_SHORTCUTS,
                 mUseKeyboardShortcuts);
-        mToastPosition = readIntPref(TOAST_POSITION, mToastPosition,TOAST_POSITION_MAX);
+        mToastPosition = readIntPref(TOAST_POSITION, mToastPosition, TOAST_POSITION_MAX);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 
@@ -378,4 +379,22 @@ public class TermSettings {
     }
 
     public int getToastPosition() { return mToastPosition; }
+
+    public int getToastGravity() {
+        int result= Gravity.CENTER;
+        switch (getToastPosition()) {
+            case 0: result = Gravity.TOP | Gravity.LEFT; break;
+            case 1: result = Gravity.TOP ; break;
+            case 2: result = Gravity.TOP | Gravity.RIGHT; break;
+
+            case 3: result = Gravity.LEFT; break;
+            case 4: result = Gravity.CENTER; break;
+            case 5: result = Gravity.RIGHT; break;
+
+            case 6: result = Gravity.BOTTOM | Gravity.LEFT; break;
+            case 7: result = Gravity.BOTTOM ; break;
+            case 8: result = Gravity.BOTTOM | Gravity.RIGHT; break;
+        }
+        return result;
+    }
 }
