@@ -1101,7 +1101,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             x > 255-32 || y > 255-32;
         //Log.d(TAG, "mouse button "+x+","+y+","+button_code+",oob="+out_of_bounds);
         if(button_code < 0 || button_code > 255-32) {
-            Log.e(TAG, "mouse button_code out of range: "+button_code);
+            Log.e(TAG, "mouse button_code out of range: " + button_code);
             return;
         }
         if(!out_of_bounds) {
@@ -1288,6 +1288,13 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             if (! isInterceptedSystemKey(keyCode) ) {
                 // Don't intercept the system keys
                 return super.onKeyDown(keyCode, event);
+            }
+        }
+
+        if(Build.MODEL.contains("Transformer TF101")) {
+            if(event.isShiftPressed() && ( keyCode == KeyEvent.KEYCODE_DEL )) {
+                keyCode=KeyEvent.KEYCODE_FORWARD_DEL;
+                event=new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_FORWARD_DEL);
             }
         }
 
