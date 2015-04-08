@@ -16,54 +16,17 @@
 
 package jackpal.androidterm.emulatorview;
 
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.FloatMath;
-import android.content.Context;
-import android.os.Environment;
-import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-
-import jackpal.androidterm.emulatorview.compat.TypefaceCompat;
 
 
 class CustomFontPaintRenderer extends PaintRenderer {
 
-    protected String readFile(File input) throws IOException{
-        try(BufferedReader reader=new BufferedReader(new FileReader(input))) {
-            Log.i("CustomFontPaintRenderer","read font name");
-            return reader.readLine();
-        }catch (IOException ex) {
-            throw new IOException(ex);
-        }
-    }
-
-    public CustomFontPaintRenderer(int fontSize, ColorScheme scheme) {
+    public CustomFontPaintRenderer(int fontSize, ColorScheme scheme, Typeface face) {
         super(scheme);
-        File path=new File(Environment.getExternalStorageDirectory(),"jackpal.androidterm.emulatorview.typeface.txt");
-
-
-        Typeface face = Typeface.MONOSPACE;
-
-        if(path.exists() && path.isFile()) {
-            try {
-                String filename = readFile(path);
-                File fontFilePath = new File(filename);
-                if (fontFilePath.exists() && fontFilePath.exists()) {
-                    face = TypefaceCompat.createFromFile(fontFilePath);
-                }
-            }catch (IOException ex) {
-
-                Log.e(CustomFontPaintRenderer.class.getName(),"error loading font",ex);
-            }
-        }
+        //Typeface face = typeface;
 
         mTextPaint = new Paint();
         mTextPaint.setTypeface(face);
@@ -74,5 +37,6 @@ class CustomFontPaintRenderer extends PaintRenderer {
         mCharAscent = (int) FloatMath.ceil(mTextPaint.ascent());
         mCharDescent = mCharHeight + mCharAscent;
         mCharWidth = mTextPaint.measureText(EXAMPLE_CHAR, 0, 1);
+
     }
 }

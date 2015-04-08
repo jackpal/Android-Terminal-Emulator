@@ -50,6 +50,7 @@ public class TermSettings {
     private boolean mDoPathExtensions;
     private boolean mAllowPathPrepend;
     private String mHomePath;
+    private String mFontPath;
 
     private String mPrependPath = null;
     private String mAppendPath = null;
@@ -81,6 +82,7 @@ public class TermSettings {
     private static final String ALT_SENDS_ESC = "alt_sends_esc";
     private static final String MOUSE_TRACKING = "mouse_tracking";
     private static final String USE_KEYBOARD_SHORTCUTS = "use_keyboard_shortcuts";
+    private static final String CUSTOM_FONT_PATH = "custom_font_filepath";
 
     public static final int WHITE               = 0xffffffff;
     public static final int BLACK               = 0xff000000;
@@ -182,6 +184,7 @@ public class TermSettings {
         mAltSendsEsc = res.getBoolean(R.bool.pref_alt_sends_esc_default);
         mMouseTracking = res.getBoolean(R.bool.pref_mouse_tracking_default);
         mUseKeyboardShortcuts = res.getBoolean(R.bool.pref_use_keyboard_shortcuts_default);
+        mFontPath = res.getString(R.string.pref_customfontfilepath_default);
     }
 
     public void readPrefs(SharedPreferences prefs) {
@@ -212,6 +215,7 @@ public class TermSettings {
         mMouseTracking = readBooleanPref(MOUSE_TRACKING, mMouseTracking);
         mUseKeyboardShortcuts = readBooleanPref(USE_KEYBOARD_SHORTCUTS,
                 mUseKeyboardShortcuts);
+        mFontPath = readStringPref(CUSTOM_FONT_PATH,"");
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 
@@ -370,4 +374,6 @@ public class TermSettings {
     public String getHomePath() {
         return mHomePath;
     }
+
+    public String getFontPath() { return mFontPath;}
 }
