@@ -31,11 +31,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
+import jackpal.androidterm.emulatorview.compat.TypefaceCompat;
+
 
 class CustomFontPaintRenderer extends PaintRenderer {
 
     protected String readFile(File input) throws IOException{
         try(BufferedReader reader=new BufferedReader(new FileReader(input))) {
+            Log.i("CustomFontPaintRenderer","read font name");
             return reader.readLine();
         }catch (IOException ex) {
             throw new IOException(ex);
@@ -54,7 +57,7 @@ class CustomFontPaintRenderer extends PaintRenderer {
                 String filename = readFile(path);
                 File fontFilePath = new File(filename);
                 if (fontFilePath.exists() && fontFilePath.exists()) {
-                    face = Typeface.createFromFile(fontFilePath);
+                    face = TypefaceCompat.createFromFile(fontFilePath);
                 }
             }catch (IOException ex) {
 
