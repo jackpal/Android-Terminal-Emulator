@@ -91,12 +91,15 @@
                 android:entryValues="@array/entryvalues_color_preference"
                 android:dialogTitle="@string/dialog_title_color_preference" />
 
-        <EditTextPreference
+
+        <Preference
             android:key="custom_font_filepath"
             android:defaultValue=""
-            android:title="Custom font file path"
-            android:summary="Enter the path to the custom font file you wish to use ( Please use a monospaced font )"
-            android:dialogTitle="Custom font file path"/>
+            android:title="Custom font file"
+            android:summary="Touch to pick a font file"
+            >
+
+        </Preference>
 
         <CheckBoxPreference
                 android:key="utf8_by_default"
