@@ -165,8 +165,11 @@
 
   <string name="title_custom_font_filepath">Custom font file</string>
   <string name="custom_font_filepath_summary">Touch to pick a font file</string>
+
   <string name="custom_font_filepath_summary_reset"> ( Touch to set it to system default )</string>
-  <string name="custom_font_filepath_summary_error">Could not use the file picker result to get the file path</string>
+  <string name="custom_font_filepath_summary_error_filepicker">Could not use the file</string>
+  <string name="custom_font_filepath_summary_error_filepicker_Intent">Could not find a usable Filepicker</string>
+
 
   <string name="help">Help</string>
   <string name="help_url" translatable="false">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>

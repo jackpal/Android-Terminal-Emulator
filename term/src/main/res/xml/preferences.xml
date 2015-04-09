@@ -71,7 +71,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="@string/text_preferences">
+            android:title="@string/text_preferences" android:key="text_category">
 
         <ListPreference
                 android:key="fontsize"
@@ -95,8 +95,8 @@
         <Preference
             android:key="custom_font_filepath"
             android:defaultValue=""
-            android:title="Custom font file"
-            android:summary="Touch to pick a font file"
+            android:title="@string/title_custom_font_filepath"
+            android:summary="@string/custom_font_filepath_summary"
             >
 
         </Preference>
