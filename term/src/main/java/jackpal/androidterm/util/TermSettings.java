@@ -187,7 +187,7 @@ public class TermSettings {
         mAltSendsEsc = res.getBoolean(R.bool.pref_alt_sends_esc_default);
         mMouseTracking = res.getBoolean(R.bool.pref_mouse_tracking_default);
         mUseKeyboardShortcuts = res.getBoolean(R.bool.pref_use_keyboard_shortcuts_default);
-        mToastPosition = res.getInteger(R.integer.perf_toast_position_default);
+        mToastPosition = res.getInteger(R.integer.pref_toast_position_default);
     }
 
     public void readPrefs(SharedPreferences prefs) {
