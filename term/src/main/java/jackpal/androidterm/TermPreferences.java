@@ -24,16 +24,24 @@ import jackpal.androidterm.compat.TypefaceCompat;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class TermPreferences extends PreferenceActivity {
     private static final String ACTIONBAR_KEY = "actionbar";
@@ -59,12 +67,12 @@ public class TermPreferences extends PreferenceActivity {
         boolean result;
         try {
             Intent intent = new Intent(intentDescription);
-            intent.setType("*/*");
             /*
             File path = new File(Environment.getRootDirectory(), "fonts");
             Log.d(TermPreferences.class.getName(),path.getAbsolutePath());
             intent.setData(Uri.fromFile(path));
             */
+            intent.setType("*/*");
             startActivityForResult(intent, RESULT_CODE_FONT_CHOOSER);
 
             result=true;
@@ -121,16 +129,23 @@ public class TermPreferences extends PreferenceActivity {
                             public boolean onPreferenceClick(Preference preference) {
                                 String currentFont = PreferenceManager.getDefaultSharedPreferences(that).getString(CUSTOM_FONT_CHOOSER_KEY, "");
                                 if (currentFont == "") {
-                                    if(
-                                            !(tryIntent("android.intent.action.GET_CONTENT") || tryIntent("android.intent.action.PICK"))
-                                            ) {
+                                    if(!tryIntent(Intent.ACTION_GET_CONTENT)) {
                                         // but it really should not happen at all !
 
                                         Toast.makeText(that,R.string.custom_font_filepath_summary_error_filepicker_Intent,Toast.LENGTH_SHORT).show();
                                         return false;
                                     }
                                 } else {
-                                    SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(that).edit();
+                                    SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(that);
+                                    String old=prefs.getString(CUSTOM_FONT_CHOOSER_KEY,null);
+                                    if(old!=null) {
+                                        if(that.deleteFile(old)) {
+                                            Log.d(TermPreferences.class.getName(),"removed old font file ["+old+"]");
+                                        }else{
+                                            Log.d(TermPreferences.class.getName(),"could not removed old font file ["+old+"]");
+                                        }
+                                    }
+                                    SharedPreferences.Editor editor = prefs.edit();
                                     editor.putString(CUSTOM_FONT_CHOOSER_KEY, "");
                                     editor.commit();
                                     updateFontSummary();
@@ -172,7 +187,55 @@ public class TermPreferences extends PreferenceActivity {
                 Log.e(TermPreferences.class.getName(),"can not read the font file");
             }
         }else{
-            Log.e(TermPreferences.class.getName(),"invalid patgh");
+            Log.e(TermPreferences.class.getName(),"invalid path");
+        }
+        return result;
+    }
+
+    protected long copyStream(InputStream input,OutputStream output) throws IOException {
+        byte[] buf = new byte[1024];
+        long result=0;
+        int len;
+        while((len= input.read(buf)) != -1) {
+            output.write(buf,0,len);
+            result += len;
+        }
+        return result;
+    }
+
+    protected String handleURI(Uri uri) {
+        String result=null;
+        Cursor returnCursor =
+                getContentResolver().query(uri, null, null, null, null);
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+
+        returnCursor.moveToFirst();
+
+        String filename=returnCursor.getString(nameIndex);
+        long filesize=returnCursor.getLong(sizeIndex);
+        returnCursor.close();
+        returnCursor=null;
+        if(filename.endsWith(".ttf") || filename.endsWith(".otf")) {
+            // OK the file extension pass
+
+
+            filename = filename.replaceAll("[^a-zA-Z0-9.-]", "_"); // clean the filename
+            try {
+                InputStream input=getContentResolver().openInputStream(uri);
+                OutputStream output=openFileOutput(filename,MODE_PRIVATE);
+                if(copyStream(input,output)==filesize){
+                    if(TypefaceCompat.createFromFile(getFileStreamPath(filename),null)!=null) {
+                        result=filename;
+                    }else {
+                        deleteFile(filename);
+                    }
+                }else{
+                    deleteFile(filename);
+                }
+            } catch (IOException ex) {
+                Log.e(TermPreferences.class.getName(),"Intent return an unreadable URL",ex);
+            }
         }
         return result;
     }
@@ -183,13 +246,13 @@ public class TermPreferences extends PreferenceActivity {
         if(resultCode==RESULT_OK) {
             if(requestCode==RESULT_CODE_FONT_CHOOSER) {
 
-                String path= data.getData().getPath();
-
-
-                if(checkFile(path)) {
+                Uri uri= data.getData();
+                String filename=handleURI(uri);
+                if(filename!=null) {
                     SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-                    editor.putString(CUSTOM_FONT_CHOOSER_KEY, path);
+                    editor.putString(CUSTOM_FONT_CHOOSER_KEY, filename);
                     editor.commit();
+                    editor=null;
                     updateFontSummary();
                 }else{
                     Toast.makeText(this,R.string.custom_font_filepath_summary_error_filepicker,Toast.LENGTH_LONG).show();

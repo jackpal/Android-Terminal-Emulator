@@ -37,8 +37,10 @@ public class TermView extends EmulatorView {
 
     protected Typeface loadTypeface(String spath) {
         Typeface result=Typeface.MONOSPACE;
-        if(!spath.isEmpty()) {
-            File path=new File(spath);
+
+        if(spath!="") {
+            //File path=new File(spath);
+            File path=getContext().getFileStreamPath(spath);
             if(path.exists()) {
                 result=TypefaceCompat.createFromFile(path);
             }
