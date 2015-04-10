@@ -326,7 +326,7 @@ public class Term extends Activity implements UpdateCallback {
         super.onCreate(icicle);
         Log.e(TermDebug.LOG_TAG, "onCreate");
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mSettings = new TermSettings(getResources(), mPrefs);
+        mSettings = new TermSettings(this, mPrefs);
         mPrivateAlias = new ComponentName(this, RemoteInterface.PRIVACT_ACTIVITY_ALIAS);
 
         Intent broadcast = new Intent(ACTION_PATH_BROADCAST);
@@ -389,14 +389,6 @@ public class Term extends Activity implements UpdateCallback {
 
         mHaveFullHwKeyboard = checkHaveFullHwKeyboard(getResources().getConfiguration());
 
-        if(UIModeCompat.isUIModeTV(this)) {
-            ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) mViewFlipper.getLayoutParams();
-            //mViewFlipper.
-            marginParams.setMargins(
-                    dpToPixel(48),dpToPixel(27),
-                    dpToPixel(48),dpToPixel(27)
-                    );
-        }
         updatePrefs();
         mAlreadyStarted = true;
     }
@@ -614,6 +606,18 @@ public class Term extends Activity implements UpdateCallback {
         } else {
             /* Shouldn't be happened. */
         }
+
+        ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) mViewFlipper.getLayoutParams();
+        if(mSettings.getSafeMargins()) {
+            //mViewFlipper.
+            marginParams.setMargins(
+                    dpToPixel(48),dpToPixel(27),
+                    dpToPixel(48),dpToPixel(27)
+            );
+        }else{
+            marginParams.setMargins(0,0,0,0);
+        }
+
         setRequestedOrientation(o);
     }
 

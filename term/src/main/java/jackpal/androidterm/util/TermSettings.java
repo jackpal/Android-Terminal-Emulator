@@ -18,7 +18,9 @@ package jackpal.androidterm.util;
 
 import jackpal.androidterm.R;
 import jackpal.androidterm.compat.AndroidCompat;
+import jackpal.androidterm.compat.UIModeCompat;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.view.KeyEvent;
@@ -32,6 +34,7 @@ public class TermSettings {
     private int mStatusBar;
     private int mActionBarMode;
     private int mOrientation;
+    private boolean mSafeMargins;
     private int mCursorStyle;
     private int mCursorBlink;
     private int mFontSize;
@@ -63,6 +66,7 @@ public class TermSettings {
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String ORIENTATION_KEY = "orientation";
+    private static final String SAFE_MARGINS_KEY = "safe_margins";
     private static final String FONTSIZE_KEY = "fontsize";
     private static final String COLOR_KEY = "color";
     private static final String UTF8_KEY = "utf8_by_default";
@@ -157,6 +161,15 @@ public class TermSettings {
         readPrefs(prefs);
     }
 
+    public TermSettings(Context context, SharedPreferences prefs) {
+        readDefaultPrefs(context);
+        readPrefs(prefs);
+    }
+    private void readDefaultPrefs(Context context) {
+        Resources res=context.getResources();
+        readDefaultPrefs(res);
+        mSafeMargins = UIModeCompat.isUIModeTV(context);
+    }
     private void readDefaultPrefs(Resources res) {
         mStatusBar = Integer.parseInt(res.getString(R.string.pref_statusbar_default));
         mActionBarMode = res.getInteger(R.integer.pref_actionbar_default);
@@ -182,6 +195,7 @@ public class TermSettings {
         mAltSendsEsc = res.getBoolean(R.bool.pref_alt_sends_esc_default);
         mMouseTracking = res.getBoolean(R.bool.pref_mouse_tracking_default);
         mUseKeyboardShortcuts = res.getBoolean(R.bool.pref_use_keyboard_shortcuts_default);
+        mSafeMargins = res.getBoolean(R.bool.pref_safe_margins_default);
     }
 
     public void readPrefs(SharedPreferences prefs) {
@@ -189,6 +203,7 @@ public class TermSettings {
         mStatusBar = readIntPref(STATUSBAR_KEY, mStatusBar, 1);
         mActionBarMode = readIntPref(ACTIONBAR_KEY, mActionBarMode, ACTION_BAR_MODE_MAX);
         mOrientation = readIntPref(ORIENTATION_KEY, mOrientation, 2);
+        mSafeMargins = readBooleanPref(SAFE_MARGINS_KEY,mSafeMargins);
         // mCursorStyle = readIntPref(CURSORSTYLE_KEY, mCursorStyle, 2);
         // mCursorBlink = readIntPref(CURSORBLINK_KEY, mCursorBlink, 1);
         mFontSize = readIntPref(FONTSIZE_KEY, mFontSize, 288);
@@ -246,6 +261,8 @@ public class TermSettings {
     public int getScreenOrientation() {
         return mOrientation;
     }
+
+    public boolean getSafeMargins() {return mSafeMargins; }
 
     public int getCursorStyle() {
         return mCursorStyle;
@@ -370,4 +387,5 @@ public class TermSettings {
     public String getHomePath() {
         return mHomePath;
     }
+
 }
