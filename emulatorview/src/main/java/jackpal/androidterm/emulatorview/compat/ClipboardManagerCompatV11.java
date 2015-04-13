@@ -1,16 +1,18 @@
 package jackpal.androidterm.emulatorview.compat;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
 import android.content.ClipboardManager;
 
-@SuppressLint("NewApi")
+@TargetApi(11)
 public class ClipboardManagerCompatV11 implements ClipboardManagerCompat {
     private final ClipboardManager clip;
-
+    private Context context;
     public ClipboardManagerCompatV11(Context context) {
+        this.context=context;
         clip = (ClipboardManager) context.getApplicationContext()
                 .getSystemService(Context.CLIPBOARD_SERVICE);
     }
@@ -18,13 +20,14 @@ public class ClipboardManagerCompatV11 implements ClipboardManagerCompat {
     @Override
     public CharSequence getText() {
         ClipData.Item item = clip.getPrimaryClip().getItemAt(0);
-        return item.getText();
+        if(item.getText()!=null)
+            return item.getText();
+        return item.coerceToText(context);
     }
 
     @Override
     public boolean hasText() {
-        return (clip.hasPrimaryClip() && clip.getPrimaryClipDescription()
-                .hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN));
+        return clip.hasPrimaryClip();
     }
 
     @Override
