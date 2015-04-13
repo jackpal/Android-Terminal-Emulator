@@ -595,15 +595,13 @@ public class Term extends Activity implements UpdateCallback {
             }
         }
 
-        ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) mViewFlipper.getLayoutParams();
         if(mSettings.getSafeMargins()) {
-            //mViewFlipper.
-            marginParams.setMargins(
+            mViewFlipper.setPadding(
                     dpToPixel(48),dpToPixel(27),
                     dpToPixel(48),dpToPixel(27)
             );
         }else{
-            marginParams.setMargins(0,0,0,0);
+            mViewFlipper.setPadding(0,0,0,0);
         }
         EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
         if(v!=null)
