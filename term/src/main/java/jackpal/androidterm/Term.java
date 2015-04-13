@@ -606,7 +606,8 @@ public class Term extends Activity implements UpdateCallback {
             marginParams.setMargins(0,0,0,0);
         }
         EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
-        v.updateSize(true);
+        if(v!=null)
+            v.updateSize(true);
 
         int orientation = mSettings.getScreenOrientation();
         int o = 0;
