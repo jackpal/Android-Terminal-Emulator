@@ -393,15 +393,6 @@ public class Term extends Activity implements UpdateCallback {
         mAlreadyStarted = true;
     }
 
-    protected int dpToPixel(int input) {
-        Resources r = getResources();
-        int px = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                input,
-                r.getDisplayMetrics()
-        );
-        return px;
-    }
 
     private String makePathFromBundle(Bundle extras) {
         if (extras == null || extras.size() == 0) {
@@ -533,6 +524,7 @@ public class Term extends Activity implements UpdateCallback {
     private TermView createEmulatorView(TermSession session) {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
         TermView emulatorView = new TermView(this, session, metrics);
 
         emulatorView.setExtGestureListener(new EmulatorViewGestureListener(emulatorView));
@@ -595,18 +587,11 @@ public class Term extends Activity implements UpdateCallback {
             }
         }
 
-        if(mSettings.getSafeMargins()) {
-            mViewFlipper.setPadding(
-                    dpToPixel(48),dpToPixel(27),
-                    dpToPixel(48),dpToPixel(27)
-            );
-        }else{
-            mViewFlipper.setPadding(0,0,0,0);
-        }
+        /*
         EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
         if(v!=null)
             v.updateSize(true);
-
+        */
         int orientation = mSettings.getScreenOrientation();
         int o = 0;
         if (orientation == 0) {
