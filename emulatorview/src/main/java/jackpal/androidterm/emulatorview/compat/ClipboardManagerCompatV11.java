@@ -1,9 +1,7 @@
 package jackpal.androidterm.emulatorview.compat;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ClipData;
-import android.content.ClipDescription;
 import android.content.Context;
 import android.content.ClipboardManager;
 
