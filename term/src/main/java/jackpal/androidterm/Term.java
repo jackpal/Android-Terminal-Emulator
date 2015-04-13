@@ -595,6 +595,19 @@ public class Term extends Activity implements UpdateCallback {
             }
         }
 
+        ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) mViewFlipper.getLayoutParams();
+        if(mSettings.getSafeMargins()) {
+            //mViewFlipper.
+            marginParams.setMargins(
+                    dpToPixel(48),dpToPixel(27),
+                    dpToPixel(48),dpToPixel(27)
+            );
+        }else{
+            marginParams.setMargins(0,0,0,0);
+        }
+        EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
+        v.updateSize(true);
+
         int orientation = mSettings.getScreenOrientation();
         int o = 0;
         if (orientation == 0) {
@@ -605,17 +618,6 @@ public class Term extends Activity implements UpdateCallback {
             o = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         } else {
             /* Shouldn't be happened. */
-        }
-
-        ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) mViewFlipper.getLayoutParams();
-        if(mSettings.getSafeMargins()) {
-            //mViewFlipper.
-            marginParams.setMargins(
-                    dpToPixel(48),dpToPixel(27),
-                    dpToPixel(48),dpToPixel(27)
-            );
-        }else{
-            marginParams.setMargins(0,0,0,0);
         }
 
         setRequestedOrientation(o);
