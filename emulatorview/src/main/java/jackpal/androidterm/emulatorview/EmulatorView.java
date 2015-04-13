@@ -1498,9 +1498,10 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             int w = getWidth() - getPaddingLeft() -getPaddingRight();
             int h = getHeight() -getPaddingTop() -getPaddingBottom();
             ViewParent parent=getParent();
-            if(parent instanceof View) {
+            while(parent instanceof View) {
                 w -= ((View) parent).getPaddingLeft() + ((View) parent).getPaddingRight();
                 h -= ((View) parent).getPaddingTop() + ((View) parent).getPaddingBottom();
+				parent = ((View)parent).getParent();
             }
 
             //Log.w("Term", "(" + w + ", " + h + ")");
