@@ -17,8 +17,10 @@
 package jackpal.androidterm;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelFileDescriptor;
@@ -35,9 +37,13 @@ import jackpal.androidterm.util.TermSettings;
  * A terminal session, consisting of a TerminalEmulator, a TranscriptScreen,
  * and the I/O streams used to talk to the process.
  */
-public class GenericTermSession extends TermSession {
+class GenericTermSession extends TermSession {
     //** Set to true to force into 80 x 24 for testing with vttest. */
     private static final boolean VTTEST_MODE = false;
+
+    private static Field descriptorField;
+
+    private final long createdAt;
 
     // A cookie which uniquely identifies this session.
     private String mHandle;
@@ -53,7 +59,7 @@ public class GenericTermSession extends TermSession {
 
     private UpdateCallback mUTF8ModeNotify = new UpdateCallback() {
         public void onUpdate() {
-            Exec.setPtyUTF8Mode(mTermFd, getUTF8Mode());
+            setPtyUTF8Mode(getUTF8Mode());
         }
     };
 
@@ -61,6 +67,8 @@ public class GenericTermSession extends TermSession {
         super(exitOnEOF);
 
         this.mTermFd = mTermFd;
+
+        this.createdAt = System.currentTimeMillis();
 
         updatePrefs(settings);
     }
@@ -79,7 +87,7 @@ public class GenericTermSession extends TermSession {
         }
         super.initializeEmulator(columns, rows);
 
-        Exec.setPtyUTF8Mode(mTermFd, getUTF8Mode());
+        setPtyUTF8Mode(getUTF8Mode());
         setUTF8ModeUpdateCallback(mUTF8ModeNotify);
     }
 
@@ -90,7 +98,7 @@ public class GenericTermSession extends TermSession {
             rows = 24;
         }
         // Inform the attached pty of our new size:
-        Exec.setPtyWindowSize(mTermFd, rows, columns, 0, 0);
+        setPtyWindowSize(rows, columns, 0, 0);
         super.updateSize(columns, rows);
     }
 
@@ -117,7 +125,12 @@ public class GenericTermSession extends TermSession {
 
     @Override
     public void finish() {
-        Exec.close(mTermFd);
+        try {
+            mTermFd.close();
+        } catch (IOException e) {
+            // ok
+        }
+
         super.finish();
     }
 
@@ -130,7 +143,7 @@ public class GenericTermSession extends TermSession {
      *     unset or an empty string.
      */
     public String getTitle(String defaultTitle) {
-        String title = super.getTitle();
+        String title = getTitle();
         if (title != null && title.length() > 0) {
             return title;
         } else {
@@ -147,5 +160,77 @@ public class GenericTermSession extends TermSession {
 
     public String getHandle() {
         return mHandle;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + '(' + createdAt + ',' + mHandle + ')';
+    }
+
+    /**
+     * Set the widow size for a given pty. Allows programs
+     * connected to the pty learn how large their screen is.
+     */
+    void setPtyWindowSize(int row, int col, int xpixel, int ypixel) {
+        // If the tty goes away too quickly, this may get called after it's descriptor is closed
+        if (!mTermFd.getFileDescriptor().valid())
+            return;
+
+        try {
+            Exec.setPtyWindowSizeInternal(getIntFd(mTermFd), row, col, xpixel, ypixel);
+        } catch (IOException e) {
+            Log.e("exec", "Failed to set window size: " + e.getMessage());
+
+            if (isFailFast())
+                throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     * Set or clear UTF-8 mode for a given pty.  Used by the terminal driver
+     * to implement correct erase behavior in cooked mode (Linux >= 2.6.4).
+     */
+    void setPtyUTF8Mode(boolean utf8Mode) {
+        // If the tty goes away too quickly, this may get called after it's descriptor is closed
+        if (!mTermFd.getFileDescriptor().valid())
+            return;
+
+        try {
+            Exec.setPtyUTF8ModeInternal(getIntFd(mTermFd), utf8Mode);
+        } catch (IOException e) {
+            Log.e("exec", "Failed to set UTF mode: " + e.getMessage());
+
+            if (isFailFast())
+                throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     * @return true, if failing to operate on file descriptor deserves an exception (never the case for ATE own shell)
+     */
+    boolean isFailFast() {
+        return false;
+    }
+
+    private static void cacheDescField() throws NoSuchFieldException {
+        if (descriptorField != null)
+            return;
+
+        descriptorField = FileDescriptor.class.getDeclaredField("descriptor");
+        descriptorField.setAccessible(true);
+    }
+
+    private static int getIntFd(ParcelFileDescriptor parcelFd) throws IOException {
+        if (Build.VERSION.SDK_INT >= 12)
+            return FdHelperHoneycomb.getFd(parcelFd);
+        else {
+            try {
+                cacheDescField();
+
+                return descriptorField.getInt(parcelFd.getFileDescriptor());
+            } catch (Exception e) {
+                throw new IOException("Unable to obtain file descriptor on this OS version: " + e.getMessage());
+            }
+        }
     }
 }
