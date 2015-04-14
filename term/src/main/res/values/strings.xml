@@ -62,9 +62,6 @@
    <string name="summary_orientation_preference">Choose the screen orientation behavior.</string>
    <string name="dialog_title_orientation_preference">Screen orientation behavior</string>
 
-   <string name="title_safe_margins_preference">Safe margins</string>
-   <string name="summary_safe_margins_preference">Add overscan margins to the terminal screen.</string>
-
    <string name="title_cursorstyle_preference">Cursor style</string>
    <string name="summary_cursorstyle_preference">Choose cursor style.</string>
    <string name="dialog_title_cursorstyle_preference">Cursor style</string>

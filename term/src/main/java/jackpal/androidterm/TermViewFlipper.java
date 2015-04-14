@@ -20,12 +20,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
@@ -102,33 +100,11 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
             Gravity.TOP|Gravity.LEFT);
     }
 
-    protected int dpToPixel(int input) {
-        Resources r = getResources();
-        int px = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                input,
-                r.getDisplayMetrics()
-        );
-        return px;
-    }
-
     public void updatePrefs(TermSettings settings) {
         boolean statusBarVisible = settings.showStatusBar();
         int[] colorScheme = settings.getColorScheme();
         setBackgroundColor(colorScheme[1]);
         mStatusBarVisible = statusBarVisible;
-        if(settings.getSafeMargins()) {
-                setPadding(
-                        dpToPixel(48), dpToPixel(27),
-                        dpToPixel(48), dpToPixel(27)
-                );
-        }else{
-                setPadding(0, 0, 0, 0);
-        }
-        EmulatorView view = (EmulatorView) getCurrentView();
-        if (view != null) {
-            view.updateSize(true);
-        }
     }
 
     public Iterator<View> iterator() {

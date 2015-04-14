@@ -48,12 +48,6 @@
                 android:entryValues="@array/entryvalues_orientation_preference"
                 android:dialogTitle="@string/dialog_title_orientation_preference" />
 
-        <CheckBoxPreference
-                android:key="safe_margins"
-                android:defaultValue="@bool/pref_safe_margins_default"
-                android:title="@string/title_safe_margins_preference"
-                android:summary="@string/summary_safe_margins_preference"
-            />
 <!--
         <ListPreference
                 android:key="cursorstyle"

@@ -65,7 +65,7 @@ public class RemoteInterface extends Activity {
         super.onCreate(savedInstanceState);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mSettings = new TermSettings(this, prefs);
+        mSettings = new TermSettings(getResources(), prefs);
 
         Intent TSIntent = new Intent(this, TermService.class);
         mTSIntent = TSIntent;

@@ -21,7 +21,6 @@ import jackpal.androidterm.compat.ActionBarCompat;
 import jackpal.androidterm.compat.ActivityCompat;
 import jackpal.androidterm.compat.AndroidCompat;
 import jackpal.androidterm.compat.MenuItemCompat;
-import jackpal.androidterm.compat.UIModeCompat;
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.emulatorview.UpdateCallback;
@@ -39,7 +38,6 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.UiModeManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -62,7 +60,6 @@ import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -333,14 +330,14 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
         Log.v(TermDebug.LOG_TAG, "onCreate");
 
-        final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mSettings = new TermSettings(this, mPrefs);
-        mPrefs.registerOnSharedPreferenceChangeListener(this);
-
         mPrivateAlias = new ComponentName(this, RemoteInterface.PRIVACT_ACTIVITY_ALIAS);
 
         if (icicle == null)
             onNewIntent(getIntent());
+
+        final SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mSettings = new TermSettings(getResources(), mPrefs);
+        mPrefs.registerOnSharedPreferenceChangeListener(this);
 
         Intent broadcast = new Intent(ACTION_PATH_BROADCAST);
         if (AndroidCompat.SDK >= 12) {
@@ -401,7 +398,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         updatePrefs();
         mAlreadyStarted = true;
     }
-
 
     private String makePathFromBundle(Bundle extras) {
         if (extras == null || extras.size() == 0) {
@@ -528,7 +524,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private TermView createEmulatorView(TermSession session) {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
         TermView emulatorView = new TermView(this, session, metrics);
 
         emulatorView.setExtGestureListener(new EmulatorViewGestureListener(emulatorView));
@@ -591,11 +586,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             }
         }
 
-        /*
-        EmulatorView v = (EmulatorView) mViewFlipper.getCurrentView();
-        if(v!=null)
-            v.updateSize(true);
-        */
         int orientation = mSettings.getScreenOrientation();
         int o = 0;
         if (orientation == 0) {
@@ -607,7 +597,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else {
             /* Shouldn't be happened. */
         }
-
         setRequestedOrientation(o);
     }
 
