@@ -4,8 +4,10 @@ import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
 import jackpal.androidterm.util.TermSettings;
 
-public class BoundSession extends GenericTermSession {
+class BoundSession extends GenericTermSession {
     private final String issuerTitle;
+
+    private boolean fullyInitialized;
 
     BoundSession(ParcelFileDescriptor ptmxFd, TermSettings settings, String issuerTitle) {
         super(ptmxFd, settings, true);
@@ -23,5 +25,17 @@ public class BoundSession extends GenericTermSession {
         return TextUtils.isEmpty(extraTitle)
                ? issuerTitle
                : issuerTitle + " — " + extraTitle;
+    }
+
+    @Override
+    public void initializeEmulator(int columns, int rows) {
+        super.initializeEmulator(columns, rows);
+
+        fullyInitialized = true;
+    }
+
+    @Override
+    boolean isFailFast() {
+        return !fullyInitialized;
     }
 }

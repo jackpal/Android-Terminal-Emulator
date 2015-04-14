@@ -26,7 +26,6 @@ import jackpal.androidterm.emulatorview.TermSession;
 import jackpal.androidterm.util.TermSettings;
 
 public class TermView extends EmulatorView {
-
     public TermView(Context context, TermSession session, DisplayMetrics metrics) {
         super(context, session, metrics);
     }
@@ -49,5 +48,10 @@ public class TermView extends EmulatorView {
 
     public void updatePrefs(TermSettings settings) {
         updatePrefs(settings, null);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().toString() + '(' + getTermSession() + ')';
     }
 }

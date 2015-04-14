@@ -48,6 +48,7 @@ public class SessionList extends ArrayList<TermSession>
 
     public void addCallback(UpdateCallback callback) {
         callbacks.add(callback);
+        callback.onUpdate();
     }
 
     public boolean removeCallback(UpdateCallback callback) {
@@ -62,6 +63,7 @@ public class SessionList extends ArrayList<TermSession>
 
     public void addTitleChangedListener(UpdateCallback listener) {
         titleChangedListeners.add(listener);
+        listener.onUpdate();
     }
 
     public boolean removeTitleChangedListener(UpdateCallback listener) {
