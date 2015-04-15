@@ -1,10 +1,7 @@
 #Terminal Emulator for Android
 
-Note: Terminal Emulator for Android development is complete. I am not
+*Note:* Terminal Emulator for Android development is complete. I am not
 accepting pull requests any more.
-See [Wrapping up Development on Terminal Emulator for Android]
-(https://github.com/jackpal/Android-Terminal-Emulator/wiki/Wrapping-up-Development-on-Android-Terminal-Emulator)
-for details.
 
 Terminal Emulator for Android is a terminal emulator for communicating with the
 built-in Android shell. It emulates a reasonably large subset of Digital
