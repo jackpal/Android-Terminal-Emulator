@@ -843,7 +843,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 int target = intent.getIntExtra(RemoteInterface.PRIVEXTRA_TARGET_WINDOW, -1);
                 if (target >= 0) {
                     onResumeSelectWindow = target;
-                    // Log.d("intent ","onresumeselectwindow"+target);
                 }
                 break;
         }
