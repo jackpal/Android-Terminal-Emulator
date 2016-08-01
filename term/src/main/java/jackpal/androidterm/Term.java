@@ -117,6 +117,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private static final int WIFI_MODE_FULL_HIGH_PERF = 3;
 
     private boolean mBackKeyPressed;
+    private boolean fromIntent = false;
 
     private static final String ACTION_PATH_BROADCAST = "jackpal.androidterm.broadcast.APPEND_TO_PATH";
     private static final String ACTION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.broadcast.PREPEND_TO_PATH";
@@ -601,8 +602,30 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        /* window persistence */
+        if(!fromIntent){
+            //if not from intent we are going through life cycle - window should be restored.
+            SharedPreferences prefs = getSharedPreferences("onResumeSElectWindowIndex", MODE_PRIVATE);
+            int restoredIndex = prefs.getInt("index", 0);
+            onResumeSelectWindow = restoredIndex;
+            mViewFlipper.setDisplayedChild(restoredIndex);
+        }else{
+            //Handle intent by ignoring
+            fromIntent = false;
+        }
+    }
+
+    @Override
     public void onPause() {
-        super.onPause();
+
+        /* window persistence */
+        onResumeSelectWindow = mViewFlipper.getDisplayedChild();
+        SharedPreferences.Editor editor = getSharedPreferences("onResumeSElectWindowIndex", MODE_PRIVATE).edit();
+        editor.putInt("index", onResumeSelectWindow);
+        editor.commit();
+
 
         if (AndroidCompat.SDK < 5) {
             /* If we lose focus between a back key down and a back key up,
@@ -622,6 +645,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 imm.hideSoftInputFromWindow(token, 0);
             }
         }.start();
+        super.onPause();
     }
 
     @Override
@@ -807,6 +831,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             return;
         }
 
+        fromIntent= true;
+
         // huge number simply opens new window
         // TODO: add a way to restrict max number of windows per caller (possibly via reusing BoundSession)
         switch (action) {
@@ -817,6 +843,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 int target = intent.getIntExtra(RemoteInterface.PRIVEXTRA_TARGET_WINDOW, -1);
                 if (target >= 0) {
                     onResumeSelectWindow = target;
+                    // Log.d("intent ","onresumeselectwindow"+target);
                 }
                 break;
         }
