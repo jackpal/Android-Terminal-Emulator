@@ -16,6 +16,7 @@
 
 package jackpal.androidterm;
 
+import android.os.Build;
 import android.text.TextUtils;
 
 import jackpal.androidterm.compat.ActionBarCompat;
@@ -797,6 +798,17 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         mViewFlipper.removeView(view);
         if (mTermSessions.size() != 0) {
             mViewFlipper.showNext();
+        }
+
+ 	if(mTermSessions.size() == 0){
+            if (Build.VERSION.SDK_INT >= 21) {
+                this.finishAndRemoveTask();
+                new Exiter().exitApplication(getApplicationContext());
+
+            }else{
+                this.finish();
+                new Exiter().exitApplication(getApplicationContext());
+            }
         }
     }
 
