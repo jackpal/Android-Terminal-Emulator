@@ -1130,19 +1130,19 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         ActivityCompat.invalidateOptionsMenu(this);
     }
 
-    private void toggleWakeLock(){
-        if(wakelockDesired) {
-            wakelockDesired=false;
+    private void toggleWakeLock() {
+        if (wakelockDesired) {
+            wakelockDesired = false;
         } else {
-            wakelockDesired=true;
+            wakelockDesired = true;
         }
     }
 
-    private void toggleWifiLock(){
-        if(wifilockDesired){
-            wifilockDesired=false;
-        }else{
-            wifilockDesired=true;
+    private void toggleWifiLock() {
+        if (wifilockDesired) {
+            wifilockDesired = false;
+        } else {
+            wifilockDesired = true;
         }
     }
 
