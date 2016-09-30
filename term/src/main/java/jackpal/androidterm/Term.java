@@ -120,6 +120,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private boolean mBackKeyPressed;
     private boolean fromIntent = false;
+    private static boolean wakelockDesired,wifilockDesired = false;
 
     private static final String ACTION_PATH_BROADCAST = "jackpal.androidterm.broadcast.APPEND_TO_PATH";
     private static final String ACTION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.broadcast.PREPEND_TO_PATH";
@@ -607,6 +608,14 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     public void onResume() {
         super.onResume();
 
+        /* lock persistence */
+        if(wifilockDesired){
+            doToggleWifiLock();
+        }
+        if(wakelockDesired){
+            doToggleWakeLock();
+        }
+
         /* window persistence */
         if (!fromIntent) {
 
@@ -626,13 +635,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     @Override
     public void onPause() {
-
         /* window persistence */
         onResumeSelectWindow = mViewFlipper.getDisplayedChild();
         SharedPreferences.Editor editor = getSharedPreferences("onResumeSElectWindowIndex", MODE_PRIVATE).edit();
         editor.putInt("index", onResumeSelectWindow);
         editor.commit();
-
 
         if (AndroidCompat.SDK < 5) {
             /* If we lose focus between a back key down and a back key up,
@@ -728,8 +735,10 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else if (id == R.id.menu_toggle_soft_keyboard) {
             doToggleSoftKeyboard();
         } else if (id == R.id.menu_toggle_wakelock) {
+            toggleWakeLock();
             doToggleWakeLock();
         } else if (id == R.id.menu_toggle_wifilock) {
+            toggleWifiLock();
             doToggleWifiLock();
         } else if (id == R.id.action_help) {
             Intent openHelp = new Intent(Intent.ACTION_VIEW,
@@ -1119,6 +1128,22 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             mWakeLock.acquire();
         }
         ActivityCompat.invalidateOptionsMenu(this);
+    }
+
+    private void toggleWakeLock(){
+        if(wakelockDesired) {
+            wakelockDesired=false;
+        } else {
+            wakelockDesired=true;
+        }
+    }
+
+    private void toggleWifiLock(){
+        if(wifilockDesired){
+            wifilockDesired=false;
+        }else{
+            wifilockDesired=true;
+        }
     }
 
     private void doToggleWifiLock() {

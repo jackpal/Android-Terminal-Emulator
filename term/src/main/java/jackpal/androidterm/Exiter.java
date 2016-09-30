@@ -30,5 +30,4 @@ public class Exiter extends Activity{
         context.startActivity(intent);
     }
 }
-0Looking
 
