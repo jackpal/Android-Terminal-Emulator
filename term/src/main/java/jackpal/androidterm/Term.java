@@ -499,11 +499,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         mTSConnection = null;
         if (mWakeLock.isHeld()) {
             mWakeLock.release();
-            Log.d("wake lock released","---------------");
         }
         if (mWifiLock.isHeld()) {
             mWifiLock.release();
-            Log.d("wifi lock released","---------------");
         }
     }
 
@@ -624,7 +622,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         if (!fromIntent) {
 
             //if not from intent we are going through life cycle - window should be restored.
-            SharedPreferences prefs = getSharedPreferences("onResumeSElectWindowIndex", MODE_PRIVATE);
+            SharedPreferences prefs = getSharedPreferences("onResumeSelectWindowIndex", MODE_PRIVATE);
             int restoredIndex = prefs.getInt("index", 0);
             onResumeSelectWindow = restoredIndex;
             mViewFlipper.setDisplayedChild(restoredIndex);
@@ -641,9 +639,13 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     public void onPause() {
         /* window persistence */
         onResumeSelectWindow = mViewFlipper.getDisplayedChild();
-        SharedPreferences.Editor editor = getSharedPreferences("onResumeSElectWindowIndex", MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferences("onResumeSelectWindowIndex", MODE_PRIVATE).edit();
         editor.putInt("index", onResumeSelectWindow);
-        editor.commit();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+            editor.apply();
+        } else {
+            editor.commit();
+        }
 
         /* lock persistence */
         saveLockStateToPrefs();
@@ -1135,17 +1137,14 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private void doToggleWakeLock() {
         if (mWakeLock.isHeld()) {
             mWakeLock.release();
-            Log.d("WAKELOCKRELEASED","------------");
         } else {
             mWakeLock.acquire();
-            Log.d("WAKELOCKAQUIRED","++++++++++");
         }
         ActivityCompat.invalidateOptionsMenu(this);
 
     }
 
     private void toggleWakeLock() {
-        Log.d("TOGGLE WAKE LOCK:","++++++++++");
         if (wakelockDesired) {
             wakelockDesired = false;
         } else {
@@ -1155,7 +1154,6 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void toggleWifiLock() {
-        Log.d("TOGGLE WIFI LOCK:","++++++++++");
         if (wifilockDesired) {
             wifilockDesired = false;
         } else {
@@ -1168,25 +1166,24 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         SharedPreferences.Editor prefsEditor = getSharedPreferences("LocksDesired", MODE_PRIVATE).edit();
         prefsEditor.putBoolean("wifilockdesired", wifilockDesired);
         prefsEditor.putBoolean("wakelockdesired", wakelockDesired);
-        Log.d("SAVED LOCKS:",wifilockDesired + ":" + wakelockDesired);
-        prefsEditor.commit();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+            prefsEditor.apply();
+        } else {
+            prefsEditor.commit();
+        }
     }
 
     private void loadLockStateFromPrefs(){
-        /** get saved value from shared prefs**/
         SharedPreferences sharedprefs = getSharedPreferences("LocksDesired", MODE_PRIVATE);
         wifilockDesired = sharedprefs.getBoolean("wifilockdesired", false);
         wakelockDesired = sharedprefs.getBoolean("wakelockdesired", false);
-        Log.d("LOADED LOCKS:",wifilockDesired + ":" + wakelockDesired);
     }
 
     private void doToggleWifiLock() {
         if (mWifiLock.isHeld()) {
             mWifiLock.release();
-            Log.d("WIFILOCKRELEASED","------------");
         } else {
             mWifiLock.acquire();
-            Log.d("WIFILOCKAQUIRED","++++++++++");
         }
         ActivityCompat.invalidateOptionsMenu(this);
 
