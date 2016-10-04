@@ -1123,8 +1123,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void doToggleSoftKeyboard() {
-        On
-
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     private void doToggleWakeLock() {
