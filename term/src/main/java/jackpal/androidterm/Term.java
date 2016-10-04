@@ -809,12 +809,12 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             mViewFlipper.showNext();
         }
 
- 	if(mTermSessions.size() == 0){
+        if (mTermSessions.size() == 0) {
             if (Build.VERSION.SDK_INT >= 21) {
                 this.finishAndRemoveTask();
                 new Exiter().exitApplication(getApplicationContext());
 
-            }else{
+            } else {
                 this.finish();
                 new Exiter().exitApplication(getApplicationContext());
             }

@@ -55,16 +55,15 @@ public final class RunScript extends RemoteInterface {
             Uri uri = myIntent.getData();
             if (uri != null) // scheme[path][arguments]
             {
-              String s = uri.getScheme();
-              if (s != null && s.toLowerCase().equals("file"))
-              {
-                command = uri.getPath();
-                // Allow for the command to be contained within the arguments string.
-                if (command == null) command = "";
-                if (!command.equals("")) command = quoteForBash(command);
-                // Append any arguments.
-                if (null != (s = uri.getFragment())) command += " " + s;
-              }
+                String s = uri.getScheme();
+                if (s != null && s.toLowerCase().equals("file")) {
+                    command = uri.getPath();
+                    // Allow for the command to be contained within the arguments string.
+                    if (command == null) command = "";
+                    if (!command.equals("")) command = quoteForBash(command);
+                    // Append any arguments.
+                    if (null != (s = uri.getFragment())) command += " " + s;
+                }
             }
             // If Intent.data not used then fall back to old method.
             if (command == null) command = myIntent.getStringExtra(EXTRA_INITIAL_COMMAND);
