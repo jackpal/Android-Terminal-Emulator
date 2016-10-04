@@ -785,15 +785,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         };
         b.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                InputMethodManager imm = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(
+                        mViewFlipper.getWindowToken(), 0);
                 dialog.dismiss();
                 mHandler.post(closeWindow);
             }
         });
         b.setNegativeButton(android.R.string.no, null);
-        InputMethodManager imm = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(
-                mViewFlipper.getWindowToken(), 0);
         b.show();
     }
 
