@@ -679,7 +679,15 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
         unbindService(mTSConnection);
 
+        hideSoftKeyboard();
         super.onStop();
+    }
+
+    public void hideSoftKeyboard() {
+        if(getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
     }
 
     private boolean checkHaveFullHwKeyboard(Configuration c) {
@@ -1115,9 +1123,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     }
 
     private void doToggleSoftKeyboard() {
-        InputMethodManager imm = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        On
 
     }
 
