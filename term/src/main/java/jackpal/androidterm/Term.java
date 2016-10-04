@@ -679,16 +679,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
         unbindService(mTSConnection);
 
-        hideSoftKeyboard();
         super.onStop();
     }
-
-    public void hideSoftKeyboard() {
-        if(getCurrentFocus()!=null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }
-    }
+    
 
     private boolean checkHaveFullHwKeyboard(Configuration c) {
         return (c.keyboard == Configuration.KEYBOARD_QWERTY) &&
