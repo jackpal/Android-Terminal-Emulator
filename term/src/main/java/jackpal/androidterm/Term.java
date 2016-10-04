@@ -499,9 +499,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         mTSConnection = null;
         if (mWakeLock.isHeld()) {
             mWakeLock.release();
+            Log.d("wake lock released","---------------");
         }
         if (mWifiLock.isHeld()) {
             mWifiLock.release();
+            Log.d("wifi lock released","---------------");
         }
     }
 
@@ -607,6 +609,8 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     @Override
     public void onResume() {
         super.onResume();
+        /* lock persistence */
+        loadLockStateFromPrefs();
 
         /* lock persistence */
         if(wifilockDesired){
@@ -640,6 +644,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         SharedPreferences.Editor editor = getSharedPreferences("onResumeSElectWindowIndex", MODE_PRIVATE).edit();
         editor.putInt("index", onResumeSelectWindow);
         editor.commit();
+
+        /* lock persistence */
+        saveLockStateToPrefs();
 
         if (AndroidCompat.SDK < 5) {
             /* If we lose focus between a back key down and a back key up,
@@ -1128,35 +1135,61 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private void doToggleWakeLock() {
         if (mWakeLock.isHeld()) {
             mWakeLock.release();
+            Log.d("WAKELOCKRELEASED","------------");
         } else {
             mWakeLock.acquire();
+            Log.d("WAKELOCKAQUIRED","++++++++++");
         }
         ActivityCompat.invalidateOptionsMenu(this);
+
     }
 
     private void toggleWakeLock() {
+        Log.d("TOGGLE WAKE LOCK:","++++++++++");
         if (wakelockDesired) {
             wakelockDesired = false;
         } else {
             wakelockDesired = true;
         }
+        saveLockStateToPrefs();
     }
 
     private void toggleWifiLock() {
+        Log.d("TOGGLE WIFI LOCK:","++++++++++");
         if (wifilockDesired) {
             wifilockDesired = false;
         } else {
             wifilockDesired = true;
         }
+        saveLockStateToPrefs();
+    }
+
+    private void saveLockStateToPrefs(){
+        SharedPreferences.Editor prefsEditor = getSharedPreferences("LocksDesired", MODE_PRIVATE).edit();
+        prefsEditor.putBoolean("wifilockdesired", wifilockDesired);
+        prefsEditor.putBoolean("wakelockdesired", wakelockDesired);
+        Log.d("SAVED LOCKS:",wifilockDesired + ":" + wakelockDesired);
+        prefsEditor.commit();
+    }
+
+    private void loadLockStateFromPrefs(){
+        /** get saved value from shared prefs**/
+        SharedPreferences sharedprefs = getSharedPreferences("LocksDesired", MODE_PRIVATE);
+        wifilockDesired = sharedprefs.getBoolean("wifilockdesired", false);
+        wakelockDesired = sharedprefs.getBoolean("wakelockdesired", false);
+        Log.d("LOADED LOCKS:",wifilockDesired + ":" + wakelockDesired);
     }
 
     private void doToggleWifiLock() {
         if (mWifiLock.isHeld()) {
             mWifiLock.release();
+            Log.d("WIFILOCKRELEASED","------------");
         } else {
             mWifiLock.acquire();
+            Log.d("WIFILOCKAQUIRED","++++++++++");
         }
         ActivityCompat.invalidateOptionsMenu(this);
+
     }
 
     private void doToggleActionBar() {
