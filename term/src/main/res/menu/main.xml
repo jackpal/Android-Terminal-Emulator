@@ -19,6 +19,9 @@
     <item android:id="@+id/menu_new_window"
         android:title="@string/new_window"
         android:icon="@drawable/ic_menu_add" />
+    <item android:id="@+id/menu_new_pwnix_window"
+        android:title="@string/new_pwnix_window"
+        android:icon="@drawable/ic_menu_add"/>
     <item android:id="@+id/menu_close_window"
         android:title="@string/close_window"
         android:icon="@drawable/ic_menu_close_clear_cancel" />
