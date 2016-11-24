@@ -1,0 +1,59 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.0'
+    }
+}
+apply plugin: 'com.android.library'
+
+repositories {
+    jcenter()
+}
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        minSdkVersion 4
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+
+        ndk {
+            moduleName 'libjackpal-termexec2'
+            abiFilters 'all'
+            ldLibs 'log', 'c'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+// by default recent plugin version does not copy any AIDL files "to avoid publishing too much"
+android.libraryVariants.all { variant ->
+    Sync packageAidl = project.tasks.create("addPublic${variant.name.capitalize()}Aidl", Sync) { sync ->
+        from "$project.projectDir/src/main/aidl/"
+        into "$buildDir/intermediates/bundles/${variant.dirName}/aidl/"
+    }
+
+    variant.javaCompile.dependsOn packageAidl
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile 'com.android.support:support-annotations:21.0.0'
+}

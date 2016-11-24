@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Android-Terminal-Emulator.iml" filepath="$PROJECT_DIR$/Android-Terminal-Emulator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/emulatorview/emulatorview.iml" filepath="$PROJECT_DIR$/emulatorview/emulatorview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/intents/intents.iml" filepath="$PROJECT_DIR$/samples/intents/intents.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libtermexec/libtermexec.iml" filepath="$PROJECT_DIR$/libtermexec/libtermexec.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/pathbroadcasts/pathbroadcasts.iml" filepath="$PROJECT_DIR$/samples/pathbroadcasts/pathbroadcasts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/samples.iml" filepath="$PROJECT_DIR$/samples/samples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/telnet/telnet.iml" filepath="$PROJECT_DIR$/samples/telnet/telnet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/term/term.iml" filepath="$PROJECT_DIR$/term/term.iml" />
+    </modules>
+  </component>
+</project>
+

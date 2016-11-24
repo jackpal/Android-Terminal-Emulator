@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Script to sign the APK. Only needed by Jack Palevich.
+
+# command line build script for building release version
+# This will only work on my (Jack Palevich) computer, because it
+# requires the private key store used to sign the release version
+# of Terminal Emulator for Android.
+set -e
+
+ANDROID_TERMINAL_EMULATOR_KEYSTORE="$HOME/Documents/workspace/keystore/jackpal.keystore"
+
+ZIPALIGN="/Users/jack/Library/Android/sdk/build-tools/21.1.2/zipalign"
+
+if [ ! -f "$ANDROID_TERMINAL_EMULATOR_KEYSTORE" ]; then
+    echo "Release keystore file is missing at ${ANDROID_TERMINAL_EMULATOR_KEYSTORE}. Cannot build release build."
+    exit 1
+fi
+
+if [ ! -f "$ZIPALIGN" ]; then
+    echo "Zipalign tool is missing at ${ZIPALIGN}. Cannot build release build."
+    exit 1
+fi
+
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+APKDIR="$DIR/../term/build/outputs/apk"
+
+if [ ! -d "$APKDIR" ]; then
+  echo "No APK directory $APKDIR"
+  exit 1
+fi
+
+cd "$APKDIR"
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
+  -keystore "$ANDROID_TERMINAL_EMULATOR_KEYSTORE" \
+  -signedjar term-release-signed.apk \
+  term-release-unsigned.apk jackpal.keystore
+
+# Verify signature
+# jarsigner -verify -verbose -certs term-release-signed.apk
+
+# Align for faster loading.
+
+rm -f Term.apk
+"$ZIPALIGN" -v 4 term-release-signed.apk Term.apk
+
+echo "Signed-and-aligned APK:"
+echo `pwd`/Term.apk
+

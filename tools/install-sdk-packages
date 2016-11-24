@@ -1,0 +1,23 @@
+#!/bin/bash
+# command line build script for installing required SDK packages.
+set -e
+
+if [ -z "${ANDROID_SDK_ROOT+xxx}" ]; then
+    echo "Please define ANDROID_SDK_ROOT to point to the Android SDK"
+    exit 1
+fi
+
+if [ ! -d "$ANDROID_SDK_ROOT" ]; then
+    echo "The directory $ANDROID_SDK_ROOT = ${ANDROID_SDK_ROOT} does not exist."
+    exit 1
+fi
+
+ANDROID="$ANDROID_SDK_ROOT/tools/android"
+
+# The available SDK versions can be listed by:
+# $ANDROID list sdk --all -e
+
+# The update sdk command takes a comma-separated list of packages to install.
+# Installing them all at once may simplify the process of agreeing to licenses.
+
+$ANDROID update sdk -u -a -t android-22,build-tools-22.0.1,extra-android-m2repository

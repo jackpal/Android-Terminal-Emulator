@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="control_keys_short_names">
+        <item>Трекбол</item>
+        <item>\@</item>
+        <item>LAlt</item>
+        <item>RAlt</item>
+        <item>Vol+</item>
+        <item>Vol-</item>
+        <item>Камера</item>
+        <item>Нет</item>
+    </string-array>
+    <string-array name="entries_actionbar_preference">
+        <item>Всегда показывать</item>
+        <item>Скрывать панель действий (коснитесь верха экрана или клавиши «Меню», чтобы её показать)</item>
+    </string-array>
+    <string-array name="entries_backaction_preference">
+        <item>Закрыть все окна терминала</item>
+        <item>Закрыть текущее окно терминала</item>
+        <item>Закрывает приложение, но оставляет запущенным терминал</item>
+        <item>Посылает ESC в терминал</item>
+        <item>Посылает TAB в терминал</item>
+    </string-array>
+    <string-array name="entries_color_preference">
+        <item>Чёрный на белом</item>
+        <item>Белый на чёрном</item>
+        <item>Белый на синем</item>
+        <item>Зелёный на чёрном</item>
+        <item>Жёлтый на чёрном</item>
+        <item>Красный на чёрном</item>
+        <item>Голубой на чёрном</item>
+        <item>Соляризованный светлый</item>
+        <item>Соляризованный тёмный</item>
+        <item>Консоль Linux</item>
+    </string-array>
+    <string-array name="entries_controlkey_preference">
+        <item>Трекбол</item>
+        <item>Клавиша @</item>
+        <item>Левый Alt</item>
+        <item>Правый Alt</item>
+        <item>Громкость вверх</item>
+        <item>Громкость вниз</item>
+        <item>Клавиша камеры</item>
+        <item>Нет</item>
+    </string-array>
+    <string-array name="entries_cursorblink_preference">
+        <item>Немигающий курсор</item>
+        <item>Мигающий курсор</item>
+    </string-array>
+    <string-array name="entries_cursorstyle_preference">
+        <item>Прямоугольник</item>
+        <item>Подчеркивание</item>
+        <item>Вертикальная черта</item>
+    </string-array>
+    <string-array name="entries_fnkey_preference">
+        <item>Трекбол</item>
+        <item>Клавиша @</item>
+        <item>Левый Alt</item>
+        <item>Правый Alt</item>
+        <item>Громкость вверх</item>
+        <item>Громкость вниз</item>
+        <item>Клавиша камеры</item>
+        <item>Нет</item>
+    </string-array>
+    <string-array name="entries_fontsize_preference">
+        <item>4 x 8 пикселей</item>
+        <item>6 пунктов</item>
+        <item>7 пунктов</item>
+        <item>8 пунктов</item>
+        <item>9 пунктов</item>
+        <item>10 пунктов</item>
+        <item>12 пунктов</item>
+        <item>14 пунктов</item>
+        <item>16 пунктов</item>
+        <item>20 пунктов</item>
+        <item>24 пункта</item>
+        <item>28 пунктов</item>
+        <item>32 пункта</item>
+        <item>36 пунктов</item>
+        <item>42 пункта</item>
+        <item>48 пунктов</item>
+        <item>64 пункта</item>
+        <item>72 пункта</item>
+        <item>96 пунктов</item>
+        <item>144 пункта</item>
+        <item>288 пунктов</item>
+    </string-array>
+    <string-array name="entries_ime_preference">
+        <item>По символам</item>
+        <item>По словам</item>
+    </string-array>
+    <string-array name="entries_orientation_preference">
+        <item>Автоматически</item>
+        <item>Альбомная</item>
+        <item>Портретная</item>
+    </string-array>
+    <string-array name="entries_statusbar_preference">
+        <item>Показывать</item>
+        <item>Скрывать</item>
+    </string-array>
+    <string-array name="fn_keys_short_names">
+        <item>Трекбол</item>
+        <item>\@</item>
+        <item>LAlt</item>
+        <item>RAlt</item>
+        <item>Vol+</item>
+        <item>Vol-</item>
+        <item>Камера</item>
+        <item>Нет</item>
+    </string-array>
+</resources>

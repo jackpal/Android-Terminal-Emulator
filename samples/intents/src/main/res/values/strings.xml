@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TEA Intent Sample</string>
+    <string name="open_new_window">Open New Window</string>
+    <string name="script_label">Script:</string>
+    <string name="run_script">Run Script</string>
+    <string name="run_script_save_window">Run Script and Save Window</string>
+    <string name="run_script_existing_window">Run Script in Saved Window</string>
+    <string name="help">This sample shows how to send intents to Android Terminal Emulator.</string>
+
+    <!-- Do not translate: -->
+    <string name="default_script">echo \'Hello, world!\'</string>
+</resources>

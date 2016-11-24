@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ATE_ROOT="$( cd $DIR/.. && pwd )"
+
+cd "$ATE_ROOT"
+
+if [ "$#" -ne 1 ] || ! [ -f "$1-512.png" ]; then
+  echo "Usage: $0 BASE_PATH_OF_ICONS_TO_IMPORT" >&2
+  exit 1
+fi
+
+ICON=$1
+
+RES=term/src/main/res
+IC_LAUNCHER=ic_launcher.png
+
+cp $ICON-48.png $RES/drawable/$IC_LAUNCHER
+cp $ICON-36.png $RES/drawable-ldpi/$IC_LAUNCHER
+cp $ICON-48.png $RES/drawable-mdpi/$IC_LAUNCHER
+cp $ICON-72.png $RES/drawable-hdpi/$IC_LAUNCHER
+cp $ICON-96.png $RES/drawable-xhdpi/$IC_LAUNCHER
+cp $ICON-144.png $RES/drawable-xxhdpi/$IC_LAUNCHER
+cp $ICON-192.png $RES/drawable-xxxhdpi/$IC_LAUNCHER
+
+cp $ICON-512.png artwork/android-terminal-emulator-512.png
+
+echo "Remember to update artwork/Feature Graphic.xcf"

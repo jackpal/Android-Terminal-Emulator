@@ -1,0 +1,20 @@
+#!/bin/bash
+# command line build script for building release version
+# This will only work on my (Jack Palevich) computer, because it
+# requires the private key store used to sign the release version
+# of Terminal Emulator for Android.
+set -e
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ATE_ROOT="$( cd $DIR/.. && pwd )"
+
+cd "$ATE_ROOT"
+
+MANIFEST="./term/src/main/AndroidManifest.xml"
+
+if [ ! -f "$MANIFEST" ]; then
+    echo "manifest $MANIFEST not found."
+    exit 1
+fi
+
+perl -i -pe 's/(?<=android:versionName="1.0.)(\d+)/$1+1/e;s/(?<=android:versionCode=")(\d+)/$1+1/e;' "$MANIFEST"

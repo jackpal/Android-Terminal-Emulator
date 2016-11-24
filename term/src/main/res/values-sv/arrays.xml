@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ -->
+
+<resources>
+    <string-array name="entries_statusbar_preference">
+        <item>Visa statusfältet</item>
+        <item>Dölj statusfältet</item>
+    </string-array>
+
+    <string-array name="entries_actionbar_preference">
+        <!-- <item>Action bar disabled</item> -->
+        <item>Always show action bar</item>
+        <item>Hide action bar (touch top of screen or Menu key to show)</item>
+    </string-array>
+
+    <string-array name="entries_cursorblink_preference">
+        <item>Icke-blinkande markör</item>
+        <item>Blinkande markör</item>
+    </string-array>
+
+    <string-array name="entries_cursorstyle_preference">
+        <item>Rektangel</item>
+        <item>Understruken</item>
+        <item>Vertikalt streck</item>
+    </string-array>
+
+    <string-array name="entries_fontsize_preference">
+        <item>4x8 Pixlar</item>
+        <item>6 Punkter</item>
+        <item>7 Punkter</item>
+        <item>8 Punkter</item>
+        <item>9 Punkter</item>
+        <item>10 Punkter</item>
+        <item>12 Punkter</item>
+        <item>14 Punkter</item>
+        <item>16 Punkter</item>
+        <item>20 Punkter</item>
+        <item>24 Punkter</item>
+        <item>28 Punkter</item>
+        <item>32 Punkter</item>
+        <item>36 Punkter</item>
+        <item>42 Punkter</item>
+        <item>48 Punkter</item>
+        <item>64 Punkter</item>
+        <item>72 Punkter</item>
+        <item>96 Punkter</item>
+        <item>144 Punkter</item>
+        <item>288 Punkter</item>
+    </string-array>
+
+    <string-array name="entries_color_preference">
+        <item>Svart text på vit</item>
+        <item>Vit text på svart</item>
+        <item>Vit text på blå</item>
+        <item>Grön text på svart</item>
+        <item>Orange text på svart</item>
+        <item>Röd text på svart</item>
+        <item>Blå text på svart</item>
+        <item>Solarized Light</item>
+        <item>Solarized Dark</item>
+        <item>Linux Console</item>
+    </string-array>
+
+    <string-array name="entries_backaction_preference">
+        <item>Closes all terminal windows</item>
+        <item>Closes this terminal window only</item>
+        <item>Closes activity, leaving sessions running</item>
+        <item>Sends ESC to terminal</item>
+        <item>Sends TAB to terminal</item>
+    </string-array>
+
+    <string-array name="entries_controlkey_preference">
+        <item>Trackball</item>
+        <item>\@-tangent</item>
+        <item>Vänster Alt-tangent</item>
+        <item>Höger Alt-tangent</item>
+        <item>Volym upp</item>
+        <item>Volym ner</item>
+        <item>Kamera-tangent</item>
+        <item>None</item>
+    </string-array>
+
+    <string-array name="entries_fnkey_preference">
+        <item>Trackball</item>
+        <item>\@-tangent</item>
+        <item>Vänster Alt-tangent</item>
+        <item>Höger Alt-tangent</item>
+        <item>Volym upp</item>
+        <item>Volym ner</item>
+        <item>Kamera-tangent</item>
+        <item>None</item>
+    </string-array>
+
+    <string-array name="entries_ime_preference">
+        <item>Teckenbaserade</item>
+        <item>Ordbaserade</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
+    <string-array name="control_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Left-Alt</item>
+        <item>Right-Alt</item>
+        <item>Vol-Up</item>
+        <item>Vol-Dn</item>
+        <item>Camera</item>
+        <item>None</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
+    <string-array name="fn_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Left-Alt</item>
+        <item>Right-Alt</item>
+        <item>Vol-Up</item>
+        <item>Vol-Dn</item>
+        <item>Camera</item>
+        <item>None</item>
+    </string-array>
+</resources>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="jackpal.androidterm"
+      android:versionName="1.0.70"
+      android:versionCode="71"
+      android:installLocation="auto">
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <permission android:name="jackpal.androidterm.permission.RUN_SCRIPT"
+                android:label="@string/perm_run_script"
+                android:description="@string/permdesc_run_script"
+                android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
+                android:protectionLevel="dangerous" />
+    <permission android:name="jackpal.androidterm.permission.APPEND_TO_PATH"
+                android:label="@string/perm_append_to_path"
+                android:description="@string/permdesc_append_to_path"
+                android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
+                android:protectionLevel="dangerous" />
+    <permission android:name="jackpal.androidterm.permission.PREPEND_TO_PATH"
+                android:label="@string/perm_prepend_to_path"
+                android:description="@string/permdesc_prepend_to_path"
+                android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
+                android:protectionLevel="dangerous" />
+    <application android:icon="@drawable/ic_launcher"
+                android:label="@string/application_terminal"
+                android:hardwareAccelerated="true"
+                android:theme="@style/Theme">
+        <activity android:name="Term"
+                android:launchMode="singleTask"
+                android:configChanges="keyboard|keyboardHidden|orientation"
+                android:windowSoftInputMode="adjustResize|stateAlwaysVisible">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity-alias android:name="TermInternal"
+                android:targetActivity="Term"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="jackpal.androidterm.private.OPEN_NEW_WINDOW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="jackpal.androidterm.private.SWITCH_WINDOW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity-alias>
+        <activity android:name="RemoteInterface"
+                android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="jackpal.androidterm.OPEN_NEW_WINDOW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity-alias
+                android:name="TermHere"
+                android:label="@string/activity_term_here_title"
+                android:targetActivity="RemoteInterface"
+                android:exported="true"
+        >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="*/*" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity-alias>
+        <activity android:name="RunScript"
+                android:excludeFromRecents="true"
+                android:permission="jackpal.androidterm.permission.RUN_SCRIPT">
+            <intent-filter>
+                <action android:name="jackpal.androidterm.RUN_SCRIPT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="RunShortcut"
+                android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="jackpal.androidterm.RUN_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="TermPreferences"
+                android:label="@string/preferences"/>
+        <activity android:name="WindowList"
+                android:label="@string/window_list" />
+        <service android:name="TermService" >
+            <intent-filter>
+                <action android:name="jackpal.androidterm.action.START_TERM.v1"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
+    <activity
+      android:label="@string/activity_shortcut_create"
+      android:name="jackpal.androidterm.shortcuts.AddShortcut"
+      android:launchMode="singleTop"
+      android:theme="@android:style/Theme.Translucent.NoTitleBar"
+      android:configChanges="orientation|keyboard|keyboardHidden"
+    >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.CREATE_SHORTCUT" />
+      </intent-filter>
+      <intent-filter>
+        <category android:name="android.intent.category.DEFAULT" />
+        <data     android:mimeType="text/*" />
+      </intent-filter>
+    </activity>
+    <activity
+      android:name="jackpal.androidterm.shortcuts.FSNavigator"
+      android:label="@string/addshortcut_button_find_command"
+      android:launchMode="singleTop"
+      android:configChanges="orientation|keyboardHidden"
+      android:exported="true"
+    >
+      <intent-filter>
+        <action android:name="android.intent.action.PICK" />
+        <category android:name="android.intent.category.DEFAULT"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.GET_CONTENT" />
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.OPENABLE"/>
+        <data android:mimeType="*/*" />
+      </intent-filter>
+    </activity>
+    <meta-data
+      android:name="com.sec.android.support.multiwindow"
+      android:value="true">
+        </meta-data>
+    </application>
+</manifest>

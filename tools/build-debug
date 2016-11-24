@@ -1,26 +1,6 @@
 #!/bin/bash
-# command line build script for building the debug version
+# command line build script for building debug version
 set -e
-
-if [ -z "${ANDROID_NDK_ROOT+xxx}" ]; then
-	echo "Please define ANDROID_NDK_ROOT to point to the Android NDK"
-	exit 1
-fi
-
-if [ ! -d "$ANDROID_NDK_ROOT" ]; then
-    echo "The directory ANDROID_NDK_ROOT = ${ANDROID_NDK_ROOT} does not exist."
-    exit 1
-fi
-
-if [ -z "${ANDROID_SDK_ROOT+xxx}" ]; then
-	echo "Please define ANDROID_SDK_ROOT to point to the Android SDK"
-	exit 1
-fi
-
-if [ ! -d "$ANDROID_SDK_ROOT" ]; then
-    echo "The directory ANDROID_SDK_ROOT = ${ANDROID_SDK_ROOT} does not exist."
-    exit 1
-fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ATE_ROOT="$( cd $DIR/.. && pwd )"
@@ -28,10 +8,8 @@ ATE_ROOT="$( cd $DIR/.. && pwd )"
 cd "$ATE_ROOT"
 
 if [ ! -f "local.properties" ]; then
-	echo "local.properties does not exist. Please run tools/update.sh"
-	exit 1
+    echo "local.properties does not exist. Please create it."
+    exit 1
 fi
 
-rm -rf `find . -name bin -o -name obj -prune`
-cd jni
-$ANDROID_NDK_ROOT/ndk-build && cd .. && ant debug
+./gradlew assembleDebug

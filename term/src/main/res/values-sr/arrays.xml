@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ -->
+
+<resources>
+    <string-array name="entries_statusbar_preference">
+        <item>Прикажи траку стања</item>
+        <item>Сакриј траку стања</item>
+    </string-array>
+
+    <string-array name="entries_actionbar_preference">
+        <!-- <item>Трака радњи онемогућена</item> -->
+        <item>Увек прикажи траку радњи</item>
+        <item>Сакриј траку радњи (за приказ додирните врх екрана или Мени тастер)</item>
+    </string-array>
+
+    <string-array name="entries_orientation_preference">
+        <item>Аутоматски</item>
+        <item>Пејзаж</item>
+        <item>Портрет</item>
+    </string-array>
+
+    <string-array name="entries_cursorblink_preference">
+        <item>Статични курсор</item>
+        <item>Трепћући курсор</item>
+    </string-array>
+
+    <string-array name="entries_cursorstyle_preference">
+        <item>Правоугаоник</item>
+        <item>Подвлака</item>
+        <item>Вертикална трака</item>
+    </string-array>
+
+    <string-array name="entries_fontsize_preference">
+        <item>4 x 8 px</item>
+        <item>6 pt</item>
+        <item>7 pt</item>
+        <item>8 pt</item>
+        <item>9 pt</item>
+        <item>10 pt</item>
+        <item>12 pt</item>
+        <item>14 pt</item>
+        <item>16 pt</item>
+        <item>20 pt</item>
+        <item>24 pt</item>
+        <item>28 pt</item>
+        <item>32 pt</item>
+        <item>36 pt</item>
+        <item>42 pt</item>
+        <item>48 pt</item>
+        <item>64 pt</item>
+        <item>72 pt</item>
+        <item>96 pt</item>
+        <item>144 pt</item>
+        <item>288 pt</item>
+    </string-array>
+
+    <string-array name="entries_color_preference">
+        <item>Црни текст на белом</item>
+        <item>Бели текст на црном</item>
+        <item>Бели текст на плавом</item>
+        <item>Зелени текст на црном</item>
+        <item>Јантарни текст на црном</item>
+        <item>Црвени текст на црном</item>
+        <item>Холо плави текст на црном</item>
+        <item>Светла соларизована</item>
+        <item>Тамна соларизована</item>
+        <item>Линукс конзола</item>
+    </string-array>
+
+    <string-array name="entries_backaction_preference">
+        <item>Затвара све прозоре терминала</item>
+        <item>Затвара само овај прозор терминала</item>
+        <item>Затвара активност, оставља сесије покренуте</item>
+        <item>Шаље ESC терминалу</item>
+        <item>Шаље TAB терминалу</item>
+    </string-array>
+
+    <string-array name="entries_controlkey_preference">
+        <item>Џог куглица</item>
+        <item>\@ тастер</item>
+        <item>Леви Алт тастер</item>
+        <item>Десни Алт тастер</item>
+        <item>Звук Горе тастер</item>
+        <item>Звук Доле тастер</item>
+        <item>Камера тастер</item>
+        <item>Ниједан</item>
+    </string-array>
+
+    <string-array name="entries_fnkey_preference">
+        <item>Џог куглица</item>
+        <item>\@ тастер</item>
+        <item>Леви Алт тастер</item>
+        <item>Десни Алт тастер</item>
+        <item>Звук Горе тастер</item>
+        <item>Звук Доле тастер</item>
+        <item>Камера тастер</item>
+        <item>Ниједан</item>
+    </string-array>
+
+    <string-array name="entries_ime_preference">
+        <item>Заснована на знаковима</item>
+        <item>Заснована на речима</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
+    <string-array name="control_keys_short_names">
+        <item>Куглица</item>
+        <item>\@</item>
+        <item>Леви-Алт</item>
+        <item>Десни-Алт</item>
+        <item>Звук-Горе</item>
+        <item>Звук-Доле</item>
+        <item>Камера</item>
+        <item>Ниједан</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
+    <string-array name="fn_keys_short_names">
+        <item>Куглица</item>
+        <item>\@</item>
+        <item>Леви-Алт</item>
+        <item>Десни-Алт</item>
+        <item>Звук-Горе</item>
+        <item>Звук-Доле</item>
+        <item>Камера</item>
+        <item>Ниједан</item>
+    </string-array>
+</resources>

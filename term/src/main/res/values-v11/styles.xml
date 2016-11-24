@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- The Holo-era theme. This theme is only used for API level 11..20.
+ -->
+
+<resources>
+    <!-- This style is used for all activities except the main terminal
+         window. (Example: preferences.)
+     -->
+    <style name="Theme" parent="@android:style/Theme.Holo">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+    <!-- This style is used for the main terminal window when the action bar
+         is visible. It is set programmatically at run time.
+     -->
+    <style name="Theme.Holo" parent="@android:style/Theme.Holo">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+    <!-- This style is used for the main terminal window when the action bar
+         is hidden. It is set programmatically at run time.
+     -->
+    <style name="Theme.Holo.ActionBarOverlay" parent="@style/Theme.Holo">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:actionBarStyle">@style/Widget.ActionBarOverlay</item>
+    </style>
+    <style name="Widget.ActionBarOverlay" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">#a0000000</item>
+    </style>
+</resources>
+

@@ -1,8 +1,0 @@
-#!/bin/bash
-
-set -e
-
-cd tests/emulatorview-test
-ant debug
-adb install -r bin/emulatorview-test-debug.apk
-adb shell am instrument jackpal.androidterm.test/android.test.InstrumentationTestRunner

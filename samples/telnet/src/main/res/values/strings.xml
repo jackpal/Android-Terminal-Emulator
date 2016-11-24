@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TEA Telet Sample</string>
+    <string name="launch_local_session">Open shell</string>
+    <string name="launch_telnet_session">Connect</string>
+    <string name="host_label">Telnet to:</string>
+    <string name="entry_send">Send</string>
+    <string name="help">This example Telnet client demonstrates the use of the EmulatorView widget and the TermSession class.</string>
+
+    <!-- This is a better demo, but towel.blinkenlights.nl is more fun :) -->
+    <string name="default_telnet_hostname">telehack.com</string>
+</resources>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   * Copyright (C) 2007 The Android Open Source Project
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *
+   *      http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+  -->
+
+<resources>
+  <string-array name="entries_statusbar_preference">
+    <item>Statuszeile zeigen</item>
+    <item>Statuszeile verbergen</item>
+  </string-array>
+
+  <string-array name="entries_cursorblink_preference">
+    <item>Permanenter Cursor</item>
+    <item>Blinkender Cursor</item>
+  </string-array>
+
+    <string-array name="entries_orientation_preference">
+        <item>Automatisch</item>
+        <item>Querformat (Landscape)</item>
+        <item>Hochformat (Portrait)</item>
+    </string-array>
+
+    <string-array name="entries_actionbar_preference">
+        <!-- <item>Action bar disabled</item> -->
+        <item>Aktionsleiste immer anzeigen</item>
+        <item>Aktionsleiste verstecken (zum Anzeigen Bildschirm oben berühren oder Menü-Taste drücken)</item>
+    </string-array>
+
+  <string-array name="entries_cursorstyle_preference">
+    <item>Rechteck</item>
+    <item>Unterstrichen</item>
+    <item>Vertikaler Balken</item>
+  </string-array>
+
+  <string-array name="entries_fontsize_preference">
+    <item>4x8 Pixel</item>
+    <item>6 Punkte</item>
+    <item>7 Punkte</item>
+    <item>8 Punkte</item>
+    <item>9 Punkte</item>
+    <item>10 Punkte</item>
+    <item>12 Punkte</item>
+    <item>14 Punkte</item>
+    <item>16 Punkte</item>
+    <item>20 Punkte</item>
+    <item>24 Punkte</item>
+    <item>28 Punkte</item>
+    <item>32 Punkte</item>
+    <item>36 Punkte</item>
+    <item>42 Punkte</item>
+    <item>48 Punkte</item>
+    <item>64 Punkte</item>
+    <item>72 Punkte</item>
+    <item>96 Punkte</item>
+    <item>144 Punkte</item>
+    <item>288 Punkte</item>
+  </string-array>
+
+  <string-array name="entries_color_preference">
+    <item>Schwarzer Text auf weiß</item>
+    <item>Weißer Text auf schwarz</item>
+    <item>Weißer Text auf blau</item>
+    <item>Grüner Text auf schwarz</item>
+    <item>Oranger Text auf schwarz</item>
+    <item>Roter Text auf schwarz</item>
+    <item>Solarized Light</item>
+    <item>Solarized Dark</item>
+    <item>Linux Console</item>
+  </string-array>
+
+  <string-array name="entries_backaction_preference">
+    <item>Schließt alle Terminalfenster</item>
+    <item>Schließt das aktuelle Terminalfenster</item>
+    <item>Aktivität schließen, Sessions erhalten lassen</item>
+    <item>Sendet ESC zum Terminal</item>
+    <item>Sendet TAB zum Terminal</item>
+  </string-array>
+
+  <string-array name="entries_controlkey_preference">
+    <item>Trackball</item>
+    <item>\@ Taste</item>
+    <item>Linke Alt-Taste</item>
+    <item>Rechte Alt-Taste</item>
+    <item>Lauter</item>
+    <item>Leiser</item>
+    <item>Kamera-Taste</item>
+    <item>Keine</item>
+  </string-array>
+
+  <string-array name="entries_fnkey_preference">
+    <item>Trackball</item>
+    <item>\@ Taste</item>
+    <item>Linke Alt-Taste</item>
+    <item>Rechte Alt-Taste</item>
+    <item>Lauter</item>
+    <item>Leiser</item>
+    <item>Kamera-Taste</item>
+    <item>Keine</item>
+  </string-array>
+
+  <string-array name="entries_ime_preference">
+    <item>Zeichen-basiert</item>
+    <item>Wort-basiert</item>
+  </string-array>
+
+    <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
+    <string-array name="control_keys_short_names">
+       <item>Trackball</item>
+       <item>\@ Taste</item>
+       <item>Linke Alt-Taste</item>
+       <item>Rechte Alt-Taste</item>
+       <item>Lauter</item>
+       <item>Leiser</item>
+       <item>Kamera-Taste</item>
+       <item>Keine</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
+    <string-array name="fn_keys_short_names">
+       <item>Trackball</item>
+       <item>\@ Taste</item>
+       <item>Linke Alt-Taste</item>
+       <item>Rechte Alt-Taste</item>
+       <item>Lauter</item>
+       <item>Leiser</item>
+       <item>Kamera-Taste</item>
+       <item>Keine</item>
+    </string-array>
+</resources>

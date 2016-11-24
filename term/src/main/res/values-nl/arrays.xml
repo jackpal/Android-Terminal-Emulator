@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright (C) 2007 The Android Open Source Project
+      Copyright (C) 2012 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+ -->
+
+<resources>
+    <string-array name="entries_statusbar_preference">
+        <item>Statusbalk tonen</item>
+        <item>Statusbalk verbergen</item>
+    </string-array>
+
+    <string-array name="entries_actionbar_preference">
+        <item>Menubalk altijd tonen</item>
+        <item>Menubalk verbergen (op bovenkant scherm of menuknop tikken om te tonen)</item>
+    </string-array>
+
+    <string-array name="entries_orientation_preference">
+        <item>Automatisch</item>
+        <item>Liggend</item>
+        <item>Staand</item>
+    </string-array>
+
+    <string-array name="entries_cursorblink_preference">
+        <item>Geen knipperende cursor</item>
+        <item>Knipperende cursor</item>
+    </string-array>
+
+    <string-array name="entries_cursorstyle_preference">
+        <item>Rechthoek</item>
+        <item>Onderlijnd</item>
+        <item>Verticale balk</item>
+    </string-array>
+
+    <string-array name="entries_fontsize_preference">
+        <item>4 x 8 pixels</item>
+        <item>6 pnt.</item>
+        <item>7 pnt.</item>
+        <item>8 pnt.</item>
+        <item>9 pnt.</item>
+        <item>10 pnt.</item>
+        <item>12 pnt.</item>
+        <item>14 pnt.</item>
+        <item>16 pnt.</item>
+        <item>20 pnt.</item>
+        <item>24 pnt.</item>
+        <item>28 pnt.</item>
+        <item>32 pnt.</item>
+        <item>36 pnt.</item>
+        <item>42 pnt.</item>
+        <item>48 pnt.</item>
+        <item>64 pnt.</item>
+        <item>72 pnt.</item>
+        <item>96 pnt.</item>
+        <item>144 pnt.</item>
+        <item>288 pnt.</item>
+    </string-array>
+
+    <string-array name="entries_color_preference">
+        <item>Zwarte tekst op wit</item>
+        <item>Witte tekst op zwart</item>
+        <item>Witte tekst op blauw</item>
+        <item>Groene tekst op zwart</item>
+        <item>Oranje tekst op zwart</item>
+        <item>Rode tekst op zwart</item>
+        <item>Holo-blauwe tekst op zwart</item>
+        <item>Gesolariseerd licht</item>
+        <item>Gesolariseerd donker</item>
+        <item>Linux console</item>
+    </string-array>
+
+    <string-array name="entries_backaction_preference">
+        <item>Alle terminalvensters sluiten</item>
+        <item>Alleen huidige terminalvensters sluiten</item>
+        <item>App sluiten, sessies open laten</item>
+        <item>ESC naar terminal sturen</item>
+        <item>TAB naar terminal sturen</item>
+    </string-array>
+
+    <string-array name="entries_controlkey_preference">
+        <item>Trackball</item>
+        <item>\@-knop</item>
+        <item>Linker Alt-knop</item>
+        <item>Rechter Alt-knop</item>
+        <item>Volume omhoog-knop</item>
+        <item>Volume omlaag-knop</item>
+        <item>Cameraknop</item>
+        <item>Geen</item>
+    </string-array>
+
+    <string-array name="entries_fnkey_preference">
+        <item>Trackball</item>
+        <item>\@-knop</item>
+        <item>Linker Alt-knop</item>
+        <item>Rechter Alt-knop</item>
+        <item>Volume omhoog-knop</item>
+        <item>Volume omlaag-knop</item>
+        <item>Cameraknop</item>
+        <item>Geen</item>
+    </string-array>
+
+    <string-array name="entries_ime_preference">
+        <item>Karaktergebaseerd</item>
+        <item>Woordgebaseerd</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the control keys. They are used in the special keys dialog. -->
+    <string-array name="control_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Alt-links</item>
+        <item>Alt-rechts</item>
+        <item>Volume+</item>
+        <item>Volume-</item>
+        <item>Camera</item>
+        <item>Geen</item>
+    </string-array>
+
+    <!-- These are the 'short' names for the Fn keys. They are used in the special keys dialog. -->
+    <string-array name="fn_keys_short_names">
+        <item>Ball</item>
+        <item>\@</item>
+        <item>Alt-links</item>
+        <item>Alt-rechts</item>
+        <item>Volume+</item>
+        <item>Volume-</item>
+        <item>Camera</item>
+        <item>Geen</item>
+    </string-array>
+</resources>
