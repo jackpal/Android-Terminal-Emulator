@@ -1,6 +1,7 @@
 #Terminal Emulator for Android
 
 * Note: This is a forked version of Jackpal's terminal emulator application with all of the permissions defined (Besides BRICK for obvious reasons) USER CAUTION IS HIGHLY ADVISED!!!
+** Users running Android 6 and above will be able to fine-tune what permissions the application receives. Versions below however, will grant all of the permissions automatically. Again, tread with caution.
 
 Terminal Emulator for Android is a terminal emulator for communicating with the
 built-in Android shell. It emulates a reasonably large subset of Digital
