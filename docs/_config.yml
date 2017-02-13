@@ -1,0 +1,8 @@
+title: Android-IS-1.0
+description: A VT-100 terminal emulator for the Android OS
+google_analytics: UA-66080226-1
+show_downloads: true
+theme: jekyll-theme-architect
+
+gems:
+  - jekyll-mentions
