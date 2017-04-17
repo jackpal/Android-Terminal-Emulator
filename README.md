@@ -1,4 +1,4 @@
-#Terminal Emulator for Android
+# Terminal Emulator for Android
 
 *Note:* Terminal Emulator for Android development is complete. I am not
 accepting pull requests any more.
