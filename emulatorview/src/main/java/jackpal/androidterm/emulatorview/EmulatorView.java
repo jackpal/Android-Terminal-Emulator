@@ -28,6 +28,7 @@ import java.util.Hashtable;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -113,6 +114,11 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
      * Color scheme (default foreground/background colors).
      */
     private ColorScheme mColorScheme = BaseTextRenderer.defaultColorScheme;
+
+    /**
+     * Typeface
+     */
+    private Typeface mTypeface = Typeface.MONOSPACE;
 
     private Paint mForegroundPaint;
 
@@ -617,6 +623,21 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
             mColorScheme = BaseTextRenderer.defaultColorScheme;
         } else {
             mColorScheme = scheme;
+        }
+        updateText();
+    }
+
+    /**
+     * Set the <code>EmulatorView</code> Typeface.
+     *
+     * @param typeface the {@link Typeface} to use (use null for Typeface.MONOSPACE).
+     */
+    public void setmTypeface(Typeface typeface) {
+
+        if(typeface==null) {
+            mTypeface=Typeface.MONOSPACE;
+        }else{
+            mTypeface=typeface;
         }
         updateText();
     }
@@ -1432,7 +1453,7 @@ public class EmulatorView extends View implements GestureDetector.OnGestureListe
     private void updateText() {
         ColorScheme scheme = mColorScheme;
         if (mTextSize > 0) {
-            mTextRenderer = new PaintRenderer(mTextSize, scheme);
+            mTextRenderer = new CustomFontPaintRenderer(mTextSize, scheme,mTypeface);
         }
         else {
             mTextRenderer = new Bitmap4x8FontRenderer(getResources(), scheme);

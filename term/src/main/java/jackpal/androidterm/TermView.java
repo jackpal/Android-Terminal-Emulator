@@ -17,8 +17,12 @@
 package jackpal.androidterm;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.DisplayMetrics;
 
+import java.io.File;
+
+import jackpal.androidterm.compat.TypefaceCompat;
 import jackpal.androidterm.emulatorview.ColorScheme;
 import jackpal.androidterm.emulatorview.EmulatorView;
 import jackpal.androidterm.emulatorview.TermSession;
@@ -30,11 +34,25 @@ public class TermView extends EmulatorView {
         super(context, session, metrics);
     }
 
+    protected Typeface loadTypeface(String spath) {
+        Typeface result=Typeface.MONOSPACE;
+
+        if(spath!="") {
+            //File path=new File(spath);
+            File path=getContext().getFileStreamPath(spath);
+            if(path.exists()) {
+                result=TypefaceCompat.createFromFile(path);
+            }
+        }
+        return result;
+    }
+
     public void updatePrefs(TermSettings settings, ColorScheme scheme) {
         if (scheme == null) {
             scheme = new ColorScheme(settings.getColorScheme());
         }
 
+        setmTypeface(loadTypeface(settings.getFontPath()));
         setTextSize(settings.getFontSize());
         setUseCookedIME(settings.useCookedIME());
         setColorScheme(scheme);

@@ -71,7 +71,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="@string/text_preferences">
+            android:title="@string/text_preferences" android:key="text_category">
 
         <ListPreference
                 android:key="fontsize"
@@ -90,6 +90,16 @@
                 android:entries="@array/entries_color_preference"
                 android:entryValues="@array/entryvalues_color_preference"
                 android:dialogTitle="@string/dialog_title_color_preference" />
+
+
+        <Preference
+            android:key="custom_font_filepath"
+            android:defaultValue=""
+            android:title="@string/title_custom_font_filepath"
+            android:summary="@string/custom_font_filepath_summary"
+            >
+
+        </Preference>
 
         <CheckBoxPreference
                 android:key="utf8_by_default"

@@ -163,6 +163,14 @@
   <string name="use_keyboard_shortcuts_summary_on">Ctrl-Tab: cycle window, Ctrl-Shift-N: new window, Ctrl-Shift-V: paste.</string>
   <string name="use_keyboard_shortcuts_summary_off">Keyboard shortcuts disabled.</string>
 
+  <string name="title_custom_font_filepath">Custom font file</string>
+  <string name="custom_font_filepath_summary">Touch to pick a font file</string>
+
+  <string name="custom_font_filepath_summary_reset"> ( Touch to set it to system default )</string>
+  <string name="custom_font_filepath_summary_error_filepicker">Could not use the file</string>
+  <string name="custom_font_filepath_summary_error_filepicker_Intent">Could not find a usable Filepicker</string>
+
+
   <string name="help">Help</string>
   <string name="help_url" translatable="false">http://jackpal.github.com/Android-Terminal-Emulator/help/index.html</string>
   <string name="activity_term_here_title">Term here</string>
