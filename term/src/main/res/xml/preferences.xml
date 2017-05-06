@@ -48,6 +48,14 @@
                 android:entryValues="@array/entryvalues_orientation_preference"
                 android:dialogTitle="@string/dialog_title_orientation_preference" />
 
+        <ListPreference
+                android:key="toast_position"
+                android:defaultValue="@integer/pref_toast_position_default"
+                android:title="@string/title_toast_position"
+                android:summary="@string/summary_toast_position"
+                android:entries="@array/entries_toast_position"
+                android:entryValues="@array/entryvalues_toast_position"
+                android:dialogTitle="@string/dialog_title_toast_position" />
 <!--
         <ListPreference
                 android:key="cursorstyle"

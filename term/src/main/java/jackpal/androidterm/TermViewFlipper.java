@@ -19,10 +19,12 @@ package jackpal.androidterm;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -49,6 +51,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     private LayoutParams mChildParams = null;
     private boolean mRedoLayout = false;
 
+    private int mToastGravity=Gravity.CENTER;
     /**
      * True if we must poll to discover if the view has changed size.
      * This is the only known way to detect the view changing size due to
@@ -83,6 +86,7 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
     public TermViewFlipper(Context context) {
         super(context);
         commonConstructor(context);
+
     }
 
     public TermViewFlipper(Context context, AttributeSet attrs) {
@@ -105,6 +109,8 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
         int[] colorScheme = settings.getColorScheme();
         setBackgroundColor(colorScheme[1]);
         mStatusBarVisible = statusBarVisible;
+
+        mToastGravity=settings.getToastGravity();
     }
 
     public Iterator<View> iterator() {
@@ -177,10 +183,11 @@ public class TermViewFlipper extends ViewFlipper implements Iterable<View> {
 
         if (mToast == null) {
             mToast = Toast.makeText(context, title, Toast.LENGTH_SHORT);
-            mToast.setGravity(Gravity.CENTER, 0, 0);
+
         } else {
             mToast.setText(title);
         }
+        mToast.setGravity(mToastGravity, 0, 0);
         mToast.show();
     }
 

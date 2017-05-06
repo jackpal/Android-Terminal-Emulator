@@ -101,6 +101,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private final static int SEND_CONTROL_KEY_ID = 3;
     private final static int SEND_FN_KEY_ID = 4;
 
+    /// Preferred toast gravity setting
+    protected int toastGravity=Gravity.CENTER;
+
     private boolean mAlreadyStarted = false;
     private boolean mStopServiceOnFinish = false;
 
@@ -117,6 +120,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
     private static final int WIFI_MODE_FULL_HIGH_PERF = 3;
 
     private boolean mBackKeyPressed;
+
 
     private static final String ACTION_PATH_BROADCAST = "jackpal.androidterm.broadcast.APPEND_TO_PATH";
     private static final String ACTION_PATH_PREPEND_BROADCAST = "jackpal.androidterm.broadcast.PREPEND_TO_PATH";
@@ -324,6 +328,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
 
     private Handler mHandler = new Handler();
 
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -438,7 +443,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 try {
                     mTermSessions.add(createTermSession());
                 } catch (IOException e) {
-                    Toast.makeText(this, "Failed to start terminal session", Toast.LENGTH_LONG).show();
+                    Toast toast=Toast.makeText(this, "Failed to start terminal session", Toast.LENGTH_LONG);
+                    toast.setGravity(toastGravity,0,0);
+                    toast.show();
                     finish();
                     return;
                 }
@@ -598,6 +605,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             /* Shouldn't be happened. */
         }
         setRequestedOrientation(o);
+
+        this.toastGravity=mSettings.getToastGravity();
+
     }
 
     @Override
@@ -688,7 +698,7 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
         } else if (id == R.id.menu_reset) {
             doResetTerminal();
             Toast toast = Toast.makeText(this,R.string.reset_toast_notification,Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.setGravity(toastGravity, 0, 0);
             toast.show();
         } else if (id == R.id.menu_send_email) {
             doEmailTranscript();
@@ -729,7 +739,9 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
             mViewFlipper.addView(view);
             mViewFlipper.setDisplayedChild(mViewFlipper.getChildCount()-1);
         } catch (IOException e) {
-            Toast.makeText(this, "Failed to create a session", Toast.LENGTH_SHORT).show();
+            Toast toast=Toast.makeText(this, "Failed to create a session", Toast.LENGTH_SHORT);
+            toast.setGravity(toastGravity,0,0);
+            toast.show();
         }
     }
 
@@ -999,9 +1011,11 @@ public class Term extends Activity implements UpdateCallback, SharedPreferences.
                 startActivity(Intent.createChooser(intent,
                         getString(R.string.email_transcript_chooser_title)));
             } catch (ActivityNotFoundException e) {
-                Toast.makeText(this,
+                Toast toast=Toast.makeText(this,
                         R.string.email_transcript_no_email_activity_found,
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_LONG);
+                toast.setGravity(toastGravity,0,0);
+                toast.show();
             }
         }
     }

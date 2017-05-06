@@ -17,10 +17,10 @@
 package jackpal.androidterm.util;
 
 import jackpal.androidterm.R;
-import jackpal.androidterm.compat.AndroidCompat;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.view.Gravity;
 import android.view.KeyEvent;
 
 /**
@@ -60,6 +60,10 @@ public class TermSettings {
 
     private boolean mUseKeyboardShortcuts;
 
+    private int mToastPosition = 4;
+
+    private static final int TOAST_POSITION_MAX=8;
+
     private static final String STATUSBAR_KEY = "statusbar";
     private static final String ACTIONBAR_KEY = "actionbar";
     private static final String ORIENTATION_KEY = "orientation";
@@ -81,6 +85,7 @@ public class TermSettings {
     private static final String ALT_SENDS_ESC = "alt_sends_esc";
     private static final String MOUSE_TRACKING = "mouse_tracking";
     private static final String USE_KEYBOARD_SHORTCUTS = "use_keyboard_shortcuts";
+    private static final String TOAST_POSITION = "toast_position";
 
     public static final int WHITE               = 0xffffffff;
     public static final int BLACK               = 0xff000000;
@@ -182,6 +187,7 @@ public class TermSettings {
         mAltSendsEsc = res.getBoolean(R.bool.pref_alt_sends_esc_default);
         mMouseTracking = res.getBoolean(R.bool.pref_mouse_tracking_default);
         mUseKeyboardShortcuts = res.getBoolean(R.bool.pref_use_keyboard_shortcuts_default);
+        mToastPosition = res.getInteger(R.integer.pref_toast_position_default);
     }
 
     public void readPrefs(SharedPreferences prefs) {
@@ -212,6 +218,7 @@ public class TermSettings {
         mMouseTracking = readBooleanPref(MOUSE_TRACKING, mMouseTracking);
         mUseKeyboardShortcuts = readBooleanPref(USE_KEYBOARD_SHORTCUTS,
                 mUseKeyboardShortcuts);
+        mToastPosition = readIntPref(TOAST_POSITION, mToastPosition, TOAST_POSITION_MAX);
         mPrefs = null;  // we leak a Context if we hold on to this
     }
 
@@ -369,5 +376,25 @@ public class TermSettings {
 
     public String getHomePath() {
         return mHomePath;
+    }
+
+    public int getToastPosition() { return mToastPosition; }
+
+    public int getToastGravity() {
+        int result= Gravity.CENTER;
+        switch (getToastPosition()) {
+            case 0: result = Gravity.TOP | Gravity.LEFT; break;
+            case 1: result = Gravity.TOP ; break;
+            case 2: result = Gravity.TOP | Gravity.RIGHT; break;
+
+            case 3: result = Gravity.LEFT; break;
+            case 4: result = Gravity.CENTER; break;
+            case 5: result = Gravity.RIGHT; break;
+
+            case 6: result = Gravity.BOTTOM | Gravity.LEFT; break;
+            case 7: result = Gravity.BOTTOM ; break;
+            case 8: result = Gravity.BOTTOM | Gravity.RIGHT; break;
+        }
+        return result;
     }
 }
