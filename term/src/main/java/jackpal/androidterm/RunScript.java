@@ -47,27 +47,26 @@ public final class RunScript extends RemoteInterface {
             /* Someone with the appropriate permissions has asked us to
                run a script */
             String handle = myIntent.getStringExtra(EXTRA_WINDOW_HANDLE);
-            String command=null;
+            String command = null;
             /*
              * First look in Intent.data for the path; if not there, revert to
              * the EXTRA_INITIAL_COMMAND location.
              */
-            Uri uri=myIntent.getData();
-            if(uri!=null) // scheme[path][arguments]
+            Uri uri = myIntent.getData();
+            if (uri != null) // scheme[path][arguments]
             {
-              String s=uri.getScheme();
-              if(s!=null && s.toLowerCase().equals("file"))
-              {
-                command=uri.getPath();
-                // Allow for the command to be contained within the arguments string.
-                if(command==null) command="";
-                if(!command.equals("")) command=quoteForBash(command);
-                // Append any arguments.
-                if(null!=(s=uri.getFragment())) command+=" "+s;
-              }
+                String s = uri.getScheme();
+                if (s != null && s.toLowerCase().equals("file")) {
+                    command = uri.getPath();
+                    // Allow for the command to be contained within the arguments string.
+                    if (command == null) command = "";
+                    if (!command.equals("")) command = quoteForBash(command);
+                    // Append any arguments.
+                    if (null != (s = uri.getFragment())) command += " " + s;
+                }
             }
             // If Intent.data not used then fall back to old method.
-            if(command==null) command=myIntent.getStringExtra(EXTRA_INITIAL_COMMAND);
+            if (command == null) command = myIntent.getStringExtra(EXTRA_INITIAL_COMMAND);
             if (handle != null) {
                 // Target the request at an existing window if open
                 handle = appendToWindow(handle, command);

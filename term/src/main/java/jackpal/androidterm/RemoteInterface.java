@@ -168,9 +168,21 @@ public class RemoteInterface extends Activity {
             String handle = UUID.randomUUID().toString();
             ((GenericTermSession) session).setHandle(handle);
 
-            Intent intent = new Intent(PRIVACT_OPEN_NEW_WINDOW);
+            SessionList sessions = service.getSessions();
+            int index;
+            for (index = 0; index < sessions.size(); ++index) {
+                GenericTermSession term = (GenericTermSession) sessions.get(index);
+                String h = term.getHandle();
+                if (h != null && h.equals(handle)) {
+                    // This is the target
+                    break;
+                }
+            }
+
+            Intent intent = new Intent(PRIVACT_SWITCH_WINDOW);
             intent.addCategory(Intent.CATEGORY_DEFAULT);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(PRIVEXTRA_TARGET_WINDOW, index);
             startActivity(intent);
 
             return handle;

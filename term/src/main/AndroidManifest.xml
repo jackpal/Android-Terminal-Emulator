@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="jackpal.androidterm.permission.RUN_SCRIPT"/>
     <permission android:name="jackpal.androidterm.permission.RUN_SCRIPT"
                 android:label="@string/perm_run_script"
                 android:description="@string/permdesc_run_script"
@@ -77,6 +78,11 @@
                 <action android:name="jackpal.androidterm.RUN_SCRIPT" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+	<activity android:name="Exiter"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:excludeFromRecents="true">
+
         </activity>
         <activity android:name="RunShortcut"
                 android:excludeFromRecents="true">

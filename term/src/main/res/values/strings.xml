@@ -29,6 +29,7 @@
 
    <string name="reset_toast_notification">This window\'s terminal state has been reset.</string>
 
+    <string name="new_pwnix_window">New Pwnix Shell</string>
    <string name="enable_wakelock">Take WakeLock</string>
    <string name="disable_wakelock">Drop WakeLock</string>
    <string name="enable_wifilock">Take WifiLock</string>

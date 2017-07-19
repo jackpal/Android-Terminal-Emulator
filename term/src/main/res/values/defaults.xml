@@ -15,8 +15,8 @@
    <string name="pref_ime_default" translatable="false">0</string>
    <bool name="pref_alt_sends_esc_default">false</bool>
    <string name="pref_shell_default" translatable="false">/system/bin/sh -</string>
-   <string name="pref_initialcommand_default" translatable="false"></string>
-   <string name="pref_termtype_default" translatable="false">screen</string>
+   <string name="pref_initialcommand_default" translatable="false">su</string>
+   <string name="pref_termtype_default" translatable="false">linux</string>
    <bool name="pref_close_window_on_process_exit_default">true</bool>
    <bool name="pref_verify_path_default">true</bool>
    <bool name="pref_do_path_extensions_default">true</bool>

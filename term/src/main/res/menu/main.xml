@@ -16,6 +16,9 @@
 -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_new_pwnix_window"
+        android:title="@string/new_pwnix_window"
+        android:icon="@drawable/ic_stat_service_notification_icon"/>
     <item android:id="@+id/menu_new_window"
         android:title="@string/new_window"
         android:icon="@drawable/ic_menu_add" />
