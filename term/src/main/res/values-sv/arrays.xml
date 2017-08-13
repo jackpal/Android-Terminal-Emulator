@@ -17,14 +17,14 @@
 
 <resources>
     <string-array name="entries_statusbar_preference">
-        <item>Visa statusfältet</item>
-        <item>Dölj statusfältet</item>
+        <item>Visa aviseringsraden</item>
+        <item>Dölj aviseringsraden</item>
     </string-array>
 
     <string-array name="entries_actionbar_preference">
         <!-- <item>Action bar disabled</item> -->
-        <item>Visa alltid aktivitetsfältet</item>
-        <item>Dölj aktivitetsfältet (rör överst på skärmen eller Menyknappen för att visa)</item>
+        <item>Visa alltid aviseringsraden</item>
+        <item>Dölj aviseringsraden (rör överst på skärmen eller Menyknappen för att visa)</item>
     </string-array>
 
      <string-array name="entries_orientation_preference">
