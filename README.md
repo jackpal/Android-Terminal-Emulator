@@ -1,6 +1,6 @@
 # Terminal Emulator for Android
 
-*Note:* Terminal Emulator for Android development has ended. I am not
+*Note:* Terminal Emulator for Android development is complete. I am not
 accepting pull requests any more.
 
 Terminal Emulator for Android is a terminal emulator for communicating with the
@@ -23,7 +23,8 @@ If you are unable to use the Play Store, you can also
 See [Building](docs/Building.md) for build instructions.
 
 Got questions? Please check out the
-[FAQ](http://github.com/jackpal/Android-Terminal-Emulator/wiki/Frequently-Asked-Questions). Thanks!
+[FAQ](http://github.com/jackpal/Android-Terminal-Emulator/wiki/Frequently-Asked-Questions)
+before emailing or adding an issue. Thanks!
 
 Please see the
 [Recent Updates](http://github.com/jackpal/Android-Terminal-Emulator/wiki/Recent-Updates)
